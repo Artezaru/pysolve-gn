@@ -1,0 +1,41 @@
+name: Deploy pysolve-gn Documentation to GitHub Pages
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install sphinx pydata-sphinx-theme sphinx-copybutton sphinx-gallery sphinx-design
+        pip install .
+
+    - name: Build documentation
+      run: sphinx-build -b html docs/source/ public/
+
+    - name: Deploy to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      
+      with:
+        branch: gh-pages
+        folder: public
+        clean: true
