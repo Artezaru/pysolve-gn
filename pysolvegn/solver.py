@@ -215,7 +215,7 @@ def solve_gauss_newton(
     The history contains the following keys:
 
     - "iteration": Integer representing the iteration number.
-    - "costs": List of floats representing the cost function value for each term in the least squares problem at the current iteration compute as :math:\frac{1}{2} \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right) for each term :math:`i`.
+    - "costs": List of floats representing the cost function value for each term in the least squares problem at the current iteration compute as :math:`\frac{1}{2} \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)` for each term :math:`i`.
     - "cost": Float representing the cost function value at the current iteration computed as :math:`\frac{1}{2} \sum_i w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)`.
     - "parameters": Numpy array representing the parameters at the current iteration.
     - "residuals": The residual of the data term (i.e. the first term in the least squares problem) at the current iteration.
