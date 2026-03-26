@@ -84,8 +84,8 @@ git:
 	git add -A .
 	git commit -m "$(message)"
 	@if [ "$(push)" = "true" ]; then \
-		@echo "Pushing changes to origin $(branch)..."; \
+		echo "Pushing changes to origin $(branch)..."; \
 		git push origin $(branch); \
 	else \
-		@echo "Push is disabled. Skipping git push."; \
+		echo "Push is disabled. Skipping git push."; \
 	fi
