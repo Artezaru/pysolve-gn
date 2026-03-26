@@ -1,0 +1,16 @@
+COPYING
+LICENSE
+pyproject.toml
+pysolve_gn.egg-info/PKG-INFO
+pysolve_gn.egg-info/SOURCES.txt
+pysolve_gn.egg-info/dependency_links.txt
+pysolve_gn.egg-info/requires.txt
+pysolve_gn.egg-info/top_level.txt
+pysolvegn/L_curve.py
+pysolvegn/__init__.py
+pysolvegn/__version__.py
+pysolvegn/derivation.py
+pysolvegn/regularization.py
+pysolvegn/rho_functions.py
+pysolvegn/solver.py
+pysolvegn/study_optimization.py

@@ -1,0 +1,569 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Mathematical Background &#8212; pysolvegn 0.0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'math';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="pysolvegn.study_jacobian" href="_autosummary/pysolvegn.study_jacobian.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pysolvegn 0.0.1 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Mathematical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="usage.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Mathematical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="usage.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"></div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Mathematical Background</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="mathematical-background">
+<h1>Mathematical Background<a class="headerlink" href="#mathematical-background" title="Link to this heading">#</a></h1>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#robust-least-squares-optimization-by-the-gauss-newton-method" id="id1">Robust Least Squares Optimization by the Gauss-Newton Method</a></p></li>
+<li><p><a class="reference internal" href="#adding-some-regularization-to-the-gauss-newton-update" id="id2">Adding some regularization to the Gauss-Newton update</a></p></li>
+</ul>
+</nav>
+<section id="robust-least-squares-optimization-by-the-gauss-newton-method">
+<h2><a class="toc-backref" href="#id1" role="doc-backlink">Robust Least Squares Optimization by the Gauss-Newton Method</a><a class="headerlink" href="#robust-least-squares-optimization-by-the-gauss-newton-method" title="Link to this heading">#</a></h2>
+<p>Consider a least squares problem of the form:</p>
+<div class="math notranslate nohighlight">
+\[\min_{\mathbf{p}} \frac{1}{2} \sum_j \rho\left(\| \mathbf{R}_j(\mathbf{p}) \|^2\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{R}_j(\mathbf{p})\)</span> is a residual function (<span class="math notranslate nohighlight">\(\mathbb{R}^{n} \rightarrow \mathbb{R}\)</span>)
+depending on the parameters <span class="math notranslate nohighlight">\(\mathbf{p} \in \mathbb{R}^{n}\)</span>, and <span class="math notranslate nohighlight">\(\rho\)</span> is a robust
+cost function (<span class="math notranslate nohighlight">\(\mathbb{R} \rightarrow \mathbb{R}\)</span>) that reduces the influence of outliers.</p>
+<p>At each iteration of the Gauss-Newton method, we search for an update <span class="math notranslate nohighlight">\(\Delta p\)</span>
+to the current parameters <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span> that minimizes the robust cost function.
+Developing the residuals around the current parameters <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{R}_j(\mathbf{p} + \Delta p) \approx \mathbf{R}_j + \mathbf{J}_j \Delta p + 0.5 \Delta p^T \mathbf{H}_j \Delta p + \ldots\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{J}_j(\mathbf{p_k}) = \nabla \mathbf{R}_j(\mathbf{p_k})\)</span> is the Jacobian
+of the residuals with respect to the parameters, and <span class="math notranslate nohighlight">\(\mathbf{H}_j(\mathbf{p_k})\)</span>
+is the Hessian of the residuals.</p>
+<p>Let <span class="math notranslate nohighlight">\(Z_j = \| \mathbf{R}_j(\mathbf{p_k}) \|^2\)</span> be the squared
+norm of the residuals at the current parameters.
+The robust cost function can be developed around <span class="math notranslate nohighlight">\(Z_j\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\rho(Z_j + \delta Z_j) \approx \rho(Z_j) + \rho'(Z_j)\delta Z_j + 0.5 \rho''(Z_j) \delta Z_j^2 + \ldots\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta Z_j\)</span> is the change in the squared norm due to the parameter update:</p>
+<div class="math notranslate nohighlight">
+\[\delta Z_j = \| \mathbf{R}_j(\mathbf{p_k} + \Delta p) \|^2 - \| \mathbf{R}_j(\mathbf{p_k}) \|^2\]</div>
+<p>By only keeping up to the second order terms, we can approximate <span class="math notranslate nohighlight">\(\delta Z_j\)</span> as:</p>
+<div class="math notranslate nohighlight">
+\[\delta Z_j \approx \Delta p^T \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{R}_j^T \mathbf{H}_j \right) \Delta p + 2 \mathbf{R}_j^T \mathbf{J}_j \Delta p + ...\]</div>
+<p>In a similar way, the squared term <span class="math notranslate nohighlight">\(\delta Z_j^2\)</span> can be approximated as:</p>
+<div class="math notranslate nohighlight">
+\[\delta Z_j^2 \approx 4 \left( \mathbf{R}_j^T \mathbf{J}_j \Delta p \right)^2 + ...\]</div>
+<p>Thus, by injecting all the approximations into the robust cost function,
+we optain :</p>
+<div class="math notranslate nohighlight">
+\[\rho(Z_j + \delta Z_j) \approx
+\rho(Z_j) +
+\rho'(Z_j) \Big[ \Delta p^T \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{R}_j^T \mathbf{H}_j \right) \Delta p + 2 \mathbf{R}_j^T \mathbf{J}_j \Delta p \Big] +
+2 \rho''(Z_j) \left( \mathbf{R}_j^T \mathbf{J}_j \Delta p \right)^2 + ...\]</div>
+<p>With Gauss-Newton, we shearch for the update <span class="math notranslate nohighlight">\(\Delta p\)</span> that minimizes
+the robust cost function, which is equivalent to solving the zero of the gradient
+of the robust cost function with respect to the parameters.</p>
+<div class="math notranslate nohighlight">
+\[\nabla_{\Delta p} \rho(Z_j + \delta Z_j) = 0\]</div>
+<p>The Gauss-Newton update can be obtained by solving the following linear system:</p>
+<div class="math notranslate nohighlight">
+\[H \, \Delta p = - g\]</div>
+<p>Where <span class="math notranslate nohighlight">\(g\)</span> is the gradient of the robust cost function with respect to the
+parameters, and <span class="math notranslate nohighlight">\(H\)</span> is the Hessian approximation of the robust cost function
+with respect to the parameters.</p>
+<p>By summing over all residuals, the gradient and Hessian approximation are:</p>
+<div class="math notranslate nohighlight">
+\[g \approx \sum_j 2 \rho'(Z_j) \mathbf{J}_j^T \mathbf{R}_j\]</div>
+<div class="math notranslate nohighlight">
+\[H \approx \sum_j \Big[2 \rho'(Z_j) \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{R}_j^T \mathbf{H}_j \right) + 4 \rho''(Z_j) \mathbf{J}_j^T \mathbf{R}_j \mathbf{R}_j^T \mathbf{J}_j \Big]\]</div>
+<p>Finally, the Gauss-Newton suggested to ignore the second order term of the residuals,
+as at convergence, the residuals should be small, and thus the second order term
+<span class="math notranslate nohighlight">\(\mathbf{R}_j^T \mathbf{H}_j\)</span> should be negligible compared to the first order
+term <span class="math notranslate nohighlight">\(\mathbf{J}_j^T \mathbf{J}_j\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[H \approx \sum_j \Big[2 \rho'(Z_j) \mathbf{J}_j^T \mathbf{J}_j + 4 \rho''(Z_j) \mathbf{J}_j^T \mathbf{R}_j \mathbf{R}_j^T \mathbf{J}_j \Big]\]</div>
+<div class="math notranslate nohighlight">
+\[H \approx \sum_j 2 \mathbf{J}_j^T \Big[ \rho'(Z_j) + 2 \rho''(Z_j) Z_j \Big] \mathbf{J}_j\]</div>
+<p>Finally, we can build a diagonal matrix <span class="math notranslate nohighlight">\(W_J\)</span> and a vector <span class="math notranslate nohighlight">\(W_R\)</span> that depend on the
+robust cost function and the squared norm of the residuals to solve the complete linear system
+as:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{J}^T \sqrt{W_J}^T \sqrt{W_J} \mathbf{J} \Delta p = - W_R \mathbf{J}^T \mathbf{R}\]</div>
+<div class="math notranslate nohighlight">
+\[W_J = \text{diag}\left(\rho'(|\mathbf{R}_j|^2) + 2 \rho''(|\mathbf{R}_j|^2) |\mathbf{R}_j|^2\right)\]</div>
+<div class="math notranslate nohighlight">
+\[W_R = \text{diag}\left(\rho'(|\mathbf{R}_j|^2)\right)\]</div>
+<p>Wo observe that the system is similar to solve:</p>
+<div class="math notranslate nohighlight">
+\[\tilde{\mathbf{J}}^T \tilde{\mathbf{J}} \Delta p = - \tilde{\mathbf{J}}^T \tilde{\mathbf{R}}\]</div>
+<p>With a modified Jacobian <span class="math notranslate nohighlight">\(\tilde{\mathbf{J}} = \sqrt{W_J} \mathbf{J}\)</span> and a modified residual <span class="math notranslate nohighlight">\(\tilde{\mathbf{R}} = \frac{W_R}{\sqrt{W_J}} \mathbf{R}\)</span>.</p>
+</section>
+<section id="adding-some-regularization-to-the-gauss-newton-update">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Adding some regularization to the Gauss-Newton update</a><a class="headerlink" href="#adding-some-regularization-to-the-gauss-newton-update" title="Link to this heading">#</a></h2>
+<p>Sometimes, we may also have regularization terms. In this case the problem can be
+written as a sum of a sub least squares problem:</p>
+<div class="math notranslate nohighlight">
+\[\min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)\]</div>
+<p>Where <span class="math notranslate nohighlight">\(w_i\)</span> is a weight for each sub least squares problem,
+and <span class="math notranslate nohighlight">\(\rho_i\)</span> is a robust cost function for each sub least squares problem.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>By nomenclature, we assume that the first sub least squares problem (i.e. <span class="math notranslate nohighlight">\(i=0\)</span>)
+is the main least squares problem containing the data residuals, and the other sub
+least squares problems (i.e. <span class="math notranslate nohighlight">\(i \geq 1\)</span>) are regularization terms.</p>
+</div>
+<p>In this case, the Gauss-Newton update can be written as:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i} w_i \tilde{\mathbf{J}}_i(\mathbf{p_k})^T \tilde{\mathbf{J}}_i(\mathbf{p_k}) \Delta p = -\sum_{i} w_i \tilde{\mathbf{J}}_i(\mathbf{p_k})^T \tilde{\mathbf{R}}_i(\mathbf{p_k})\]</div>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="_autosummary/pysolvegn.study_jacobian.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pysolvegn.study_jacobian</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="usage.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Usage</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robust-least-squares-optimization-by-the-gauss-newton-method">Robust Least Squares Optimization by the Gauss-Newton Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-some-regularization-to-the-gauss-newton-update">Adding some regularization to the Gauss-Newton update</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/math.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026-2026, Artezaru.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.1.0.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
