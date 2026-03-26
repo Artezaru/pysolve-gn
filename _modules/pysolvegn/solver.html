@@ -552,10 +552,25 @@
 <span class="sd">    The history contains the following keys:</span>
 
 <span class="sd">    - &quot;iteration&quot;: Integer representing the iteration number.</span>
-<span class="sd">    - &quot;costs&quot;: List of floats representing the cost function value for each term in the least squares problem at the current iteration.</span>
-<span class="sd">    - &quot;cost&quot;: Float representing the cost function value at the current iteration.</span>
+<span class="sd">    - &quot;costs&quot;: List of floats representing the cost function value for each term in the least squares problem at the current iteration compute as :math:\frac{1}{2} \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right) for each term :math:`i`.</span>
+<span class="sd">    - &quot;cost&quot;: Float representing the cost function value at the current iteration computed as :math:`\frac{1}{2} \sum_i w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)`.</span>
 <span class="sd">    - &quot;parameters&quot;: Numpy array representing the parameters at the current iteration.</span>
 <span class="sd">    - &quot;residuals&quot;: The residual of the data term (i.e. the first term in the least squares problem) at the current iteration.</span>
+
+<span class="sd">    The optimization process is performed by iteratively solving a linearized</span>
+<span class="sd">    version of the least squares problem at each iteration for different values</span>
+<span class="sd">    of the regularization factor, and then selecting the optimal regularization</span>
+<span class="sd">    factor based on the L-curve analysis.</span>
+<span class="sd">    The step of each loop iteration is as follows:</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        While NOT converged:</span>
+<span class="sd">            1. Build the system M Δp = -b from &#39;residual_func&#39;, &#39;jacobian_func&#39;, &#39;loss&#39; and &#39;weight&#39;.</span>
+<span class="sd">            2. Call the &#39;callback&#39; function and STOP if it returns False.</span>
+<span class="sd">            3. Check the stopping criteria and STOP if any of them is satisfied.</span>
+<span class="sd">            4. If CONTINUE solve the linear system M Δp = -b for Δp.</span>
+<span class="sd">            5. Update the parameters as p = p + Δp (or using &#39;update_func&#39; if provided).</span>
 
 
 <span class="sd">    Version</span>
@@ -831,11 +846,13 @@
 
         <span class="k">if</span> <span class="n">max_iterations</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">_iteration</span> <span class="o">&gt;=</span> <span class="n">max_iterations</span><span class="p">:</span>
             <span class="n">_end_flag</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">_end_message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[max_iterations] Maximum number of iterations reached: </span><span class="si">{</span><span class="n">_iteration</span><span class="si">}</span><span class="s2"> &gt;= </span><span class="si">{</span><span class="n">max_iterations</span><span class="si">}</span><span class="s2">.&quot;</span>
+            <span class="n">_end_message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[max_iterations] Maximum number of iterations reached: </span><span class="si">{</span><span class="n">max_iterations</span><span class="si">}</span><span class="s2">.&quot;</span>
 
         <span class="k">if</span> <span class="n">max_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">_starting_time</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">max_time</span><span class="p">:</span>
             <span class="n">_end_flag</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="n">_end_message</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[max_time] Maximum computation time reached: </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_starting_time</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> seconds &gt;= </span><span class="si">{</span><span class="n">max_time</span><span class="si">}</span><span class="s2"> seconds.&quot;</span>
+            <span class="n">_end_message</span> <span class="o">+=</span> <span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">[max_time] Maximum computation time reached: </span><span class="si">{</span><span class="n">max_time</span><span class="si">}</span><span class="s2"> seconds.&quot;</span>
+            <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">callback</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">callback_result</span> <span class="o">=</span> <span class="n">callback</span><span class="p">(</span><span class="n">_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
