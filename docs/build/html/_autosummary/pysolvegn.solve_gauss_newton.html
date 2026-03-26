@@ -493,11 +493,24 @@ containing the keys described below.</p></li>
 <p>The history contains the following keys:</p>
 <ul class="simple">
 <li><p>“iteration”: Integer representing the iteration number.</p></li>
-<li><p>“costs”: List of floats representing the cost function value for each term in the least squares problem at the current iteration.</p></li>
-<li><p>“cost”: Float representing the cost function value at the current iteration.</p></li>
+<li><p>“costs”: List of floats representing the cost function value for each term in the least squares problem at the current iteration compute as :math:frac{1}{2} sum_j rho_ileft(| mathbf{R}_{i,j}(mathbf{p}) |^2right) for each term <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+<li><p>“cost”: Float representing the cost function value at the current iteration computed as <span class="math notranslate nohighlight">\(\frac{1}{2} \sum_i w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)\)</span>.</p></li>
 <li><p>“parameters”: Numpy array representing the parameters at the current iteration.</p></li>
 <li><p>“residuals”: The residual of the data term (i.e. the first term in the least squares problem) at the current iteration.</p></li>
 </ul>
+<p>The optimization process is performed by iteratively solving a linearized
+version of the least squares problem at each iteration for different values
+of the regularization factor, and then selecting the optimal regularization
+factor based on the L-curve analysis.
+The step of each loop iteration is as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>While NOT converged:
+    1. Build the system M Δp = -b from &#39;residual_func&#39;, &#39;jacobian_func&#39;, &#39;loss&#39; and &#39;weight&#39;.
+    2. Call the &#39;callback&#39; function and STOP if it returns False.
+    3. Check the stopping criteria and STOP if any of them is satisfied.
+    4. If CONTINUE solve the linear system M Δp = -b for Δp.
+    5. Update the parameters as p = p + Δp (or using &#39;update_func&#39; if provided).
+</pre></div>
+</div>
 <section id="version">
 <h2>Version<a class="headerlink" href="#version" title="Link to this heading">#</a></h2>
 <p>0.0.1: Initial version.</p>

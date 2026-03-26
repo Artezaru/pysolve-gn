@@ -215,10 +215,25 @@ def solve_gauss_newton(
     The history contains the following keys:
 
     - "iteration": Integer representing the iteration number.
-    - "costs": List of floats representing the cost function value for each term in the least squares problem at the current iteration.
-    - "cost": Float representing the cost function value at the current iteration.
+    - "costs": List of floats representing the cost function value for each term in the least squares problem at the current iteration compute as :math:\frac{1}{2} \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right) for each term :math:`i`.
+    - "cost": Float representing the cost function value at the current iteration computed as :math:`\frac{1}{2} \sum_i w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)`.
     - "parameters": Numpy array representing the parameters at the current iteration.
     - "residuals": The residual of the data term (i.e. the first term in the least squares problem) at the current iteration.
+
+    The optimization process is performed by iteratively solving a linearized
+    version of the least squares problem at each iteration for different values
+    of the regularization factor, and then selecting the optimal regularization
+    factor based on the L-curve analysis.
+    The step of each loop iteration is as follows:
+
+    .. code-block:: text
+
+        While NOT converged:
+            1. Build the system M Δp = -b from 'residual_func', 'jacobian_func', 'loss' and 'weight'.
+            2. Call the 'callback' function and STOP if it returns False.
+            3. Check the stopping criteria and STOP if any of them is satisfied.
+            4. If CONTINUE solve the linear system M Δp = -b for Δp.
+            5. Update the parameters as p = p + Δp (or using 'update_func' if provided).
 
 
     Version
@@ -494,11 +509,13 @@ def solve_gauss_newton(
 
         if max_iterations is not None and _iteration >= max_iterations:
             _end_flag = True
-            _end_message += f"\n[max_iterations] Maximum number of iterations reached: {_iteration} >= {max_iterations}."
+            _end_message += f"\n[max_iterations] Maximum number of iterations reached: {max_iterations}."
 
         if max_time is not None and (time.time() - _starting_time) >= max_time:
             _end_flag = True
-            _end_message += f"\n[max_time] Maximum computation time reached: {time.time() - _starting_time:.2f} seconds >= {max_time} seconds."
+            _end_message += (
+                f"\n[max_time] Maximum computation time reached: {max_time} seconds."
+            )
 
         if callback is not None:
             callback_result = callback(_history[-1])
