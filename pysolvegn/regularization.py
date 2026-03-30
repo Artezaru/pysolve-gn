@@ -38,6 +38,12 @@ def build_squared_regularization(
 
         J_{reg}(\lambda) = \frac{1}{\sigma}
 
+    Then the callable functions returned by this function can be used as the
+    residual and jacobian of a regularization term in the Gauss-Newton optimization,
+    where the regularization term will be added to the residuals of the transformations,
+    and the jacobian of the regularization will be added to the jacobian of the
+    transformations.
+
 
     Parameters
     ----------
@@ -106,7 +112,7 @@ def build_soft_squared_regularization(
 
     .. math::
 
-        \text{Reg}(\lambda) = \left(\frac{\lambda - \tau_{-}}{\sigma}\right)^2 \quad \text{if} \quad lambda < \mu - \tau = \tau_{-}
+        \text{Reg}(\lambda) = \left(\frac{\lambda - \tau_{-}}{\sigma}\right)^2 \quad \text{if} \quad \lambda < \mu - \tau = \tau_{-}
 
     .. math::
 
@@ -114,25 +120,31 @@ def build_soft_squared_regularization(
 
     .. math::
 
-        \text{Reg}(\lambda) = \left(\frac{\lambda - \tau_{+}}{\sigma}\right)^2 \quad \text{if} \quad lambda > \mu + \tau = \tau_{+}
+        \text{Reg}(\lambda) = \left(\frac{\lambda - \tau_{+}}{\sigma}\right)^2 \quad \text{if} \quad \lambda > \mu + \tau = \tau_{+}
 
     Thus the residuals and jacobian of the regularization are defined as:
     
     .. math::
 
         R_{reg}(\lambda) = \begin{cases}
-            \frac{\lambda - \tau_{-}}{\sigma} & \text{if} \quad lambda < \mu - \tau = \tau_{-} \\
+            \frac{\lambda - \tau_{-}}{\sigma} & \text{if} \quad \lambda < \mu - \tau = \tau_{-} \\
             0 & \text{if} \quad |\lambda - \mu| \leq \tau \\
-            \frac{\lambda - \tau_{+}}{\sigma} & \text{if} \quad lambda > \mu + \tau = \tau_{+}
+            \frac{\lambda - \tau_{+}}{\sigma} & \text{if} \quad \lambda > \mu + \tau = \tau_{+}
         \end{cases}
         
     .. math::
     
         J_{reg}(\lambda) = \begin{cases}
-            \frac{1}{\sigma} & \text{if} \quad lambda < \mu - \tau = \tau_{-} \\
+            \frac{1}{\sigma} & \text{if} \quad \lambda < \mu - \tau = \tau_{-} \\
             0 & \text{if} \quad |\lambda - \mu| \leq \tau \\
-            \frac{1}{\sigma} & \text{if} \quad lambda > \mu + \tau = \tau_{+}
+            \frac{1}{\sigma} & \text{if} \quad \lambda > \mu + \tau = \tau_{+}
         \end{cases}
+        
+    Then the callable functions returned by this function can be used as the 
+    residual and jacobian of a regularization term in the Gauss-Newton optimization,
+    where the regularization term will be added to the residuals of the transformations,
+    and the jacobian of the regularization will be added to the jacobian of the 
+    transformations.
         
         
     Parameters

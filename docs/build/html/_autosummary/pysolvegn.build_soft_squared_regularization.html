@@ -380,24 +380,29 @@ are within a certain threshold of the mean value, and increases as the squared d
 of the parameters to a bounds value relative to a standard deviation,
 which can be interpreted as a Gaussian prior on the parameters with a soft threshold.</p>
 <div class="math notranslate nohighlight">
-\[\text{Reg}(\lambda) = \left(\frac{\lambda - \tau_{-}}{\sigma}\right)^2 \quad \text{if} \quad lambda &lt; \mu - \tau = \tau_{-}\]</div>
+\[\text{Reg}(\lambda) = \left(\frac{\lambda - \tau_{-}}{\sigma}\right)^2 \quad \text{if} \quad \lambda &lt; \mu - \tau = \tau_{-}\]</div>
 <div class="math notranslate nohighlight">
 \[\text{Reg}(\lambda) = 0 \quad \text{if} \quad |\lambda - \mu| \leq \tau\]</div>
 <div class="math notranslate nohighlight">
-\[\text{Reg}(\lambda) = \left(\frac{\lambda - \tau_{+}}{\sigma}\right)^2 \quad \text{if} \quad lambda &gt; \mu + \tau = \tau_{+}\]</div>
+\[\text{Reg}(\lambda) = \left(\frac{\lambda - \tau_{+}}{\sigma}\right)^2 \quad \text{if} \quad \lambda &gt; \mu + \tau = \tau_{+}\]</div>
 <p>Thus the residuals and jacobian of the regularization are defined as:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}R_{reg}(\lambda) = \begin{cases}
-    \frac{\lambda - \tau_{-}}{\sigma} &amp; \text{if} \quad lambda &lt; \mu - \tau = \tau_{-} \\
+    \frac{\lambda - \tau_{-}}{\sigma} &amp; \text{if} \quad \lambda &lt; \mu - \tau = \tau_{-} \\
     0 &amp; \text{if} \quad |\lambda - \mu| \leq \tau \\
-    \frac{\lambda - \tau_{+}}{\sigma} &amp; \text{if} \quad lambda &gt; \mu + \tau = \tau_{+}
+    \frac{\lambda - \tau_{+}}{\sigma} &amp; \text{if} \quad \lambda &gt; \mu + \tau = \tau_{+}
 \end{cases}\end{split}\]</div>
 <div class="math notranslate nohighlight">
 \[\begin{split}J_{reg}(\lambda) = \begin{cases}
-    \frac{1}{\sigma} &amp; \text{if} \quad lambda &lt; \mu - \tau = \tau_{-} \\
+    \frac{1}{\sigma} &amp; \text{if} \quad \lambda &lt; \mu - \tau = \tau_{-} \\
     0 &amp; \text{if} \quad |\lambda - \mu| \leq \tau \\
-    \frac{1}{\sigma} &amp; \text{if} \quad lambda &gt; \mu + \tau = \tau_{+}
+    \frac{1}{\sigma} &amp; \text{if} \quad \lambda &gt; \mu + \tau = \tau_{+}
 \end{cases}\end{split}\]</div>
+<p>Then the callable functions returned by this function can be used as the
+residual and jacobian of a regularization term in the Gauss-Newton optimization,
+where the regularization term will be added to the residuals of the transformations,
+and the jacobian of the regularization will be added to the jacobian of the
+transformations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

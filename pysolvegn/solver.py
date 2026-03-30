@@ -419,7 +419,7 @@ def solve_gauss_newton(
     if verbosity >= 2:
         detail = (
             f"\nIndividual costs: C_i = 0.5 * ρ(||R_i||^2) "
-            f"\nCost: C = sum(f_i * C_i) "
+            f"\nCost: C = sum(w_i * C_i) "
             f"\nStep norm: ||Δp||_2 and ||Δp||_∞ "
             f"\nOptimality: ||J^T R||_∞"
         )

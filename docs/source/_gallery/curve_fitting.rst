@@ -156,7 +156,7 @@ best fit the data.
 
 
     Individual costs: C_i = 0.5 * ρ(||R_i||^2) 
-    Cost: C = sum(f_i * C_i) 
+    Cost: C = sum(w_i * C_i) 
     Step norm: ||Δp||_2 and ||Δp||_∞ 
     Optimality: ||J^T R||_∞
 
@@ -177,7 +177,7 @@ best fit the data.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.057 seconds)
+   **Total running time of the script:** (0 minutes 0.088 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_curve_fitting.py:
