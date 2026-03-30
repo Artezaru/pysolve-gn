@@ -177,7 +177,7 @@ best fit the data.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.088 seconds)
+   **Total running time of the script:** (0 minutes 0.074 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_curve_fitting.py:

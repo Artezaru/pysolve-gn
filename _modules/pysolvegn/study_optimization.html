@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.study_optimization &#8212; pysolvegn 0.0.1 documentation</title>
+    <title>pysolvegn.study_optimization &#8212; pysolvegn 0.0.2 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.0.1 documentation</p>
+    <p class="title logo__title">pysolvegn 0.0.2 documentation</p>
   
 </a></div>
     
@@ -380,10 +380,39 @@
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Study the Jacobian matrix of the least squares problem to analyze the observability</span>
-<span class="sd">    of the parameters and the convergence properties of the optimization.</span>
+<span class="sd">    of the parameters and the convergence properties of the optimization</span>
+<span class="sd">    (called by verbosity level 3 of the Gauss-Newton solver).</span>
 
-<span class="sd">    This function computes the modified residuals and Jacobian using the robust cost</span>
-<span class="sd">    function and then calls the internal function to analyze the Jacobian.</span>
+<span class="sd">    The function accepts multiple terms in the least squares problem,</span>
+<span class="sd">    each with its own residual function, Jacobian function, weight, and loss function</span>
+<span class="sd">    studying the following optimization problem</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)</span>
+
+<span class="sd">    Then the function displays the following information about the Jacobian matrix of the least squares problem:</span>
+
+<span class="sd">    - Density, Cost contribution and loss function for each term in the least squares problem.</span>
+<span class="sd">    - Singular values of the combined Jacobian matrix :math:`\sum_i w_i \mathbf{J}_i^T \mathbf{J}_i`</span>
+<span class="sd">      and their contribution to the variance of the parameters.</span>
+<span class="sd">    - Condition number of the combined Jacobian matrix, which is an indicator</span>
+<span class="sd">      of the convergence properties of the optimization.</span>
+<span class="sd">    - Singular vectors of the combined Jacobian matrix, which can be used to analyze the</span>
+<span class="sd">      observability of the parameters and the sensitivity of the optimization to noise in the data.</span>
+<span class="sd">    - Parameter sensitivity analysis based on the covariance matrix of the parameters,</span>
+<span class="sd">      which is computed as :</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \Sigma = \sigma^2 \left( \sum_i w_i \mathbf{J}_i^T \mathbf{J}_i \right)^{-1}</span>
+
+<span class="sd">    where :math:`\sigma^2` is the estimated variance of the residuals, computed as</span>
+<span class="sd">    :math:`\sigma^2 = \frac{2C_0}{N_{eq}-N_p}` with :math:`C_0` the cost of the first</span>
+<span class="sd">    term (assuming data), :math:`N_{eq}` the number of equations and :math:`N_p` the</span>
+<span class="sd">    number of parameters.</span>
+
+
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -440,7 +469,11 @@
 
 <span class="sd">    Version</span>
 <span class="sd">    -------</span>
-<span class="sd">    0.0.1: Initial version.</span>
+<span class="sd">    - 0.0.1: Initial version.</span>
+<span class="sd">    - 0.0.2: :math:`\sigma^2` is now estimated as :math:`\sigma^2 = 2C_0/(N_{eq}-N_p)`</span>
+<span class="sd">      where :math:`C_0` is the cost of the first term (assuming data) instead of</span>
+<span class="sd">      the total cost, to provide a more accurate estimation of the residual variance</span>
+<span class="sd">      for the parameter sensitivity analysis.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">residual_func</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
@@ -544,7 +577,7 @@
     <span class="n">_n_equations</span> <span class="o">=</span> <span class="n">residual_arrays</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of equations in the first term (assuming data): </span><span class="si">{</span><span class="n">_n_equations</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of parameters: </span><span class="si">{</span><span class="n">_n_parameters</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total cost value C = ½Σ w*ρ(|R|²): </span><span class="si">{</span><span class="n">total_cost</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total cost value Ctot = ½Σ w*ρ(|R|²): </span><span class="si">{</span><span class="n">total_cost</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># ----------- Sub term contributions -----------</span>
     <span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;LS Term&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Nequations&#39;</span><span class="si">:</span><span class="s2">^12</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Nparams&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Density (%)&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Loss ρ&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Weight w&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Cost ½ρ(|R|²)&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Cost (%)&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -585,7 +618,7 @@
 
     <span class="c1"># ----------- Parameter sensitivity analysis -----------</span>
     <span class="n">sigma_2</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="mi">2</span> <span class="o">*</span> <span class="n">total_cost</span> <span class="o">/</span> <span class="p">(</span><span class="n">_n_equations</span> <span class="o">-</span> <span class="n">_n_parameters</span><span class="p">)</span>
+        <span class="mi">2</span> <span class="o">*</span> <span class="n">costs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">_n_equations</span> <span class="o">-</span> <span class="n">_n_parameters</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">_n_equations</span> <span class="o">&gt;</span> <span class="n">_n_parameters</span>
         <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
     <span class="p">)</span>
@@ -593,7 +626,7 @@
         <span class="n">sigma_2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="k">if</span> <span class="n">_n_equations</span> <span class="o">&gt;</span> <span class="n">_n_parameters</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
     <span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Vt = (right singular vectors) of the combined Jacobian matrix Σ wJᵀJ:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Estimated residual variance σ² = 2C/(Neq-Np): </span><span class="si">{</span><span class="n">sigma_2</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Estimated residual variance σ² = 2*C0/(Neq-Np): </span><span class="si">{</span><span class="n">sigma_2</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">_n_parameters</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">_n_parameters</span><span class="p">))</span>
     <span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;Param Index&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Value P&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Var V=σ²M⁻¹&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Ratio √V/|P|&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">&quot;</span>
