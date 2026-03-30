@@ -375,6 +375,11 @@ prior on the parameters, where the residuals and jacobian of the regularization 
 \[R_{reg}(\lambda) = \frac{\lambda - \mu}{\sigma}\]</div>
 <div class="math notranslate nohighlight">
 \[J_{reg}(\lambda) = \frac{1}{\sigma}\]</div>
+<p>Then the callable functions returned by this function can be used as the
+residual and jacobian of a regularization term in the Gauss-Newton optimization,
+where the regularization term will be added to the residuals of the transformations,
+and the jacobian of the regularization will be added to the jacobian of the
+transformations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
