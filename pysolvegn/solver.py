@@ -238,7 +238,7 @@ def solve_gauss_newton(
 
     Version
     -------
-    0.0.1: Initial version.
+    - 0.0.1: Initial version.
 
     """
     if not isinstance(residual_func, Sequence):

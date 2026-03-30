@@ -141,6 +141,19 @@ def perform_Lcurve_analysis(
 
         \kappa(\lambda) = 2 \frac{\hat{\rho}''\hat{\eta}' - \hat{\rho}'\hat{\eta}''}{(\hat{\rho}'^2 + \hat{\eta}'^2)^{3/2}}
 
+    The optimal regularization factor is then defined as the value of :math:`\lambda`
+    that maximizes the curvature :math:`\kappa(\lambda)`.
+
+    .. warning::
+
+        The L-curve method is a heuristic method for selecting the regularization parameter,
+        and it may not always provide the optimal solution.
+
+
+    Version
+    -------
+    - 0.0.1: Initial version.
+
     """
     R_functions = [residual_func, residual_reg_func]
     J_functions = [jacobian_func, jacobian_reg_func]

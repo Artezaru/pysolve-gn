@@ -36,40 +36,32 @@ the values of a function and its jacobian with respect to its parameters.
    solve_gauss_newton
 
 
-Rhobust Cost Functions
-------------------------
 The package includes several robust cost functions that can be used to reduce the 
 influence of outliers in the optimization process.
 
-.. autosummary::
-   :toctree: _autosummary
-
-   linear_rho_at_R2
-   soft_l1_rho_at_R2
-   cauchy_rho_at_R2
-   arctan_rho_at_R2
-
-
-Regularization Utilities
-------------------------
-The package includes utilities for regularization of the parameters, which can be used to
-impose constraints on the parameters or to incorporate prior knowledge about the parameters.
-
-.. autosummary::
-   :toctree: _autosummary
-
-   build_squared_regularization
-   build_soft_squared_regularization
++------------------------------+---------------------------------------------------------+
+| Robust Function :math:`\rho` | Equation                                                |
++==============================+=========================================================+
+| ``linear``                   | :math:`\rho(x) = x`                                     |
++------------------------------+---------------------------------------------------------+
+| ``soft_l1``                  | :math:`\rho(x) = 2 * ((1 + x) ** 0.5 - 1)`              |
++------------------------------+---------------------------------------------------------+
+| ``cauchy``                   | :math:`\rho(x) = \log(1 + x)`                           |
++------------------------------+---------------------------------------------------------+
+| ``arctan``                   | :math:`\rho(x) = \arctan(x)`                            |
++------------------------------+---------------------------------------------------------+
 
 
 Additional Utilities
 ------------------------
 The package also includes additional utility functions that can be used for various
-purposes, such as studying the jacobian or computing the jacobian of the residuals
-by finite differences.
+purposes, such as studying the jacobian, computing the jacobian of the residuals
+by finite differences or creating residuals and jacobians for regularization terms.
 
 .. autosummary::
    :toctree: _autosummary
 
-   build_jacobian
+   build_numerical_jacobian
+   build_squared_regularization
+   build_soft_squared_regularization
    study_jacobian

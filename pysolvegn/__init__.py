@@ -44,9 +44,9 @@ from .study_optimization import study_jacobian
 
 __all__.extend(["study_jacobian"])
 
-from .derivation import build_jacobian
+from .derivation import build_numerical_jacobian
 
-__all__.extend(["build_jacobian"])
+__all__.extend(["build_numerical_jacobian"])
 
 from .regularization import (
     build_squared_regularization,

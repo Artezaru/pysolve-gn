@@ -43,10 +43,39 @@ def study_jacobian(
 ) -> None:
     r"""
     Study the Jacobian matrix of the least squares problem to analyze the observability
-    of the parameters and the convergence properties of the optimization.
+    of the parameters and the convergence properties of the optimization
+    (called by verbosity level 3 of the Gauss-Newton solver).
 
-    This function computes the modified residuals and Jacobian using the robust cost
-    function and then calls the internal function to analyze the Jacobian.
+    The function accepts multiple terms in the least squares problem,
+    each with its own residual function, Jacobian function, weight, and loss function
+    studying the following optimization problem
+
+    .. math::
+
+        \min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)
+
+    Then the function displays the following information about the Jacobian matrix of the least squares problem:
+
+    - Density, Cost contribution and loss function for each term in the least squares problem.
+    - Singular values of the combined Jacobian matrix :math:`\sum_i w_i \mathbf{J}_i^T \mathbf{J}_i`
+      and their contribution to the variance of the parameters.
+    - Condition number of the combined Jacobian matrix, which is an indicator
+      of the convergence properties of the optimization.
+    - Singular vectors of the combined Jacobian matrix, which can be used to analyze the
+      observability of the parameters and the sensitivity of the optimization to noise in the data.
+    - Parameter sensitivity analysis based on the covariance matrix of the parameters,
+      which is computed as :
+
+    .. math::
+
+        \Sigma = \sigma^2 \left( \sum_i w_i \mathbf{J}_i^T \mathbf{J}_i \right)^{-1}
+
+    where :math:`\sigma^2` is the estimated variance of the residuals, computed as
+    :math:`\sigma^2 = \frac{2C_0}{N_{eq}-N_p}` with :math:`C_0` the cost of the first
+    term (assuming data), :math:`N_{eq}` the number of equations and :math:`N_p` the
+    number of parameters.
+
+
 
     Parameters
     ----------
@@ -103,7 +132,11 @@ def study_jacobian(
 
     Version
     -------
-    0.0.1: Initial version.
+    - 0.0.1: Initial version.
+    - 0.0.2: :math:`\sigma^2` is now estimated as :math:`\sigma^2 = 2C_0/(N_{eq}-N_p)`
+      where :math:`C_0` is the cost of the first term (assuming data) instead of
+      the total cost, to provide a more accurate estimation of the residual variance
+      for the parameter sensitivity analysis.
 
     """
     if not isinstance(residual_func, Sequence):
@@ -207,7 +240,7 @@ def study_jacobian(
     _n_equations = residual_arrays[0].size
     print(f"Number of equations in the first term (assuming data): {_n_equations}")
     print(f"Number of parameters: {_n_parameters}")
-    print(f"\nTotal cost value C = ½Σ w*ρ(|R|²): {total_cost:.3e}")
+    print(f"\nTotal cost value Ctot = ½Σ w*ρ(|R|²): {total_cost:.3e}")
 
     # ----------- Sub term contributions -----------
     header = f"\n{'LS Term':^10} {'Nequations':^12} {'Nparams':^10} {'Density (%)':^15} {'Loss ρ':^10} {'Weight w':^10} {'Cost ½ρ(|R|²)':^15} {'Cost (%)':^10}"
@@ -248,7 +281,7 @@ def study_jacobian(
 
     # ----------- Parameter sensitivity analysis -----------
     sigma_2 = (
-        2 * total_cost / (_n_equations - _n_parameters)
+        2 * costs[0] / (_n_equations - _n_parameters)
         if _n_equations > _n_parameters
         else float("inf")
     )
@@ -256,7 +289,7 @@ def study_jacobian(
         sigma_2 * numpy.linalg.inv(M) if _n_equations > _n_parameters else float("inf")
     )
     print(f"\nVt = (right singular vectors) of the combined Jacobian matrix Σ wJᵀJ:")
-    print(f"Estimated residual variance σ² = 2C/(Neq-Np): {sigma_2:.3e}")
+    print(f"Estimated residual variance σ² = 2*C0/(Neq-Np): {sigma_2:.3e}")
 
     indices = [0, -2, -1] if _n_parameters >= 3 else list(range(_n_parameters))
     header = f"\n{'Param Index':^15} {'Value P':^10} {'Var V=σ²M⁻¹':^15} {'Ratio √V/|P|':^15}"

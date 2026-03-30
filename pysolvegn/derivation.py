@@ -22,7 +22,7 @@ from numbers import Real
 import numpy
 
 
-def build_jacobian(
+def build_numerical_jacobian(
     residual_func: Callable,
     epsilon: Real = 1e-8,
 ) -> Callable:
@@ -50,7 +50,8 @@ def build_jacobian(
 
     Version
     -------
-    1.0.0: Initial version.
+    - 0.0.1: Initial version.
+    - 0.0.2: Renamed from build_jacobian to build_numerical_jacobian for clarity.
 
     """
     if not callable(residual_func):

@@ -83,7 +83,7 @@ def _build_tilde_R_and_tilde_J(
 
     Version
     -------
-    0.0.1: Initial version.
+    - 0.0.1: Initial version.
 
     """
     scale = rho_prime + 2 * rho_double_prime * residual_array**2
@@ -138,7 +138,7 @@ def linear_rho_at_R2(
 
     Version
     -------
-    0.0.1: Initial version.
+    - 0.0.1: Initial version.
 
     """
     x = numpy.asarray(residual_array, dtype=numpy.float64)
@@ -186,7 +186,7 @@ def soft_l1_rho_at_R2(
 
     Version
     -------
-    0.0.1: Initial version.
+    - 0.0.1: Initial version.
 
     """
     x = numpy.asarray(residual_array, dtype=numpy.float64)
@@ -234,7 +234,7 @@ def cauchy_rho_at_R2(
 
     Version
     -------
-    0.0.1: Initial version.
+    - 0.0.1: Initial version.
 
     """
     x = numpy.asarray(residual_array, dtype=numpy.float64)
@@ -282,7 +282,7 @@ def arctan_rho_at_R2(
 
     Version
     -------
-    0.0.1: Initial version.
+    - 0.0.1: Initial version.
 
     """
     x = numpy.asarray(residual_array, dtype=numpy.float64)

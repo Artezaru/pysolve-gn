@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pysolvegn.build_squared_regularization &#8212; pysolvegn 0.0.1 documentation</title>
+    <title>pysolvegn.build_squared_regularization &#8212; pysolvegn 0.0.2 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/documentation_options.js?v=e3a6060d"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -55,7 +55,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pysolvegn.build_soft_squared_regularization" href="pysolvegn.build_soft_squared_regularization.html" />
-    <link rel="prev" title="pysolvegn.arctan_rho_at_R2" href="pysolvegn.arctan_rho_at_R2.html" />
+    <link rel="prev" title="pysolvegn.build_numerical_jacobian" href="pysolvegn.build_numerical_jacobian.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -120,7 +120,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.0.1 documentation</p>
+    <p class="title logo__title">pysolvegn 0.0.2 documentation</p>
   
 </a></div>
     
@@ -291,18 +291,10 @@
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve_gauss_newton.html">pysolvegn.solve_gauss_newton</a></li>
 </ul>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.linear_rho_at_R2.html">pysolvegn.linear_rho_at_R2</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.soft_l1_rho_at_R2.html">pysolvegn.soft_l1_rho_at_R2</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.cauchy_rho_at_R2.html">pysolvegn.cauchy_rho_at_R2</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.arctan_rho_at_R2.html">pysolvegn.arctan_rho_at_R2</a></li>
-</ul>
 <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">pysolvegn.build_squared_regularization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_soft_squared_regularization.html">pysolvegn.build_soft_squared_regularization</a></li>
-</ul>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_jacobian.html">pysolvegn.build_jacobian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.study_jacobian.html">pysolvegn.study_jacobian</a></li>
 </ul>
 </div>
@@ -375,6 +367,11 @@ prior on the parameters, where the residuals and jacobian of the regularization 
 \[R_{reg}(\lambda) = \frac{\lambda - \mu}{\sigma}\]</div>
 <div class="math notranslate nohighlight">
 \[J_{reg}(\lambda) = \frac{1}{\sigma}\]</div>
+<p>Then the callable functions returned by this function can be used as the
+residual and jacobian of a regularization term in the Gauss-Newton optimization,
+where the regularization term will be added to the residuals of the transformations,
+and the jacobian of the regularization will be added to the jacobian of the
+transformations.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -397,7 +394,9 @@ array must be equal to the total number of parameters of all transformations.</p
 </dl>
 <section id="version">
 <h2>Version<a class="headerlink" href="#version" title="Link to this heading">#</a></h2>
-<p>0.0.1: Initial version.</p>
+<ul class="simple">
+<li><p>0.0.1: Initial version.</p></li>
+</ul>
 </section>
 </dd></dl>
 
@@ -414,12 +413,12 @@ array must be equal to the total number of parameters of all transformations.</p
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="pysolvegn.arctan_rho_at_R2.html"
+       href="pysolvegn.build_numerical_jacobian.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">pysolvegn.arctan_rho_at_R2</p>
+        <p class="prev-next-title">pysolvegn.build_numerical_jacobian</p>
       </div>
     </a>
     <a class="right-next"

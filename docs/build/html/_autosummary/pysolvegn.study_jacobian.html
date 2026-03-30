@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pysolvegn.study_jacobian &#8212; pysolvegn 0.0.1 documentation</title>
+    <title>pysolvegn.study_jacobian &#8212; pysolvegn 0.0.2 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../_static/documentation_options.js?v=e3a6060d"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -55,7 +55,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Mathematical Background" href="../math.html" />
-    <link rel="prev" title="pysolvegn.build_jacobian" href="pysolvegn.build_jacobian.html" />
+    <link rel="prev" title="pysolvegn.build_soft_squared_regularization" href="pysolvegn.build_soft_squared_regularization.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -120,7 +120,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.0.1 documentation</p>
+    <p class="title logo__title">pysolvegn 0.0.2 documentation</p>
   
 </a></div>
     
@@ -291,18 +291,10 @@
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve_gauss_newton.html">pysolvegn.solve_gauss_newton</a></li>
 </ul>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.linear_rho_at_R2.html">pysolvegn.linear_rho_at_R2</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.soft_l1_rho_at_R2.html">pysolvegn.soft_l1_rho_at_R2</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.cauchy_rho_at_R2.html">pysolvegn.cauchy_rho_at_R2</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.arctan_rho_at_R2.html">pysolvegn.arctan_rho_at_R2</a></li>
-</ul>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_squared_regularization.html">pysolvegn.build_squared_regularization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_soft_squared_regularization.html">pysolvegn.build_soft_squared_regularization</a></li>
-</ul>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_jacobian.html">pysolvegn.build_jacobian</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">pysolvegn.study_jacobian</a></li>
 </ul>
 </div>
@@ -370,9 +362,31 @@
 <dt class="sig sig-object py" id="pysolvegn.study_jacobian">
 <span class="sig-name descname"><span class="pre">study_jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">residual_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jacobian_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/study_optimization.html#study_jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.study_jacobian" title="Link to this definition">#</a></dt>
 <dd><p>Study the Jacobian matrix of the least squares problem to analyze the observability
-of the parameters and the convergence properties of the optimization.</p>
-<p>This function computes the modified residuals and Jacobian using the robust cost
-function and then calls the internal function to analyze the Jacobian.</p>
+of the parameters and the convergence properties of the optimization
+(called by verbosity level 3 of the Gauss-Newton solver).</p>
+<p>The function accepts multiple terms in the least squares problem,
+each with its own residual function, Jacobian function, weight, and loss function
+studying the following optimization problem</p>
+<div class="math notranslate nohighlight">
+\[\min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)\]</div>
+<p>Then the function displays the following information about the Jacobian matrix of the least squares problem:</p>
+<ul class="simple">
+<li><p>Density, Cost contribution and loss function for each term in the least squares problem.</p></li>
+<li><p>Singular values of the combined Jacobian matrix <span class="math notranslate nohighlight">\(\sum_i w_i \mathbf{J}_i^T \mathbf{J}_i\)</span>
+and their contribution to the variance of the parameters.</p></li>
+<li><p>Condition number of the combined Jacobian matrix, which is an indicator
+of the convergence properties of the optimization.</p></li>
+<li><p>Singular vectors of the combined Jacobian matrix, which can be used to analyze the
+observability of the parameters and the sensitivity of the optimization to noise in the data.</p></li>
+<li><p>Parameter sensitivity analysis based on the covariance matrix of the parameters,
+which is computed as :</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\Sigma = \sigma^2 \left( \sum_i w_i \mathbf{J}_i^T \mathbf{J}_i \right)^{-1}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\sigma^2\)</span> is the estimated variance of the residuals, computed as
+<span class="math notranslate nohighlight">\(\sigma^2 = \frac{2C_0}{N_{eq}-N_p}\)</span> with <span class="math notranslate nohighlight">\(C_0\)</span> the cost of the first
+term (assuming data), <span class="math notranslate nohighlight">\(N_{eq}\)</span> the number of equations and <span class="math notranslate nohighlight">\(N_p\)</span> the
+number of parameters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -419,7 +433,13 @@ Default is an empty string.</p></li>
 </dl>
 <section id="version">
 <h2>Version<a class="headerlink" href="#version" title="Link to this heading">#</a></h2>
-<p>0.0.1: Initial version.</p>
+<ul class="simple">
+<li><p>0.0.1: Initial version.</p></li>
+<li><p>0.0.2: <span class="math notranslate nohighlight">\(\sigma^2\)</span> is now estimated as <span class="math notranslate nohighlight">\(\sigma^2 = 2C_0/(N_{eq}-N_p)\)</span>
+where <span class="math notranslate nohighlight">\(C_0\)</span> is the cost of the first term (assuming data) instead of
+the total cost, to provide a more accurate estimation of the residual variance
+for the parameter sensitivity analysis.</p></li>
+</ul>
 </section>
 </dd></dl>
 
@@ -436,12 +456,12 @@ Default is an empty string.</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="pysolvegn.build_jacobian.html"
+       href="pysolvegn.build_soft_squared_regularization.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">pysolvegn.build_jacobian</p>
+        <p class="prev-next-title">pysolvegn.build_soft_squared_regularization</p>
       </div>
     </a>
     <a class="right-next"

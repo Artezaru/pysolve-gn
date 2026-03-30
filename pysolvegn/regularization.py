@@ -67,7 +67,7 @@ def build_squared_regularization(
 
     Version
     -------
-    0.0.1: Initial version.
+    - 0.0.1: Initial version.
 
     """
     means = numpy.asarray(means, dtype=numpy.float64)
@@ -173,7 +173,7 @@ def build_soft_squared_regularization(
            
     Version
     -------
-    0.0.1: Initial version.
+    - 0.0.1: Initial version.
 
     """
     means = numpy.asarray(means, dtype=numpy.float64)
