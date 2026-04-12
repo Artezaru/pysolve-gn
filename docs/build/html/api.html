@@ -295,6 +295,7 @@
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_squared_regularization.html">pysolvegn.build_squared_regularization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_soft_squared_regularization.html">pysolvegn.build_soft_squared_regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.perform_Lcurve_analysis.html">pysolvegn.perform_Lcurve_analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.study_jacobian.html">pysolvegn.study_jacobian</a></li>
 </ul>
 </div>
@@ -430,7 +431,10 @@ by finite differences or creating residuals and jacobians for regularization ter
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.build_soft_squared_regularization.html#pysolvegn.build_soft_squared_regularization" title="pysolvegn.build_soft_squared_regularization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_soft_squared_regularization</span></code></a>(means, ...)</p></td>
 <td><p>Build the residual and jacobian functions of a soft squared regularization of the parameters according to a Gaussian prior on the parameters with a soft threshold, where the regularization is null for parameters that are within a certain threshold of the mean value, and increases as the squared distance of the parameters to a bounds value relative to a standard deviation, which can be interpreted as a Gaussian prior on the parameters with a soft threshold.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.study_jacobian.html#pysolvegn.study_jacobian" title="pysolvegn.study_jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">study_jacobian</span></code></a>(residual_func, jacobian_func, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.perform_Lcurve_analysis.html#pysolvegn.perform_Lcurve_analysis" title="pysolvegn.perform_Lcurve_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">perform_Lcurve_analysis</span></code></a>(residual_func, ...)</p></td>
+<td><p>Optimize the regularization factor using the L-curve method with the Gauss-Newton optimization method.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.study_jacobian.html#pysolvegn.study_jacobian" title="pysolvegn.study_jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">study_jacobian</span></code></a>(residual_func, jacobian_func, ...)</p></td>
 <td><p>Study the Jacobian matrix of the least squares problem to analyze the observability of the parameters and the convergence properties of the optimization (called by verbosity level 3 of the Gauss-Newton solver).</p></td>
 </tr>
 </tbody>

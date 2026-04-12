@@ -64,4 +64,5 @@ by finite differences or creating residuals and jacobians for regularization ter
    build_numerical_jacobian
    build_squared_regularization
    build_soft_squared_regularization
+   perform_Lcurve_analysis
    study_jacobian

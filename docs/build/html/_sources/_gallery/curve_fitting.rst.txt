@@ -160,13 +160,13 @@ best fit the data.
     Step norm: ||Δp||_2 and ||Δp||_∞ 
     Optimality: ||J^T R||_∞
 
-    Iteration      Cost C        Cost C_0        ||Δp||_2        ||Δp||_∞       Optimality   
-        0         2.747e+02      2.747e+02                                       2.037e+03   
-        1         3.587e+01      3.587e+01       4.882e-01       4.637e-01       1.106e+03   
-        2         1.275e+01      1.275e+01       4.206e-02       4.204e-02       5.361e+01   
-        3         1.268e+01      1.268e+01       1.495e-02       1.413e-02       3.749e-01   
-        4         1.268e+01      1.268e+01       9.676e-04       9.513e-04       1.139e-02   
-        5         1.268e+01      1.268e+01       3.230e-05       3.177e-05       3.960e-04   
+    Iteration      Cost C        Cost C_0        ||Δp||_2        ||Δp||_∞       Optimality    Total Time (s) 
+        0         2.747e+02      2.747e+02                                       2.037e+03       1.793e-04   
+        1         3.587e+01      3.587e+01       4.882e-01       4.637e-01       1.106e+03       4.110e-04   
+        2         1.275e+01      1.275e+01       4.206e-02       4.204e-02       5.361e+01       5.436e-04   
+        3         1.268e+01      1.268e+01       1.495e-02       1.413e-02       3.749e-01       6.473e-04   
+        4         1.268e+01      1.268e+01       9.676e-04       9.513e-04       1.139e-02       7.415e-04   
+        5         1.268e+01      1.268e+01       3.230e-05       3.177e-05       3.960e-04       8.318e-04   
 
     [ftol] Convergence achieved (df < ftol * F) : 3.6238969158830514e-08 < 1.268019451067345e-05.
     Estimated parameters: [2.48024441 0.50550361]
@@ -177,7 +177,7 @@ best fit the data.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.074 seconds)
+   **Total running time of the script:** (0 minutes 0.069 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_curve_fitting.py:

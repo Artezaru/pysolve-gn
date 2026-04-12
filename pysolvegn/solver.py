@@ -238,7 +238,9 @@ def solve_gauss_newton(
 
     Version
     -------
+
     - 0.0.1: Initial version.
+    - 0.0.3: Added elapsed time to the optimization details.
 
     """
     if not isinstance(residual_func, Sequence):
@@ -381,7 +383,6 @@ def solve_gauss_newton(
 
     _n_terms = len(residual_func)
     _n_parameters = parameters.size
-    _starting_time = time.time()
     _parameters = parameters.copy()
     _iteration = 0
     _history = []
@@ -429,10 +430,12 @@ def solve_gauss_newton(
                 [f"{'Cost C_' + str(i):^15}" for i in range(len(residual_func))],
             )
             + f" {'||Δp||_2':^15} {'||Δp||_∞':^15} {'Optimality':^15}"
+            + f" {'Total Time (s)':^15}"
         )
         print(detail)
         print(header)
 
+    _starting_time = time.time()
     while True:  # ! (ensure end-flag activation for term "break" statement)
         # Compute residuals, Jacobians, costs
         residual_arrays = [R_func(_parameters) for R_func in residual_func]
@@ -484,6 +487,7 @@ def solve_gauss_newton(
                 f"{_iteration:^10} {total_cost:^15.3e}"
                 + " ".join([f"{c:^15.3e}" for c in costs])
                 + f" {strdp2} {strdpinf} {optimality:^15.3e}"
+                + f" {time.time() - _starting_time:^15.3e}"
             )
             print(row)
 

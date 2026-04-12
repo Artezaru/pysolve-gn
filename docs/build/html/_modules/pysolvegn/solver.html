@@ -575,7 +575,9 @@
 
 <span class="sd">    Version</span>
 <span class="sd">    -------</span>
+
 <span class="sd">    - 0.0.1: Initial version.</span>
+<span class="sd">    - 0.0.3: Added elapsed time to the optimization details.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">residual_func</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
@@ -718,7 +720,6 @@
 
     <span class="n">_n_terms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">residual_func</span><span class="p">)</span>
     <span class="n">_n_parameters</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">size</span>
-    <span class="n">_starting_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="n">_parameters</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">_iteration</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">_history</span> <span class="o">=</span> <span class="p">[]</span>
@@ -766,10 +767,12 @@
                 <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="s1">&#39;Cost C_&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">residual_func</span><span class="p">))],</span>
             <span class="p">)</span>
             <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="s1">&#39;||Δp||_2&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;||Δp||_∞&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Optimality&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="s1">&#39;Total Time (s)&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">detail</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
 
+    <span class="n">_starting_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>  <span class="c1"># ! (ensure end-flag activation for term &quot;break&quot; statement)</span>
         <span class="c1"># Compute residuals, Jacobians, costs</span>
         <span class="n">residual_arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">R_func</span><span class="p">(</span><span class="n">_parameters</span><span class="p">)</span> <span class="k">for</span> <span class="n">R_func</span> <span class="ow">in</span> <span class="n">residual_func</span><span class="p">]</span>
@@ -821,6 +824,7 @@
                 <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">_iteration</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">total_cost</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="o">+</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">c</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">costs</span><span class="p">])</span>
                 <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">strdp2</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">strdpinf</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">optimality</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="o">+</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">_starting_time</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">&quot;</span>
             <span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
