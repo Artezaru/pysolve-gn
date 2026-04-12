@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.069** total execution time for 1 file **from _gallery**:
+**00:00.063** total execution time for 1 file **from _gallery**:
 
 .. container::
 
@@ -33,5 +33,5 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr__gallery_curve_fitting.py` (``curve_fitting.py``)
-     - 00:00.069
+     - 00:00.063
      - 0.0
