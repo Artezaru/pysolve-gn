@@ -4,6 +4,10 @@
 
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
@@ -28,6 +32,23 @@
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to perform L-curve analysis to estimate the optimal regularization weight for an optimization problem. We will use the Gauss-Newton method to solve a regularized optimization problem for a range of regularization weights, and then we will analyze the results to find the optimal weight.">
+
+.. only:: html
+
+  .. image:: /_gallery/images/thumb/sphx_glr_L_curve_analysis_thumb.png
+    :alt:
+
+  :doc:`/_gallery/L_curve_analysis`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">L-curve analysis</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -39,6 +60,7 @@
    :hidden:
 
    /_gallery/curve_fitting
+   /_gallery/L_curve_analysis
 
 
 .. only:: html

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pysolvegn.solve_gauss_newton &#8212; pysolvegn 0.0.3 documentation</title>
+    <title>pysolvegn.solve &#8212; pysolvegn 0.2.0 documentation</title>
   
   
   
@@ -27,35 +27,36 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=7f76b32a3354e82990f2"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../_static/documentation_options.js?v=47de8214"></script>
+    <script src="../_static/documentation_options.js?v=938c9ccc"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/pysolvegn.solve_gauss_newton';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/pysolvegn.solve';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pysolvegn.build_numerical_jacobian" href="pysolvegn.build_numerical_jacobian.html" />
+    <link rel="next" title="pysolvegn.Term" href="pysolvegn.Term.html" />
     <link rel="prev" title="API Reference" href="../api.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -77,7 +78,9 @@
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -125,7 +128,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.0.3 documentation</p>
+    <p class="title logo__title">pysolvegn 0.2.0 documentation</p>
   
 </a></div>
     
@@ -187,11 +190,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
     </div>
     
@@ -278,11 +288,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
       </div>
     
@@ -301,7 +318,9 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">pysolvegn.solve_gauss_newton</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">pysolvegn.solve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.Term.html">pysolvegn.Term</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.GaussNewtonSolver.html">pysolvegn.GaussNewtonSolver</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
@@ -352,7 +371,7 @@
     
     <li class="breadcrumb-item"><a href="../api.html" class="nav-link">API Reference</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pysolvegn.solve_gauss_newton</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pysolvegn.solve</span></li>
   </ul>
 </nav>
 </div>
@@ -369,71 +388,44 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="pysolvegn-solve-gauss-newton">
-<h1>pysolvegn.solve_gauss_newton<a class="headerlink" href="#pysolvegn-solve-gauss-newton" title="Link to this heading">#</a></h1>
+  <section id="pysolvegn-solve">
+<h1>pysolvegn.solve<a class="headerlink" href="#pysolvegn-solve" title="Link to this heading">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="pysolvegn.solve_gauss_newton">
-<span class="sig-name descname"><span class="pre">solve_gauss_newton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">residual_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jacobian_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ftol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ptol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/solver.html#solve_gauss_newton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.solve_gauss_newton" title="Link to this definition">#</a></dt>
-<dd><p>Solve the least squares problem using the Gauss-Newton method with robust cost functions.</p>
+<dt class="sig sig-object py" id="pysolvegn.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">terms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ftol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ptol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history_details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/solver.html#solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.solve" title="Link to this definition">#</a></dt>
+<dd><p>Function to solve the least squares problem using the Gauss-Newton method
+with robust cost functions.</p>
 <p>The function accepts multiple terms in the least squares problem,
 each with its own residual function, Jacobian function, weight, and loss function
-solving the following optimization problem</p>
+solving the following optimization problem :</p>
 <div class="math notranslate nohighlight">
-\[\min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)\]</div>
+\[\min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{r}_{i,j}(\mathbf{p}) \|^2\right)\]</div>
 <p>where <span class="math notranslate nohighlight">\(w_i\)</span> is a weight for each sub least squares problem,
 and <span class="math notranslate nohighlight">\(\rho_i\)</span> is a robust cost function for each sub least squares problem.</p>
-<p>For more details on the optimization problem and the algorithm,
-please refer to the documentation.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>By nomenclature, we assume that the first sub least squares problem (i.e. <span class="math notranslate nohighlight">\(i=0\)</span>)
-is the main least squares problem containing the data residuals, and the other sub
-least squares problems (i.e. <span class="math notranslate nohighlight">\(i \geq 1\)</span>) are regularization terms.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For more details on notations for the optimization problem and the algorithm,
+please refer to the mathematical section of the documentation.</p>
 </div>
+<p>The cost of each term defined by the residuals is estimated as :</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{2} \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)\]</div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>At least one of the stopping criteria (i.e. <code class="docutils literal notranslate"><span class="pre">max_iterations</span></code>, <code class="docutils literal notranslate"><span class="pre">max_time</span></code>,
-<code class="docutils literal notranslate"><span class="pre">ftol</span></code>, <code class="docutils literal notranslate"><span class="pre">xtol</span></code>, <code class="docutils literal notranslate"><span class="pre">gtol</span></code>, <code class="docutils literal notranslate"><span class="pre">atol</span></code>, <code class="docutils literal notranslate"><span class="pre">ptol</span></code>)
-must be provided to ensure the optimization process will stop.</p>
+<p>For terms defined directly by a Hessian and gradient, only a local quadratic model
+of the cost is available. Since this model is defined up to an arbitrary constant,
+an absolute cost value cannot be uniquely determined. For reporting consistency,
+the cost contribution of these terms is set to 0.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>residual_func</strong> (<em>Union</em><em>[</em><em>Callable</em><em>, </em><em>Sequence</em><em>[</em><em>Callable</em><em>]</em><em>]</em>) – The function(s) to compute the residuals for each term in the least squares problem.
-Can be a single function or a sequence of functions.
-Each callable represent the <cite>i</cite>-th term <span class="math notranslate nohighlight">\(\mathbf{R}_i(\mathbf{p})\)</span>
-in the least squares problem and should take as inputs the parameters
-(array-like with shape (n_parameters,)) and return the residuals as a
-1D numpy array with shape (n_residuals_i,) representing each
-<span class="math notranslate nohighlight">\(\mathbf{R}_{i,j}(\mathbf{p})\)</span> where <span class="math notranslate nohighlight">\(j=0,...,n_{\text{residuals}_i-1}\)</span>.</p></li>
-<li><p><strong>jacobian_func</strong> (<em>Union</em><em>[</em><em>Callable</em><em>, </em><em>Sequence</em><em>[</em><em>Callable</em><em>]</em><em>]</em>) – The function(s) to compute the Jacobian matrices for each term in the
-least squares problem. Can be a single function or a sequence of functions.
-Each callable represent the <cite>i</cite>-th term <span class="math notranslate nohighlight">\(\mathbf{J}_i(\mathbf{p})\)</span>
-in the least squares problem such as
-<span class="math notranslate nohighlight">\(\mathbf{J}_i(\mathbf{p}) = \frac{\partial \mathbf{R}_i(\mathbf{p})}{\partial \mathbf{p}}\)</span>
-and should take as inputs the parameters (array-like with shape (n_parameters,))
-and return the Jacobian matrix as a 2D numpy array with shape
-(n_residuals_i, n_parameters) representing the Jacobian of each residual
-<span class="math notranslate nohighlight">\(\mathbf{R}_{i,j}(\mathbf{p})\)</span> where <span class="math notranslate nohighlight">\(j=0,...,n_{\text{residuals}_i-1}\)</span>.</p></li>
-<li><p><strong>parameters</strong> (<em>ArrayLike</em>) – The starting parameters of the optimization with shape (n_parameters,).
+<li><p><strong>x0</strong> (<em>ArrayLike</em>) – The initial guess for the parameters of the optimization with shape (n_parameters,).
 The array will not be modified by this function, a copy of the parameters will
 be used for the optimization process.</p></li>
-<li><p><strong>weight</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>Real</em><em>, </em><em>Sequence</em><em>[</em><em>Real</em><em>]</em><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – The weight(s) for each term in the least squares problem.
-Can be a single value or a sequence of values.
-Each weight <span class="math notranslate nohighlight">\(w_i\)</span> is a weight for the corresponding term in
-the least squares problem and should be a non-negative real number.
-If a single value is provided, it will be used for all terms in the
-least squares problem. If None is provided, it will be set to 1.0.</p></li>
-<li><p><strong>loss</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – The loss function(s) for each term in the least squares problem.
-Can be a single string or a sequence of strings.
-Each loss function <span class="math notranslate nohighlight">\(\rho_i\)</span> is a robust cost function for the corresponding
-term in the least squares problem and should be one of the following strings:
-[“linear”, “soft_l1”, “cauchy”, “arctan”].
-If a single string is provided, it will be used for all terms in the least
-squares problem. If None is provided, it will be set to “linear”.</p></li>
-<li><p><strong>max_iterations</strong> (<em>Optional</em><em>[</em><em>Integral</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the number of iterations.
+<li><p><strong>max_iteration</strong> (<em>Optional</em><em>[</em><em>Integral</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the number of iterations.
 The optimization process is stopped when the number of iterations
-exceeds <code class="docutils literal notranslate"><span class="pre">max_iterations</span></code>. If None, no limit on the
+exceeds <code class="docutils literal notranslate"><span class="pre">max_iteration</span></code>. If None, no limit on the
 number of iterations is considered.</p></li>
 <li><p><strong>max_time</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the elapsed time of optimization.
 The optimization process is stopped when the time elapsed since the
@@ -449,17 +441,17 @@ where p is the parameters and dp is the change of the parameters
 between two iterations. If None, this criterion is not considered.</p></li>
 <li><p><strong>gtol</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the optimality value.
 The optimization process is stopped when the optimality verifies
-<code class="docutils literal notranslate"><span class="pre">norm(b,</span> <span class="pre">ord=numpy.inf)</span> <span class="pre">&lt;</span> <span class="pre">gtol</span></code> where b is the scaled second term.
+<code class="docutils literal notranslate"><span class="pre">norm(g,</span> <span class="pre">ord=numpy.inf)</span> <span class="pre">&lt;</span> <span class="pre">gtol</span></code> where g is the scaled second term.
 If None, this criterion is not considered.</p></li>
 <li><p><strong>atol</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the absolute cost function value.
 The optimization process is stopped when <code class="docutils literal notranslate"><span class="pre">F</span> <span class="pre">&lt;</span> <span class="pre">atol</span></code> where F is the cost
 function value.
 If None, this criterion is not considered.</p></li>
-<li><p><strong>ptol</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the parameters value.
-The optimization process is stopped when <code class="docutils literal notranslate"><span class="pre">||p||</span> <span class="pre">&lt;</span> <span class="pre">ptol</span></code> where p is the
-parameters.
+<li><p><strong>ptol</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the change of the parameters value.
+The optimization process is stopped when <code class="docutils literal notranslate"><span class="pre">norm(dp,</span> <span class="pre">ord=numpy.inf)</span> <span class="pre">&lt;</span> <span class="pre">ptol</span></code>
+where dp is the change of the parameters.
 If None, this criterion is not considered.</p></li>
-<li><p><strong>callback</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – A callback function that is called at the end of each iteration of the
+<li><p><strong>callback_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>]</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – A callback function that is called at the end of each iteration of the
 optimization process. The callback function should take a dictionary
 similar to the one returned in the history of the optimization process
 as input. If the return value of the callback function is True (or None),
@@ -472,36 +464,49 @@ should take the current parameters and update <code class="docutils literal notr
 the parameters with shape (n_parameters,) to use for the next iteration.
 If None, the parameters for the next iteration will be computed as <code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">+</span> <span class="pre">dp</span></code>
 where p is the current parameters and dp is the update computed by solving the linear system.</p></li>
-<li><p><strong>verbosity</strong> (<em>Integral</em><em>, </em><em>optional</em>) – The level of verbosity for logging the optimization process.
-0: No logging (default)
+<li><p><strong>verbosity</strong> (<em>Integral</em><em>, </em><em>optional</em><em> (</em><em>default=0</em><em>)</em>) – The level of verbosity for logging the optimization process.
+0: No logging
 1: Log only the final results of the optimization process.
 2: Log the results at each iteration of the optimization process.
-3: Log detailed information about the optimization process.</p></li>
-<li><p><strong>history</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a>) – If True, the function will also return a tuple containing the history of
+3: Details logging for debugging purposes.</p></li>
+<li><p><strong>history</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em> (</em><em>optional</em><em>, </em><em>default=False</em><em>)</em>) – If True, the function will also return a tuple containing the history of
 the optimization process.</p></li>
+<li><p><strong>history_details</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – The details to include in the history of the optimization process.
+Can be a single string or a sequence of strings. See the Notes section for the
+available details. By default, the history will include : “iteration”,
+“elapsed_time”, “parameters”, “delta_params”, “delta_cost”, “cost”, and “optimality” details.
+For a specified list of details, only the details in the list below
+will be included in the history.</p></li>
+<li><p><strong>terms</strong> (<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Sequence" title="(in Python v3.14)"><em>Sequence</em></a><em>[</em><a class="reference internal" href="pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.term.Term"><em>Term</em></a><em>]</em>)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><ul class="simple">
 <li><p><strong>parameters</strong> (<em>numpy.ndarray</em>) – The parameters that minimize the least squares problem with shape (n_parameters,).</p></li>
-<li><p><strong>history</strong> (<em>Tuple[Dict], optional</em>) – Only returned if <code class="docutils literal notranslate"><span class="pre">history</span></code> is True. A tuple containing the history of the
-optimization process. Each element of the tuple is a dictionary
+<li><p><strong>history</strong> (<em>List[Dict], optional</em>) – Only returned if <code class="docutils literal notranslate"><span class="pre">history</span></code> is True. A list containing the history of the
+optimization process. Each element of the list is a dictionary
 containing the keys described below.</p></li>
 </ul>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><em>Tuple</em></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><em>Tuple</em></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><em>Dict</em></a>]]</p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><em>Tuple</em></a>[<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><em>ndarray</em></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><em>List</em></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><em>Dict</em></a>] | None]</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The history contains the following keys:</p>
+<p>The history contains the following keys (if requested in <code class="docutils literal notranslate"><span class="pre">history_details</span></code>):</p>
 <ul class="simple">
 <li><p>“iteration”: Integer representing the iteration number.</p></li>
+<li><p>“elapsed_time”: Float representing the time elapsed since the beginning of the optimization process in seconds.</p></li>
+<li><p>“parameters”: Numpy array representing the parameters at the current iteration.</p></li>
+<li><p>“delta_params”: Numpy array representing the change of parameters between the current and previous iteration (Only for iterations &gt; 0).</p></li>
 <li><p>“costs”: List of floats representing the cost function value for each term in the least squares problem at the current iteration compute as <span class="math notranslate nohighlight">\(\frac{1}{2} \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)\)</span> for each term <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
 <li><p>“cost”: Float representing the cost function value at the current iteration computed as <span class="math notranslate nohighlight">\(\frac{1}{2} \sum_i w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)\)</span>.</p></li>
-<li><p>“parameters”: Numpy array representing the parameters at the current iteration.</p></li>
-<li><p>“residuals”: The residual of the data term (i.e. the first term in the least squares problem) at the current iteration.</p></li>
+<li><p>“delta_cost”: Float representing the change of the cost function value between the current and previous iteration (Only for iterations &gt; 0).</p></li>
+<li><p>“optimality”: Float representing the optimality value at the current iteration computed as <code class="docutils literal notranslate"><span class="pre">norm(b,</span> <span class="pre">ord=numpy.inf)</span></code> where b is the scaled second term.</p></li>
+<li><p>“residuals”: A list of numpy arrays representing the residuals for each term in the least squares problem at the current iteration (Only for rJ terms).</p></li>
+<li><p>“second_term”: The scaled second term <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> of the linear system at the current iteration.</p></li>
+<li><p>“hessian”: The Hessian approximation <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> of the linear system at the current iteration.</p></li>
 </ul>
 <p>The optimization process is performed by iteratively solving a linearized
 version of the least squares problem at each iteration for different values
@@ -509,18 +514,17 @@ of the regularization factor, and then selecting the optimal regularization
 factor based on the L-curve analysis.
 The step of each loop iteration is as follows:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>While NOT converged:
-    1. Build the system M Δp = -b from &#39;residual_func&#39;, &#39;jacobian_func&#39;, &#39;loss&#39; and &#39;weight&#39;.
+    1. Build the system ``H Δp = -g``.
     2. Call the &#39;callback&#39; function and STOP if it returns False.
     3. Check the stopping criteria and STOP if any of them is satisfied.
-    4. If CONTINUE solve the linear system M Δp = -b for Δp.
-    5. Update the parameters as p = p + Δp (or using &#39;update_func&#39; if provided).
+    4. If CONTINUE solve the linear system ``H Δp = -g`` for Δp.
+    5. Update the parameters as ``p = p + Δp`` (or using &#39;update_func&#39; if provided).
 </pre></div>
 </div>
 <section id="version">
 <h2>Version<a class="headerlink" href="#version" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>0.0.1: Initial version.</p></li>
-<li><p>0.0.3: Added elapsed time to the optimization details.</p></li>
+<li><p>0.1.0: Initial version for the solver method.</p></li>
 </ul>
 </section>
 </dd></dl>
@@ -547,11 +551,11 @@ The step of each loop iteration is as follows:</p>
       </div>
     </a>
     <a class="right-next"
-       href="pysolvegn.build_numerical_jacobian.html"
+       href="pysolvegn.Term.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pysolvegn.build_numerical_jacobian</p>
+        <p class="prev-next-title">pysolvegn.Term</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -574,14 +578,14 @@ The step of each loop iteration is as follows:</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.solve_gauss_newton"><code class="docutils literal notranslate"><span class="pre">solve_gauss_newton()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.solve"><code class="docutils literal notranslate"><span class="pre">solve()</span></code></a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/_autosummary/pysolvegn.solve_gauss_newton.rst.txt">
+    <a href="../_sources/_autosummary/pysolvegn.solve.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
@@ -600,8 +604,8 @@ The step of each loop iteration is as follows:</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -635,7 +639,7 @@ The step of each loop iteration is as follows:</p>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.17.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.18.0.
 </p></div>
       
     </div>

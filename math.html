@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Mathematical Background &#8212; pysolvegn 0.0.3 documentation</title>
+    <title>Mathematical Background &#8212; pysolvegn 0.2.0 documentation</title>
   
   
   
@@ -27,28 +27,29 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=7f76b32a3354e82990f2"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="_static/documentation_options.js?v=47de8214"></script>
+    <script src="_static/documentation_options.js?v=938c9ccc"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'math';</script>
@@ -77,7 +78,9 @@
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -125,7 +128,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.0.3 documentation</p>
+    <p class="title logo__title">pysolvegn 0.2.0 documentation</p>
   
 </a></div>
     
@@ -187,11 +190,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
     </div>
     
@@ -278,11 +288,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
       </div>
     
@@ -369,39 +386,39 @@
 <h2><a class="toc-backref" href="#id1" role="doc-backlink">Robust Least Squares Optimization by the Gauss-Newton Method</a><a class="headerlink" href="#robust-least-squares-optimization-by-the-gauss-newton-method" title="Link to this heading">#</a></h2>
 <p>Consider a least squares problem of the form:</p>
 <div class="math notranslate nohighlight">
-\[\min_{\mathbf{p}} \frac{1}{2} \sum_j \rho\left(\| \mathbf{R}_j(\mathbf{p}) \|^2\right)\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{R}_j(\mathbf{p})\)</span> is a residual function (<span class="math notranslate nohighlight">\(\mathbb{R}^{n} \rightarrow \mathbb{R}\)</span>)
+\[\min_{\mathbf{p}} \frac{1}{2} \sum_j \rho\left(\| \mathbf{r}_j(\mathbf{p}) \|^2\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{r}_j(\mathbf{p})\)</span> is a residual function (<span class="math notranslate nohighlight">\(\mathbb{R}^{n} \rightarrow \mathbb{R}\)</span>)
 depending on the parameters <span class="math notranslate nohighlight">\(\mathbf{p} \in \mathbb{R}^{n}\)</span>, and <span class="math notranslate nohighlight">\(\rho\)</span> is a robust
 cost function (<span class="math notranslate nohighlight">\(\mathbb{R} \rightarrow \mathbb{R}\)</span>) that reduces the influence of outliers.</p>
 <p>At each iteration of the Gauss-Newton method, we search for an update <span class="math notranslate nohighlight">\(\Delta p\)</span>
 to the current parameters <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span> that minimizes the robust cost function.
 Developing the residuals around the current parameters <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{R}_j(\mathbf{p} + \Delta p) \approx \mathbf{R}_j + \mathbf{J}_j \Delta p + 0.5 \Delta p^T \mathbf{H}_j \Delta p + \ldots\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{J}_j(\mathbf{p_k}) = \nabla \mathbf{R}_j(\mathbf{p_k})\)</span> is the Jacobian
+\[\mathbf{r}_j(\mathbf{p} + \Delta p) \approx \mathbf{r}_j + \mathbf{J}_j \Delta p + 0.5 \Delta p^T \mathbf{H}_j \Delta p + \ldots\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{J}_j(\mathbf{p_k}) = \nabla \mathbf{r}_j(\mathbf{p_k})\)</span> is the Jacobian
 of the residuals with respect to the parameters, and <span class="math notranslate nohighlight">\(\mathbf{H}_j(\mathbf{p_k})\)</span>
 is the Hessian of the residuals.</p>
-<p>Let <span class="math notranslate nohighlight">\(Z_j = \| \mathbf{R}_j(\mathbf{p_k}) \|^2\)</span> be the squared
+<p>Let <span class="math notranslate nohighlight">\(Z_j = \| \mathbf{r}_j(\mathbf{p_k}) \|^2\)</span> be the squared
 norm of the residuals at the current parameters.
 The robust cost function can be developed around <span class="math notranslate nohighlight">\(Z_j\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\rho(Z_j + \delta Z_j) \approx \rho(Z_j) + \rho'(Z_j)\delta Z_j + 0.5 \rho''(Z_j) \delta Z_j^2 + \ldots\]</div>
 <p>where <span class="math notranslate nohighlight">\(\delta Z_j\)</span> is the change in the squared norm due to the parameter update:</p>
 <div class="math notranslate nohighlight">
-\[\delta Z_j = \| \mathbf{R}_j(\mathbf{p_k} + \Delta p) \|^2 - \| \mathbf{R}_j(\mathbf{p_k}) \|^2\]</div>
+\[\delta Z_j = \| \mathbf{r}_j(\mathbf{p_k} + \Delta p) \|^2 - \| \mathbf{r}_j(\mathbf{p_k}) \|^2\]</div>
 <p>By only keeping up to the second order terms, we can approximate <span class="math notranslate nohighlight">\(\delta Z_j\)</span> as:</p>
 <div class="math notranslate nohighlight">
-\[\delta Z_j \approx \Delta p^T \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{R}_j^T \mathbf{H}_j \right) \Delta p + 2 \mathbf{R}_j^T \mathbf{J}_j \Delta p + ...\]</div>
+\[\delta Z_j \approx \Delta p^T \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{r}_j^T \mathbf{H}_j \right) \Delta p + 2 \mathbf{r}_j^T \mathbf{J}_j \Delta p + ...\]</div>
 <p>In a similar way, the squared term <span class="math notranslate nohighlight">\(\delta Z_j^2\)</span> can be approximated as:</p>
 <div class="math notranslate nohighlight">
-\[\delta Z_j^2 \approx 4 \left( \mathbf{R}_j^T \mathbf{J}_j \Delta p \right)^2 + ...\]</div>
+\[\delta Z_j^2 \approx 4 \left( \mathbf{r}_j^T \mathbf{J}_j \Delta p \right)^2 + ...\]</div>
 <p>Thus, by injecting all the approximations into the robust cost function,
 we optain :</p>
 <div class="math notranslate nohighlight">
 \[\rho(Z_j + \delta Z_j) \approx
 \rho(Z_j) +
-\rho'(Z_j) \Big[ \Delta p^T \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{R}_j^T \mathbf{H}_j \right) \Delta p + 2 \mathbf{R}_j^T \mathbf{J}_j \Delta p \Big] +
-2 \rho''(Z_j) \left( \mathbf{R}_j^T \mathbf{J}_j \Delta p \right)^2 + ...\]</div>
+\rho'(Z_j) \Big[ \Delta p^T \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{r}_j^T \mathbf{H}_j \right) \Delta p + 2 \mathbf{r}_j^T \mathbf{J}_j \Delta p \Big] +
+2 \rho''(Z_j) \left( \mathbf{r}_j^T \mathbf{J}_j \Delta p \right)^2 + ...\]</div>
 <p>With Gauss-Newton, we shearch for the update <span class="math notranslate nohighlight">\(\Delta p\)</span> that minimizes
 the robust cost function, which is equivalent to solving the zero of the gradient
 of the robust cost function with respect to the parameters.</p>
@@ -409,43 +426,43 @@ of the robust cost function with respect to the parameters.</p>
 \[\nabla_{\Delta p} \rho(Z_j + \delta Z_j) = 0\]</div>
 <p>The Gauss-Newton update can be obtained by solving the following linear system:</p>
 <div class="math notranslate nohighlight">
-\[H \, \Delta p = - g\]</div>
-<p>Where <span class="math notranslate nohighlight">\(g\)</span> is the gradient of the robust cost function with respect to the
-parameters, and <span class="math notranslate nohighlight">\(H\)</span> is the Hessian approximation of the robust cost function
+\[\mathbf{H} \, \Delta p = - \mathbf{g}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> is the gradient of the robust cost function with respect to the
+parameters, and <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> is the Hessian approximation of the robust cost function
 with respect to the parameters.</p>
 <p>By summing over all residuals, the gradient and Hessian approximation are:</p>
 <div class="math notranslate nohighlight">
-\[g \approx \sum_j 2 \rho'(Z_j) \mathbf{J}_j^T \mathbf{R}_j\]</div>
+\[\mathbf{g}  \approx \sum_j 2 \rho'(Z_j) \mathbf{J}_j^T \mathbf{r}_j\]</div>
 <div class="math notranslate nohighlight">
-\[H \approx \sum_j \Big[2 \rho'(Z_j) \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{R}_j^T \mathbf{H}_j \right) + 4 \rho''(Z_j) \mathbf{J}_j^T \mathbf{R}_j \mathbf{R}_j^T \mathbf{J}_j \Big]\]</div>
+\[\mathbf{H} \approx \sum_j \Big[2 \rho'(Z_j) \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{r}_j^T \mathbf{H}_j \right) + 4 \rho''(Z_j) \mathbf{J}_j^T \mathbf{r}_j \mathbf{r}_j^T \mathbf{J}_j \Big]\]</div>
 <p>Finally, the Gauss-Newton suggested to ignore the second order term of the residuals,
 as at convergence, the residuals should be small, and thus the second order term
-<span class="math notranslate nohighlight">\(\mathbf{R}_j^T \mathbf{H}_j\)</span> should be negligible compared to the first order
+<span class="math notranslate nohighlight">\(\mathbf{r}_j^T \mathbf{H}_j\)</span> should be negligible compared to the first order
 term <span class="math notranslate nohighlight">\(\mathbf{J}_j^T \mathbf{J}_j\)</span>.</p>
 <div class="math notranslate nohighlight">
-\[H \approx \sum_j \Big[2 \rho'(Z_j) \mathbf{J}_j^T \mathbf{J}_j + 4 \rho''(Z_j) \mathbf{J}_j^T \mathbf{R}_j \mathbf{R}_j^T \mathbf{J}_j \Big]\]</div>
+\[\mathbf{H} \approx \sum_j \Big[2 \rho'(Z_j) \mathbf{J}_j^T \mathbf{J}_j + 4 \rho''(Z_j) \mathbf{J}_j^T \mathbf{r}_j \mathbf{r}_j^T \mathbf{J}_j \Big]\]</div>
 <div class="math notranslate nohighlight">
-\[H \approx \sum_j 2 \mathbf{J}_j^T \Big[ \rho'(Z_j) + 2 \rho''(Z_j) Z_j \Big] \mathbf{J}_j\]</div>
+\[\mathbf{H} \approx \sum_j 2 \mathbf{J}_j^T \Big[ \rho'(Z_j) + 2 \rho''(Z_j) Z_j \Big] \mathbf{J}_j\]</div>
 <p>Finally, we can build a diagonal matrix <span class="math notranslate nohighlight">\(W_J\)</span> and a vector <span class="math notranslate nohighlight">\(W_R\)</span> that depend on the
 robust cost function and the squared norm of the residuals to solve the complete linear system
 as:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{J}^T \sqrt{W_J}^T \sqrt{W_J} \mathbf{J} \Delta p = - W_R \mathbf{J}^T \mathbf{R}\]</div>
+\[\mathbf{J}^T \sqrt{W_J}^T \sqrt{W_J} \mathbf{J} \Delta p = - W_R \mathbf{J}^T \mathbf{r}\]</div>
 <div class="math notranslate nohighlight">
-\[W_J = \text{diag}\left(\rho'(|\mathbf{R}_j|^2) + 2 \rho''(|\mathbf{R}_j|^2) |\mathbf{R}_j|^2\right)\]</div>
+\[W_J = \text{diag}\left(\rho'(|\mathbf{r}_j|^2) + 2 \rho''(|\mathbf{r}_j|^2) |\mathbf{r}_j|^2\right)\]</div>
 <div class="math notranslate nohighlight">
-\[W_R = \text{diag}\left(\rho'(|\mathbf{R}_j|^2)\right)\]</div>
+\[W_R = \text{diag}\left(\rho'(|\mathbf{r}_j|^2)\right)\]</div>
 <p>Wo observe that the system is similar to solve:</p>
 <div class="math notranslate nohighlight">
-\[\tilde{\mathbf{J}}^T \tilde{\mathbf{J}} \Delta p = - \tilde{\mathbf{J}}^T \tilde{\mathbf{R}}\]</div>
-<p>With a modified Jacobian <span class="math notranslate nohighlight">\(\tilde{\mathbf{J}} = \sqrt{W_J} \mathbf{J}\)</span> and a modified residual <span class="math notranslate nohighlight">\(\tilde{\mathbf{R}} = \frac{W_R}{\sqrt{W_J}} \mathbf{R}\)</span>.</p>
+\[\tilde{\mathbf{J}}^T \tilde{\mathbf{J}} \Delta p = - \tilde{\mathbf{J}}^T \tilde{\mathbf{r}}\]</div>
+<p>With a modified Jacobian <span class="math notranslate nohighlight">\(\tilde{\mathbf{J}} = \sqrt{W_J} \mathbf{J}\)</span> and a modified residual <span class="math notranslate nohighlight">\(\tilde{\mathbf{r}} = \frac{W_R}{\sqrt{W_J}} \mathbf{r}\)</span>.</p>
 </section>
 <section id="adding-some-regularization-to-the-gauss-newton-update">
 <h2><a class="toc-backref" href="#id2" role="doc-backlink">Adding some regularization to the Gauss-Newton update</a><a class="headerlink" href="#adding-some-regularization-to-the-gauss-newton-update" title="Link to this heading">#</a></h2>
 <p>Sometimes, we may also have regularization terms. In this case the problem can be
 written as a sum of a sub least squares problem:</p>
 <div class="math notranslate nohighlight">
-\[\min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)\]</div>
+\[\min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{r}_{i,j}(\mathbf{p}) \|^2\right)\]</div>
 <p>Where <span class="math notranslate nohighlight">\(w_i\)</span> is a weight for each sub least squares problem,
 and <span class="math notranslate nohighlight">\(\rho_i\)</span> is a robust cost function for each sub least squares problem.</p>
 <div class="admonition note">
@@ -456,7 +473,7 @@ least squares problems (i.e. <span class="math notranslate nohighlight">\(i \geq
 </div>
 <p>In this case, the Gauss-Newton update can be written as:</p>
 <div class="math notranslate nohighlight">
-\[\sum_{i} w_i \tilde{\mathbf{J}}_i(\mathbf{p_k})^T \tilde{\mathbf{J}}_i(\mathbf{p_k}) \Delta p = -\sum_{i} w_i \tilde{\mathbf{J}}_i(\mathbf{p_k})^T \tilde{\mathbf{R}}_i(\mathbf{p_k})\]</div>
+\[\sum_{i} w_i \tilde{\mathbf{J}}_i(\mathbf{p_k})^T \tilde{\mathbf{J}}_i(\mathbf{p_k}) \Delta p = -\sum_{i} w_i \tilde{\mathbf{J}}_i(\mathbf{p_k})^T \tilde{\mathbf{r}}_i(\mathbf{p_k})\]</div>
 </section>
 </section>
 
@@ -534,8 +551,8 @@ least squares problems (i.e. <span class="math notranslate nohighlight">\(i \geq
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -569,7 +586,7 @@ least squares problems (i.e. <span class="math notranslate nohighlight">\(i \geq
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.17.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.18.0.
 </p></div>
       
     </div>

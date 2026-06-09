@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pysolvegn.perform_Lcurve_analysis &#8212; pysolvegn 0.0.3 documentation</title>
+    <title>pysolvegn.perform_Lcurve_analysis &#8212; pysolvegn 0.2.0 documentation</title>
   
   
   
@@ -27,28 +27,29 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=7f76b32a3354e82990f2" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=fd6457a4" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=7f76b32a3354e82990f2"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
 
-    <script src="../_static/documentation_options.js?v=47de8214"></script>
+    <script src="../_static/documentation_options.js?v=938c9ccc"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/pysolvegn.perform_Lcurve_analysis';</script>
@@ -77,7 +78,9 @@
   
   <button type="button" class="btn rounded-pill" id="pst-back-to-top">
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
-
+  
+  
+  
   
   <dialog id="pst-search-dialog">
     
@@ -125,7 +128,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.0.3 documentation</p>
+    <p class="title logo__title">pysolvegn 0.2.0 documentation</p>
   
 </a></div>
     
@@ -187,11 +190,18 @@
       
         <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
       
     </div>
     
@@ -278,11 +288,18 @@
         
           <div class="navbar-item">
 
-<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
-  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
-  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
-  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
-</button></div>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
         
       </div>
     
@@ -301,7 +318,9 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve_gauss_newton.html">pysolvegn.solve_gauss_newton</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve.html">pysolvegn.solve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.Term.html">pysolvegn.Term</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.GaussNewtonSolver.html">pysolvegn.GaussNewtonSolver</a></li>
 </ul>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
@@ -373,8 +392,9 @@
 <h1>pysolvegn.perform_Lcurve_analysis<a class="headerlink" href="#pysolvegn-perform-lcurve-analysis" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysolvegn.perform_Lcurve_analysis">
-<span class="sig-name descname"><span class="pre">perform_Lcurve_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">residual_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jacobian_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual_reg_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jacobian_reg_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_weight</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_weights</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_reg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/L_curve.html#perform_Lcurve_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.perform_Lcurve_analysis" title="Link to this definition">#</a></dt>
-<dd><p>Optimize the regularization factor using the L-curve method with the Gauss-Newton optimization method.</p>
+<span class="sig-name descname"><span class="pre">perform_Lcurve_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_term</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg_weights</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimal</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logarithmic</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/L_curve.html#perform_Lcurve_analysis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.perform_Lcurve_analysis" title="Link to this definition">#</a></dt>
+<dd><p>Optimize the regularization factor using the L-curve method with the
+Gauss-Newton optimization method.</p>
 <p>The L-curve method is a graphical method for selecting the optimal regularization parameter
 in ill-posed problems. It consists in plotting the norm of the residuals against the norm
 of the regularization term for different values of the regularization parameter, and selecting
@@ -384,23 +404,27 @@ fitting the data and regularizing the solution.</p>
 and the output points for each chain solving iteratively a linearized version of the problem
 at each iteration for different values of the regularization factor, and then selecting the
 optimal regularization factor based on the L-curve.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For better visualization of the L-curve, providing a logarithmic range of
+regularization weights is recommended, as the L-curve typically spans
+several orders of magnitude in the regularization parameter.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>residual_func</strong> (<em>Callable</em>) – The function to compute the residuals for the data fitting term in the least squares problem.</p></li>
-<li><p><strong>jacobian_func</strong> (<em>Callable</em>) – The function to compute the Jacobian matrix for the data fitting term in the least squares problem.</p></li>
-<li><p><strong>residual_reg_func</strong> (<em>Callable</em>) – The function to compute the residuals for the regularization term in the least squares problem.</p></li>
-<li><p><strong>jacobian_reg_func</strong> (<em>Callable</em>) – The function to compute the Jacobian matrix for the regularization term in the least squares problem.</p></li>
-<li><p><strong>parameters</strong> (<em>ArrayLike</em>) – The current parameters of the optimization. Shape (n_parameters,).</p></li>
-<li><p><strong>start_weight</strong> (<em>Real</em>) – The starting value of the regularization factor for the L-curve analysis.</p></li>
-<li><p><strong>end_weight</strong> (<em>Real</em>) – The ending value of the regularization factor for the L-curve analysis.</p></li>
-<li><p><strong>n_weights</strong> (<em>Integral</em>) – The number of regularization factors to evaluate between start_weight and end_weight.</p></li>
-<li><p><strong>n_labels</strong> (<em>Integral</em><em>, </em><em>optional</em>) – The number of labels to display on the L-curve plot for the regularization factors.
+<li><p><strong>data_term</strong> (<a class="reference internal" href="pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><em>Term</em></a>) – The term representing the data fitting part of the least squares problem.</p></li>
+<li><p><strong>reg_term</strong> (<a class="reference internal" href="pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><em>Term</em></a>) – The term representing the regularization part of the least squares problem.
+The weight of this term will be varied to perform the L-curve analysis.</p></li>
+<li><p><strong>x0</strong> (<em>ArrayLike</em>) – The initial guess for the parameters of the optimization. Shape (n_parameters,).</p></li>
+<li><p><strong>reg_weights</strong> (<em>ArrayLike</em>) – An array of regularization weights to evaluate for the L-curve analysis.</p></li>
+<li><p><strong>n_labels</strong> (<em>Integral</em><em>, </em><em>optional</em><em> (</em><em>default=10</em><em>)</em>) – The number of labels to display on the L-curve plot for the regularization factors.
 Default is 10.</p></li>
-<li><p><strong>loss</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – The loss function to use for the data fitting term in the least squares problem. Default is “linear”.</p></li>
-<li><p><strong>loss_reg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – The loss function to use for the regularization term in the least squares problem. Default is “linear”.</p></li>
-<li><p><strong>optimal</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, the function will compute the optimal regularization factor and parameters,
+<li><p><strong>optimal</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – If True, the function will compute the optimal regularization factor and parameters,
 and display them on the L-curve plot.</p></li>
+<li><p><strong>logarithmic</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><em>bool</em></a><em>, </em><em>optional</em><em> (</em><em>default=True</em><em>)</em>) – If True, the L-curve plot will use a logarithmic scale for the regularization weights.
+This is recommended for better visualization, as the L-curve typically spans several
+orders of magnitude in the regularization parameter.</p></li>
 <li><p><strong>**kwargs</strong> (<em>Any</em>) – Additional keyword arguments to pass to the optimization function for
 each regularization factor. This can include stopping criteria, verbosity level, logger, etc.</p></li>
 </ul>
@@ -418,14 +442,13 @@ and displays the L-curve plot.</p>
 and the corner is defined as the point where the curvature is maximal.</p>
 <p>Lets note:</p>
 <div class="math notranslate nohighlight">
-\[\rho(\lambda) = ||R_{data}|| \quad \text{and} \quad \eta(\lambda) = ||R_{reg}||\]</div>
+\[\rho(\lambda) = \sqrt{\|R_{data}\|^2} \quad \text{and} \quad \eta(\lambda) = \sqrt{\|R_{reg}\|^2}\]</div>
 <p>First we build the logarithmic L-curve such as:</p>
 <div class="math notranslate nohighlight">
 \[\hat{\rho}(\lambda) = \log(\rho(\lambda)) \quad \text{and} \quad \hat{\eta}(\lambda) = \log(\eta(\lambda))\]</div>
 <p>The L-curve is then defined as the parametric curve:</p>
-<blockquote>
-<div><p>Gamma(lambda) = (hat{rho}(lambda)/2, hat{eta}(lambda)/2)</p>
-</div></blockquote>
+<div class="math notranslate nohighlight">
+\[\Gamma(\lambda) = (\hat{\rho}(\lambda)/2, \hat{\eta}(\lambda)/2)\]</div>
 <p>Then the curvature of the L-curve is defined as follows:</p>
 <div class="math notranslate nohighlight">
 \[\kappa(\lambda) = \frac{(\hat{\rho}/2)''(\hat{\eta}/2)' - (\hat{\rho}/2)'(\hat{\eta}/2)''}{((\hat{\rho}/2)'^2 + (\hat{\eta}/2)'^2)^{3/2}}\]</div>
@@ -442,6 +465,7 @@ and it may not always provide the optimal solution.</p>
 <h2>Version<a class="headerlink" href="#version" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>0.0.1: Initial version.</p></li>
+<li><p>1.0.0: Refactored to use the new Term and solve API, added L-curve analysis and optimal regularization selection.</p></li>
 </ul>
 </section>
 </dd></dl>
@@ -521,8 +545,8 @@ and it may not always provide the optimal solution.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=7f76b32a3354e82990f2"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=7f76b32a3354e82990f2"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -556,7 +580,7 @@ and it may not always provide the optimal solution.</p>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.17.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.18.0.
 </p></div>
       
     </div>

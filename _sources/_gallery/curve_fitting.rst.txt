@@ -28,25 +28,27 @@ pysolve-gn. We will use the Gauss-Newton method to minimize the
 residuals between the observed data points and the curve defined by a
 parametric function.
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-23
+.. GENERATED FROM PYTHON SOURCE LINES 15-25
 
-Create the residual and Jacobian functions
--------------------------------------------
+Define the model function
+--------------------------
 
-First, we will define the model function, the residual function, and the
-Jacobian function. The model function defines the curve we want to fit, the
-residual function computes the difference between the observed data points and
-the model predictions, and the Jacobian function computes the derivatives of
-the residuals with respect to the parameters.
+First, we will define the model function that represents the curve we want to fit.
+In this example, we will use an exponential function defined as:
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-63
+.. math::
+
+    y = a \cdot e^{b \cdot x}
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 25-46
 
 .. code-block:: Python
 
 
     import numpy as np
     import matplotlib.pyplot as plt
-    from pysolvegn import solve_gauss_newton
+    import pysolvegn
 
     np.random.seed(0)
 
@@ -62,6 +64,33 @@ the residuals with respect to the parameters.
     true_params = [2.5, 0.5]  # True parameters for the curve: y = a * exp(b * x)
     y_true = model(true_params, x_data)
     y_data = y_true + 0.5 * np.random.normal(size=y_true.shape)  # Add noise to the data
+
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 47-58
+
+Create the residual and Jacobian functions
+-------------------------------------------
+
+Secondly, we will define the residual function, and the
+Jacobian function. The residual function computes the difference between the
+observed data points and the model predictions, and the Jacobian function computes
+the derivatives of the residuals with respect to the parameters.
+
+This equation is called a **term** in pysolve-gn, and it represents a single
+component of the optimization problem. See :class:`pysolvegn.Term` for more details
+on how to define terms in pysolve-gn.
+
+.. GENERATED FROM PYTHON SOURCE LINES 58-83
+
+.. code-block:: Python
+
 
 
     # Define the residual function
@@ -83,6 +112,9 @@ the residuals with respect to the parameters.
 
     jacobian_func = lambda params: jacobian_function(params, x_data)
 
+    data_term = pysolvegn.Term.from_rJ(
+        residual_func=residual_func, jacobian_func=jacobian_func, loss="linear", weight=1.0
+    )
 
 
 
@@ -90,17 +122,17 @@ the residuals with respect to the parameters.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-71
+
+.. GENERATED FROM PYTHON SOURCE LINES 84-90
 
 Perform curve fitting
 ----------------------
 
-Now we can use the ``solve_gauss_newton`` function to perform the curve fitting.
-We will provide the residual function, the Jacobian function, and an initial
-guess for the parameters. The function will return the estimated parameters that
-best fit the data.
+Now we can use the :func:`pysolvegn.solve` function to perform the curve fitting.
+We will provide the term object and an initial guess for the parameters.
+The function will return the estimated parameters that best fit the data.
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-108
+.. GENERATED FROM PYTHON SOURCE LINES 90-106
 
 .. code-block:: Python
 
@@ -108,20 +140,55 @@ best fit the data.
     # Initial guess for the parameters
     initial_params = [2.0, 0.4]
 
-    # Perform curve fitting using Gauss-Newton method
-    result = solve_gauss_newton(
-        residual_func,
-        jacobian_func,
-        initial_params,
-        max_iterations=10,
+    result = pysolvegn.solve(
+        terms=[data_term],
+        x0=initial_params,
+        max_iteration=10,
         xtol=1e-6,
         ftol=1e-6,
-        verbosity=2,
-        loss="linear",
+        verbosity=3,
     )
     print("Estimated parameters:", result)
 
     y_retrieved = model(result, x_data)
+
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    Individual costs [rJ term]: C_i = 0.5 * ρ(||r_i||^2) 
+    Cost: C = sum(w_i * C_i) 
+    Step norm: ||Δp|| 
+    Optimality: ||g|| 
+
+    Iteration  Total time (s)      Cost C            ΔC           ||Δp||_2         ||g||_∞        ||Δp||_∞         ||g||_2         Cond(H)        Trace(H)       Cost C_0    
+        0         4.965e-03       2.747e+02                                       2.037e+03                       2.088e+03       1.745e+02       8.516e+03      2.747e+02   
+        1         6.515e-03       3.587e+01      -2.389e+02       4.882e-01       1.106e+03       4.637e-01       1.121e+03       3.965e+02       2.727e+04      3.587e+01   
+        2         6.904e-03       1.275e+01      -2.311e+01       4.206e-02       5.361e+01       4.204e-02       5.422e+01       3.529e+02       2.208e+04      1.275e+01   
+        3         7.141e-03       1.268e+01      -7.435e-02       1.495e-02       3.749e-01       1.413e-02       3.749e-01       3.519e+02       2.178e+04      1.268e+01   
+        4         7.334e-03       1.268e+01      -3.310e-05       9.676e-04       1.139e-02       9.513e-04       1.139e-02       3.520e+02       2.178e+04      1.268e+01   
+        5         7.481e-03       1.268e+01      -3.624e-08       3.230e-05       3.960e-04       3.177e-05       3.960e-04       3.520e+02       2.178e+04      1.268e+01   
+
+    [ftol] Convergence achieved (df < ftol * F) : 3.6238969158830514e-08 < 1.268019451067345e-05.
+    Estimated parameters: [2.48024441 0.50550361]
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 107-109
+
+Plot the results
+----------------------
+
+.. GENERATED FROM PYTHON SOURCE LINES 109-128
+
+.. code-block:: Python
+
 
     # Display the results
     plt.figure(figsize=(10, 6))
@@ -150,34 +217,13 @@ best fit the data.
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    Individual costs: C_i = 0.5 * ρ(||R_i||^2) 
-    Cost: C = sum(w_i * C_i) 
-    Step norm: ||Δp||_2 and ||Δp||_∞ 
-    Optimality: ||J^T R||_∞
-
-    Iteration      Cost C        Cost C_0        ||Δp||_2        ||Δp||_∞       Optimality    Total Time (s) 
-        0         2.747e+02      2.747e+02                                       2.037e+03       1.824e-04   
-        1         3.587e+01      3.587e+01       4.882e-01       4.637e-01       1.106e+03       4.156e-04   
-        2         1.275e+01      1.275e+01       4.206e-02       4.204e-02       5.361e+01       5.496e-04   
-        3         1.268e+01      1.268e+01       1.495e-02       1.413e-02       3.749e-01       6.580e-04   
-        4         1.268e+01      1.268e+01       9.676e-04       9.513e-04       1.139e-02       7.672e-04   
-        5         1.268e+01      1.268e+01       3.230e-05       3.177e-05       3.960e-04       8.752e-04   
-
-    [ftol] Convergence achieved (df < ftol * F) : 3.6238969158830514e-08 < 1.268019451067345e-05.
-    Estimated parameters: [2.48024441 0.50550361]
-
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.063 seconds)
+   **Total running time of the script:** (0 minutes 0.105 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_curve_fitting.py:
