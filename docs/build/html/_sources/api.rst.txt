@@ -20,20 +20,25 @@ Mathematical Background section of the documentation.
 
 .. seealso::
 
-   - :doc:`Mathematical Background <math>` for the mathematical foundation and theoretical concepts underlying the package.
+   - :doc:`Mathematical Background <math>` for the mathematical foundation and theoretical 
+     concepts underlying the package.
+
 
 Solver Function
 ----------------
 
-The main function of the package is the ``solve_gauss_newton`` function, which implements the
+The main function of the package is the ``solve`` function, which implements the
 Gauss-Newton optimization algorithm for solving non-linear least squares problems. 
-This function takes as input ``Callable`` objects allowing to compute 
-the values of a function and its jacobian with respect to its parameters.
+This function takes as input :class:`pysolvegn.Term` objects that define the
+residuals and jacobians of the problem and returns the optimized parameters that 
+minimize the cost function.
 
 .. autosummary::
    :toctree: _autosummary
 
-   solve_gauss_newton
+   solve
+   Term
+   GaussNewtonSolver
 
 
 The package includes several robust cost functions that can be used to reduce the 

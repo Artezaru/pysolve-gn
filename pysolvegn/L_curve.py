@@ -23,28 +23,26 @@ from numpy.typing import ArrayLike
 import numpy
 import scipy
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
 
-from .solver import solve_gauss_newton
+from .solver import solve
+from .term import Term
 
 
 def perform_Lcurve_analysis(
-    residual_func: Callable,
-    jacobian_func: Callable,
-    residual_reg_func: Callable,
-    jacobian_reg_func: Callable,
-    parameters: ArrayLike,
-    start_weight: Real,
-    end_weight: Real,
-    n_weights: Integral,
+    data_term: Term,
+    reg_term: Term,
+    x0: ArrayLike,
+    reg_weights: ArrayLike,
     *,
     n_labels: Integral = 10,
-    loss: str = "linear",
-    loss_reg: str = "linear",
     optimal: bool = False,
+    logarithmic: bool = True,
     **kwargs: Any,
 ) -> None:
     r"""
-    Optimize the regularization factor using the L-curve method with the Gauss-Newton optimization method.
+    Optimize the regularization factor using the L-curve method with the
+    Gauss-Newton optimization method.
 
     The L-curve method is a graphical method for selecting the optimal regularization parameter
     in ill-posed problems. It consists in plotting the norm of the residuals against the norm
@@ -57,46 +55,40 @@ def perform_Lcurve_analysis(
     at each iteration for different values of the regularization factor, and then selecting the
     optimal regularization factor based on the L-curve.
 
+    .. note::
+
+        For better visualization of the L-curve, providing a logarithmic range of
+        regularization weights is recommended, as the L-curve typically spans
+        several orders of magnitude in the regularization parameter.
+
 
     Parameters
     ----------
-    residual_func: Callable
-        The function to compute the residuals for the data fitting term in the least squares problem.
+    data_term: Term
+        The term representing the data fitting part of the least squares problem.
 
-    jacobian_func: Callable
-        The function to compute the Jacobian matrix for the data fitting term in the least squares problem.
+    reg_term: Term
+        The term representing the regularization part of the least squares problem.
+        The weight of this term will be varied to perform the L-curve analysis.
 
-    residual_reg_func: Callable
-        The function to compute the residuals for the regularization term in the least squares problem.
+    x0: ArrayLike
+        The initial guess for the parameters of the optimization. Shape (n_parameters,).
 
-    jacobian_reg_func: Callable
-        The function to compute the Jacobian matrix for the regularization term in the least squares problem.
+    reg_weights: ArrayLike
+        An array of regularization weights to evaluate for the L-curve analysis.
 
-    parameters: ArrayLike
-        The current parameters of the optimization. Shape (n_parameters,).
-
-    start_weight: Real
-        The starting value of the regularization factor for the L-curve analysis.
-
-    end_weight: Real
-        The ending value of the regularization factor for the L-curve analysis.
-
-    n_weights: Integral
-        The number of regularization factors to evaluate between start_weight and end_weight.
-
-    n_labels: Integral, optional
+    n_labels: Integral, optional (default=10)
         The number of labels to display on the L-curve plot for the regularization factors.
         Default is 10.
 
-    loss: str, optional
-        The loss function to use for the data fitting term in the least squares problem. Default is "linear".
-
-    loss_reg: str, optional
-        The loss function to use for the regularization term in the least squares problem. Default is "linear".
-
-    optimal: bool, optional
+    optimal: bool, optional (default=True)
         If True, the function will compute the optimal regularization factor and parameters,
         and display them on the L-curve plot.
+
+    logarithmic: bool, optional (default=True)
+        If True, the L-curve plot will use a logarithmic scale for the regularization weights.
+        This is recommended for better visualization, as the L-curve typically spans several
+        orders of magnitude in the regularization parameter.
 
     **kwargs: Any
         Additional keyword arguments to pass to the optimization function for
@@ -119,7 +111,7 @@ def perform_Lcurve_analysis(
 
     .. math::
 
-        \rho(\lambda) = ||R_{data}|| \quad \text{and} \quad \eta(\lambda) = ||R_{reg}||
+        \rho(\lambda) = \sqrt{\|R_{data}\|^2} \quad \text{and} \quad \eta(\lambda) = \sqrt{\|R_{reg}\|^2}
 
     First we build the logarithmic L-curve such as:
 
@@ -127,7 +119,10 @@ def perform_Lcurve_analysis(
 
         \hat{\rho}(\lambda) = \log(\rho(\lambda)) \quad \text{and} \quad \hat{\eta}(\lambda) = \log(\eta(\lambda))
 
+
     The L-curve is then defined as the parametric curve:
+
+    .. math::
 
         \Gamma(\lambda) = (\hat{\rho}(\lambda)/2, \hat{\eta}(\lambda)/2)
 
@@ -152,34 +147,48 @@ def perform_Lcurve_analysis(
 
     Version
     -------
+
     - 0.0.1: Initial version.
+    - 1.0.0: Refactored to use the new Term and solve API, added L-curve analysis and optimal regularization selection.
 
     """
-    R_functions = [residual_func, residual_reg_func]
-    J_functions = [jacobian_func, jacobian_reg_func]
-    loss = [loss, loss_reg]
+    if not isinstance(data_term, Term) or not isinstance(reg_term, Term):
+        raise ValueError("Both data_term and reg_term must be instances of Term.")
+    if reg_term.type == "gH" or data_term.type == "gH":
+        raise ValueError(
+            "L-curve analysis is not applicable for gH terms. Must be rJ terms to compute the cost."
+        )
+    if not isinstance(n_labels, Integral) or n_labels <= 0:
+        raise ValueError("n_labels must be a positive integer.")
+    if not isinstance(optimal, bool):
+        raise ValueError("optimal must be a boolean value.")
+    if not isinstance(logarithmic, bool):
+        raise ValueError("logarithmic must be a boolean value.")
 
-    weights = numpy.logspace(
-        numpy.log10(start_weight), numpy.log10(end_weight), n_weights
-    )
+    x0 = numpy.asarray(x0, dtype=numpy.float64)
+    if not x0.ndim == 1:
+        raise ValueError("x0 must be a 1D array.")
+    reg_weights = numpy.asarray(reg_weights, dtype=numpy.float64)
+    if not reg_weights.ndim == 1:
+        raise ValueError("reg_weights must be a 1D array.")
 
     verbosity = kwargs.get("verbosity", 0)
-
+    _save_back_reg_weight = reg_term.weight
     results = []
 
-    for index, weight in enumerate(weights):
-        if verbosity > 0:
+    for index, weight in enumerate(reg_weights):
+        if verbosity >= 1:
             print(
-                f"\nEvaluating regularization weight: {weight:.3e} [{index + 1}/{n_weights}]"
+                f"\nEvaluating regularization weight: {weight:.3e} [{index + 1}/{len(reg_weights)}]"
             )
 
-        out_parameters, history = solve_gauss_newton(
-            residual_func=R_functions,
-            jacobian_func=J_functions,
-            parameters=parameters,
-            weight=[1.0, weight],
-            loss=loss,
+        reg_term.weight = weight
+
+        out_parameters, history = solve(
+            terms=[data_term, reg_term],
+            x0=x0,
             history=True,
+            history_details=["costs"],
             **kwargs,
         )
 
@@ -187,7 +196,9 @@ def perform_Lcurve_analysis(
         cost_reg = history[-1]["costs"][1]  # Cost of the regularization term
         results.append((weight, cost_data, cost_reg, out_parameters))
 
-    weights, cost_data, cost_reg, parameters_list = zip(*results)
+    reg_term.weight = _save_back_reg_weight
+
+    weights, cost_data, cost_reg, parameters = zip(*results)
 
     rho_squares = numpy.array(cost_data)
     eta_squares = numpy.array(cost_reg)
@@ -217,21 +228,26 @@ def perform_Lcurve_analysis(
         )
 
     # Displaying the L-curve and the curvature
-    plt.figure(figsize=(7, 5))
-    plt.plot(hat_rhos / 2, hat_etas / 2, label="L-curve", marker="o", color="black")
+    fig = plt.figure(figsize=(12, 6))
+    gs = gridspec.GridSpec(3, 4, figure=fig)
+    ax_Lcurve = fig.add_subplot(gs[:, :3])
+
+    ax_Lcurve.plot(
+        hat_rhos / 2, hat_etas / 2, label="L-curve", marker="o", color="black"
+    )
     if optimal:
-        plt.scatter(
+        ax_Lcurve.scatter(
             hat_rhos[optimal_index] / 2,
             hat_etas[optimal_index] / 2,
             color="red",
             label="Optimal Point",
             zorder=5,
         )
-        plt.axvline(hat_rhos[optimal_index] / 2, color="red", linestyle="--")
-        plt.axhline(hat_etas[optimal_index] / 2, color="red", linestyle="--")
+        ax_Lcurve.axvline(hat_rhos[optimal_index] / 2, color="red", linestyle="--")
+        ax_Lcurve.axhline(hat_etas[optimal_index] / 2, color="red", linestyle="--")
     annotated_indices = range(0, len(weights), max(1, len(weights) // n_labels))
     for i in annotated_indices:
-        plt.text(
+        ax_Lcurve.text(
             hat_rhos[i] / 2,
             hat_etas[i] / 2,
             f"{weights[i]:.1e}",
@@ -239,8 +255,57 @@ def perform_Lcurve_analysis(
             ha="right",
             va="bottom",
         )
-    plt.xlabel(r"$\hat{\rho}(\lambda)/2$ = $\log(||R_{data}||)/2$")
-    plt.ylabel(r"$\hat{\eta}(\lambda)/2$ = $\log(||R_{reg}||)/2$")
-    plt.title("L-curve Analysis")
-    plt.legend()
-    plt.grid()
+    ax_Lcurve.set_xlabel(r"$\hat{\rho}(\lambda)/2$ = $\log(||r_{data}||)/2$")
+    ax_Lcurve.set_ylabel(r"$\hat{\eta}(\lambda)/2$ = $\log(||r_{reg}||)/2$")
+    ax_Lcurve.set_title("L-curve Analysis")
+    ax_Lcurve.legend()
+    ax_Lcurve.grid()
+
+    ax_lambda_rhos = fig.add_subplot(gs[0, 3])
+    ax_lambda_rhos.plot(lambdas, rhos, marker="o", color="blue")
+    if logarithmic:
+        ax_lambda_rhos.set_xscale("log")
+    if optimal:
+        ax_lambda_rhos.axvline(optimal_weight, color="red", linestyle="--")
+        ax_lambda_rhos.axhline(rhos[optimal_index], color="red", linestyle="--")
+    ax_lambda_rhos.set_xlabel(r"Regularization Weight ($\lambda$)")
+    ax_lambda_rhos.set_ylabel(r"$||r_{data}||$")
+    ax_lambda_rhos.grid()
+
+    ax_lambda_etas = fig.add_subplot(gs[1, 3])
+    ax_lambda_etas.plot(lambdas, etas, marker="o", color="orange")
+    if logarithmic:
+        ax_lambda_etas.set_xscale("log")
+    if optimal:
+        ax_lambda_etas.axvline(optimal_weight, color="red", linestyle="--")
+        ax_lambda_etas.axhline(etas[optimal_index], color="red", linestyle="--")
+    ax_lambda_etas.set_xlabel(r"Regularization Weight ($\lambda$)")
+    ax_lambda_etas.set_ylabel(r"$||r_{reg}||$")
+    ax_lambda_etas.grid()
+
+    if optimal:
+        ax_lambda_kappas = fig.add_subplot(gs[2, 3])
+        ax_lambda_kappas.plot(lambdas, kappas, marker="o", color="green")
+        if logarithmic:
+            ax_lambda_kappas.set_xscale("log")
+        ax_lambda_kappas.axvline(optimal_weight, color="red", linestyle="--")
+        ax_lambda_kappas.axhline(kappas[optimal_index], color="red", linestyle="--")
+        ax_lambda_kappas.set_xlabel(r"Regularization Weight ($\lambda$)")
+        ax_lambda_kappas.set_ylabel(r"Curvature ($\kappa$)")
+        ax_lambda_kappas.grid()
+    else:
+        ax_lambda_norm_params = fig.add_subplot(gs[2, 3])
+        ax_lambda_norm_params.plot(
+            lambdas,
+            [numpy.linalg.norm(p) for p in parameters],
+            marker="o",
+            color="purple",
+        )
+        if logarithmic:
+            ax_lambda_norm_params.set_xscale("log")
+        ax_lambda_norm_params.set_xlabel(r"Regularization Weight ($\lambda$)")
+        ax_lambda_norm_params.set_ylabel(r"Norm of Parameters ($||p||$)")
+        ax_lambda_norm_params.grid()
+
+    plt.tight_layout()
+    plt.show()

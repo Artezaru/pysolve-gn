@@ -1,4 +1,20 @@
 {
+ "data_term": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pysolvegn.term",
+   "module_short": "pysolvegn",
+   "name": "Term"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "Term"
+  }
+ ],
  "initial_params": [
   {
    "is_class": false,
@@ -259,6 +275,61 @@
    "name": "ylabel"
   }
  ],
+ "pysolvegn.Term": [
+  {
+   "is_class": false,
+   "is_explicit": true,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "Term"
+  }
+ ],
+ "pysolvegn.Term.from_rJ": [
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "pysolvegn.term",
+   "module_short": "pysolvegn",
+   "name": "Term.from_rJ"
+  },
+  {
+   "is_class": true,
+   "is_explicit": false,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "Term.from_rJ"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pysolvegn.Term",
+   "module_short": "pysolvegn.Term",
+   "name": "from_rJ"
+  }
+ ],
+ "pysolvegn.solve": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "function"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "solve"
+  },
+  {
+   "is_class": false,
+   "is_explicit": true,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "solve"
+  }
+ ],
  "residual_func": [
   {
    "is_class": false,
@@ -284,22 +355,6 @@
    "module": "numpy",
    "module_short": "numpy",
    "name": "ndarray"
-  }
- ],
- "solve_gauss_newton": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "function"
-  },
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "pysolvegn",
-   "module_short": "pysolvegn",
-   "name": "solve_gauss_newton"
   }
  ],
  "true_params": [

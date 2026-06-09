@@ -12,18 +12,20 @@ parametric function.
 """
 
 # %%
-# Create the residual and Jacobian functions
-# -------------------------------------------
+# Define the model function
+# --------------------------
 #
-# First, we will define the model function, the residual function, and the
-# Jacobian function. The model function defines the curve we want to fit, the
-# residual function computes the difference between the observed data points and
-# the model predictions, and the Jacobian function computes the derivatives of
-# the residuals with respect to the parameters.
+# First, we will define the model function that represents the curve we want to fit.
+# In this example, we will use an exponential function defined as:
+#
+# .. math::
+#
+#     y = a \cdot e^{b \cdot x}
+#
 
 import numpy as np
 import matplotlib.pyplot as plt
-from pysolvegn import solve_gauss_newton
+import pysolvegn
 
 np.random.seed(0)
 
@@ -39,6 +41,20 @@ x_data = np.linspace(0, 3, 100)
 true_params = [2.5, 0.5]  # True parameters for the curve: y = a * exp(b * x)
 y_true = model(true_params, x_data)
 y_data = y_true + 0.5 * np.random.normal(size=y_true.shape)  # Add noise to the data
+
+
+# %%
+# Create the residual and Jacobian functions
+# -------------------------------------------
+#
+# Secondly, we will define the residual function, and the
+# Jacobian function. The residual function computes the difference between the
+# observed data points and the model predictions, and the Jacobian function computes
+# the derivatives of the residuals with respect to the parameters.
+#
+# This equation is called a **term** in pysolve-gn, and it represents a single
+# component of the optimization problem. See :class:`pysolvegn.Term` for more details
+# on how to define terms in pysolve-gn.
 
 
 # Define the residual function
@@ -60,32 +76,36 @@ def jacobian_function(params, x):
 
 jacobian_func = lambda params: jacobian_function(params, x_data)
 
+data_term = pysolvegn.Term.from_rJ(
+    residual_func=residual_func, jacobian_func=jacobian_func, loss="linear", weight=1.0
+)
+
 # %%
 # Perform curve fitting
 # ----------------------
 #
-# Now we can use the ``solve_gauss_newton`` function to perform the curve fitting.
-# We will provide the residual function, the Jacobian function, and an initial
-# guess for the parameters. The function will return the estimated parameters that
-# best fit the data.
+# Now we can use the :func:`pysolvegn.solve` function to perform the curve fitting.
+# We will provide the term object and an initial guess for the parameters.
+# The function will return the estimated parameters that best fit the data.
 
 # Initial guess for the parameters
 initial_params = [2.0, 0.4]
 
-# Perform curve fitting using Gauss-Newton method
-result = solve_gauss_newton(
-    residual_func,
-    jacobian_func,
-    initial_params,
-    max_iterations=10,
+result = pysolvegn.solve(
+    terms=[data_term],
+    x0=initial_params,
+    max_iteration=10,
     xtol=1e-6,
     ftol=1e-6,
-    verbosity=2,
-    loss="linear",
+    verbosity=3,
 )
 print("Estimated parameters:", result)
 
 y_retrieved = model(result, x_data)
+
+# %%
+# Plot the results
+# ----------------------
 
 # Display the results
 plt.figure(figsize=(10, 6))

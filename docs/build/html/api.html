@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Reference &#8212; pysolvegn 0.0.3 documentation</title>
+    <title>API Reference &#8212; pysolvegn 0.2.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=47de8214"></script>
+    <script src="_static/documentation_options.js?v=938c9ccc"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -54,7 +54,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pysolvegn.solve_gauss_newton" href="_autosummary/pysolvegn.solve_gauss_newton.html" />
+    <link rel="next" title="pysolvegn.solve" href="_autosummary/pysolvegn.solve.html" />
     <link rel="prev" title="Installation" href="installation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -120,7 +120,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.0.3 documentation</p>
+    <p class="title logo__title">pysolvegn 0.2.0 documentation</p>
   
 </a></div>
     
@@ -289,7 +289,9 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.solve_gauss_newton.html">pysolvegn.solve_gauss_newton</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.solve.html">pysolvegn.solve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.Term.html">pysolvegn.Term</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.GaussNewtonSolver.html">pysolvegn.GaussNewtonSolver</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
@@ -373,19 +375,27 @@ Mathematical Background section of the documentation.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="math.html"><span class="doc">Mathematical Background</span></a> for the mathematical foundation and theoretical concepts underlying the package.</p></li>
+<li><p><a class="reference internal" href="math.html"><span class="doc">Mathematical Background</span></a> for the mathematical foundation and theoretical
+concepts underlying the package.</p></li>
 </ul>
 </div>
 <section id="solver-function">
 <h2><a class="toc-backref" href="#table-of-contents" role="doc-backlink">Solver Function</a><a class="headerlink" href="#solver-function" title="Link to this heading">#</a></h2>
-<p>The main function of the package is the <code class="docutils literal notranslate"><span class="pre">solve_gauss_newton</span></code> function, which implements the
+<p>The main function of the package is the <code class="docutils literal notranslate"><span class="pre">solve</span></code> function, which implements the
 Gauss-Newton optimization algorithm for solving non-linear least squares problems.
-This function takes as input <code class="docutils literal notranslate"><span class="pre">Callable</span></code> objects allowing to compute
-the values of a function and its jacobian with respect to its parameters.</p>
+This function takes as input <a class="reference internal" href="_autosummary/pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.Term</span></code></a> objects that define the
+residuals and jacobians of the problem and returns the optimized parameters that
+minimize the cost function.</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.solve_gauss_newton.html#pysolvegn.solve_gauss_newton" title="pysolvegn.solve_gauss_newton"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_gauss_newton</span></code></a>(residual_func, ...[, ...])</p></td>
-<td><p>Solve the least squares problem using the Gauss-Newton method with robust cost functions.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve</span></code></a>(terms, x0, *[, max_iteration, ...])</p></td>
+<td><p>Function to solve the least squares problem using the Gauss-Newton method with robust cost functions.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Term</span></code></a>([residual_func, jacobian_func, ...])</p></td>
+<td><p>A class representing a term in the least squares problem, which can be either a residual term or a regularization term.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.GaussNewtonSolver.html#pysolvegn.GaussNewtonSolver" title="pysolvegn.GaussNewtonSolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GaussNewtonSolver</span></code></a>(terms)</p></td>
+<td><p>A class that implements the Gauss-Newton optimization method for solving non-linear least squares problems.</p></td>
 </tr>
 </tbody>
 </table>
@@ -431,7 +441,7 @@ by finite differences or creating residuals and jacobians for regularization ter
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.build_soft_squared_regularization.html#pysolvegn.build_soft_squared_regularization" title="pysolvegn.build_soft_squared_regularization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_soft_squared_regularization</span></code></a>(means, ...)</p></td>
 <td><p>Build the residual and jacobian functions of a soft squared regularization of the parameters according to a Gaussian prior on the parameters with a soft threshold, where the regularization is null for parameters that are within a certain threshold of the mean value, and increases as the squared distance of the parameters to a bounds value relative to a standard deviation, which can be interpreted as a Gaussian prior on the parameters with a soft threshold.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.perform_Lcurve_analysis.html#pysolvegn.perform_Lcurve_analysis" title="pysolvegn.perform_Lcurve_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">perform_Lcurve_analysis</span></code></a>(residual_func, ...)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.perform_Lcurve_analysis.html#pysolvegn.perform_Lcurve_analysis" title="pysolvegn.perform_Lcurve_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">perform_Lcurve_analysis</span></code></a>(data_term, reg_term, ...)</p></td>
 <td><p>Optimize the regularization factor using the L-curve method with the Gauss-Newton optimization method.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.study_jacobian.html#pysolvegn.study_jacobian" title="pysolvegn.study_jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">study_jacobian</span></code></a>(residual_func, jacobian_func, ...)</p></td>
@@ -463,11 +473,11 @@ by finite differences or creating residuals and jacobians for regularization ter
       </div>
     </a>
     <a class="right-next"
-       href="_autosummary/pysolvegn.solve_gauss_newton.html"
+       href="_autosummary/pysolvegn.solve.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pysolvegn.solve_gauss_newton</p>
+        <p class="prev-next-title">pysolvegn.solve</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

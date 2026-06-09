@@ -14,7 +14,7 @@ applications in data fitting, machine learning, and scientific computing.
 ```python
 import numpy as np
 import matplotlib.pyplot as plt
-from pysolvegn import solve_gauss_newton
+import pysolvegn
 
 np.random.seed(0)
 
@@ -51,14 +51,16 @@ def jacobian_function(params, x):
 
 jacobian_func = lambda params: jacobian_function(params, x_data)
 
-# Perform curve fitting using Gauss-Newton method
+data_term = pysolvegn.Term.from_rJ(
+    residual_func=residual_func, jacobian_func=jacobian_func, loss="linear", weight=1.0
+)
+
 initial_params = [2.0, 0.4]
 
-fitted_params = solve_gauss_newton(
-    residual_func,
-    jacobian_func,
-    initial_params,
-    max_iterations=10,
+fitted_params = pysolvegn.solve_gauss_newton(
+    terms=data_term
+    x0=initial_params,
+    max_iteration=10,
     xtol=1e-6,
     ftol=1e-6,
     verbosity=2,

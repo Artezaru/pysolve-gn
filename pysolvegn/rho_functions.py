@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from typing import Tuple, Union
+from typing import Tuple, Union, Callable
 from numpy.typing import ArrayLike
 
 import numpy
@@ -83,6 +83,7 @@ def _build_tilde_R_and_tilde_J(
 
     Version
     -------
+
     - 0.0.1: Initial version.
 
     """
@@ -138,6 +139,7 @@ def linear_rho_at_R2(
 
     Version
     -------
+
     - 0.0.1: Initial version.
 
     """
@@ -186,6 +188,7 @@ def soft_l1_rho_at_R2(
 
     Version
     -------
+
     - 0.0.1: Initial version.
 
     """
@@ -234,6 +237,7 @@ def cauchy_rho_at_R2(
 
     Version
     -------
+
     - 0.0.1: Initial version.
 
     """
@@ -282,6 +286,7 @@ def arctan_rho_at_R2(
 
     Version
     -------
+
     - 0.0.1: Initial version.
 
     """
@@ -292,3 +297,41 @@ def arctan_rho_at_R2(
         1 / (1 + x2**2),
         -2 * x2 / (1 + x2**2) ** 2,
     )
+
+
+def get_rho_function_by_name(name: str) -> Callable:
+    r"""
+    Get a rho function and its derivatives by name.
+
+    Parameters
+    ----------
+    name : str
+        The name of the rho function. Must be one of "linear", "soft_l1", "cauchy", or "arctan".
+
+
+    Returns
+    -------
+    rho_func : Callable
+        A function that computes the cost, first derivative, and second derivative of the specified rho function
+        at :math:`x = \|R\|^2` for a given array of residuals.
+
+
+    Version
+    -------
+
+    - 0.1.0: Initial version to dispatch rho functions by name.
+
+    """
+    name = name.lower()
+    if name == "linear":
+        return linear_rho_at_R2
+    elif name == "soft_l1":
+        return soft_l1_rho_at_R2
+    elif name == "cauchy":
+        return cauchy_rho_at_R2
+    elif name == "arctan":
+        return arctan_rho_at_R2
+    else:
+        raise ValueError(
+            f"Invalid rho function name '{name}'. Must be one of 'linear', 'soft_l1', 'cauchy', or 'arctan'."
+        )
