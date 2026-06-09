@@ -50,6 +50,7 @@ def solve(
     callback_func: Optional[Callable[[Dict], bool]] = None,
     update_func: Optional[Callable[[numpy.ndarray, numpy.ndarray], ArrayLike]] = None,
     verbosity: Integral = 0,
+    naninf: bool = True,
     history: bool = False,
     history_details: Optional[Union[str, Sequence[str]]] = None,
 ) -> Tuple[numpy.ndarray, Optional[List[Dict]]]:
@@ -160,6 +161,12 @@ def solve(
         1: Log only the final results of the optimization process.
         2: Log the results at each iteration of the optimization process.
         3: Details logging for debugging purposes.
+
+    naninf: bool, optional (default=True)
+        If True, the optimization process will be stopped
+        if any NaN or Inf value is encountered in the cost function value
+        or parameters during the optimization process.
+        If False, the optimization process will continue.
 
     history: bool (optional, default=False)
         If True, the function will also return a tuple containing the history of
@@ -307,6 +314,10 @@ def solve(
     verbosity = int(verbosity)
     if verbosity < 0 or verbosity > 3:
         raise ValueError("verbosity must be an integer between 0 and 3 inclusive.")
+
+    if not isinstance(naninf, bool):
+        raise ValueError("naninf must be a boolean value.")
+    naninf = bool(naninf)
 
     if not isinstance(history, bool):
         raise ValueError("history must be a boolean value.")
@@ -590,6 +601,18 @@ def solve(
             _end_message += (
                 f"\n[max_time] Maximum computation time reached: {max_time} seconds."
             )
+
+        if naninf:
+            if total_cost is not None and (
+                numpy.isnan(total_cost) or numpy.isinf(total_cost)
+            ):
+                _end_flag = True
+                _end_message += f"\n[naninf] Optimization stopped due to NaN or Inf value in cost: {total_cost}."
+            elif numpy.any(numpy.isnan(_parameters)) or numpy.any(
+                numpy.isinf(_parameters)
+            ):
+                _end_flag = True
+                _end_message += f"\n[naninf] Optimization stopped due to NaN or Inf value in parameters."
 
         if callback_func is not None:
             callback_result = callback_func(_history[-1])

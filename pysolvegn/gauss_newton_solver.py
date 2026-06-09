@@ -191,21 +191,7 @@ class GaussNewtonSolver(object):
     def solve(
         self,
         x0: ArrayLike,
-        *,
-        max_iteration: Optional[Integral] = None,
-        max_time: Optional[Real] = None,
-        ftol: Optional[Real] = None,
-        xtol: Optional[Real] = None,
-        gtol: Optional[Real] = None,
-        atol: Optional[Real] = None,
-        ptol: Optional[Real] = None,
-        callback_func: Optional[Callable[[Dict], bool]] = None,
-        update_func: Optional[
-            Callable[[numpy.ndarray, numpy.ndarray], ArrayLike]
-        ] = None,
-        verbosity: Integral = 0,
-        history: bool = False,
-        history_details: Optional[Union[str, Sequence[str]]] = None,
+        **kwargs: Any,
     ) -> Tuple[numpy.ndarray, Optional[List[Dict]]]:
         """
         Solve the optimization problem using the Gauss-Newton method.
@@ -234,19 +220,12 @@ class GaussNewtonSolver(object):
 
 
         """
+        if "terms" in kwargs:
+            raise ValueError(
+                "terms cannot be passed as a keyword argument to solve method."
+            )
         return solve(
             self._terms,
             x0,
-            max_iteration=max_iteration,
-            max_time=max_time,
-            ftol=ftol,
-            xtol=xtol,
-            gtol=gtol,
-            atol=atol,
-            ptol=ptol,
-            callback_func=callback_func,
-            update_func=update_func,
-            verbosity=verbosity,
-            history=history,
-            history_details=history_details,
+            **kwargs,
         )
