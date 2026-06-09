@@ -186,7 +186,7 @@ problem for each weight, and we will store the results to analyze later.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.249 seconds)
+   **Total running time of the script:** (0 minutes 0.268 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_L_curve_analysis.py:

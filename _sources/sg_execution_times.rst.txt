@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.354** total execution time for 2 files **from all galleries**:
+**00:00.352** total execution time for 2 files **from all galleries**:
 
 .. container::
 
@@ -33,8 +33,8 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr__gallery_L_curve_analysis.py` (``../../gallery/L_curve_analysis.py``)
-     - 00:00.249
+     - 00:00.268
      - 0.0
    * - :ref:`sphx_glr__gallery_curve_fitting.py` (``../../gallery/curve_fitting.py``)
-     - 00:00.105
+     - 00:00.084
      - 0.0
