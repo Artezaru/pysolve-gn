@@ -2,7 +2,20 @@
 
 .. _gallery:
 
+Gallery
+=======
 
+Basic examples
+--------------
+
+.. minigallery::
+    :add-heading: 1
+
+    curve_fitting.py
+    adding_regularization.py
+    affine_parametrization.py
+    analyze_problem.py
+    L_curve_analysis.py
 
 
 .. raw:: html
@@ -13,7 +26,7 @@
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to fit a curve to a set of data points using pysolve-gn. We will use the Gauss-Newton method to minimize the residuals between the observed data points and the curve defined by a parametric function.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use pysolve-gn package.">
 
 .. only:: html
 
@@ -45,6 +58,57 @@
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use pysolvegn.study_optimization to study the Gauss-Newton Hessian of a camera calibration problem.">
+
+.. only:: html
+
+  .. image:: /_gallery/images/thumb/sphx_glr_study_optimization_thumb.png
+    :alt:
+
+  :doc:`/_gallery/study_optimization`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Study of camera calibration optimization</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use regularization with pysolve-gn. This example is the continuation of the basic curve fitting example, demonstrating how to incorporate regularization.">
+
+.. only:: html
+
+  .. image:: /_gallery/images/thumb/sphx_glr_adding_regularization_thumb.png
+    :alt:
+
+  :doc:`/_gallery/adding_regularization`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Adding regularization (curve fitting)</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use a parametrization with pysolve-gn.">
+
+.. only:: html
+
+  .. image:: /_gallery/images/thumb/sphx_glr_affine_parametrization_thumb.png
+    :alt:
+
+  :doc:`/_gallery/affine_parametrization`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Camera calibration with affine parametrization</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -57,6 +121,9 @@
 
    /_gallery/curve_fitting
    /_gallery/L_curve_analysis
+   /_gallery/study_optimization
+   /_gallery/adding_regularization
+   /_gallery/affine_parametrization
 
 
 .. only:: html

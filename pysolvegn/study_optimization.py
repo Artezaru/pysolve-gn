@@ -16,296 +16,552 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from typing import Union, Sequence, Callable, Optional
+from typing import Sequence, Optional
+
 from numpy.typing import ArrayLike
-from numbers import Real
 
 import numpy
 import scipy
 
-from .rho_functions import (
-    linear_rho_at_R2,
-    soft_l1_rho_at_R2,
-    cauchy_rho_at_R2,
-    arctan_rho_at_R2,
-    _build_tilde_R_and_tilde_J,
-)
+from .term import Term
+from .solver import solve
+from .parametrization import Parametrization
 
 
-def study_jacobian(
-    residual_func: Union[Callable, Sequence[Callable]],
-    jacobian_func: Union[Callable, Sequence[Callable]],
-    parameters: ArrayLike,
+def study_optimization(
+    terms: Sequence[Term],
+    p0: ArrayLike,
+    parametrization: Optional[Parametrization] = None,
     *,
-    weight: Optional[Union[str, Sequence[str]]] = None,
-    loss: Optional[Union[str, Sequence[str]]] = None,
     title: str = "",
 ) -> None:
     r"""
-    Study the Jacobian matrix of the least squares problem to analyze the observability
-    of the parameters and the convergence properties of the optimization
-    (called by verbosity level 3 of the Gauss-Newton solver).
+    Study the Gauss-Newton Hessian built by the solver.
 
-    The function accepts multiple terms in the least squares problem,
-    each with its own residual function, Jacobian function, weight, and loss function
-    studying the following optimization problem
+    This function is deliberately implemented on top of :func:`solve`.
+    It does not rebuild the residuals, robust Jacobians, weights, losses,
+    parametrization chain rule, or Hessian itself.
 
-    .. math::
+    The solver is executed with ``max_iteration=0`` and ``history=True``.
+    Consequently, only the initial state is evaluated and no optimization
+    step is performed.
 
-        \min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)
+    The analysis is therefore exactly consistent with the current solver
+    implementation.
 
-    Then the function displays the following information about the Jacobian matrix of the least squares problem:
-
-    - Density, Cost contribution and loss function for each term in the least squares problem.
-    - Singular values of the combined Jacobian matrix :math:`\sum_i w_i \mathbf{J}_i^T \mathbf{J}_i`
-      and their contribution to the variance of the parameters.
-    - Condition number of the combined Jacobian matrix, which is an indicator
-      of the convergence properties of the optimization.
-    - Singular vectors of the combined Jacobian matrix, which can be used to analyze the
-      observability of the parameters and the sensitivity of the optimization to noise in the data.
-    - Parameter sensitivity analysis based on the covariance matrix of the parameters,
-      which is computed as :
+    The Hessian returned by the solver is:
 
     .. math::
 
-        \Sigma = \sigma^2 \left( \sum_i w_i \mathbf{J}_i^T \mathbf{J}_i \right)^{-1}
+        H =
+        \sum_i w_i J_i^T J_i
 
-    where :math:`\sigma^2` is the estimated variance of the residuals, computed as
-    :math:`\sigma^2 = \frac{2C_0}{N_{eq}-N_p}` with :math:`C_0` the cost of the first
-    term (assuming data), :math:`N_{eq}` the number of equations and :math:`N_p` the
-    number of parameters.
+    for ``rJ`` terms, and:
 
+    .. math::
 
+        H =
+        \sum_i w_i H_i
+
+    for ``gH`` terms.
+
+    If a parametrization is provided to the solver through the terms'
+    parameter functions, the Hessian is expressed in the corresponding
+    input parameter space.
+
+    The function displays:
+
+    - the number of terms;
+    - the number of equations and optimized parameters;
+    - the individual and total costs;
+    - the Hessian condition number;
+    - the singular values of the Hessian;
+    - the inverse singular values;
+    - the estimated residual variance;
+    - the parameter covariance and standard deviations;
+    - the least observable parameter combinations;
+    - the right singular vectors associated with the smallest singular values.
 
     Parameters
     ----------
-    residual_func: Union[Callable, Sequence[Callable]]
-        The function(s) to compute the residuals for each term in the least squares problem.
-        Can be a single function or a sequence of functions.
-        Each callable represent the `i`-th term :math:`\mathbf{R}_i(\mathbf{p})`
-        in the least squares problem and should take as inputs the parameters
-        (array-like with shape (n_parameters,)) and return the residuals as a
-        1D numpy array with shape (n_residuals_i,) representing each
-        :math:`\mathbf{R}_{i,j}(\mathbf{p})` where :math:`j=0,...,n_{\text{residuals}_i-1}`.
+    terms : Sequence[Term]
+        Terms defining the least-squares problem.
 
-    jacobian_func: Union[Callable, Sequence[Callable]]
-        The function(s) to compute the Jacobian matrices for each term in the
-        least squares problem. Can be a single function or a sequence of functions.
-        Each callable represent the `i`-th term :math:`\mathbf{J}_i(\mathbf{p})`
-        in the least squares problem such as
-        :math:`\mathbf{J}_i(\mathbf{p}) = \frac{\partial \mathbf{R}_i(\mathbf{p})}{\partial \mathbf{p}}`
-        and should take as inputs the parameters (array-like with shape (n_parameters,))
-        and return the Jacobian matrix as a 2D numpy array with shape
-        (n_residuals_i, n_parameters) representing the Jacobian of each residual
-        :math:`\mathbf{R}_{i,j}(\mathbf{p})` where :math:`j=0,...,n_{\text{residuals}_i-1}`.
+    p0 : ArrayLike
+        Initial input parameters passed to :func:`solve`.
 
-    parameters: ArrayLike
-        The parameters of the optimization step with shape (n_parameters,).
+    parametrization : Optional[Parametrization], optional
+        Parametrization applied to the input parameters.
 
-    weight: Optional[Union[Real, Sequence[Real]]], optional (default=None)
-        The weight(s) for each term in the least squares problem.
-        Can be a single value or a sequence of values.
-        Each weight :math:`w_i` is a weight for the corresponding term in
-        the least squares problem and should be a non-negative real number.
-        If a single value is provided, it will be used for all terms in the
-        least squares problem. If None is provided, it will be set to 1.0.
-
-    loss: Optional[Union[str, Sequence[str]]], optional (default=None)
-        The loss function(s) for each term in the least squares problem.
-        Can be a single string or a sequence of strings.
-        Each loss function :math:`\rho_i` is a robust cost function for the corresponding
-        term in the least squares problem and should be one of the following strings:
-        ["linear", "soft_l1", "cauchy", "arctan"].
-        If a single string is provided, it will be used for all terms in the least
-        squares problem. If None is provided, it will be set to "linear".
-
-    title: str, optional
-        An optional title for the analysis, which can be used for logging purposes.
-        Default is an empty string.
-
+    title : str, optional
+        Optional title printed before the analysis.
 
     Returns
     -------
     None
-        This function is used for analysis and does not return any value.
+        This function only prints the analysis.
 
+    Notes
+    -----
+    The function intentionally calls the solver with:
 
-    Version
-    -------
-    - 0.0.1: Initial version.
-    - 0.0.2: :math:`\sigma^2` is now estimated as :math:`\sigma^2 = 2C_0/(N_{eq}-N_p)`
-      where :math:`C_0` is the cost of the first term (assuming data) instead of
-      the total cost, to provide a more accurate estimation of the residual variance
-      for the parameter sensitivity analysis.
+    ``max_iteration=0``
+
+    This guarantees that the exact same implementation used during
+    optimization is responsible for constructing the Hessian.
+
+    The returned history contains:
+
+    - ``parameters``
+    - ``costs``
+    - ``cost``
+    - ``residuals``
+    - ``second_term``
+    - ``hessian``
+
+    No optimization step is performed.
 
     """
-    if not isinstance(residual_func, Sequence):
-        residual_func = [residual_func]
-    if not isinstance(jacobian_func, Sequence):
-        jacobian_func = [jacobian_func]
 
-    if not len(residual_func) == len(jacobian_func):
-        raise ValueError(
-            "The length of residual_func and jacobian_func must be the same."
-        )
-    if not all(callable(func) for func in residual_func + jacobian_func):
-        raise ValueError(
-            "All elements in residual_func and jacobian_func must be callable."
-        )
+    # ------------------------------------------------------------------
+    # Input validation
+    # ------------------------------------------------------------------
 
-    if weight is None:
-        weight = 1.0
-    if not isinstance(weight, Sequence):
-        weight = [weight]
-    if len(weight) == 1:
-        weight = weight * len(residual_func)
-    if not len(weight) == len(residual_func):
-        raise ValueError(
-            "The length of weight must be the same as the length of residual_func and jacobian_func."
-        )
-    if not all(isinstance(w, Real) for w in weight):
-        raise ValueError("All elements in weight must be real numbers.")
-    weight = [float(w) for w in weight]  # Ensure weights are floats
+    if not isinstance(terms, Sequence):
+        raise ValueError("terms must be a sequence of Term objects.")
 
-    if loss is None:
-        loss = "linear"
-    if not isinstance(loss, Sequence):
-        loss = [loss]
-    loss = [l if l is not None else "linear" for l in loss]  # None -> "linear"
-    if len(loss) == 1:
-        loss = loss * len(residual_func)
-    if not len(loss) == len(residual_func):
-        raise ValueError(
-            "The length of loss must be the same as the length of residual_func and jacobian_func."
-        )
-    if not all(isinstance(l, str) for l in loss):
-        raise ValueError("All elements in loss must be strings.")
-    valid_loss_functions = {"linear", "soft_l1", "cauchy", "arctan"}
-    if not all(l in valid_loss_functions for l in loss):
-        raise ValueError(f"All elements in loss must be one of {valid_loss_functions}.")
+    if len(terms) == 0:
+        raise ValueError("terms sequence cannot be empty.")
 
-    parameters = numpy.asarray(parameters, dtype=numpy.float64)
-    if not isinstance(parameters, numpy.ndarray) and parameters.ndim == 1:
-        raise ValueError("Parameters must be a 1D numpy array.")
+    if not all(isinstance(term, Term) for term in terms):
+        raise ValueError("All elements of terms must be instances of the Term class.")
+
+    p0 = numpy.asarray(p0, dtype=numpy.float64)
+
+    if p0.ndim != 1:
+        raise ValueError(f"p0 must be a 1D array, got {p0.ndim} dimensions.")
+
+    if parametrization is not None and not isinstance(parametrization, Parametrization):
+        raise ValueError(
+            "parametrization must be an instance of the Parametrization class or None."
+        )
 
     if not isinstance(title, str):
-        raise ValueError("Title must be a string.")
+        raise ValueError("title must be a string.")
 
-    # Prepare the robust cost functions for each term in the least squares problem
-    rho_func = []
-    for l in loss:
-        if l == "linear":
-            rho_func.append(linear_rho_at_R2)
-        elif l == "soft_l1":
-            rho_func.append(soft_l1_rho_at_R2)
-        elif l == "cauchy":
-            rho_func.append(cauchy_rho_at_R2)
-        elif l == "arctan":
-            rho_func.append(arctan_rho_at_R2)
+    n_parameters = p0.size
+
+    # ------------------------------------------------------------------
+    # Ask the current solver to build the exact initial system.
+    #
+    # max_iteration=0 is intentional:
+    # the solver evaluates iteration 0 and stops before solving
+    # H * delta_parameters = -second_term.
+    # ------------------------------------------------------------------
+
+    _, history = solve(
+        terms=terms,
+        p0=p0,
+        parametrization=parametrization,
+        max_iteration=0,
+        history=True,
+        history_details=[
+            "iteration",
+            "parameters",
+            "costs",
+            "cost",
+            "residuals",
+            "second_term",
+            "hessian",
+        ],
+    )
+
+    if history is None or len(history) == 0:
+        raise RuntimeError("The solver did not return the initial optimization state.")
+
+    state = history[-1]
+
+    # ------------------------------------------------------------------
+    # Retrieve exactly what was built by the solver.
+    # ------------------------------------------------------------------
+
+    parameters = numpy.asarray(state["parameters"], dtype=numpy.float64)
+
+    hessian = state["hessian"]
+
+    costs = state["costs"]
+    total_cost = state["cost"]
+
+    residuals = state["residuals"]
+
+    second_term = state["second_term"]
+
+    # ------------------------------------------------------------------
+    # Number of equations.
+    #
+    # Only rJ terms provide actual residual equations.
+    # gH terms represent a local quadratic model and therefore do not
+    # contribute to the residual degrees of freedom.
+    # ------------------------------------------------------------------
+
+    n_equations = 0
+
+    for term, residual in zip(terms, residuals):
+
+        if term.type == "rJ":
+
+            if residual is None:
+                raise RuntimeError(
+                    "An rJ term returned no residual in the solver history."
+                )
+
+            n_equations += numpy.asarray(residual).size
+
+    # ------------------------------------------------------------------
+    # Title
+    # ------------------------------------------------------------------
+
+    print("\n" + "=" * 70)
+
+    if title:
+        print(f"\n{title:^70}")
+        print("-" * 70)
+
+    # ------------------------------------------------------------------
+    # Global information
+    # ------------------------------------------------------------------
+
+    print("\nSolver state")
+    print("------------")
+
+    print(
+        "The following quantities are taken directly from the current "
+        "Gauss-Newton solver."
+    )
+
+    print("\nNumber of terms       :", len(terms))
+    print("Number of equations   :", n_equations)
+    print("Number of parameters  :", n_parameters)
+
+    print(f"Total cost            : " f"{total_cost:.6e}")
+
+    print(
+        f"||g||_inf             : "
+        f"{numpy.linalg.norm(second_term, ord=numpy.inf):.6e}"
+    )
+
+    # ------------------------------------------------------------------
+    # Individual term information
+    # ------------------------------------------------------------------
+
+    print("\nTerm information")
+    print("----------------")
+
+    print(
+        f"{'Term':^10}"
+        f"{'Type':^10}"
+        f"{'Equations':^15}"
+        f"{'Weight':^15}"
+        f"{'Cost':^20}"
+    )
+
+    for i, (term, residual, cost) in enumerate(zip(terms, residuals, costs)):
+
+        if term.type == "rJ":
+
+            n_eq = numpy.asarray(residual).size
+
         else:
-            raise ValueError(
-                f"Invalid loss function '{l}'. Valid options are 'linear', 'soft_l1', 'cauchy', 'arctan'."
+
+            n_eq = 0
+
+        print(
+            f"{i:^10}"
+            f"{term.type:^10}"
+            f"{n_eq:^15}"
+            f"{term.weight:^15.6e}"
+            f"{cost:^20.6e}"
+        )
+
+    # ------------------------------------------------------------------
+    # Hessian conversion
+    # ------------------------------------------------------------------
+
+    if scipy.sparse.issparse(hessian):
+
+        H = hessian.toarray()
+
+    else:
+
+        H = numpy.asarray(hessian, dtype=numpy.float64)
+
+    if H.ndim != 2:
+        raise RuntimeError(
+            f"The solver Hessian must be a 2D matrix, got {H.ndim} dimensions."
+        )
+
+    if H.shape != (n_parameters, n_parameters):
+        raise RuntimeError(
+            "The Hessian shape is inconsistent with the number of "
+            "optimized parameters: "
+            f"H.shape={H.shape}, n_parameters={n_parameters}."
+        )
+
+    # ------------------------------------------------------------------
+    # Hessian symmetry
+    # ------------------------------------------------------------------
+    #
+    # Numerically, H should be symmetric because it is constructed as
+    # J.T @ J or as a symmetric Hessian from a gH term.
+    #
+    # Symmetrizing here removes tiny numerical asymmetries without
+    # changing the actual Gauss-Newton system in practice.
+    # ------------------------------------------------------------------
+
+    H = 0.5 * (H + H.T)
+
+    # ------------------------------------------------------------------
+    # Hessian analysis using SVD
+    # ------------------------------------------------------------------
+
+    print("\nHessian analysis")
+    print("----------------")
+
+    print("The Hessian below is the exact Gauss-Newton system built " "by the solver.")
+
+    print("It is expressed in the input parameter space.")
+
+    # ------------------------------------------------------------------
+    # SVD
+    #
+    # H = U @ diag(S) @ Vt
+    #
+    # The columns of Vt.T are the right singular vectors.
+    # These vectors represent directions in parameter space.
+    # ------------------------------------------------------------------
+
+    U, singular_values, Vt = numpy.linalg.svd(
+        H,
+        full_matrices=False,
+    )
+
+    if singular_values.size == 0:
+
+        lambda_max = 0.0
+        lambda_min = 0.0
+        condition_number = float("inf")
+
+    else:
+
+        lambda_max = singular_values[0]
+
+        non_zero = singular_values > 1e-12
+
+        if numpy.any(non_zero):
+
+            lambda_min = numpy.min(singular_values[non_zero])
+
+            condition_number = (
+                lambda_max / lambda_min if lambda_min > 0.0 else float("inf")
             )
 
-    _n_terms = len(residual_func)
-    _n_parameters = parameters.size
-    _parameters = parameters.copy()
-
-    # Compute the residuals, Jacobian and robust cost function values for each term in the least squares problem
-    residual_arrays = [R_func(_parameters) for R_func in residual_func]
-    jacobian_matrices = [J_func(_parameters) for J_func in jacobian_func]
-    rhos_arrays = [r_func(R) for r_func, R in zip(rho_func, residual_arrays)]
-
-    # Cost computation
-    costs = [0.5 * numpy.sum(rho[0]) for rho in rhos_arrays]
-    total_cost = sum(w * c for w, c in zip(weight, costs))
-
-    # Build tilted residuals and Jacobian based on the robust cost function
-    for i in range(_n_terms):
-        residual_arrays[i], jacobian_matrices[i] = _build_tilde_R_and_tilde_J(
-            residual_arrays[i],
-            jacobian_matrices[i],
-            rhos_arrays[i][1],
-            rhos_arrays[i][2],
-        )
-
-    # ----------- Title print ----------------
-    print("\n" + "=" * 50)
-    print("\n" + "-" * 50)
-    print(f"{title:^50}")
-    print("-" * 50 + "\n")
-
-    # ----------- Global informations -----------
-    print(f"Number of terms in the least squares problem: {_n_terms}")
-    _n_equations = residual_arrays[0].size
-    print(f"Number of equations in the first term (assuming data): {_n_equations}")
-    print(f"Number of parameters: {_n_parameters}")
-    print(f"\nTotal cost value Ctot = ½Σ w*ρ(|R|²): {total_cost:.3e}")
-
-    # ----------- Sub term contributions -----------
-    header = f"\n{'LS Term':^10} {'Nequations':^12} {'Nparams':^10} {'Density (%)':^15} {'Loss ρ':^10} {'Weight w':^10} {'Cost ½ρ(|R|²)':^15} {'Cost (%)':^10}"
-    print(header)
-    for i, J in enumerate(jacobian_matrices):
-        if scipy.sparse.issparse(J):
-            n_residuals_i, n_parameters_i = J.shape
-            density = 100.0 * J.nnz / (n_residuals_i * n_parameters_i)
         else:
-            n_residuals_i, n_parameters_i = J.shape
-            density = 100.0 * numpy.count_nonzero(J) / (n_residuals_i * n_parameters_i)
-        cost_i = costs[i]
-        weight_i = weight[i]
-        loss_i = loss[i]
-        cost_percent = int(
-            round(
-                100.0 * cost_i * weight_i / total_cost if total_cost > 0 else "inf", 0
+
+            lambda_min = 0.0
+            condition_number = float("inf")
+
+    print(f"\nLargest singular value  : " f"{lambda_max:.6e}")
+
+    print(f"Smallest singular value : " f"{lambda_min:.6e}")
+
+    print(f"Condition number        : " f"{condition_number:.6e}")
+
+    print(f"Trace(H)                : " f"{numpy.trace(H):.6e}")
+
+    # ------------------------------------------------------------------
+    # Singular values
+    # ------------------------------------------------------------------
+
+    print("\nSingular values of H")
+    print("--------------------")
+
+    print(f"{'Index':^10}" f"{'λ²':^20}" f"{'1/λ²':^20}")
+
+    for i, value in enumerate(singular_values):
+
+        if value > 1e-12:
+
+            inverse = 1.0 / value
+
+        else:
+
+            inverse = float("inf")
+
+        print(f"{i:^10}" f"{value:^20.6e}" f"{inverse:^20.6e}")
+
+    # ------------------------------------------------------------------
+    # Parameter sensitivity
+    # ------------------------------------------------------------------
+
+    print("\nParameter sensitivity")
+    print("---------------------")
+
+    degrees_of_freedom = n_equations - n_parameters
+
+    print(f"Degrees of freedom    : " f"{degrees_of_freedom}")
+
+    if degrees_of_freedom > 0:
+
+        # The first term is assumed to represent the observational data,
+        # consistently with the previous implementation.
+        sigma2 = 2.0 * costs[0] / degrees_of_freedom
+
+    else:
+
+        sigma2 = float("inf")
+
+    print(f"Estimated residual variance σ² : " f"{sigma2:.6e}")
+
+    # ------------------------------------------------------------------
+    # Covariance
+    # ------------------------------------------------------------------
+    #
+    # Use the SVD rather than numpy.linalg.inv(H).
+    #
+    # This is numerically safer and naturally exposes poorly observable
+    # directions.
+    # ------------------------------------------------------------------
+
+    covariance = None
+
+    if numpy.isfinite(sigma2):
+
+        if singular_values.size > 0:
+
+            tolerance = (
+                numpy.finfo(numpy.float64).eps * max(H.shape) * singular_values[0]
             )
+
+            if numpy.all(singular_values > tolerance):
+
+                covariance = sigma2 * Vt.T @ numpy.diag(1.0 / singular_values) @ Vt
+
+            else:
+
+                print(
+                    "\nCovariance matrix cannot be computed "
+                    "as a regular inverse because H is singular "
+                    "or numerically rank deficient."
+                )
+
+        else:
+
+            print("\nCovariance matrix cannot be computed " "because H is empty.")
+
+    else:
+
+        print(
+            "\nCovariance matrix cannot be estimated "
+            "because there are not enough degrees of freedom."
         )
-        row = f"{i:^10} {n_residuals_i:^12} {n_parameters_i:^10} {density:^15.2f} {loss_i:^10} {weight_i:^10.2e} {cost_i:^15.3e} {cost_percent:^10.2f}"
-        print(row)
 
-    # ----------- Singular values analysis -----------
-    M = sum(w * (J.T @ J) for w, J in zip(weight, jacobian_matrices))
-    M = M.toarray() if scipy.sparse.issparse(M) else M
-    U, S, Vt = numpy.linalg.svd(M, full_matrices=False)
-    s_max = S[0]
-    s_min = S[-1]
-    cond = s_max / s_min if s_min > 1e-12 else float("inf")
+    # ------------------------------------------------------------------
+    # Parameter table
+    # ------------------------------------------------------------------
 
-    print(f"\nSingular values λ² (max/min) of Σ wJᵀJ : {s_max:.3e}/{s_min:.3e}")
-    print(f"Condition number (max λ² / min λ²): {cond:.3e}")
-    header = f"\n{'λ² Index':^10} {'λ² Value':^15} {'Var 1/λ²':^15}"
-    print(header)
-    for i, s in enumerate(S):
-        var = 1.0 / s if s > 1e-12 else float("inf")  # Avoid division by zero
-        print(f"{i:^10} {s:^15.3e} {var:^15.3e}")
+    if covariance is not None:
 
-    # ----------- Parameter sensitivity analysis -----------
-    sigma_2 = (
-        2 * costs[0] / (_n_equations - _n_parameters)
-        if _n_equations > _n_parameters
-        else float("inf")
-    )
-    cov = (
-        sigma_2 * numpy.linalg.inv(M) if _n_equations > _n_parameters else float("inf")
-    )
-    print(f"\nVt = (right singular vectors) of the combined Jacobian matrix Σ wJᵀJ:")
-    print(f"Estimated residual variance σ² = 2*C0/(Neq-Np): {sigma_2:.3e}")
-
-    indices = [0, -2, -1] if _n_parameters >= 3 else list(range(_n_parameters))
-    header = f"\n{'Param Index':^15} {'Value P':^10} {'Var V=σ²M⁻¹':^15} {'Ratio √V/|P|':^15}"
-    for i in indices:
-        header += f" {'Vt[' + str(i) + ']':^15}"
-    print(header)
-
-    for j in range(_n_parameters):
-        var = cov[j, j] if _n_equations > _n_parameters else float("inf")
-        ratio = (
-            numpy.sqrt(var) / abs(parameters[j]) if parameters[j] != 0 else float("inf")
+        print(
+            f"\n{'Parameter':^12}"
+            f"{'Value':^20}"
+            f"{'Variance':^20}"
+            f"{'Std':^20}"
+            f"{'Std / |Value|':^20}"
         )
-        row = f"{j:^15} {parameters[j]:^10.3e} {var:^15.3e} {ratio:^15.3e}"
-        for i in indices:
-            row += f" {Vt[i, j]:^15.3e}"
-        print(row)
 
-    # ----------- End of analysis -----------
-    print("\n" + "=" * 50 + "\n")
+        for i in range(n_parameters):
+
+            variance = covariance[i, i]
+
+            std = numpy.sqrt(max(variance, 0.0))
+
+            if abs(parameters[i]) > 0.0:
+
+                relative_std = std / abs(parameters[i])
+
+            else:
+
+                relative_std = float("inf")
+
+            print(
+                f"{i:^12}"
+                f"{parameters[i]:^20.6e}"
+                f"{variance:^20.6e}"
+                f"{std:^20.6e}"
+                f"{relative_std:^20.6e}"
+            )
+
+    # ------------------------------------------------------------------
+    # Best and worst SVD parameter-space directions
+    # ------------------------------------------------------------------
+
+    print("\nSVD parameter-space directions")
+    print("------------------------------")
+
+    print("The right singular vectors of H describe directions in " "parameter space.")
+
+    print(
+        "Large singular values correspond to strongly observable "
+        "directions, while small singular values correspond to "
+        "weakly observable directions."
+    )
+
+    n_display = min(3, n_parameters // 2)
+
+    print("\nBest observable directions")
+    print("--------------------------")
+
+    for mode in range(n_display):
+
+        singular_value = singular_values[mode]
+        vector = Vt[mode, :]
+
+        print(f"\nMode {mode + 1}" f"  (λ² = {singular_value:.6e})")
+
+        for j, coefficient in enumerate(vector):
+
+            print(f"  p[{j}] : " f"{coefficient:+.6e}")
+
+    print("\nWorst observable directions")
+    print("---------------------------")
+
+    for mode in range(1, n_display + 1):
+
+        index = -mode
+
+        singular_value = singular_values[index]
+        vector = Vt[index, :]
+
+        print(f"\nMode {mode}" f"  (λ² = {singular_value:.6e})")
+
+        for j, coefficient in enumerate(vector):
+
+            print(f"  p[{j}] : " f"{coefficient:+.6e}")
+
+    print("\nRight singular vectors Vt")
+    print("-------------------------")
+
+    print("Each row of Vt is one parameter-space singular vector.")
+
+    numpy.set_printoptions(
+        precision=6,
+        suppress=False,
+    )
+
+    print(Vt)
+
+    # ------------------------------------------------------------------
+    # End
+    # ------------------------------------------------------------------
+
+    print("\n" + "=" * 70 + "\n")

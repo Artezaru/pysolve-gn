@@ -2,26 +2,28 @@
 .. _sphx_glr__gallery_curve_fitting.py:
 
 Curve fitting
-=================
+==================================
 
-This example shows how to fit a curve to a set of data points using
-pysolve-gn. We will use the Gauss-Newton method to minimize the
-residuals between the observed data points and the curve defined by a
-parametric function.
+This example shows how to use pysolve-gn package.
 
+We will fit an exponential curve to noisy data.
 """
 
 # %%
 # Define the model function
 # --------------------------
 #
-# First, we will define the model function that represents the curve we want to fit.
-# In this example, we will use an exponential function defined as:
+# Lets consider the following exponential model.
 #
 # .. math::
 #
-#     y = a \cdot e^{b \cdot x}
+#     y = a \cdot e^{b x}
 #
+# We generate a small and noisy dataset. In this situation, the fitted
+# parameters can deviate significantly from the true parameters.
+#
+# The parameters :math:`a` and :math:`b` will be estimated from the noisy data.
+
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -30,98 +32,138 @@ import pysolvegn
 np.random.seed(0)
 
 
-# Define the model function
 def model(params, x):
     a, b = params
     return a * np.exp(b * x)
 
 
-# Generate synthetic data points
-x_data = np.linspace(0, 3, 100)
-true_params = [2.5, 0.5]  # True parameters for the curve: y = a * exp(b * x)
+n_points = 100
+x_data = np.linspace(0, 3, n_points)
+
+true_params = np.array([2.5, 0.5])
+
 y_true = model(true_params, x_data)
-y_data = y_true + 0.5 * np.random.normal(size=y_true.shape)  # Add noise to the data
+
+# Add relatively strong noise to make the effect of regularization visible.
+y_data = y_true + 1.0 * np.random.normal(size=y_true.shape)
 
 
 # %%
-# Create the residual and Jacobian functions
-# -------------------------------------------
+# Create the data term
+# --------------------
 #
-# Secondly, we will define the residual function, and the
-# Jacobian function. The residual function computes the difference between the
-# observed data points and the model predictions, and the Jacobian function computes
-# the derivatives of the residuals with respect to the parameters.
+# The data term represents the residuals between the observations and
+# the model predictions.
 #
-# This equation is called a **term** in pysolve-gn, and it represents a single
-# component of the optimization problem. See :class:`pysolvegn.Term` for more details
-# on how to define terms in pysolve-gn.
+# .. math::
+#
+#     r_j(\mathbf{p}) =
+#     a e^{b x_j} - y_j
+#
+# The Jacobian is:
+#
+# .. math::
+#
+#     \frac{\partial r_j}{\partial a} = e^{b x_j}
+#
+# .. math::
+#
+#     \frac{\partial r_j}{\partial b}
+#     = a x_j e^{b x_j}
+#
+# .. seealso::
+#
+#     The class :class:`pysolvegn.Term` to store the residual and jacobian functions.
+#
 
 
-# Define the residual function
-def residual_function(params, x, y):
-    return model(params, x) - y
+def residual_function(params):
+    return model(params, x_data) - y_data
 
 
-residual_func = lambda params: residual_function(params, x_data, y_data)
-
-
-# Define the Jacobian function
-def jacobian_function(params, x):
+def jacobian_function(params):
     a, b = params
-    J = np.zeros((len(x), len(params)))
-    J[:, 0] = np.exp(b * x)  # Derivative with respect to a
-    J[:, 1] = a * x * np.exp(b * x)  # Derivative with respect to b
+
+    J = np.zeros((len(x_data), len(params)))
+
+    J[:, 0] = np.exp(b * x_data)
+    J[:, 1] = a * x_data * np.exp(b * x_data)
+
     return J
 
 
-jacobian_func = lambda params: jacobian_function(params, x_data)
-
 data_term = pysolvegn.Term.from_rJ(
-    residual_func=residual_func, jacobian_func=jacobian_func, loss="linear", weight=1.0
+    residual_func=residual_function,
+    jacobian_func=jacobian_function,
+    loss="linear",
+    weight=1.0,
 )
 
+
 # %%
-# Perform curve fitting
-# ----------------------
+# Performing optimization
+# ---------------------------
 #
-# Now we can use the :func:`pysolvegn.solve` function to perform the curve fitting.
-# We will provide the term object and an initial guess for the parameters.
-# The function will return the estimated parameters that best fit the data.
+# We solve the problem using only the :func:`pysolvegn.solve` function.
+# This function takes the data term, an initialisation and convergence criterion.
+#
 
-# Initial guess for the parameters
-initial_params = [2.0, 0.4]
+initial_params = np.array([1.0, 1.0])
 
-result = pysolvegn.solve(
+optimized_parameters = pysolvegn.solve(
     terms=[data_term],
-    x0=initial_params,
-    max_iteration=10,
-    xtol=1e-6,
-    ftol=1e-6,
-    verbosity=3,
+    p0=initial_params,
+    max_iteration=100,
+    xtol=1e-8,
+    ftol=1e-8,
+    verbosity=2,
 )
-print("Estimated parameters:", result)
-
-y_retrieved = model(result, x_data)
 
 # %%
-# Plot the results
-# ----------------------
+# Display the fitted parameters
+# ------------------------------
 
-# Display the results
+print("True parameters:")
+print(true_params)
+
+print("\nEstimated parameters:")
+print(optimized_parameters)
+
+x_plot = np.linspace(0, 3, 300)
+y_plot = model(optimized_parameters, x_plot)
+y_true_plot = model(true_params, x_plot)
+
 plt.figure(figsize=(10, 6))
-plt.scatter(x_data, y_data, label="Data Points", color="red", s=20)
-plt.plot(x_data, y_true, label="True Curve", color="blue", linewidth=2)
-plt.plot(
+
+plt.scatter(
     x_data,
-    y_retrieved,
-    label="Fitted Curve",
-    color="green",
+    y_data,
+    label="Data Points",
+    color="red",
+    s=35,
+)
+
+plt.plot(
+    x_plot,
+    y_true_plot,
+    label="True Curve",
+    color="blue",
+    linewidth=2,
+)
+
+plt.plot(
+    x_plot,
+    y_plot,
+    label="Optimized Curve",
+    color="orange",
     linestyle="--",
     linewidth=2,
 )
-plt.title("Curve Fitting using Gauss-Newton Method")
+
+plt.title("Curve Fitting")
 plt.xlabel("x")
 plt.ylabel("y")
 plt.legend()
 plt.grid()
+
 plt.show()

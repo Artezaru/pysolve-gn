@@ -30,7 +30,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pysolvegn
 
-
 np.random.seed(0)
 
 
@@ -87,18 +86,16 @@ estimated_params = [2.2, 0.55]
 estimated_stds = [0.5, 0.2]
 estimated_trust = [0.1, 0.05]
 
-residual_reg_func, jacobian_reg_func = pysolvegn.build_soft_squared_regularization(
-    means=estimated_params, stds=estimated_stds, thresholds=estimated_trust
+reg_term = pysolvegn.build_soft_squared_regularization(
+    means=estimated_params,
+    stds=estimated_stds,
+    thresholds=estimated_trust,
+    loss="linear",
+    weight=1.0,
 )
 
 data_terms = pysolvegn.Term.from_rJ(
     residual_func=residual_func, jacobian_func=jacobian_func, loss="linear", weight=1.0
-)
-reg_term = pysolvegn.Term.from_rJ(
-    residual_func=residual_reg_func,
-    jacobian_func=jacobian_reg_func,
-    loss="linear",
-    weight=1.0,
 )
 
 # %%
@@ -114,7 +111,7 @@ weights = np.logspace(-2, 4, 50)  # Range of regularization weights to test
 pysolvegn.perform_Lcurve_analysis(
     data_term=data_terms,
     reg_term=reg_term,
-    x0=estimated_params,
+    p0=estimated_params,
     reg_weights=weights,
     max_iteration=10,
     xtol=1e-6,

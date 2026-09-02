@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pysolvegn.build_squared_regularization &#8212; pysolvegn 0.2.1 documentation</title>
+    <title>pysolvegn.build_squared_regularization &#8212; pysolvegn 0.3.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=37f418d5"></script>
+    <script src="../_static/documentation_options.js?v=e259d695"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -55,7 +55,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="pysolvegn.build_soft_squared_regularization" href="pysolvegn.build_soft_squared_regularization.html" />
-    <link rel="prev" title="pysolvegn.build_numerical_jacobian" href="pysolvegn.build_numerical_jacobian.html" />
+    <link rel="prev" title="pysolvegn.build_positive_parametrization" href="pysolvegn.build_positive_parametrization.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -120,7 +120,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.2.1 documentation</p>
+    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
   
 </a></div>
     
@@ -291,14 +291,22 @@
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve.html">pysolvegn.solve</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.Term.html">pysolvegn.Term</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.GaussNewtonSolver.html">pysolvegn.GaussNewtonSolver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.Parametrization.html">pysolvegn.Parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_affine_parametrization.html">pysolvegn.build_affine_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_fixed_parametrization.html">pysolvegn.build_fixed_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_sigmoid_parametrization.html">pysolvegn.build_sigmoid_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_positive_parametrization.html">pysolvegn.build_positive_parametrization</a></li>
 </ul>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">pysolvegn.build_squared_regularization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_soft_squared_regularization.html">pysolvegn.build_soft_squared_regularization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.perform_Lcurve_analysis.html">pysolvegn.perform_Lcurve_analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.study_jacobian.html">pysolvegn.study_jacobian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.study_optimization.html">pysolvegn.study_optimization</a></li>
 </ul>
 </div>
 </nav></div>
@@ -363,44 +371,42 @@
 <h1>pysolvegn.build_squared_regularization<a class="headerlink" href="#pysolvegn-build-squared-regularization" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysolvegn.build_squared_regularization">
-<span class="sig-name descname"><span class="pre">build_squared_regularization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stds</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/regularization.html#build_squared_regularization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.build_squared_regularization" title="Link to this definition">#</a></dt>
-<dd><p>Build a simple squared regularization of the parameters according to a Gaussian
-prior on the parameters, where the residuals and jacobian of the regularization are defined as:</p>
+<span class="sig-name descname"><span class="pre">build_squared_regularization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stds</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finite_difference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'central'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/implemented_regularizations.html#build_squared_regularization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.build_squared_regularization" title="Link to this definition">#</a></dt>
+<dd><p>Build a squared regularization term based on a Gaussian prior.</p>
+<p>The regularization residuals are defined as:</p>
 <div class="math notranslate nohighlight">
-\[R_{reg}(\lambda) = \frac{\lambda - \mu}{\sigma}\]</div>
+\[R_{\mathrm{reg},i}(\mathbf{p})
+=
+\frac{p_i - \mu_i}{\sigma_i}\]</div>
+<p>with Jacobian:</p>
 <div class="math notranslate nohighlight">
-\[J_{reg}(\lambda) = \frac{1}{\sigma}\]</div>
-<p>Then the callable functions returned by this function can be used as the
-residual and jacobian of a regularization term in the Gauss-Newton optimization,
-where the regularization term will be added to the residuals of the transformations,
-and the jacobian of the regularization will be added to the jacobian of the
-transformations.</p>
+\[\begin{split}J_{\mathrm{reg},ij}
+=
+\begin{cases}
+    \frac{1}{\sigma_i} &amp; \text{if } i=j \\
+    0 &amp; \text{otherwise}.
+\end{cases}\end{split}\]</div>
+<p>The resulting <a class="reference internal" href="pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">Term</span></code></a> can be directly passed to
+<code class="xref py py-func docutils literal notranslate"><span class="pre">pysolve_gn.solve()</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>means</strong> (<em>ArrayLike</em>) – A 1D array of mean values for each parameter. The length of the means array
-must be equal to the total number of parameters of all transformations.</p></li>
-<li><p><strong>stds</strong> (<em>ArrayLike</em>) – A 1D array of standard deviation values for each parameter. The length of the std
-array must be equal to the total number of parameters of all transformations.</p></li>
+<li><p><strong>means</strong> (<em>ArrayLike</em>) – Mean values of the Gaussian prior for each parameter.</p></li>
+<li><p><strong>stds</strong> (<em>ArrayLike</em>) – Standard deviation values of the Gaussian prior for each parameter.
+All values must be strictly positive.</p></li>
+<li><p><strong>weight</strong> (<em>Real</em><em>, </em><em>optional</em><em> (</em><em>default=1.0</em><em>)</em>) – Weight of the regularization term.</p></li>
+<li><p><strong>loss</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;linear&quot;</em><em>)</em>) – Loss function applied to the regularization residuals.</p></li>
+<li><p><strong>finite_difference</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;central&quot;</em><em>)</em>) – Finite difference method used by <a class="reference internal" href="pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">Term</span></code></a> if the Jacobian
+is not explicitly available.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
-<li><p><strong>residual_func</strong> (<em>Callable</em>) – A function that computes the residuals of the regularization for a given set of parameters.</p></li>
-<li><p><strong>jacobian_func</strong> (<em>Callable</em>) – A function that computes the Jacobian of the regularization for a given set of parameters.</p></li>
-</ul>
-</p>
+<dd class="field-even"><p>A <a class="reference internal" href="pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">Term</span></code></a> representing the squared Gaussian regularization.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><em>Tuple</em></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><em>Callable</em></a>, <a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><em>Callable</em></a>]</p>
+<dd class="field-odd"><p><a class="reference internal" href="pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term">Term</a></p>
 </dd>
 </dl>
-<section id="version">
-<h2>Version<a class="headerlink" href="#version" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>0.0.1: Initial version.</p></li>
-</ul>
-</section>
 </dd></dl>
 
 </section>
@@ -416,12 +422,12 @@ array must be equal to the total number of parameters of all transformations.</p
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="pysolvegn.build_numerical_jacobian.html"
+       href="pysolvegn.build_positive_parametrization.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">pysolvegn.build_numerical_jacobian</p>
+        <p class="prev-next-title">pysolvegn.build_positive_parametrization</p>
       </div>
     </a>
     <a class="right-next"

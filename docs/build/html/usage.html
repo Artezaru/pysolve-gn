@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Usage &#8212; pysolvegn 0.2.1 documentation</title>
+    <title>Usage &#8212; pysolvegn 0.3.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=37f418d5"></script>
+    <script src="_static/documentation_options.js?v=e259d695"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -119,7 +119,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.2.1 documentation</p>
+    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
   
 </a></div>
     
@@ -290,6 +290,9 @@
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="_gallery/curve_fitting.html">Curve fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_gallery/L_curve_analysis.html">L-curve analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_gallery/study_optimization.html">Study of camera calibration optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_gallery/adding_regularization.html">Adding regularization (curve fitting)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_gallery/affine_parametrization.html">Camera calibration with affine parametrization</a></li>
 </ul>
 </div>
 </nav></div>
@@ -356,12 +359,27 @@ problem being solved, the code used to solve it, and the resulting output.</p>
 <h2>Gallery Examples<a class="headerlink" href="#gallery-examples" title="Link to this heading">#</a></h2>
 <p>The package <code class="docutils literal notranslate"><span class="pre">pysolve-gn</span></code> provides a collection of examples demonstrating how to use the
 package for various applications.</p>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to fit a curve to a set of data points using pysolve-gn. We will use the Gauss-Newton method to minimize the residuals between the observed data points and the curve defined by a parametric function."><img alt="" src="_images/sphx_glr_curve_fitting_thumb.png" />
+</section>
+</section>
+<section id="gallery">
+<h1>Gallery<a class="headerlink" href="#gallery" title="Link to this heading">#</a></h1>
+<section id="basic-examples">
+<h2>Basic examples<a class="headerlink" href="#basic-examples" title="Link to this heading">#</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use pysolve-gn package."><img alt="" src="_images/sphx_glr_curve_fitting_thumb.png" />
 <p><a class="reference internal" href="_gallery/curve_fitting.html"><span class="doc">Curve fitting</span></a></p>
   <div class="sphx-glr-thumbnail-title">Curve fitting</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to perform L-curve analysis to estimate the optimal regularization weight for an optimization problem. We will use the Gauss-Newton method to solve a regularized optimization problem for a range of regularization weights, and then we will analyze the results to find the optimal weight."><img alt="" src="_images/sphx_glr_L_curve_analysis_thumb.png" />
 <p><a class="reference internal" href="_gallery/L_curve_analysis.html"><span class="doc">L-curve analysis</span></a></p>
   <div class="sphx-glr-thumbnail-title">L-curve analysis</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use pysolvegn.study_optimization to study the Gauss-Newton Hessian of a camera calibration problem."><img alt="" src="_images/sphx_glr_study_optimization_thumb.png" />
+<p><a class="reference internal" href="_gallery/study_optimization.html"><span class="doc">Study of camera calibration optimization</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Study of camera calibration optimization</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use regularization with pysolve-gn. This example is the continuation of the basic curve fitting example, demonstrating how to incorporate regularization."><img alt="" src="_images/sphx_glr_adding_regularization_thumb.png" />
+<p><a class="reference internal" href="_gallery/adding_regularization.html"><span class="doc">Adding regularization (curve fitting)</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Adding regularization (curve fitting)</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use a parametrization with pysolve-gn."><img alt="" src="_images/sphx_glr_affine_parametrization_thumb.png" />
+<p><a class="reference internal" href="_gallery/affine_parametrization.html"><span class="doc">Camera calibration with affine parametrization</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Camera calibration with affine parametrization</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
 <div class="sphx-glr-footer sphx-glr-footer-gallery docutils container">
@@ -423,8 +441,16 @@ package for various applications.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Usage</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gallery-examples">Gallery Examples</a></li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#gallery">Gallery</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-examples">Basic examples</a></li>
+</ul>
+</li>
+</ul>
+
   </nav></div>
 
   <div class="sidebar-secondary-item">

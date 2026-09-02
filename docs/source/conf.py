@@ -54,11 +54,11 @@ add_module_names = False
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
 
-intersphinx_mapping = {
-    "python": ("https://docs.python.org/3", None),
-    "numpy": ("https://numpy.org/doc/stable/", None),
-    "scipy": ("https://docs.scipy.org/doc/scipy/", None),
-}
+# intersphinx_mapping = {
+#     "python": ("https://docs.python.org/3", None),
+#     "numpy": ("https://numpy.org/doc/stable/", None),
+#     "scipy": ("https://docs.scipy.org/doc/scipy/", None),
+# }
 
 sphinx_gallery_conf = {
     "examples_dirs": [

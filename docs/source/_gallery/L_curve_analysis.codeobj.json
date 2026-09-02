@@ -60,15 +60,6 @@
    "name": "function"
   }
  ],
- "jacobian_reg_func": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "function"
-  }
- ],
  "model": [
   {
    "is_class": false,
@@ -264,15 +255,6 @@
   }
  ],
  "residual_function": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "function"
-  }
- ],
- "residual_reg_func": [
   {
    "is_class": false,
    "is_explicit": false,

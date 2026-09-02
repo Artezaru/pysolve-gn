@@ -20,14 +20,21 @@ from .__version__ import __version__
 
 from .derivation import build_numerical_jacobian
 from .term import Term
-from .gauss_newton_solver import GaussNewtonSolver
+from .parametrization import Parametrization
 from .solver import solve
 
-from .regularization import (
+from .implemented_parametrizations import (
+    build_affine_parametrization,
+    build_fixed_parametrization,
+    build_sigmoid_parametrization,
+    build_positive_parametrization,
+)
+
+from .implemented_regularizations import (
     build_squared_regularization,
     build_soft_squared_regularization,
 )
 
 # Deprecated
-from .study_optimization import study_jacobian
+from .study_optimization import study_optimization
 from .L_curve import perform_Lcurve_analysis

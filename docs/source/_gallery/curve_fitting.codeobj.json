@@ -19,18 +19,9 @@
   {
    "is_class": false,
    "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "list"
-  }
- ],
- "jacobian_func": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "function"
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
   }
  ],
  "jacobian_function": [
@@ -49,6 +40,31 @@
    "module": "builtins",
    "module_short": "builtins",
    "name": "function"
+  }
+ ],
+ "n_points": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "int"
+  }
+ ],
+ "np.array": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "builtin_function_or_method"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "array"
   }
  ],
  "np.exp": [
@@ -129,6 +145,15 @@
    "module": "numpy",
    "module_short": "numpy",
    "name": "zeros"
+  }
+ ],
+ "optimized_parameters": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
   }
  ],
  "plt.figure": [
@@ -330,15 +355,6 @@
    "name": "solve"
   }
  ],
- "residual_func": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "function"
-  }
- ],
  "residual_function": [
   {
    "is_class": false,
@@ -348,7 +364,7 @@
    "name": "function"
   }
  ],
- "result": [
+ "true_params": [
   {
    "is_class": false,
    "is_explicit": false,
@@ -357,16 +373,16 @@
    "name": "ndarray"
   }
  ],
- "true_params": [
+ "x_data": [
   {
    "is_class": false,
    "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "list"
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
   }
  ],
- "x_data": [
+ "x_plot": [
   {
    "is_class": false,
    "is_explicit": false,
@@ -384,7 +400,7 @@
    "name": "ndarray"
   }
  ],
- "y_retrieved": [
+ "y_plot": [
   {
    "is_class": false,
    "is_explicit": false,
@@ -409,6 +425,15 @@
    "module": "builtins",
    "module_short": "builtins",
    "name": "tuple"
+  }
+ ],
+ "y_true_plot": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
   }
  ]
 }

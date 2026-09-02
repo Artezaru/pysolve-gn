@@ -24,7 +24,7 @@ import numpy
 import scipy
 import time
 
-from .implemented import (
+from .implemented_conf import (
     _IMPLEMENTED_HISTORY_DETAILS,
 )
 
@@ -32,13 +32,14 @@ from .rho_functions import (
     _build_tilde_R_and_tilde_J,
 )
 
-from .study_optimization import study_jacobian
 from .term import Term
+from .parametrization import Parametrization
 
 
 def solve(
     terms: Sequence[Term],
-    x0: ArrayLike,
+    p0: ArrayLike,
+    parametrization: Optional[Parametrization] = None,
     *,
     max_iteration: Optional[Integral] = None,
     max_time: Optional[Real] = None,
@@ -59,27 +60,56 @@ def solve(
     with robust cost functions.
 
     The function accepts multiple terms in the least squares problem,
-    each with its own residual function, Jacobian function, weight, and loss function
-    solving the following optimization problem :
+    each with its own residual function, Jacobian function, weight, and loss function,
+    solving the following optimization problem:
 
     .. math::
 
-        \min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{r}_{i,j}(\mathbf{p}) \|^2\right)
+        \min_{\mathbf{p}_{in}} \frac{1}{2} \sum_{i} w_i \sum_j
+        \rho_i\left(
+            \left\|
+            \mathbf{r}_{i,j}\left(P(\mathbf{p}_{in})\right)
+            \right\|^2
+        \right)
 
-    where :math:`w_i` is a weight for each sub least squares problem,
-    and :math:`\rho_i` is a robust cost function for each sub least squares problem.
+    where :math:`\mathbf{p}_{in}` represents the parameters actually optimized
+    by the solver, :math:`P` is a parametric transformation such that:
+
+    .. math::
+
+        \mathbf{p}_{out} = P(\mathbf{p}_{in})
+
+    represents the parameters passed to the residual and Jacobian functions
+    of the terms.
+
+    The input parameters :math:`\mathbf{p}_{in}` have shape
+    ``(n_parameters,)``.
+
+    If no parametrization is provided, the identity transformation is implicitly
+    used:
+
+    .. math::
+
+        P(\mathbf{p}_{in}) = \mathbf{p}_{in}
+
+    Here :math:`w_i` is a weight for each sub least squares problem, and
+    :math:`\rho_i` is a robust cost function for each sub least squares problem.
 
     .. seealso::
 
-        For more details on notations for the optimization problem and the algorithm,
-        please refer to the mathematical section of the documentation.
+        For more details on the notations for the optimization problem and the
+        algorithm, please refer to the mathematical section of the documentation.
 
-    The cost of each term defined by the residuals is estimated as :
+    The cost of each term defined by the residuals is estimated as:
 
     .. math::
 
-        \frac{1}{2} \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)
-
+        \frac{1}{2} \sum_j
+        \rho_i\left(
+            \left\|
+            \mathbf{r}_{i,j}(P(\mathbf{p}_{in}))
+            \right\|^2
+        \right)
 
     .. important::
 
@@ -88,13 +118,33 @@ def solve(
         an absolute cost value cannot be uniquely determined. For reporting consistency,
         the cost contribution of these terms is set to 0.
 
-
     Parameters
     ----------
-    x0: ArrayLike
-        The initial guess for the parameters of the optimization with shape (n_parameters,).
-        The array will not be modified by this function, a copy of the parameters will
-        be used for the optimization process.
+    terms: Sequence[Term]
+        The list of terms defining the least squares problem.
+        Each term should be an instance of the :class:`Term` class containing
+        the residual function, Jacobian function, weight, and loss function
+        defining the term.
+        The residual and Jacobian functions of each term are evaluated using
+        the output parameters :math:`\mathbf{p}_{out} = P(\mathbf{p}_{in})`.
+
+    p0: ArrayLike
+        The initial guess for the parameters optimized by the solver, with shape
+        ``(n_parameters,)``.
+        If a parametrization is provided, ``p0`` represents the initial input
+        parameters :math:`\mathbf{p}_{in}` of the parametrization. The initial
+        output parameters passed to the terms are obtained as
+        :math:`\mathbf{p}_{out} = P(\mathbf{p}_{in})`.
+        If no parametrization is provided, ``p0`` directly represents the
+        parameters passed to the terms.
+        The array will not be modified by this function. A copy of the parameters
+        will be used for the optimization process.
+
+    parametrization: Optional[Parametrization], optional (default=None)
+        The parametrization defining the transformation from the parameters
+        optimized by the solver to the parameters passed to the terms.
+        If provided, the solver optimizes the input parameters
+        :math:`\mathbf{p}_{in}` with shape ``(n_parameters,)`` of this parametrization.
 
     max_iteration: Optional[Integral], optional (default=None)
         Stop criterion by the number of iterations.
@@ -115,10 +165,12 @@ def solve(
         iterations. If None, this criterion is not considered.
 
     xtol: Optional[Real], optional (default=None)
-        Stop criterion by the change of the parameters.
-        The optimization process is stopped when ``||dp|| < xtol * (xtol + ||p||)``
-        where p is the parameters and dp is the change of the parameters
-        between two iterations. If None, this criterion is not considered.
+        Stop criterion by the change of the optimized parameters.
+        The optimization process is stopped when
+        ``||dp|| < xtol * (xtol + ||p||)``
+        where p is the input parameters :math:`\mathbf{p}_{in}` and dp is the
+        change of the input parameters between two iterations.
+        If None, this criterion is not considered.
 
     gtol: Optional[Real], optional (default=None)
         Stop criterion by the optimality value.
@@ -133,9 +185,10 @@ def solve(
         If None, this criterion is not considered.
 
     ptol: Optional[Real], optional (default=None)
-        Stop criterion by the change of the parameters value.
-        The optimization process is stopped when ``norm(dp, ord=numpy.inf) < ptol``
-        where dp is the change of the parameters.
+        Stop criterion by the change of the optimized parameters.
+        The optimization process is stopped when
+        ``norm(dp, ord=numpy.inf) < ptol``
+        where dp is the change of the input parameters :math:`\mathbf{p}_{in}`.
         If None, this criterion is not considered.
 
     callback_func: Optional[Callable[[Dict], bool]], optional (default=None)
@@ -149,13 +202,15 @@ def solve(
 
     update_func: Optional[Callable[[numpy.ndarray, numpy.ndarray], ArrayLike]], optional (default=None)
         A function that is called at the end of each iteration of the optimization
-        process to compute the parameters for the next iteration. The function
-        should take the current parameters and update ``(p, dp)`` as inputs and return
-        the parameters with shape (n_parameters,) to use for the next iteration.
-        If None, the parameters for the next iteration will be computed as ``p + dp``
-        where p is the current parameters and dp is the update computed by solving the linear system.
+        process to compute the parameters for the next iteration.
+        The function should take the current input parameters
+        :math:`\mathbf{p}_{in}` and update
+        :math:`\Delta\mathbf{p}_{in}` as inputs and return the next input
+        parameters with shape ``(n_parameters,)``.
+        If None, the input parameters for the next iteration will be computed as
+        :math:`\mathbf{p}_{in}^{k+1} = \mathbf{p}_{in}^{k} + \Delta\mathbf{p}_{in}``.
 
-    verbosity : Integral, optional (default=0)
+    verbosity: Integral, optional (default=0)
         The level of verbosity for logging the optimization process.
         0: No logging
         1: Log only the final results of the optimization process.
@@ -168,15 +223,19 @@ def solve(
         or parameters during the optimization process.
         If False, the optimization process will continue.
 
-    history: bool (optional, default=False)
+    history: bool, optional (default=False)
         If True, the function will also return a tuple containing the history of
         the optimization process.
 
     history_details: Optional[Union[str, Sequence[str]]], optional (default=None)
         The details to include in the history of the optimization process.
-        Can be a single string or a sequence of strings. See the Notes section for the
-        available details. By default, the history will include : "iteration",
-        "elapsed_time", "parameters", "delta_params", "delta_cost", "cost", and "optimality" details.
+        Can be a single string or a sequence of strings. See the Notes section for
+        the available details.
+        By default, the history will include:
+        ``"iteration"``, ``"elapsed_time"``,
+        ``"parameters"``,
+        ``"delta_parameters"``, ``"delta_cost"``, ``"cost"``, and
+        ``"optimality"``.
         For a specified list of details, only the details in the list below
         will be included in the history.
 
@@ -184,7 +243,13 @@ def solve(
     Returns
     -------
     parameters: numpy.ndarray
-        The parameters that minimize the least squares problem with shape (n_parameters,).
+        The optimized input parameters :math:`\mathbf{p}_{in}` with shape
+        ``(n_parameters,)``.
+        If no parametrization is provided, these parameters are also the
+        parameters passed directly to the terms.
+        If a parametrization is provided, the corresponding output parameters
+        :math:`\mathbf{p}_{out}` can be obtained by applying the parametrization
+        :math:`\mathbf{p}_{out} = P(\mathbf{p}_{in})`.
 
     history: List[Dict], optional
         Only returned if ``history`` is True. A list containing the history of the
@@ -198,38 +263,54 @@ def solve(
 
     - "iteration": Integer representing the iteration number.
     - "elapsed_time": Float representing the time elapsed since the beginning of the optimization process in seconds.
-    - "parameters": Numpy array representing the parameters at the current iteration.
-    - "delta_params": Numpy array representing the change of parameters between the current and previous iteration (Only for iterations > 0).
-    - "costs": List of floats representing the cost function value for each term in the least squares problem at the current iteration compute as :math:`\frac{1}{2} \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)` for each term :math:`i`.
-    - "cost": Float representing the cost function value at the current iteration computed as :math:`\frac{1}{2} \sum_i w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)`.
-    - "delta_cost": Float representing the change of the cost function value between the current and previous iteration (Only for iterations > 0).
-    - "optimality": Float representing the optimality value at the current iteration computed as ``norm(b, ord=numpy.inf)`` where b is the scaled second term.
-    - "residuals": A list of numpy arrays representing the residuals for each term in the least squares problem at the current iteration (Only for rJ terms).
-    - "second_term": The scaled second term :math:`\mathbf{g}` of the linear system at the current iteration.
-    - "hessian": The Hessian approximation :math:`\mathbf{H}` of the linear system at the current iteration.
+    - "parameters": Numpy array representing the input parameters
+      :math:`\mathbf{p}_{in}` at the current iteration.
+    - "delta_parameters": Numpy array representing the change of input parameters
+      :math:`\mathbf{p}_{in}` between the current and previous iteration
+      (only for iterations > 0).
+    - "costs": List of floats representing the cost function value for each term
+      in the least squares problem at the current iteration, computed as
+      :math:`\frac{1}{2} \sum_j
+      \rho_i(\| \mathbf{R}_{i,j}(\mathbf{p}_{out}) \|^2)`
+      for each term :math:`i`.
+    - "cost": Float representing the cost function value at the current iteration,
+      computed as
+      :math:`\frac{1}{2} \sum_i w_i \sum_j
+      \rho_i(\| \mathbf{R}_{i,j}(\mathbf{p}_{out}) \|^2)`.
+    - "delta_cost": Float representing the change of the cost function value
+      between the current and previous iteration (only for iterations > 0).
+    - "optimality": Float representing the optimality value at the current iteration
+      computed as ``norm(b, ord=numpy.inf)`` where b is the scaled second term.
+    - "residuals": A list of numpy arrays representing the residuals for each term
+      in the least squares problem at the current iteration (only for rJ terms).
+    - "jacobians": A list of numpy arrays representing the Jacobians for each term
+      in the least squares problem at the current iteration (only for rJ terms).
+    - "second_term": The scaled second term :math:`\mathbf{g}` of the linear system
+      at the current iteration.
+    - "hessian": The Hessian approximation :math:`\mathbf{H}` of the linear system
+      at the current iteration.
 
-    The optimization process is performed by iteratively solving a linearized
-    version of the least squares problem at each iteration for different values
-    of the regularization factor, and then selecting the optimal regularization
-    factor based on the L-curve analysis.
     The step of each loop iteration is as follows:
 
     .. code-block:: text
 
         While NOT converged:
-            1. Build the system ``H Δp = -g``.
-            2. Call the 'callback' function and STOP if it returns False.
-            3. Check the stopping criteria and STOP if any of them is satisfied.
-            4. If CONTINUE solve the linear system ``H Δp = -g`` for Δp.
-            5. Update the parameters as ``p = p + Δp`` (or using 'update_func' if provided).
+            1. Compute the output parameters ``p_out = P(p_in)``.
+            2. Build the system ``H Δp_in = -g``.
+            3. Call the 'callback' function and STOP if it returns False.
+            4. Check the stopping criteria and STOP if any of them is satisfied.
+            5. If CONTINUE, solve the linear system ``H Δp_in = -g``.
+            6. Update the input parameters ``p_in = p_in + Δp_in`` (or using 'update_func' if provided).
 
 
     Version
     -------
 
     - 0.1.0: Initial version for the solver method.
+    - 0.3.0: Adding the regularization functionality to the solver.
 
     """
+
     # Check the validity of the input arguments and raise appropriate errors if necessary.
     if not isinstance(terms, Sequence):
         raise ValueError("terms must be a sequence of Term objects.")
@@ -241,9 +322,14 @@ def solve(
                 "All elements of terms must be instances of the Term class."
             )
 
-    x0 = numpy.asarray(x0, dtype=numpy.float64)
-    if x0.ndim != 1:
-        raise ValueError(f"x0 must be a 1D array, got {x0.ndim} dimensions.")
+    p0 = numpy.asarray(p0, dtype=numpy.float64)
+    if p0.ndim != 1:
+        raise ValueError(f"p0 must be a 1D array, got {p0.ndim} dimensions.")
+
+    if parametrization is not None and not isinstance(parametrization, Parametrization):
+        raise ValueError(
+            "parametrization must be an instance of the Parametrization class."
+        )
 
     if max_iteration is not None:
         if not isinstance(max_iteration, Integral):
@@ -328,7 +414,7 @@ def solve(
             "iteration",
             "elapsed_time",
             "parameters",
-            "delta_params",
+            "delta_parameters",
             "delta_cost",
             "cost",
             "optimality",
@@ -364,28 +450,21 @@ def solve(
             and any(detail in ["optimality"] for detail in history_details)
         )
     )
-    _compute_delta_norm = (
-        xtol is not None
-        or ptol is not None
-        or verbosity >= 2
-        or (
-            _compute_history
-            and any(detail in ["delta_norm"] for detail in history_details)
-        )
-    )
+    _compute_delta_norm = xtol is not None or ptol is not None or verbosity >= 2
 
     _compute_convergence_analysis = verbosity >= 3
 
     # -- Solver Implementation --
     _n_terms = len(terms)
-    _n_parameters = x0.shape[0]
-    _parameters = x0.copy()
+    _n_parameters = p0.shape[0]
+    _parameters = p0.copy()
+    _out_parameters = None
     _iteration = 0
     _history = []
     _starting_time = time.time()
     _end_flag = False  # ! (end-flag is used to BREAK the optimization loop)
     _end_message = ""
-    _delta = None
+    _delta_parameters = None
     _delta_norm = None
     _last_total_cost = None
 
@@ -427,6 +506,12 @@ def solve(
 
     # Start the optimization loop
     while True:  # ! (ensure end-flag activation for term "break" statement)
+        # Apply the parametrization
+        if parametrization is not None:
+            _out_parameters = parametrization.p_func(_parameters)
+        else:
+            _out_parameters = _parameters
+
         # Compute r, J, H, g for each term and the cost of each term if necessary
         r_vectors = []
         J_matrices = []
@@ -435,8 +520,8 @@ def solve(
         g_vectors = []
         for term in terms:
             if term.type == "rJ":
-                r_vectors.append(term.r_func(_parameters))
-                J_matrices.append(term.J_func(_parameters))
+                r_vectors.append(term.r_func(_out_parameters))
+                J_matrices.append(term.J_func(_out_parameters))
                 g_vectors.append(None)
                 H_matrices.append(None)
                 # compute rho rho' and rho'' for each residual of the term
@@ -449,8 +534,8 @@ def solve(
                 r_vectors.append(None)
                 J_matrices.append(None)
                 rhos_arrays.append(None)
-                g_vectors.append(term.g_func(_parameters))
-                H_matrices.append(term.H_func(_parameters))
+                g_vectors.append(term.g_func(_out_parameters))
+                H_matrices.append(term.H_func(_out_parameters))
 
         # Build the modified residuals and Jacobian for each rJ term based on the robust cost function
         costs = []
@@ -460,6 +545,8 @@ def solve(
                     costs.append(0.5 * numpy.sum(rhos_arrays[i][0]))
                 elif terms[i].type == "gH":
                     costs.append(0)
+                else:
+                    raise ValueError(f"Unknown term type: {terms[i].type}")
             total_cost = sum(
                 w * c for w, c in zip([term.weight for term in terms], costs)
             )
@@ -472,6 +559,17 @@ def solve(
                     rhos_arrays[i][1],
                     rhos_arrays[i][2],
                 )
+
+        # Build the chain rule for the parametrization if it exists
+        if parametrization is not None:
+            Jp = parametrization.J_func(_parameters)
+
+            for i in range(_n_terms):
+                if terms[i].type == "rJ":
+                    J_matrices[i] = J_matrices[i] @ Jp
+                elif terms[i].type == "gH":
+                    H_matrices[i] = Jp.T @ H_matrices[i] @ Jp
+                    g_vectors[i] = Jp.T @ g_vectors[i]
 
         # Assemble the Hessian and second term for the linear system
         Hessian = sum(
@@ -514,8 +612,11 @@ def solve(
                 _h["iteration"] = _iteration
             if "parameters" in history_details:
                 _h["parameters"] = _parameters.copy()
-            if "delta_params" in history_details:
-                _h["delta_params"] = _delta.copy() if _delta is not None else None
+            if "delta_parameters" in history_details:
+                if _delta_parameters is None:
+                    _h["delta_parameters"] = None
+                else:
+                    _h["delta_parameters"] = _delta_parameters.copy()
             if "delta_cost" in history_details:
                 if _last_total_cost is None:
                     _h["delta_cost"] = None
@@ -533,6 +634,10 @@ def solve(
                 _h["residuals"] = [
                     r.copy() if r is not None else None for r in r_vectors
                 ]
+            if "jacobians" in history_details:
+                _h["jacobians"] = [
+                    J.copy() if J is not None else None for J in J_matrices
+                ]
             if "second_term" in history_details:
                 _h["second_term"] = second_term.copy()
             if "hessian" in history_details:
@@ -541,12 +646,14 @@ def solve(
 
         _printed_row = f""
         if verbosity >= 2:
-            if _delta is None:
+            if _delta_parameters is None:
                 strdp2 = f"{'':^15}"
                 strdpinf = f"{'':^15}"
             else:
                 strdp2 = f"{_delta_norm:^15.3e}"
-                strdpinf = f"{numpy.linalg.norm(_delta, ord=numpy.inf):^15.3e}"
+                strdpinf = (
+                    f"{numpy.linalg.norm(_delta_parameters, ord=numpy.inf):^15.3e}"
+                )
             if _last_total_cost is None:
                 dC_str = f"{'':^15}"
             else:
@@ -630,25 +737,25 @@ def solve(
             break
 
         if scipy.sparse.issparse(Hessian):
-            _delta = scipy.sparse.linalg.spsolve(Hessian, -second_term)
+            _delta_parameters = scipy.sparse.linalg.spsolve(Hessian, -second_term)
         else:
-            _delta = numpy.linalg.solve(Hessian, -second_term)
+            _delta_parameters = numpy.linalg.solve(Hessian, -second_term)
 
         # Update parameters
         if update_func is not None:
-            _new_parameters = update_func(_parameters, _delta)
+            _new_parameters = update_func(_parameters, _delta_parameters)
             _new_parameters = numpy.asarray(_new_parameters, dtype=numpy.float64)
             if not _new_parameters.ndim == 1 or _new_parameters.size != _n_parameters:
                 raise ValueError(
                     f"update_func must return a 1D array with shape ({_n_parameters},)."
                 )
-            _delta = _new_parameters - _parameters
+            _delta_parameters = _new_parameters - _parameters
             _parameters = _new_parameters
         else:
-            _parameters = _parameters + _delta
+            _parameters = _parameters + _delta_parameters
 
         if _compute_delta_norm:
-            _delta_norm = numpy.linalg.norm(_delta, ord=2)
+            _delta_norm = numpy.linalg.norm(_delta_parameters, ord=2)
 
         if _compute_cost:
             _last_total_cost = total_cost

@@ -18,10 +18,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from __future__ import annotations
 from typing import Callable, Optional
-from numbers import Real, Integral
+from numbers import Real
 
 from .derivation import build_numerical_jacobian
-from .implemented import (
+from .implemented_conf import (
     _IMPLEMENTED_LOSS_FUNCTIONS,
     _IMPLEMENTED_FINITE_DIFFERENCE_METHODS,
 )
@@ -99,15 +99,15 @@ class Term(object):
     residual_func : Optional[Callable] (default=None)
         The function to compute the residuals in the least squares problem.
         The function should take as inputs the parameters
-        (array-like with shape (n_parameters,)) and return the residuals as a
-        1D numpy array with shape (n_residuals,) representing each
+        (array-like with shape ``(n_parameters,)``) and return the residuals as a
+        1D numpy array with shape ``(n_residuals,)`` representing each
         :math:`\mathbf{r}_{j}(\mathbf{p})` where :math:`j=0,...,n_{\text{residuals}-1}`.
 
     jacobian_func : Optional[Callable] (default=None)
         The function to compute the Jacobian matrix of the residuals with respect to the parameters.
         The function should take as inputs the parameters
-        (array-like with shape (n_parameters,)) and return the Jacobian matrix as a 2D numpy array
-        with shape (n_residuals, n_parameters) representing each
+        (array-like with shape ``(n_parameters,)``) and return the Jacobian matrix as a 2D numpy array
+        with shape ``(n_residuals, n_parameters)`` representing each
         :math:`\mathbf{J}_{j}(\mathbf{p})` where :math:`j=0,...,n_{\text{residuals}-1}`
         such that :math:`\mathbf{J}_j(\mathbf{p}) = \frac{\partial \mathbf{r}_j}{\partial \mathbf{p}}`.
         If not provided, the Jacobian will be computed numerically using finite differences.
@@ -116,16 +116,16 @@ class Term(object):
         The function to compute the second term :math:`\mathbf{g}_i(\mathbf{p})`
         of the least squares problem.
         The function should take as inputs the parameters
-        (array-like with shape (n_parameters,)) and return the second term as a
-        1D numpy array with shape (n_parameters,).
+        (array-like with shape ``(n_parameters,)``) and return the second term as a
+        1D numpy array with shape ``(n_parameters,)``.
         If provided, loss must be "linear".
 
     hessian_func: Optional[Callable] (default=None)
         The function to compute the Hessian :math:`\mathbf{H}_i(\mathbf{p})`
         of the least squares problem.
         The function should take as inputs the parameters
-        (array-like with shape (n_parameters,)) and return the Hessian as a
-        2D numpy array with shape (n_parameters, n_parameters).
+        (array-like with shape ``(n_parameters,)``) and return the Hessian as a
+        2D numpy array with shape ``(n_parameters, n_parameters)``.
         If provided, loss must be "linear".
 
     weight: Real (default=1.0)
@@ -157,6 +157,7 @@ class Term(object):
     -------
 
     - 0.1.0: Initial version of the :class:`Term` class.
+    - 0.3.0: Removing the possibility to update the finite difference method after initialization.
 
     """
 
@@ -416,13 +417,7 @@ class Term(object):
     @property
     def finite_difference(self) -> str:
         r"""
-        [Get/Set] the finite difference method for numerical Jacobian computation of the term.
-
-        Parameters
-        ----------
-        value : Optional[str] (default="central")
-            The new finite difference method to set for numerical Jacobian computation of the term.
-            Must be a string and one of "central", "forward", or "backward".
+        [Get] the finite difference method for numerical Jacobian computation of the term.
 
         Returns
         -------
@@ -430,19 +425,6 @@ class Term(object):
             The current finite difference method for numerical Jacobian computation of the term.
         """
         return self._finite_difference
-
-    @finite_difference.setter
-    def finite_difference(self, value: Optional[str]) -> None:
-        if value is None:
-            value = "central"
-        if not isinstance(value, str):
-            raise ValueError("finite_difference must be a string.")
-        value = value.lower()
-        if value not in _IMPLEMENTED_FINITE_DIFFERENCE_METHODS:
-            raise ValueError(
-                f"finite_difference must be one of {_IMPLEMENTED_FINITE_DIFFERENCE_METHODS}, got '{value}'."
-            )
-        self._finite_difference = value.lower()
 
     @property
     def rho_function(self) -> Callable:
@@ -495,6 +477,7 @@ class Term(object):
         residual_func: Optional[Callable] = None,
         jacobian_func: Optional[Callable] = None,
         weight: Optional[Real] = None,
+        *,
         loss: Optional[str] = None,
         finite_difference: Optional[str] = None,
     ) -> Term:
@@ -509,15 +492,15 @@ class Term(object):
         residual_func : Optional[Callable] (default=None)
             The function to compute the residuals in the least squares problem.
             The function should take as inputs the parameters
-            (array-like with shape (n_parameters,)) and return the residuals as a
-            1D numpy array with shape (n_residuals,) representing each
+            (array-like with shape ``(n_parameters,)``) and return the residuals as a
+            1D numpy array with shape ``(n_residuals,)`` representing each
             :math:`\mathbf{R}_{j}(\mathbf{p})` where :math:`j=0,...,n_{\text{residuals}-1}`.
 
         jacobian_func : Optional[Callable] (default=None)
             The function to compute the Jacobian matrix of the residuals with respect to the parameters.
             The function should take as inputs the parameters
-            (array-like with shape (n_parameters,)) and return the Jacobian matrix as a 2D numpy array
-            with shape (n_residuals, n_parameters) representing each
+            (array-like with shape ``(n_parameters,)``) and return the Jacobian matrix as a 2D numpy array
+            with shape ``(n_residuals, n_parameters)`` representing each
             :math:`\mathbf{J}_{j}(\mathbf{p})` where :math:`j=0,...,n_{\text{residuals}-1}`.
 
         weight: Real (default=1.0)
@@ -570,14 +553,14 @@ class Term(object):
         second_term_func: Optional[Callable] (default=None)
             The function to compute the second term of the least squares problem.
             The function should take as inputs the parameters
-            (array-like with shape (n_parameters,)) and return the second term as a
-            1D numpy array with shape (n_parameters,).
+            (array-like with shape ``(n_parameters,)``) and return the second term as a
+            1D numpy array with shape ``(n_parameters,)``.
 
         hessian_func: Optional[Callable] (default=None)
             The function to compute the Hessian of the least squares problem.
             The function should take as inputs the parameters
-            (array-like with shape (n_parameters,)) and return the Hessian as a
-            2D numpy array with shape (n_parameters, n_parameters).
+            (array-like with shape ``(n_parameters,)``) and return the Hessian as a
+            2D numpy array with shape ``(n_parameters, n_parameters)``.
 
         weight: Real (default=1.0)
             The weight of the term in the least squares problem. The weight will be

@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from typing import Callable, Any
+from typing import Callable, Any, Optional
 from numbers import Real, Integral
 from numpy.typing import ArrayLike
 
@@ -27,13 +27,15 @@ import matplotlib.gridspec as gridspec
 
 from .solver import solve
 from .term import Term
+from .parametrization import Parametrization
 
 
 def perform_Lcurve_analysis(
     data_term: Term,
     reg_term: Term,
-    x0: ArrayLike,
+    p0: ArrayLike,
     reg_weights: ArrayLike,
+    parametrization: Optional[Parametrization] = None,
     *,
     n_labels: Integral = 10,
     optimal: bool = False,
@@ -41,69 +43,167 @@ def perform_Lcurve_analysis(
     **kwargs: Any,
 ) -> None:
     r"""
-    Optimize the regularization factor using the L-curve method with the
-    Gauss-Newton optimization method.
+    Analyze the regularization parameter using the L-curve method.
 
-    The L-curve method is a graphical method for selecting the optimal regularization parameter
-    in ill-posed problems. It consists in plotting the norm of the residuals against the norm
-    of the regularization term for different values of the regularization parameter, and selecting
-    the value that corresponds to the corner of the L-curve, which represents a good balance between
-    fitting the data and regularizing the solution.
+    The L-curve is a graphical method for selecting a regularization
+    parameter in ill-posed or poorly conditioned least-squares problems.
+    It consists in solving the regularized problem for a range of
+    regularization weights and plotting the data-fitting norm against
+    the regularization norm.
 
-    The optimization is performed by minimizing the residuals between the transformed input points
-    and the output points for each chain solving iteratively a linearized version of the problem
-    at each iteration for different values of the regularization factor, and then selecting the
-    optimal regularization factor based on the L-curve.
+    For each regularization weight :math:`\lambda`, the function solves
+    the corresponding regularized least-squares problem using
+    :func:`pysolvegn.solve`.
+
+    The regularization weight is varied over the values provided in
+    ``reg_weights``. A separate Gauss-Newton optimization is performed
+    for each value.
+
+    If a parametrization is provided, the optimization is performed in
+    the input parameter space of the parametrization, while the residual
+    and Jacobian functions of the terms are evaluated using the
+    corresponding output parameters.
+
+    The parameter transformation is defined as:
+
+    .. math::
+
+        \mathbf{p}_{out} = P(\mathbf{p}_{in}).
+
+    The resulting solutions are used to construct the L-curve, whose
+    corner provides a heuristic estimate of a suitable regularization
+    parameter.
 
     .. note::
 
-        For better visualization of the L-curve, providing a logarithmic range of
-        regularization weights is recommended, as the L-curve typically spans
-        several orders of magnitude in the regularization parameter.
-
+        The L-curve is generally most informative when the regularization
+        weights span several orders of magnitude. Providing logarithmically
+        spaced values through ``reg_weights`` is therefore recommended.
 
     Parameters
     ----------
-    data_term: Term
-        The term representing the data fitting part of the least squares problem.
+    data_term : Term
+        The term representing the data-fitting part of the least-squares
+        problem.
+        This term is kept unchanged throughout the L-curve analysis.
 
-    reg_term: Term
-        The term representing the regularization part of the least squares problem.
-        The weight of this term will be varied to perform the L-curve analysis.
+    reg_term : Term
+        The term representing the regularization part of the least-squares
+        problem.
+        Its weight is varied according to the values in ``reg_weights``.
+        The term must be compatible with the :class:`Term` API used by
+        :func:`pysolvegn.solve`.
 
-    x0: ArrayLike
-        The initial guess for the parameters of the optimization. Shape (n_parameters,).
+    p0 : ArrayLike
+        The initial input parameters for the optimization, with shape
+        ``(n_parameters,)``.
+        The same initial parameters are used for each regularization
+        weight.
+        If ``parametrization`` is ``None``, ``p0`` directly represents
+        the parameters passed to the residual and Jacobian functions.
+        If a parametrization is provided, ``p0`` represents the input
+        parameters :math:`\mathbf{p}_{in}` of the parametrization.
 
-    reg_weights: ArrayLike
-        An array of regularization weights to evaluate for the L-curve analysis.
+    reg_weights : ArrayLike
+        A one-dimensional array containing the regularization weights
+        to evaluate for the L-curve analysis.
+        Each value defines one regularized optimization problem and
+        therefore one point of the L-curve.
+        The values should normally be strictly positive.
+        A logarithmically spaced range is recommended when
+        ``logarithmic=True``.
 
-    n_labels: Integral, optional (default=10)
-        The number of labels to display on the L-curve plot for the regularization factors.
-        Default is 10.
+    parametrization : Optional[Parametrization], optional (default=None)
+        Parametrization defining the transformation from the input
+        parameters optimized by :func:`pysolvegn.solve` to the output
+        parameters passed to the residual and Jacobian functions of
+        the terms.
+        The same parametrization is used for every optimization
+        performed during the L-curve analysis.
 
-    optimal: bool, optional (default=True)
-        If True, the function will compute the optimal regularization factor and parameters,
-        and display them on the L-curve plot.
+    n_labels : Integral, optional (default=10)
+        Number of regularization-weight labels displayed on the L-curve
+        plot.
+        This controls only the number of labels displayed on the plot,
+        not the number of regularization weights evaluated.
 
-    logarithmic: bool, optional (default=True)
-        If True, the L-curve plot will use a logarithmic scale for the regularization weights.
-        This is recommended for better visualization, as the L-curve typically spans several
-        orders of magnitude in the regularization parameter.
+    optimal : bool, optional (default=False)
+        If True, estimate the corner of the L-curve from its curvature.
+        The estimated optimal regularization weight is displayed on the
+        L-curve together with the corresponding solution.
+        If False, the L-curve is displayed without selecting an optimal
+        regularization weight.
 
-    **kwargs: Any
-        Additional keyword arguments to pass to the optimization function for
-        each regularization factor. This can include stopping criteria, verbosity level, logger, etc.
+    logarithmic : bool, optional (default=True)
+        If True, display the regularization-weight axis using a
+        logarithmic scale.
+        This is recommended when ``reg_weights`` spans several orders
+        of magnitude.
+
+    **kwargs : Any
+        Additional keyword arguments passed directly to
+        :func:`pysolvegn.solve` for every regularization weight as convergence criterion.
 
 
     Returns
     -------
     None
-        The function does not return anything, but it prints the optimal regularization factor and parameters,
-        and displays the L-curve plot.
+        The function does not return the computed L-curve data or the
+        optimized parameter vectors.
+        It displays the L-curve and, when ``optimal=True``, reports the
+        estimated optimal regularization weight and the corresponding
+        solution.
 
 
     Notes
     -----
+    For each regularization weight :math:`\lambda`, the function solves
+    an independent regularized least-squares problem.
+
+    The problem solved for a given :math:`\lambda` can be written as:
+
+    .. math::
+
+        \min_{\mathbf{p}_{in}}
+        \frac{1}{2}
+        \left[
+            F_{data}
+            \left(
+                P(\mathbf{p}_{in})
+            \right)
+            +
+            \lambda
+            F_{reg}
+            \left(
+                P(\mathbf{p}_{in})
+            \right)
+        \right],
+
+    where :math:`P` is the optional parametrization.
+
+    The data and regularization terms therefore operate in the output
+    parameter space, while the Gauss-Newton solver optimizes the input
+    parameter space.
+
+    For each regularization weight :math:`\lambda`, let
+
+    .. math::
+
+        \mathbf{p}_{in,\lambda}
+
+    denote the optimized input parameter vector.
+
+    If a parametrization is provided, the corresponding output
+    parameters are:
+
+    .. math::
+
+        \mathbf{p}_{out,\lambda}
+        =
+        P(
+            \mathbf{p}_{in,\lambda}
+        ).
+
     To mathematically determine the L-curve’s corner, its curvature is derived,
     and the corner is defined as the point where the curvature is maximal.
 
@@ -149,7 +249,8 @@ def perform_Lcurve_analysis(
     -------
 
     - 0.0.1: Initial version.
-    - 1.0.0: Refactored to use the new Term and solve API, added L-curve analysis and optimal regularization selection.
+    - 0.1.0: Refactored to use the new Term and solve API, added L-curve analysis and optimal regularization selection.
+    - 0.3.0: Modifying function according to new nomenclature.
 
     """
     if not isinstance(data_term, Term) or not isinstance(reg_term, Term):
@@ -158,6 +259,11 @@ def perform_Lcurve_analysis(
         raise ValueError(
             "L-curve analysis is not applicable for gH terms. Must be rJ terms to compute the cost."
         )
+    if parametrization is not None and not isinstance(parametrization, Parametrization):
+        raise ValueError(
+            "parametrization must be an instance of Parametrization or None."
+        )
+
     if not isinstance(n_labels, Integral) or n_labels <= 0:
         raise ValueError("n_labels must be a positive integer.")
     if not isinstance(optimal, bool):
@@ -165,9 +271,9 @@ def perform_Lcurve_analysis(
     if not isinstance(logarithmic, bool):
         raise ValueError("logarithmic must be a boolean value.")
 
-    x0 = numpy.asarray(x0, dtype=numpy.float64)
-    if not x0.ndim == 1:
-        raise ValueError("x0 must be a 1D array.")
+    p0 = numpy.asarray(p0, dtype=numpy.float64)
+    if not p0.ndim == 1:
+        raise ValueError("p0 must be a 1D array.")
     reg_weights = numpy.asarray(reg_weights, dtype=numpy.float64)
     if not reg_weights.ndim == 1:
         raise ValueError("reg_weights must be a 1D array.")
@@ -186,7 +292,8 @@ def perform_Lcurve_analysis(
 
         out_parameters, history = solve(
             terms=[data_term, reg_term],
-            x0=x0,
+            p0=p0,
+            parametrization=parametrization,
             history=True,
             history_details=["costs"],
             **kwargs,

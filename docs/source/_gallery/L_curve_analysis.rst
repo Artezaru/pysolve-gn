@@ -44,7 +44,7 @@ In this example, we will use an exponential function defined as:
 We will also generate synthetic data points based on this model function, and we will
 add some noise and bias to the data to make the problem more realistic.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-52
+.. GENERATED FROM PYTHON SOURCE LINES 28-51
 
 .. code-block:: Python
 
@@ -52,7 +52,6 @@ add some noise and bias to the data to make the problem more realistic.
     import numpy as np
     import matplotlib.pyplot as plt
     import pysolvegn
-
 
     np.random.seed(0)
 
@@ -79,7 +78,7 @@ add some noise and bias to the data to make the problem more realistic.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-64
+.. GENERATED FROM PYTHON SOURCE LINES 52-63
 
 Create the residual and Jacobian functions
 -------------------------------------------
@@ -93,7 +92,7 @@ This equation is called a **term** in pysolve-gn, and it represents a single
 component of the optimization problem. See :class:`pysolvegn.Term` for more details
 on how to define terms in pysolve-gn.
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-104
+.. GENERATED FROM PYTHON SOURCE LINES 63-101
 
 .. code-block:: Python
 
@@ -123,19 +122,17 @@ on how to define terms in pysolve-gn.
     estimated_stds = [0.5, 0.2]
     estimated_trust = [0.1, 0.05]
 
-    residual_reg_func, jacobian_reg_func = pysolvegn.build_soft_squared_regularization(
-        means=estimated_params, stds=estimated_stds, thresholds=estimated_trust
+    reg_term = pysolvegn.build_soft_squared_regularization(
+        means=estimated_params,
+        stds=estimated_stds,
+        thresholds=estimated_trust,
+        loss="linear",
+        weight=1.0,
     )
 
     data_terms = pysolvegn.Term.from_rJ(
         residual_func=residual_func, jacobian_func=jacobian_func, loss="linear", weight=1.0
     )
-    reg_term = pysolvegn.Term.from_rJ(
-        residual_func=residual_reg_func,
-        jacobian_func=jacobian_reg_func,
-        loss="linear",
-        weight=1.0,
-    )
 
 
 
@@ -144,7 +141,7 @@ on how to define terms in pysolve-gn.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-111
+.. GENERATED FROM PYTHON SOURCE LINES 102-108
 
 Perform L-curve analysis
 --------------------------
@@ -153,7 +150,7 @@ Now we can perform L-curve analysis by solving the optimization problem for a ra
 regularization weights. We will use the ``solve`` function to solve the optimization
 problem for each weight, and we will store the results to analyze later.
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-125
+.. GENERATED FROM PYTHON SOURCE LINES 108-122
 
 .. code-block:: Python
 
@@ -163,7 +160,7 @@ problem for each weight, and we will store the results to analyze later.
     pysolvegn.perform_Lcurve_analysis(
         data_term=data_terms,
         reg_term=reg_term,
-        x0=estimated_params,
+        p0=estimated_params,
         reg_weights=weights,
         max_iteration=10,
         xtol=1e-6,
@@ -186,7 +183,7 @@ problem for each weight, and we will store the results to analyze later.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.268 seconds)
+   **Total running time of the script:** (0 minutes 0.230 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_L_curve_analysis.py:

@@ -59,7 +59,7 @@ initial_params = [2.0, 0.4]
 
 fitted_params = pysolvegn.solve_gauss_newton(
     terms=data_term
-    x0=initial_params,
+    p0=initial_params,
     max_iteration=10,
     xtol=1e-6,
     ftol=1e-6,

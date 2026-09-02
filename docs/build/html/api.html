@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Reference &#8212; pysolvegn 0.2.1 documentation</title>
+    <title>API Reference &#8212; pysolvegn 0.3.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=37f418d5"></script>
+    <script src="_static/documentation_options.js?v=e259d695"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -120,7 +120,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.2.1 documentation</p>
+    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
   
 </a></div>
     
@@ -291,14 +291,22 @@
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.solve.html">pysolvegn.solve</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.Term.html">pysolvegn.Term</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.GaussNewtonSolver.html">pysolvegn.GaussNewtonSolver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.Parametrization.html">pysolvegn.Parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_affine_parametrization.html">pysolvegn.build_affine_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_fixed_parametrization.html">pysolvegn.build_fixed_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_sigmoid_parametrization.html">pysolvegn.build_sigmoid_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_positive_parametrization.html">pysolvegn.build_positive_parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_squared_regularization.html">pysolvegn.build_squared_regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_soft_squared_regularization.html">pysolvegn.build_soft_squared_regularization</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_squared_regularization.html">pysolvegn.build_squared_regularization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_soft_squared_regularization.html">pysolvegn.build_soft_squared_regularization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.perform_Lcurve_analysis.html">pysolvegn.perform_Lcurve_analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.study_jacobian.html">pysolvegn.study_jacobian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.study_optimization.html">pysolvegn.study_optimization</a></li>
 </ul>
 </div>
 </nav></div>
@@ -362,7 +370,9 @@
 <p class="topic-title">Table of Contents</p>
 <ul class="simple">
 <li><p><a class="reference internal" href="#solver-function" id="id1">Solver Function</a></p></li>
-<li><p><a class="reference internal" href="#additional-utilities" id="id2">Additional Utilities</a></p></li>
+<li><p><a class="reference internal" href="#implemented-parametrizations" id="id2">Implemented Parametrizations</a></p></li>
+<li><p><a class="reference internal" href="#implemented-regularizations" id="id3">Implemented Regularizations</a></p></li>
+<li><p><a class="reference internal" href="#additional-utilities" id="id4">Additional Utilities</a></p></li>
 </ul>
 </nav>
 <p>This section contains a detailed description of the functions
@@ -388,14 +398,14 @@ residuals and jacobians of the problem and returns the optimized parameters that
 minimize the cost function.</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve</span></code></a>(terms, x0, *[, max_iteration, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve</span></code></a>(terms, p0[, parametrization, ...])</p></td>
 <td><p>Function to solve the least squares problem using the Gauss-Newton method with robust cost functions.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Term</span></code></a>([residual_func, jacobian_func, ...])</p></td>
 <td><p>A class representing a term in the least squares problem, which can be either a residual term or a regularization term.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.GaussNewtonSolver.html#pysolvegn.GaussNewtonSolver" title="pysolvegn.GaussNewtonSolver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GaussNewtonSolver</span></code></a>(terms)</p></td>
-<td><p>A class that implements the Gauss-Newton optimization method for solving non-linear least squares problems.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.Parametrization.html#pysolvegn.Parametrization" title="pysolvegn.Parametrization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parametrization</span></code></a>([parametric_func, ...])</p></td>
+<td><p>A parametric transformation <span class="math notranslate nohighlight">\(P\)</span> that maps input parameters <span class="math notranslate nohighlight">\(\vec{p_{in}}\)</span> from an input parametric space <span class="math notranslate nohighlight">\(\mathbb{R}^{n_{\mathrm{parameters}}}\)</span> to output parameters <span class="math notranslate nohighlight">\(\vec{p_{out}}\)</span> in an output parametric space <span class="math notranslate nohighlight">\(\mathbb{R}^{n_{\mathrm{p\_outputs}}}\)</span>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -413,13 +423,51 @@ influence of outliers in the optimization process.</p>
 <td><p><span class="math notranslate nohighlight">\(\rho(x) = x\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">soft_l1</span></code></p></td>
-<td><p><span class="math notranslate nohighlight">\(\rho(x) = 2 * ((1 + x) ** 0.5 - 1)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(\rho(x) = 2 * ((1 + x)^{0.5} - 1)\)</span></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cauchy</span></code></p></td>
 <td><p><span class="math notranslate nohighlight">\(\rho(x) = \log(1 + x)\)</span></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">arctan</span></code></p></td>
 <td><p><span class="math notranslate nohighlight">\(\rho(x) = \arctan(x)\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="implemented-parametrizations">
+<h2><a class="toc-backref" href="#table-of-contents" role="doc-backlink">Implemented Parametrizations</a><a class="headerlink" href="#implemented-parametrizations" title="Link to this heading">#</a></h2>
+<p>The package provides several implemented parametrizations that can be used to define
+how the input parameters are transformed into the output parameters.</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.build_affine_parametrization.html#pysolvegn.build_affine_parametrization" title="pysolvegn.build_affine_parametrization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_affine_parametrization</span></code></a>(modes[, offset])</p></td>
+<td><p>Build a <a class="reference internal" href="_autosummary/pysolvegn.Parametrization.html#pysolvegn.Parametrization" title="pysolvegn.Parametrization"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parametrization</span></code></a> based on an affine transformation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.build_fixed_parametrization.html#pysolvegn.build_fixed_parametrization" title="pysolvegn.build_fixed_parametrization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_fixed_parametrization</span></code></a>(n_p_outputs, ...)</p></td>
+<td><p>Build a parametrization that fixes some output parameters while optimizing only a selected subset of them.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.build_sigmoid_parametrization.html#pysolvegn.build_sigmoid_parametrization" title="pysolvegn.build_sigmoid_parametrization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_sigmoid_parametrization</span></code></a>(lower, upper)</p></td>
+<td><p>Build a parametrization that constrains parameters to a finite interval using a sigmoid transformation.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.build_positive_parametrization.html#pysolvegn.build_positive_parametrization" title="pysolvegn.build_positive_parametrization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_positive_parametrization</span></code></a>(n_parameters)</p></td>
+<td><p>Build a parametrization that constrains parameters to be strictly positive.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="implemented-regularizations">
+<h2><a class="toc-backref" href="#table-of-contents" role="doc-backlink">Implemented Regularizations</a><a class="headerlink" href="#implemented-regularizations" title="Link to this heading">#</a></h2>
+<p>The package provides several implemented regularizations that can be used to define
+additional constraints or penalties on the parameters in the least squares problem.</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.build_squared_regularization.html#pysolvegn.build_squared_regularization" title="pysolvegn.build_squared_regularization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_squared_regularization</span></code></a>(means, stds, *)</p></td>
+<td><p>Build a squared regularization term based on a Gaussian prior.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.build_soft_squared_regularization.html#pysolvegn.build_soft_squared_regularization" title="pysolvegn.build_soft_squared_regularization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_soft_squared_regularization</span></code></a>(means, ...)</p></td>
+<td><p>Build a soft squared regularization term based on a Gaussian prior.</p></td>
 </tr>
 </tbody>
 </table>
@@ -435,17 +483,11 @@ by finite differences or creating residuals and jacobians for regularization ter
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.build_numerical_jacobian.html#pysolvegn.build_numerical_jacobian" title="pysolvegn.build_numerical_jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_numerical_jacobian</span></code></a>(residual_func[, ...])</p></td>
 <td><p>Build a Jacobian function for the Gauss-Newton optimization by computing the numerical derivatives of the residual function with respect to the parameters using finite differences.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.build_squared_regularization.html#pysolvegn.build_squared_regularization" title="pysolvegn.build_squared_regularization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_squared_regularization</span></code></a>(means, stds)</p></td>
-<td><p>Build a simple squared regularization of the parameters according to a Gaussian prior on the parameters, where the residuals and jacobian of the regularization are defined as:</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.build_soft_squared_regularization.html#pysolvegn.build_soft_squared_regularization" title="pysolvegn.build_soft_squared_regularization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_soft_squared_regularization</span></code></a>(means, ...)</p></td>
-<td><p>Build the residual and jacobian functions of a soft squared regularization of the parameters according to a Gaussian prior on the parameters with a soft threshold, where the regularization is null for parameters that are within a certain threshold of the mean value, and increases as the squared distance of the parameters to a bounds value relative to a standard deviation, which can be interpreted as a Gaussian prior on the parameters with a soft threshold.</p></td>
-</tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.perform_Lcurve_analysis.html#pysolvegn.perform_Lcurve_analysis" title="pysolvegn.perform_Lcurve_analysis"><code class="xref py py-obj docutils literal notranslate"><span class="pre">perform_Lcurve_analysis</span></code></a>(data_term, reg_term, ...)</p></td>
-<td><p>Optimize the regularization factor using the L-curve method with the Gauss-Newton optimization method.</p></td>
+<td><p>Analyze the regularization parameter using the L-curve method.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.study_jacobian.html#pysolvegn.study_jacobian" title="pysolvegn.study_jacobian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">study_jacobian</span></code></a>(residual_func, jacobian_func, ...)</p></td>
-<td><p>Study the Jacobian matrix of the least squares problem to analyze the observability of the parameters and the convergence properties of the optimization (called by verbosity level 3 of the Gauss-Newton solver).</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.study_optimization.html#pysolvegn.study_optimization" title="pysolvegn.study_optimization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">study_optimization</span></code></a>(terms, p0[, ...])</p></td>
+<td><p>Study the Gauss-Newton Hessian built by the solver.</p></td>
 </tr>
 </tbody>
 </table>
@@ -501,6 +543,8 @@ by finite differences or creating residuals and jacobians for regularization ter
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-function">Solver Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implemented-parametrizations">Implemented Parametrizations</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implemented-regularizations">Implemented Regularizations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-utilities">Additional Utilities</a></li>
 </ul>
   </nav></div>

@@ -38,8 +38,7 @@ minimize the cost function.
 
    solve
    Term
-   GaussNewtonSolver
-
+   Parametrization
 
 The package includes several robust cost functions that can be used to reduce the 
 influence of outliers in the optimization process.
@@ -49,12 +48,40 @@ influence of outliers in the optimization process.
 +==============================+=========================================================+
 | ``linear``                   | :math:`\rho(x) = x`                                     |
 +------------------------------+---------------------------------------------------------+
-| ``soft_l1``                  | :math:`\rho(x) = 2 * ((1 + x) ** 0.5 - 1)`              |
+| ``soft_l1``                  | :math:`\rho(x) = 2 * ((1 + x)^{0.5} - 1)`               |
 +------------------------------+---------------------------------------------------------+
 | ``cauchy``                   | :math:`\rho(x) = \log(1 + x)`                           |
 +------------------------------+---------------------------------------------------------+
 | ``arctan``                   | :math:`\rho(x) = \arctan(x)`                            |
 +------------------------------+---------------------------------------------------------+
+
+
+Implemented Parametrizations
+----------------------------
+
+The package provides several implemented parametrizations that can be used to define
+how the input parameters are transformed into the output parameters.
+
+.. autosummary::
+   :toctree: _autosummary
+
+   build_affine_parametrization
+   build_fixed_parametrization
+   build_sigmoid_parametrization
+   build_positive_parametrization
+
+
+Implemented Regularizations
+---------------------------
+
+The package provides several implemented regularizations that can be used to define
+additional constraints or penalties on the parameters in the least squares problem.
+
+.. autosummary::
+   :toctree: _autosummary
+
+   build_squared_regularization
+   build_soft_squared_regularization
 
 
 Additional Utilities
@@ -67,7 +94,5 @@ by finite differences or creating residuals and jacobians for regularization ter
    :toctree: _autosummary
 
    build_numerical_jacobian
-   build_squared_regularization
-   build_soft_squared_regularization
    perform_Lcurve_analysis
-   study_jacobian
+   study_optimization
