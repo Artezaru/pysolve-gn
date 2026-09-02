@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pysolvegn.study_jacobian &#8212; pysolvegn 0.2.1 documentation</title>
+    <title>pysolvegn.Parametrization &#8212; pysolvegn 0.3.0 documentation</title>
   
   
   
@@ -27,8 +27,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -39,12 +39,12 @@
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../_static/documentation_options.js?v=37f418d5"></script>
+    <script src="../_static/documentation_options.js?v=e259d695"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -52,12 +52,12 @@
     <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="../_static/design-tabs.js?v=f930bc37"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/pysolvegn.study_jacobian';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/pysolvegn.Parametrization';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Mathematical Background" href="../math.html" />
-    <link rel="prev" title="pysolvegn.perform_Lcurve_analysis" href="pysolvegn.perform_Lcurve_analysis.html" />
+    <link rel="next" title="pysolvegn.build_affine_parametrization" href="pysolvegn.build_affine_parametrization.html" />
+    <link rel="prev" title="pysolvegn.Term" href="pysolvegn.Term.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -128,7 +128,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.2.1 documentation</p>
+    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
   
 </a></div>
     
@@ -306,7 +306,8 @@
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar"><svg class="pst-icon svg-inline--fa" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
     <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
   </svg>
   <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
@@ -317,17 +318,25 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve.html">pysolvegn.solve</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.Term.html">pysolvegn.Term</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.GaussNewtonSolver.html">pysolvegn.GaussNewtonSolver</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">pysolvegn.Parametrization</a></li>
 </ul>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_affine_parametrization.html">pysolvegn.build_affine_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_fixed_parametrization.html">pysolvegn.build_fixed_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_sigmoid_parametrization.html">pysolvegn.build_sigmoid_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_positive_parametrization.html">pysolvegn.build_positive_parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_squared_regularization.html">pysolvegn.build_squared_regularization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_soft_squared_regularization.html">pysolvegn.build_soft_squared_regularization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.perform_Lcurve_analysis.html">pysolvegn.perform_Lcurve_analysis</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">pysolvegn.study_jacobian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.study_optimization.html">pysolvegn.study_optimization</a></li>
 </ul>
 </div>
 </nav></div>
@@ -371,7 +380,7 @@
     
     <li class="breadcrumb-item"><a href="../api.html" class="nav-link">API Reference</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pysolvegn.study_jacobian</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pysolvegn.Parametrization</span></li>
   </ul>
 </nav>
 </div>
@@ -388,90 +397,125 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="pysolvegn-study-jacobian">
-<h1>pysolvegn.study_jacobian<a class="headerlink" href="#pysolvegn-study-jacobian" title="Link to this heading">#</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="pysolvegn.study_jacobian">
-<span class="sig-name descname"><span class="pre">study_jacobian</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">residual_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jacobian_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/study_optimization.html#study_jacobian"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.study_jacobian" title="Link to this definition">#</a></dt>
-<dd><p>Study the Jacobian matrix of the least squares problem to analyze the observability
-of the parameters and the convergence properties of the optimization
-(called by verbosity level 3 of the Gauss-Newton solver).</p>
-<p>The function accepts multiple terms in the least squares problem,
-each with its own residual function, Jacobian function, weight, and loss function
-studying the following optimization problem</p>
+  <section id="pysolvegn-parametrization">
+<h1>pysolvegn.Parametrization<a class="headerlink" href="#pysolvegn-parametrization" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysolvegn.Parametrization">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Parametrization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parametric_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jacobian_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finite_difference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/parametrization.html#Parametrization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.Parametrization" title="Link to this definition">#</a></dt>
+<dd><p>A parametric transformation <span class="math notranslate nohighlight">\(P\)</span> that
+maps input parameters <span class="math notranslate nohighlight">\(\vec{p_{in}}\)</span> from an input parametric space
+<span class="math notranslate nohighlight">\(\mathbb{R}^{n_{\mathrm{parameters}}}\)</span> to output parameters
+<span class="math notranslate nohighlight">\(\vec{p_{out}}\)</span> in an output parametric space
+<span class="math notranslate nohighlight">\(\mathbb{R}^{n_{\mathrm{p\_outputs}}}\)</span>.</p>
 <div class="math notranslate nohighlight">
-\[\min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)\]</div>
-<p>Then the function displays the following information about the Jacobian matrix of the least squares problem:</p>
-<ul class="simple">
-<li><p>Density, Cost contribution and loss function for each term in the least squares problem.</p></li>
-<li><p>Singular values of the combined Jacobian matrix <span class="math notranslate nohighlight">\(\sum_i w_i \mathbf{J}_i^T \mathbf{J}_i\)</span>
-and their contribution to the variance of the parameters.</p></li>
-<li><p>Condition number of the combined Jacobian matrix, which is an indicator
-of the convergence properties of the optimization.</p></li>
-<li><p>Singular vectors of the combined Jacobian matrix, which can be used to analyze the
-observability of the parameters and the sensitivity of the optimization to noise in the data.</p></li>
-<li><p>Parameter sensitivity analysis based on the covariance matrix of the parameters,
-which is computed as :</p></li>
-</ul>
+\[\vec{p_{out}} = \vec{p} = P(\vec{p_{in}})\]</div>
+<p>Considering the following least-square problem:</p>
 <div class="math notranslate nohighlight">
-\[\Sigma = \sigma^2 \left( \sum_i w_i \mathbf{J}_i^T \mathbf{J}_i \right)^{-1}\]</div>
-<p>where <span class="math notranslate nohighlight">\(\sigma^2\)</span> is the estimated variance of the residuals, computed as
-<span class="math notranslate nohighlight">\(\sigma^2 = \frac{2C_0}{N_{eq}-N_p}\)</span> with <span class="math notranslate nohighlight">\(C_0\)</span> the cost of the first
-term (assuming data), <span class="math notranslate nohighlight">\(N_{eq}\)</span> the number of equations and <span class="math notranslate nohighlight">\(N_p\)</span> the
-number of parameters.</p>
+\[\min_{\vec{p_{out}}} \frac{1}{2} \sum_{i} w_i \sum_j
+\rho_i\left(\| \mathbf{r}_{i,j}(\vec{p_{out}}) \|^2\right)\]</div>
+<p>it can be rewritten using the parametric transformation <span class="math notranslate nohighlight">\(P\)</span> as:</p>
+<div class="math notranslate nohighlight">
+\[\min_{\vec{p_{in}}} \frac{1}{2} \sum_{i} w_i \sum_j
+\rho_i\left(
+    \| \mathbf{r}_{i,j}(P(\vec{p_{in}})) \|^2
+\right)\]</div>
+<p>The parameters <span class="math notranslate nohighlight">\(\vec{p_{in}}\)</span> are the parameters actually optimized
+by the Gauss-Newton algorithm, while <span class="math notranslate nohighlight">\(\vec{p_{out}}\)</span> are the
+parameters passed to the residual functions.</p>
+<p>This class is used to store the parametric transformation <span class="math notranslate nohighlight">\(P\)</span> and
+its first derivative:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{J}_P =
+\frac{\partial \vec{p_{out}}}
+     {\partial \vec{p_{in}}}.\]</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>residual_func</strong> (<em>Union</em><em>[</em><em>Callable</em><em>, </em><em>Sequence</em><em>[</em><em>Callable</em><em>]</em><em>]</em>) – The function(s) to compute the residuals for each term in the least squares problem.
-Can be a single function or a sequence of functions.
-Each callable represent the <cite>i</cite>-th term <span class="math notranslate nohighlight">\(\mathbf{R}_i(\mathbf{p})\)</span>
-in the least squares problem and should take as inputs the parameters
-(array-like with shape (n_parameters,)) and return the residuals as a
-1D numpy array with shape (n_residuals_i,) representing each
-<span class="math notranslate nohighlight">\(\mathbf{R}_{i,j}(\mathbf{p})\)</span> where <span class="math notranslate nohighlight">\(j=0,...,n_{\text{residuals}_i-1}\)</span>.</p></li>
-<li><p><strong>jacobian_func</strong> (<em>Union</em><em>[</em><em>Callable</em><em>, </em><em>Sequence</em><em>[</em><em>Callable</em><em>]</em><em>]</em>) – The function(s) to compute the Jacobian matrices for each term in the
-least squares problem. Can be a single function or a sequence of functions.
-Each callable represent the <cite>i</cite>-th term <span class="math notranslate nohighlight">\(\mathbf{J}_i(\mathbf{p})\)</span>
-in the least squares problem such as
-<span class="math notranslate nohighlight">\(\mathbf{J}_i(\mathbf{p}) = \frac{\partial \mathbf{R}_i(\mathbf{p})}{\partial \mathbf{p}}\)</span>
-and should take as inputs the parameters (array-like with shape (n_parameters,))
-and return the Jacobian matrix as a 2D numpy array with shape
-(n_residuals_i, n_parameters) representing the Jacobian of each residual
-<span class="math notranslate nohighlight">\(\mathbf{R}_{i,j}(\mathbf{p})\)</span> where <span class="math notranslate nohighlight">\(j=0,...,n_{\text{residuals}_i-1}\)</span>.</p></li>
-<li><p><strong>parameters</strong> (<em>ArrayLike</em>) – The parameters of the optimization step with shape (n_parameters,).</p></li>
-<li><p><strong>weight</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>Real</em><em>, </em><em>Sequence</em><em>[</em><em>Real</em><em>]</em><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – The weight(s) for each term in the least squares problem.
-Can be a single value or a sequence of values.
-Each weight <span class="math notranslate nohighlight">\(w_i\)</span> is a weight for the corresponding term in
-the least squares problem and should be a non-negative real number.
-If a single value is provided, it will be used for all terms in the
-least squares problem. If None is provided, it will be set to 1.0.</p></li>
-<li><p><strong>loss</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>Sequence</em><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>]</em><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – The loss function(s) for each term in the least squares problem.
-Can be a single string or a sequence of strings.
-Each loss function <span class="math notranslate nohighlight">\(\rho_i\)</span> is a robust cost function for the corresponding
-term in the least squares problem and should be one of the following strings:
-[“linear”, “soft_l1”, “cauchy”, “arctan”].
-If a single string is provided, it will be used for all terms in the least
-squares problem. If None is provided, it will be set to “linear”.</p></li>
-<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><em>str</em></a><em>, </em><em>optional</em>) – An optional title for the analysis, which can be used for logging purposes.
-Default is an empty string.</p></li>
+<li><p><strong>parametric_func</strong> (<em>Callable</em>) – The function to compute the parametric transformation <span class="math notranslate nohighlight">\(P\)</span>.
+The function should take as input the parameters
+(array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) and return the transformed
+parameters as a 1D numpy array with shape <code class="docutils literal notranslate"><span class="pre">(n_p_outputs,)</span></code>,
+representing the output parameters
+<span class="math notranslate nohighlight">\(\mathbf{p}_{out}\)</span>.</p></li>
+<li><p><strong>jacobian_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – <p>The function to compute the Jacobian matrix of the parametric
+transformation <span class="math notranslate nohighlight">\(P\)</span> with respect to the input parameters.</p>
+<p>The function should take as input the parameters
+(array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) and return the Jacobian
+matrix as a 2D numpy array with shape
+<code class="docutils literal notranslate"><span class="pre">(n_p_outputs,</span> <span class="pre">n_parameters)</span></code>.</p>
+<p>Each row <span class="math notranslate nohighlight">\(j\)</span> corresponds to the derivative of the output
+parameter <span class="math notranslate nohighlight">\(p_{out,j}\)</span> with respect to the input parameters:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{J}_{P,j}
+=
+\frac{\partial p_{out,j}}
+     {\partial \mathbf{p}_{in}}.\]</div>
+<p>If not provided, the Jacobian will be computed numerically using
+finite differences.</p>
+</p></li>
+<li><p><strong>finite_difference</strong> (<em>str</em><em> (</em><em>default=&quot;central&quot;</em><em>)</em>) – The finite difference method to use for computing the numerical
+Jacobian if the Jacobian function is not provided. Must be one of
+<code class="docutils literal notranslate"><span class="pre">&quot;central&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;forward&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;backward&quot;</span></code>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>This function is used for analysis and does not return any value.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
 </dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">jacobian_func</span></code> is not provided, the Jacobian will be computed
+numerically using finite differences.</p></li>
+</ul>
 <section id="version">
 <h2>Version<a class="headerlink" href="#version" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>0.0.1: Initial version.</p></li>
-<li><p>0.0.2: <span class="math notranslate nohighlight">\(\sigma^2\)</span> is now estimated as <span class="math notranslate nohighlight">\(\sigma^2 = 2C_0/(N_{eq}-N_p)\)</span>
-where <span class="math notranslate nohighlight">\(C_0\)</span> is the cost of the first term (assuming data) instead of
-the total cost, to provide a more accurate estimation of the residual variance
-for the parameter sensitivity analysis.</p></li>
+<li><p>0.3.0: Initial version of the <a class="reference internal" href="#pysolvegn.Parametrization" title="pysolvegn.Parametrization"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parametrization</span></code></a> class.</p></li>
 </ul>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysolvegn.Parametrization.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parametric_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jacobian_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finite_difference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/parametrization.html#Parametrization.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.Parametrization.__init__" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parametric_func</strong> (<em>Callable</em>)</p></li>
+<li><p><strong>jacobian_func</strong> (<em>Callable</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>finite_difference</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pysolvegn.Parametrization.__init__" title="pysolvegn.Parametrization.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([parametric_func, jacobian_func, ...])</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Attributes</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">J_func</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">finite_difference</span></code></p></td>
+<td><p>[Get] the finite difference method for numerical Jacobian computation of the parametrization.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian_func</span></code></p></td>
+<td><p>[Get] the Jacobian function of the parametrization.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">p_func</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parametric_func</span></code></p></td>
+<td><p>[Get] the parametric function of the parametrization.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_finite_difference</span></code></p></td>
+<td><p>[Get] whether the parametrization is using a finite difference Jacobian function.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 </dd></dl>
 
@@ -488,20 +532,20 @@ for the parameter sensitivity analysis.</p></li>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="pysolvegn.perform_Lcurve_analysis.html"
+       href="pysolvegn.Term.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">pysolvegn.perform_Lcurve_analysis</p>
+        <p class="prev-next-title">pysolvegn.Term</p>
       </div>
     </a>
     <a class="right-next"
-       href="../math.html"
+       href="pysolvegn.build_affine_parametrization.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Mathematical Background</p>
+        <p class="prev-next-title">pysolvegn.build_affine_parametrization</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -524,14 +568,17 @@ for the parameter sensitivity analysis.</p></li>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.study_jacobian"><code class="docutils literal notranslate"><span class="pre">study_jacobian()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.Parametrization"><code class="docutils literal notranslate"><span class="pre">Parametrization</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.Parametrization.__init__"><code class="docutils literal notranslate"><span class="pre">Parametrization.__init__()</span></code></a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="../_sources/_autosummary/pysolvegn.study_jacobian.rst.txt">
+    <a href="../_sources/_autosummary/pysolvegn.Parametrization.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
@@ -550,8 +597,8 @@ for the parameter sensitivity analysis.</p></li>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -585,7 +632,7 @@ for the parameter sensitivity analysis.</p></li>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.18.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
 </p></div>
       
     </div>

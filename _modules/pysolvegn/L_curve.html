@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.L_curve &#8212; pysolvegn 0.2.1 documentation</title>
+    <title>pysolvegn.L_curve &#8212; pysolvegn 0.3.0 documentation</title>
   
   
   
@@ -26,8 +26,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -38,12 +38,12 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=37f418d5"></script>
+    <script src="../../_static/documentation_options.js?v=e259d695"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -124,7 +124,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.2.1 documentation</p>
+    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
   
 </a></div>
     
@@ -355,7 +355,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pysolvegn.L_curve</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">pysolve-gn - Robust Gauss-Newton Least Squares Solver.</span>
 <span class="sd">Copyright (C) 2026 Artezaru, artezaru.github@proton.me</span>
 
@@ -371,9 +371,9 @@
 
 <span class="sd">You should have received a copy of the GNU General Public License</span>
 <span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Real</span><span class="p">,</span> <span class="n">Integral</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 
@@ -384,6 +384,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.solver</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.term</span><span class="w"> </span><span class="kn">import</span> <span class="n">Term</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.parametrization</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parametrization</span>
 
 
 <div class="viewcode-block" id="perform_Lcurve_analysis">
@@ -391,78 +392,177 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">perform_Lcurve_analysis</span><span class="p">(</span>
     <span class="n">data_term</span><span class="p">:</span> <span class="n">Term</span><span class="p">,</span>
     <span class="n">reg_term</span><span class="p">:</span> <span class="n">Term</span><span class="p">,</span>
-    <span class="n">x0</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">p0</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
     <span class="n">reg_weights</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">parametrization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Parametrization</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">n_labels</span><span class="p">:</span> <span class="n">Integral</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="n">optimal</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">logarithmic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Optimize the regularization factor using the L-curve method with the</span>
-<span class="sd">    Gauss-Newton optimization method.</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Analyze the regularization parameter using the L-curve method.</span>
 
-<span class="sd">    The L-curve method is a graphical method for selecting the optimal regularization parameter</span>
-<span class="sd">    in ill-posed problems. It consists in plotting the norm of the residuals against the norm</span>
-<span class="sd">    of the regularization term for different values of the regularization parameter, and selecting</span>
-<span class="sd">    the value that corresponds to the corner of the L-curve, which represents a good balance between</span>
-<span class="sd">    fitting the data and regularizing the solution.</span>
+<span class="sd">    The L-curve is a graphical method for selecting a regularization</span>
+<span class="sd">    parameter in ill-posed or poorly conditioned least-squares problems.</span>
+<span class="sd">    It consists in solving the regularized problem for a range of</span>
+<span class="sd">    regularization weights and plotting the data-fitting norm against</span>
+<span class="sd">    the regularization norm.</span>
 
-<span class="sd">    The optimization is performed by minimizing the residuals between the transformed input points</span>
-<span class="sd">    and the output points for each chain solving iteratively a linearized version of the problem</span>
-<span class="sd">    at each iteration for different values of the regularization factor, and then selecting the</span>
-<span class="sd">    optimal regularization factor based on the L-curve.</span>
+<span class="sd">    For each regularization weight :math:`\lambda`, the function solves</span>
+<span class="sd">    the corresponding regularized least-squares problem using</span>
+<span class="sd">    :func:`pysolvegn.solve`.</span>
+
+<span class="sd">    The regularization weight is varied over the values provided in</span>
+<span class="sd">    ``reg_weights``. A separate Gauss-Newton optimization is performed</span>
+<span class="sd">    for each value.</span>
+
+<span class="sd">    If a parametrization is provided, the optimization is performed in</span>
+<span class="sd">    the input parameter space of the parametrization, while the residual</span>
+<span class="sd">    and Jacobian functions of the terms are evaluated using the</span>
+<span class="sd">    corresponding output parameters.</span>
+
+<span class="sd">    The parameter transformation is defined as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{p}_{out} = P(\mathbf{p}_{in}).</span>
+
+<span class="sd">    The resulting solutions are used to construct the L-curve, whose</span>
+<span class="sd">    corner provides a heuristic estimate of a suitable regularization</span>
+<span class="sd">    parameter.</span>
 
 <span class="sd">    .. note::</span>
 
-<span class="sd">        For better visualization of the L-curve, providing a logarithmic range of</span>
-<span class="sd">        regularization weights is recommended, as the L-curve typically spans</span>
-<span class="sd">        several orders of magnitude in the regularization parameter.</span>
-
+<span class="sd">        The L-curve is generally most informative when the regularization</span>
+<span class="sd">        weights span several orders of magnitude. Providing logarithmically</span>
+<span class="sd">        spaced values through ``reg_weights`` is therefore recommended.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    data_term: Term</span>
-<span class="sd">        The term representing the data fitting part of the least squares problem.</span>
+<span class="sd">    data_term : Term</span>
+<span class="sd">        The term representing the data-fitting part of the least-squares</span>
+<span class="sd">        problem.</span>
+<span class="sd">        This term is kept unchanged throughout the L-curve analysis.</span>
 
-<span class="sd">    reg_term: Term</span>
-<span class="sd">        The term representing the regularization part of the least squares problem.</span>
-<span class="sd">        The weight of this term will be varied to perform the L-curve analysis.</span>
+<span class="sd">    reg_term : Term</span>
+<span class="sd">        The term representing the regularization part of the least-squares</span>
+<span class="sd">        problem.</span>
+<span class="sd">        Its weight is varied according to the values in ``reg_weights``.</span>
+<span class="sd">        The term must be compatible with the :class:`Term` API used by</span>
+<span class="sd">        :func:`pysolvegn.solve`.</span>
 
-<span class="sd">    x0: ArrayLike</span>
-<span class="sd">        The initial guess for the parameters of the optimization. Shape (n_parameters,).</span>
+<span class="sd">    p0 : ArrayLike</span>
+<span class="sd">        The initial input parameters for the optimization, with shape</span>
+<span class="sd">        ``(n_parameters,)``.</span>
+<span class="sd">        The same initial parameters are used for each regularization</span>
+<span class="sd">        weight.</span>
+<span class="sd">        If ``parametrization`` is ``None``, ``p0`` directly represents</span>
+<span class="sd">        the parameters passed to the residual and Jacobian functions.</span>
+<span class="sd">        If a parametrization is provided, ``p0`` represents the input</span>
+<span class="sd">        parameters :math:`\mathbf{p}_{in}` of the parametrization.</span>
 
-<span class="sd">    reg_weights: ArrayLike</span>
-<span class="sd">        An array of regularization weights to evaluate for the L-curve analysis.</span>
+<span class="sd">    reg_weights : ArrayLike</span>
+<span class="sd">        A one-dimensional array containing the regularization weights</span>
+<span class="sd">        to evaluate for the L-curve analysis.</span>
+<span class="sd">        Each value defines one regularized optimization problem and</span>
+<span class="sd">        therefore one point of the L-curve.</span>
+<span class="sd">        The values should normally be strictly positive.</span>
+<span class="sd">        A logarithmically spaced range is recommended when</span>
+<span class="sd">        ``logarithmic=True``.</span>
 
-<span class="sd">    n_labels: Integral, optional (default=10)</span>
-<span class="sd">        The number of labels to display on the L-curve plot for the regularization factors.</span>
-<span class="sd">        Default is 10.</span>
+<span class="sd">    parametrization : Optional[Parametrization], optional (default=None)</span>
+<span class="sd">        Parametrization defining the transformation from the input</span>
+<span class="sd">        parameters optimized by :func:`pysolvegn.solve` to the output</span>
+<span class="sd">        parameters passed to the residual and Jacobian functions of</span>
+<span class="sd">        the terms.</span>
+<span class="sd">        The same parametrization is used for every optimization</span>
+<span class="sd">        performed during the L-curve analysis.</span>
 
-<span class="sd">    optimal: bool, optional (default=True)</span>
-<span class="sd">        If True, the function will compute the optimal regularization factor and parameters,</span>
-<span class="sd">        and display them on the L-curve plot.</span>
+<span class="sd">    n_labels : Integral, optional (default=10)</span>
+<span class="sd">        Number of regularization-weight labels displayed on the L-curve</span>
+<span class="sd">        plot.</span>
+<span class="sd">        This controls only the number of labels displayed on the plot,</span>
+<span class="sd">        not the number of regularization weights evaluated.</span>
 
-<span class="sd">    logarithmic: bool, optional (default=True)</span>
-<span class="sd">        If True, the L-curve plot will use a logarithmic scale for the regularization weights.</span>
-<span class="sd">        This is recommended for better visualization, as the L-curve typically spans several</span>
-<span class="sd">        orders of magnitude in the regularization parameter.</span>
+<span class="sd">    optimal : bool, optional (default=False)</span>
+<span class="sd">        If True, estimate the corner of the L-curve from its curvature.</span>
+<span class="sd">        The estimated optimal regularization weight is displayed on the</span>
+<span class="sd">        L-curve together with the corresponding solution.</span>
+<span class="sd">        If False, the L-curve is displayed without selecting an optimal</span>
+<span class="sd">        regularization weight.</span>
 
-<span class="sd">    **kwargs: Any</span>
-<span class="sd">        Additional keyword arguments to pass to the optimization function for</span>
-<span class="sd">        each regularization factor. This can include stopping criteria, verbosity level, logger, etc.</span>
+<span class="sd">    logarithmic : bool, optional (default=True)</span>
+<span class="sd">        If True, display the regularization-weight axis using a</span>
+<span class="sd">        logarithmic scale.</span>
+<span class="sd">        This is recommended when ``reg_weights`` spans several orders</span>
+<span class="sd">        of magnitude.</span>
+
+<span class="sd">    **kwargs : Any</span>
+<span class="sd">        Additional keyword arguments passed directly to</span>
+<span class="sd">        :func:`pysolvegn.solve` for every regularization weight as convergence criterion.</span>
 
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    None</span>
-<span class="sd">        The function does not return anything, but it prints the optimal regularization factor and parameters,</span>
-<span class="sd">        and displays the L-curve plot.</span>
+<span class="sd">        The function does not return the computed L-curve data or the</span>
+<span class="sd">        optimized parameter vectors.</span>
+<span class="sd">        It displays the L-curve and, when ``optimal=True``, reports the</span>
+<span class="sd">        estimated optimal regularization weight and the corresponding</span>
+<span class="sd">        solution.</span>
 
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
+<span class="sd">    For each regularization weight :math:`\lambda`, the function solves</span>
+<span class="sd">    an independent regularized least-squares problem.</span>
+
+<span class="sd">    The problem solved for a given :math:`\lambda` can be written as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \min_{\mathbf{p}_{in}}</span>
+<span class="sd">        \frac{1}{2}</span>
+<span class="sd">        \left[</span>
+<span class="sd">            F_{data}</span>
+<span class="sd">            \left(</span>
+<span class="sd">                P(\mathbf{p}_{in})</span>
+<span class="sd">            \right)</span>
+<span class="sd">            +</span>
+<span class="sd">            \lambda</span>
+<span class="sd">            F_{reg}</span>
+<span class="sd">            \left(</span>
+<span class="sd">                P(\mathbf{p}_{in})</span>
+<span class="sd">            \right)</span>
+<span class="sd">        \right],</span>
+
+<span class="sd">    where :math:`P` is the optional parametrization.</span>
+
+<span class="sd">    The data and regularization terms therefore operate in the output</span>
+<span class="sd">    parameter space, while the Gauss-Newton solver optimizes the input</span>
+<span class="sd">    parameter space.</span>
+
+<span class="sd">    For each regularization weight :math:`\lambda`, let</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{p}_{in,\lambda}</span>
+
+<span class="sd">    denote the optimized input parameter vector.</span>
+
+<span class="sd">    If a parametrization is provided, the corresponding output</span>
+<span class="sd">    parameters are:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \mathbf{p}_{out,\lambda}</span>
+<span class="sd">        =</span>
+<span class="sd">        P(</span>
+<span class="sd">            \mathbf{p}_{in,\lambda}</span>
+<span class="sd">        ).</span>
+
 <span class="sd">    To mathematically determine the L-curve’s corner, its curvature is derived,</span>
 <span class="sd">    and the corner is defined as the point where the curvature is maximal.</span>
 
@@ -489,11 +589,11 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \kappa(\lambda) = \frac{(\hat{\rho}/2)&#39;&#39;(\hat{\eta}/2)&#39; - (\hat{\rho}/2)&#39;(\hat{\eta}/2)&#39;&#39;}{((\hat{\rho}/2)&#39;^2 + (\hat{\eta}/2)&#39;^2)^{3/2}}</span>
+<span class="sd">        \kappa(\lambda) = \frac{(\hat{\rho}/2)''(\hat{\eta}/2)' - (\hat{\rho}/2)'(\hat{\eta}/2)''}{((\hat{\rho}/2)'^2 + (\hat{\eta}/2)'^2)^{3/2}}</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \kappa(\lambda) = 2 \frac{\hat{\rho}&#39;&#39;\hat{\eta}&#39; - \hat{\rho}&#39;\hat{\eta}&#39;&#39;}{(\hat{\rho}&#39;^2 + \hat{\eta}&#39;^2)^{3/2}}</span>
+<span class="sd">        \kappa(\lambda) = 2 \frac{\hat{\rho}''\hat{\eta}' - \hat{\rho}'\hat{\eta}''}{(\hat{\rho}'^2 + \hat{\eta}'^2)^{3/2}}</span>
 
 <span class="sd">    The optimal regularization factor is then defined as the value of :math:`\lambda`</span>
 <span class="sd">    that maximizes the curvature :math:`\kappa(\lambda)`.</span>
@@ -508,51 +608,58 @@
 <span class="sd">    -------</span>
 
 <span class="sd">    - 0.0.1: Initial version.</span>
-<span class="sd">    - 1.0.0: Refactored to use the new Term and solve API, added L-curve analysis and optimal regularization selection.</span>
+<span class="sd">    - 0.1.0: Refactored to use the new Term and solve API, added L-curve analysis and optimal regularization selection.</span>
+<span class="sd">    - 0.3.0: Modifying function according to new nomenclature.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_term</span><span class="p">,</span> <span class="n">Term</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reg_term</span><span class="p">,</span> <span class="n">Term</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Both data_term and reg_term must be instances of Term.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">reg_term</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;gH&quot;</span> <span class="ow">or</span> <span class="n">data_term</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">&quot;gH&quot;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Both data_term and reg_term must be instances of Term."</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">reg_term</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"gH"</span> <span class="ow">or</span> <span class="n">data_term</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"gH"</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;L-curve analysis is not applicable for gH terms. Must be rJ terms to compute the cost.&quot;</span>
+            <span class="s2">"L-curve analysis is not applicable for gH terms. Must be rJ terms to compute the cost."</span>
         <span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_labels</span><span class="p">,</span> <span class="n">Integral</span><span class="p">)</span> <span class="ow">or</span> <span class="n">n_labels</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;n_labels must be a positive integer.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">optimal</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;optimal must be a boolean value.&quot;</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logarithmic</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;logarithmic must be a boolean value.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">parametrization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parametrization</span><span class="p">,</span> <span class="n">Parametrization</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">"parametrization must be an instance of Parametrization or None."</span>
+        <span class="p">)</span>
 
-    <span class="n">x0</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">x0</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;x0 must be a 1D array.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_labels</span><span class="p">,</span> <span class="n">Integral</span><span class="p">)</span> <span class="ow">or</span> <span class="n">n_labels</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"n_labels must be a positive integer."</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">optimal</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"optimal must be a boolean value."</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">logarithmic</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"logarithmic must be a boolean value."</span><span class="p">)</span>
+
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">p0</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"p0 must be a 1D array."</span><span class="p">)</span>
     <span class="n">reg_weights</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">reg_weights</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">reg_weights</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;reg_weights must be a 1D array.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"reg_weights must be a 1D array."</span><span class="p">)</span>
 
-    <span class="n">verbosity</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;verbosity&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">verbosity</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"verbosity"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="n">_save_back_reg_weight</span> <span class="o">=</span> <span class="n">reg_term</span><span class="o">.</span><span class="n">weight</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">reg_weights</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Evaluating regularization weight: </span><span class="si">{</span><span class="n">weight</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2"> [</span><span class="si">{</span><span class="n">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">reg_weights</span><span class="p">)</span><span class="si">}</span><span class="s2">]&quot;</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Evaluating regularization weight: </span><span class="si">{</span><span class="n">weight</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2"> [</span><span class="si">{</span><span class="n">index</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">reg_weights</span><span class="p">)</span><span class="si">}</span><span class="s2">]"</span>
             <span class="p">)</span>
 
         <span class="n">reg_term</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span>
 
         <span class="n">out_parameters</span><span class="p">,</span> <span class="n">history</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span>
             <span class="n">terms</span><span class="o">=</span><span class="p">[</span><span class="n">data_term</span><span class="p">,</span> <span class="n">reg_term</span><span class="p">],</span>
-            <span class="n">x0</span><span class="o">=</span><span class="n">x0</span><span class="p">,</span>
+            <span class="n">p0</span><span class="o">=</span><span class="n">p0</span><span class="p">,</span>
+            <span class="n">parametrization</span><span class="o">=</span><span class="n">parametrization</span><span class="p">,</span>
             <span class="n">history</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-            <span class="n">history_details</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;costs&quot;</span><span class="p">],</span>
+            <span class="n">history_details</span><span class="o">=</span><span class="p">[</span><span class="s2">"costs"</span><span class="p">],</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">cost_data</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;costs&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Cost of the data fitting term</span>
-        <span class="n">cost_reg</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">&quot;costs&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Cost of the regularization term</span>
+        <span class="n">cost_data</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"costs"</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Cost of the data fitting term</span>
+        <span class="n">cost_reg</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="s2">"costs"</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># Cost of the regularization term</span>
         <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">weight</span><span class="p">,</span> <span class="n">cost_data</span><span class="p">,</span> <span class="n">cost_reg</span><span class="p">,</span> <span class="n">out_parameters</span><span class="p">))</span>
 
     <span class="n">reg_term</span><span class="o">.</span><span class="n">weight</span> <span class="o">=</span> <span class="n">_save_back_reg_weight</span>
@@ -583,7 +690,7 @@
         <span class="n">optimal_index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">kappas</span><span class="p">)</span>
         <span class="n">optimal_weight</span> <span class="o">=</span> <span class="n">weights</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">]</span>
         <span class="nb">print</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;Optimal regularization weight (corner of L-curve): </span><span class="si">{</span><span class="n">optimal_weight</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"Optimal regularization weight (corner of L-curve): </span><span class="si">{</span><span class="n">optimal_weight</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
 
     <span class="c1"># Displaying the L-curve and the curvature</span>
@@ -592,78 +699,78 @@
     <span class="n">ax_Lcurve</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">3</span><span class="p">])</span>
 
     <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
-        <span class="n">hat_rhos</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">hat_etas</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;L-curve&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span>
+        <span class="n">hat_rhos</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">hat_etas</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">"L-curve"</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"black"</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="n">optimal</span><span class="p">:</span>
         <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span>
             <span class="n">hat_rhos</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
             <span class="n">hat_etas</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Optimal Point&quot;</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s2">"Optimal Point"</span><span class="p">,</span>
             <span class="n">zorder</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
         <span class="p">)</span>
-        <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">hat_rhos</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-        <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">hat_etas</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+        <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">hat_rhos</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">)</span>
+        <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">hat_etas</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">)</span>
     <span class="n">annotated_indices</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">),</span> <span class="nb">max</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">weights</span><span class="p">)</span> <span class="o">//</span> <span class="n">n_labels</span><span class="p">))</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">annotated_indices</span><span class="p">:</span>
         <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
             <span class="n">hat_rhos</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
             <span class="n">hat_etas</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">weights</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">.1e</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-            <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;right&quot;</span><span class="p">,</span>
-            <span class="n">va</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span>
+            <span class="n">ha</span><span class="o">=</span><span class="s2">"right"</span><span class="p">,</span>
+            <span class="n">va</span><span class="o">=</span><span class="s2">"bottom"</span><span class="p">,</span>
         <span class="p">)</span>
-    <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\hat{\rho}(\lambda)/2$ = $\log(||r_</span><span class="si">{data}</span><span class="s2">||)/2$&quot;</span><span class="p">)</span>
-    <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$\hat{\eta}(\lambda)/2$ = $\log(||r_</span><span class="si">{reg}</span><span class="s2">||)/2$&quot;</span><span class="p">)</span>
-    <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;L-curve Analysis&quot;</span><span class="p">)</span>
+    <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$\hat{\rho}(\lambda)/2$ = $\log(||r_</span><span class="si">{data}</span><span class="s2">||)/2$"</span><span class="p">)</span>
+    <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$\hat{\eta}(\lambda)/2$ = $\log(||r_</span><span class="si">{reg}</span><span class="s2">||)/2$"</span><span class="p">)</span>
+    <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">"L-curve Analysis"</span><span class="p">)</span>
     <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
     <span class="n">ax_Lcurve</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 
     <span class="n">ax_lambda_rhos</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-    <span class="n">ax_lambda_rhos</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lambdas</span><span class="p">,</span> <span class="n">rhos</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;blue&quot;</span><span class="p">)</span>
+    <span class="n">ax_lambda_rhos</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lambdas</span><span class="p">,</span> <span class="n">rhos</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"blue"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">logarithmic</span><span class="p">:</span>
-        <span class="n">ax_lambda_rhos</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+        <span class="n">ax_lambda_rhos</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">optimal</span><span class="p">:</span>
-        <span class="n">ax_lambda_rhos</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">optimal_weight</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-        <span class="n">ax_lambda_rhos</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">rhos</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-    <span class="n">ax_lambda_rhos</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Regularization Weight ($\lambda$)&quot;</span><span class="p">)</span>
-    <span class="n">ax_lambda_rhos</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$||r_</span><span class="si">{data}</span><span class="s2">||$&quot;</span><span class="p">)</span>
+        <span class="n">ax_lambda_rhos</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">optimal_weight</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">)</span>
+        <span class="n">ax_lambda_rhos</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">rhos</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">)</span>
+    <span class="n">ax_lambda_rhos</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"Regularization Weight ($\lambda$)"</span><span class="p">)</span>
+    <span class="n">ax_lambda_rhos</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$||r_</span><span class="si">{data}</span><span class="s2">||$"</span><span class="p">)</span>
     <span class="n">ax_lambda_rhos</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 
     <span class="n">ax_lambda_etas</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-    <span class="n">ax_lambda_etas</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lambdas</span><span class="p">,</span> <span class="n">etas</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;orange&quot;</span><span class="p">)</span>
+    <span class="n">ax_lambda_etas</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lambdas</span><span class="p">,</span> <span class="n">etas</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"orange"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">logarithmic</span><span class="p">:</span>
-        <span class="n">ax_lambda_etas</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
+        <span class="n">ax_lambda_etas</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">optimal</span><span class="p">:</span>
-        <span class="n">ax_lambda_etas</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">optimal_weight</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-        <span class="n">ax_lambda_etas</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">etas</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-    <span class="n">ax_lambda_etas</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Regularization Weight ($\lambda$)&quot;</span><span class="p">)</span>
-    <span class="n">ax_lambda_etas</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;$||r_</span><span class="si">{reg}</span><span class="s2">||$&quot;</span><span class="p">)</span>
+        <span class="n">ax_lambda_etas</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">optimal_weight</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">)</span>
+        <span class="n">ax_lambda_etas</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">etas</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">)</span>
+    <span class="n">ax_lambda_etas</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"Regularization Weight ($\lambda$)"</span><span class="p">)</span>
+    <span class="n">ax_lambda_etas</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"$||r_</span><span class="si">{reg}</span><span class="s2">||$"</span><span class="p">)</span>
     <span class="n">ax_lambda_etas</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">optimal</span><span class="p">:</span>
         <span class="n">ax_lambda_kappas</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
-        <span class="n">ax_lambda_kappas</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lambdas</span><span class="p">,</span> <span class="n">kappas</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;green&quot;</span><span class="p">)</span>
+        <span class="n">ax_lambda_kappas</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">lambdas</span><span class="p">,</span> <span class="n">kappas</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"green"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">logarithmic</span><span class="p">:</span>
-            <span class="n">ax_lambda_kappas</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-        <span class="n">ax_lambda_kappas</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">optimal_weight</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-        <span class="n">ax_lambda_kappas</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">kappas</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;red&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-        <span class="n">ax_lambda_kappas</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Regularization Weight ($\lambda$)&quot;</span><span class="p">)</span>
-        <span class="n">ax_lambda_kappas</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Curvature ($\kappa$)&quot;</span><span class="p">)</span>
+            <span class="n">ax_lambda_kappas</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span>
+        <span class="n">ax_lambda_kappas</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">optimal_weight</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">)</span>
+        <span class="n">ax_lambda_kappas</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">kappas</span><span class="p">[</span><span class="n">optimal_index</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">"red"</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">"--"</span><span class="p">)</span>
+        <span class="n">ax_lambda_kappas</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"Regularization Weight ($\lambda$)"</span><span class="p">)</span>
+        <span class="n">ax_lambda_kappas</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"Curvature ($\kappa$)"</span><span class="p">)</span>
         <span class="n">ax_lambda_kappas</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">ax_lambda_norm_params</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="n">gs</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
         <span class="n">ax_lambda_norm_params</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
             <span class="n">lambdas</span><span class="p">,</span>
             <span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">parameters</span><span class="p">],</span>
-            <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s2">&quot;purple&quot;</span><span class="p">,</span>
+            <span class="n">marker</span><span class="o">=</span><span class="s2">"o"</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="s2">"purple"</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">logarithmic</span><span class="p">:</span>
-            <span class="n">ax_lambda_norm_params</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">&quot;log&quot;</span><span class="p">)</span>
-        <span class="n">ax_lambda_norm_params</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Regularization Weight ($\lambda$)&quot;</span><span class="p">)</span>
-        <span class="n">ax_lambda_norm_params</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;Norm of Parameters ($||p||$)&quot;</span><span class="p">)</span>
+            <span class="n">ax_lambda_norm_params</span><span class="o">.</span><span class="n">set_xscale</span><span class="p">(</span><span class="s2">"log"</span><span class="p">)</span>
+        <span class="n">ax_lambda_norm_params</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"Regularization Weight ($\lambda$)"</span><span class="p">)</span>
+        <span class="n">ax_lambda_norm_params</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="sa">r</span><span class="s2">"Norm of Parameters ($||p||$)"</span><span class="p">)</span>
         <span class="n">ax_lambda_norm_params</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
 
     <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
@@ -698,8 +805,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -733,7 +840,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.18.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
 </p></div>
       
     </div>

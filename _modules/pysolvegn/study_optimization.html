@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.study_optimization &#8212; pysolvegn 0.2.1 documentation</title>
+    <title>pysolvegn.study_optimization &#8212; pysolvegn 0.3.0 documentation</title>
   
   
   
@@ -26,8 +26,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -38,12 +38,12 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=37f418d5"></script>
+    <script src="../../_static/documentation_options.js?v=e259d695"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -124,7 +124,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.2.1 documentation</p>
+    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
   
 </a></div>
     
@@ -355,7 +355,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pysolvegn.study_optimization</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">pysolve-gn - Robust Gauss-Newton Least Squares Solver.</span>
 <span class="sd">Copyright (C) 2026 Artezaru, artezaru.github@proton.me</span>
 
@@ -371,303 +371,559 @@
 
 <span class="sd">You should have received a copy of the GNU General Public License</span>
 <span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Optional</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Real</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.rho_functions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">linear_rho_at_R2</span><span class="p">,</span>
-    <span class="n">soft_l1_rho_at_R2</span><span class="p">,</span>
-    <span class="n">cauchy_rho_at_R2</span><span class="p">,</span>
-    <span class="n">arctan_rho_at_R2</span><span class="p">,</span>
-    <span class="n">_build_tilde_R_and_tilde_J</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.term</span><span class="w"> </span><span class="kn">import</span> <span class="n">Term</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.solver</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.parametrization</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parametrization</span>
 
 
-<div class="viewcode-block" id="study_jacobian">
-<a class="viewcode-back" href="../../_autosummary/pysolvegn.study_jacobian.html#pysolvegn.study_jacobian">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">study_jacobian</span><span class="p">(</span>
-    <span class="n">residual_func</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Callable</span><span class="p">]],</span>
-    <span class="n">jacobian_func</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Callable</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Callable</span><span class="p">]],</span>
-    <span class="n">parameters</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+<div class="viewcode-block" id="study_optimization">
+<a class="viewcode-back" href="../../_autosummary/pysolvegn.study_optimization.html#pysolvegn.study_optimization">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">study_optimization</span><span class="p">(</span>
+    <span class="n">terms</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Term</span><span class="p">],</span>
+    <span class="n">p0</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">parametrization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Parametrization</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
-    <span class="n">weight</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Study the Jacobian matrix of the least squares problem to analyze the observability</span>
-<span class="sd">    of the parameters and the convergence properties of the optimization</span>
-<span class="sd">    (called by verbosity level 3 of the Gauss-Newton solver).</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Study the Gauss-Newton Hessian built by the solver.</span>
 
-<span class="sd">    The function accepts multiple terms in the least squares problem,</span>
-<span class="sd">    each with its own residual function, Jacobian function, weight, and loss function</span>
-<span class="sd">    studying the following optimization problem</span>
+<span class="sd">    This function is deliberately implemented on top of :func:`solve`.</span>
+<span class="sd">    It does not rebuild the residuals, robust Jacobians, weights, losses,</span>
+<span class="sd">    parametrization chain rule, or Hessian itself.</span>
 
-<span class="sd">    .. math::</span>
+<span class="sd">    The solver is executed with ``max_iteration=0`` and ``history=True``.</span>
+<span class="sd">    Consequently, only the initial state is evaluated and no optimization</span>
+<span class="sd">    step is performed.</span>
 
-<span class="sd">        \min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{R}_{i,j}(\mathbf{p}) \|^2\right)</span>
+<span class="sd">    The analysis is therefore exactly consistent with the current solver</span>
+<span class="sd">    implementation.</span>
 
-<span class="sd">    Then the function displays the following information about the Jacobian matrix of the least squares problem:</span>
-
-<span class="sd">    - Density, Cost contribution and loss function for each term in the least squares problem.</span>
-<span class="sd">    - Singular values of the combined Jacobian matrix :math:`\sum_i w_i \mathbf{J}_i^T \mathbf{J}_i`</span>
-<span class="sd">      and their contribution to the variance of the parameters.</span>
-<span class="sd">    - Condition number of the combined Jacobian matrix, which is an indicator</span>
-<span class="sd">      of the convergence properties of the optimization.</span>
-<span class="sd">    - Singular vectors of the combined Jacobian matrix, which can be used to analyze the</span>
-<span class="sd">      observability of the parameters and the sensitivity of the optimization to noise in the data.</span>
-<span class="sd">    - Parameter sensitivity analysis based on the covariance matrix of the parameters,</span>
-<span class="sd">      which is computed as :</span>
+<span class="sd">    The Hessian returned by the solver is:</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \Sigma = \sigma^2 \left( \sum_i w_i \mathbf{J}_i^T \mathbf{J}_i \right)^{-1}</span>
+<span class="sd">        H =</span>
+<span class="sd">        \sum_i w_i J_i^T J_i</span>
 
-<span class="sd">    where :math:`\sigma^2` is the estimated variance of the residuals, computed as</span>
-<span class="sd">    :math:`\sigma^2 = \frac{2C_0}{N_{eq}-N_p}` with :math:`C_0` the cost of the first</span>
-<span class="sd">    term (assuming data), :math:`N_{eq}` the number of equations and :math:`N_p` the</span>
-<span class="sd">    number of parameters.</span>
+<span class="sd">    for ``rJ`` terms, and:</span>
 
+<span class="sd">    .. math::</span>
 
+<span class="sd">        H =</span>
+<span class="sd">        \sum_i w_i H_i</span>
+
+<span class="sd">    for ``gH`` terms.</span>
+
+<span class="sd">    If a parametrization is provided to the solver through the terms'</span>
+<span class="sd">    parameter functions, the Hessian is expressed in the corresponding</span>
+<span class="sd">    input parameter space.</span>
+
+<span class="sd">    The function displays:</span>
+
+<span class="sd">    - the number of terms;</span>
+<span class="sd">    - the number of equations and optimized parameters;</span>
+<span class="sd">    - the individual and total costs;</span>
+<span class="sd">    - the Hessian condition number;</span>
+<span class="sd">    - the singular values of the Hessian;</span>
+<span class="sd">    - the inverse singular values;</span>
+<span class="sd">    - the estimated residual variance;</span>
+<span class="sd">    - the parameter covariance and standard deviations;</span>
+<span class="sd">    - the least observable parameter combinations;</span>
+<span class="sd">    - the right singular vectors associated with the smallest singular values.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    residual_func: Union[Callable, Sequence[Callable]]</span>
-<span class="sd">        The function(s) to compute the residuals for each term in the least squares problem.</span>
-<span class="sd">        Can be a single function or a sequence of functions.</span>
-<span class="sd">        Each callable represent the `i`-th term :math:`\mathbf{R}_i(\mathbf{p})`</span>
-<span class="sd">        in the least squares problem and should take as inputs the parameters</span>
-<span class="sd">        (array-like with shape (n_parameters,)) and return the residuals as a</span>
-<span class="sd">        1D numpy array with shape (n_residuals_i,) representing each</span>
-<span class="sd">        :math:`\mathbf{R}_{i,j}(\mathbf{p})` where :math:`j=0,...,n_{\text{residuals}_i-1}`.</span>
+<span class="sd">    terms : Sequence[Term]</span>
+<span class="sd">        Terms defining the least-squares problem.</span>
 
-<span class="sd">    jacobian_func: Union[Callable, Sequence[Callable]]</span>
-<span class="sd">        The function(s) to compute the Jacobian matrices for each term in the</span>
-<span class="sd">        least squares problem. Can be a single function or a sequence of functions.</span>
-<span class="sd">        Each callable represent the `i`-th term :math:`\mathbf{J}_i(\mathbf{p})`</span>
-<span class="sd">        in the least squares problem such as</span>
-<span class="sd">        :math:`\mathbf{J}_i(\mathbf{p}) = \frac{\partial \mathbf{R}_i(\mathbf{p})}{\partial \mathbf{p}}`</span>
-<span class="sd">        and should take as inputs the parameters (array-like with shape (n_parameters,))</span>
-<span class="sd">        and return the Jacobian matrix as a 2D numpy array with shape</span>
-<span class="sd">        (n_residuals_i, n_parameters) representing the Jacobian of each residual</span>
-<span class="sd">        :math:`\mathbf{R}_{i,j}(\mathbf{p})` where :math:`j=0,...,n_{\text{residuals}_i-1}`.</span>
+<span class="sd">    p0 : ArrayLike</span>
+<span class="sd">        Initial input parameters passed to :func:`solve`.</span>
 
-<span class="sd">    parameters: ArrayLike</span>
-<span class="sd">        The parameters of the optimization step with shape (n_parameters,).</span>
+<span class="sd">    parametrization : Optional[Parametrization], optional</span>
+<span class="sd">        Parametrization applied to the input parameters.</span>
 
-<span class="sd">    weight: Optional[Union[Real, Sequence[Real]]], optional (default=None)</span>
-<span class="sd">        The weight(s) for each term in the least squares problem.</span>
-<span class="sd">        Can be a single value or a sequence of values.</span>
-<span class="sd">        Each weight :math:`w_i` is a weight for the corresponding term in</span>
-<span class="sd">        the least squares problem and should be a non-negative real number.</span>
-<span class="sd">        If a single value is provided, it will be used for all terms in the</span>
-<span class="sd">        least squares problem. If None is provided, it will be set to 1.0.</span>
-
-<span class="sd">    loss: Optional[Union[str, Sequence[str]]], optional (default=None)</span>
-<span class="sd">        The loss function(s) for each term in the least squares problem.</span>
-<span class="sd">        Can be a single string or a sequence of strings.</span>
-<span class="sd">        Each loss function :math:`\rho_i` is a robust cost function for the corresponding</span>
-<span class="sd">        term in the least squares problem and should be one of the following strings:</span>
-<span class="sd">        [&quot;linear&quot;, &quot;soft_l1&quot;, &quot;cauchy&quot;, &quot;arctan&quot;].</span>
-<span class="sd">        If a single string is provided, it will be used for all terms in the least</span>
-<span class="sd">        squares problem. If None is provided, it will be set to &quot;linear&quot;.</span>
-
-<span class="sd">    title: str, optional</span>
-<span class="sd">        An optional title for the analysis, which can be used for logging purposes.</span>
-<span class="sd">        Default is an empty string.</span>
-
+<span class="sd">    title : str, optional</span>
+<span class="sd">        Optional title printed before the analysis.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    None</span>
-<span class="sd">        This function is used for analysis and does not return any value.</span>
+<span class="sd">        This function only prints the analysis.</span>
 
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The function intentionally calls the solver with:</span>
 
-<span class="sd">    Version</span>
-<span class="sd">    -------</span>
-<span class="sd">    - 0.0.1: Initial version.</span>
-<span class="sd">    - 0.0.2: :math:`\sigma^2` is now estimated as :math:`\sigma^2 = 2C_0/(N_{eq}-N_p)`</span>
-<span class="sd">      where :math:`C_0` is the cost of the first term (assuming data) instead of</span>
-<span class="sd">      the total cost, to provide a more accurate estimation of the residual variance</span>
-<span class="sd">      for the parameter sensitivity analysis.</span>
+<span class="sd">    ``max_iteration=0``</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">residual_func</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
-        <span class="n">residual_func</span> <span class="o">=</span> <span class="p">[</span><span class="n">residual_func</span><span class="p">]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">jacobian_func</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
-        <span class="n">jacobian_func</span> <span class="o">=</span> <span class="p">[</span><span class="n">jacobian_func</span><span class="p">]</span>
+<span class="sd">    This guarantees that the exact same implementation used during</span>
+<span class="sd">    optimization is responsible for constructing the Hessian.</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">residual_func</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">jacobian_func</span><span class="p">):</span>
+<span class="sd">    The returned history contains:</span>
+
+<span class="sd">    - ``parameters``</span>
+<span class="sd">    - ``costs``</span>
+<span class="sd">    - ``cost``</span>
+<span class="sd">    - ``residuals``</span>
+<span class="sd">    - ``second_term``</span>
+<span class="sd">    - ``hessian``</span>
+
+<span class="sd">    No optimization step is performed.</span>
+
+<span class="sd">    """</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Input validation</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"terms must be a sequence of Term objects."</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"terms sequence cannot be empty."</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">Term</span><span class="p">)</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">terms</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"All elements of terms must be instances of the Term class."</span><span class="p">)</span>
+
+    <span class="n">p0</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">p0</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"p0 must be a 1D array, got </span><span class="si">{</span><span class="n">p0</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">parametrization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parametrization</span><span class="p">,</span> <span class="n">Parametrization</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;The length of residual_func and jacobian_func must be the same.&quot;</span>
+            <span class="s2">"parametrization must be an instance of the Parametrization class or None."</span>
         <span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">callable</span><span class="p">(</span><span class="n">func</span><span class="p">)</span> <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">residual_func</span> <span class="o">+</span> <span class="n">jacobian_func</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;All elements in residual_func and jacobian_func must be callable.&quot;</span>
-        <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">weight</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">weight</span> <span class="o">=</span> <span class="mf">1.0</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
-        <span class="n">weight</span> <span class="o">=</span> <span class="p">[</span><span class="n">weight</span><span class="p">]</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">residual_func</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">residual_func</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;The length of weight must be the same as the length of residual_func and jacobian_func.&quot;</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">Real</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weight</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All elements in weight must be real numbers.&quot;</span><span class="p">)</span>
-    <span class="n">weight</span> <span class="o">=</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">weight</span><span class="p">]</span>  <span class="c1"># Ensure weights are floats</span>
-
-    <span class="k">if</span> <span class="n">loss</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="p">[</span><span class="n">loss</span><span class="p">]</span>
-    <span class="n">loss</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span> <span class="k">if</span> <span class="n">l</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;linear&quot;</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">loss</span><span class="p">]</span>  <span class="c1"># None -&gt; &quot;linear&quot;</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">residual_func</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">residual_func</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">&quot;The length of loss must be the same as the length of residual_func and jacobian_func.&quot;</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">loss</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;All elements in loss must be strings.&quot;</span><span class="p">)</span>
-    <span class="n">valid_loss_functions</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;soft_l1&quot;</span><span class="p">,</span> <span class="s2">&quot;cauchy&quot;</span><span class="p">,</span> <span class="s2">&quot;arctan&quot;</span><span class="p">}</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">l</span> <span class="ow">in</span> <span class="n">valid_loss_functions</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">loss</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;All elements in loss must be one of </span><span class="si">{</span><span class="n">valid_loss_functions</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
-
-    <span class="n">parameters</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="n">parameters</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Parameters must be a 1D numpy array.&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Title must be a string.&quot;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"title must be a string."</span><span class="p">)</span>
 
-    <span class="c1"># Prepare the robust cost functions for each term in the least squares problem</span>
-    <span class="n">rho_func</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">loss</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">l</span> <span class="o">==</span> <span class="s2">&quot;linear&quot;</span><span class="p">:</span>
-            <span class="n">rho_func</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">linear_rho_at_R2</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">l</span> <span class="o">==</span> <span class="s2">&quot;soft_l1&quot;</span><span class="p">:</span>
-            <span class="n">rho_func</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">soft_l1_rho_at_R2</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">l</span> <span class="o">==</span> <span class="s2">&quot;cauchy&quot;</span><span class="p">:</span>
-            <span class="n">rho_func</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cauchy_rho_at_R2</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="n">l</span> <span class="o">==</span> <span class="s2">&quot;arctan&quot;</span><span class="p">:</span>
-            <span class="n">rho_func</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arctan_rho_at_R2</span><span class="p">)</span>
+    <span class="n">n_parameters</span> <span class="o">=</span> <span class="n">p0</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Ask the current solver to build the exact initial system.</span>
+    <span class="c1">#</span>
+    <span class="c1"># max_iteration=0 is intentional:</span>
+    <span class="c1"># the solver evaluates iteration 0 and stops before solving</span>
+    <span class="c1"># H * delta_parameters = -second_term.</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="n">_</span><span class="p">,</span> <span class="n">history</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span>
+        <span class="n">terms</span><span class="o">=</span><span class="n">terms</span><span class="p">,</span>
+        <span class="n">p0</span><span class="o">=</span><span class="n">p0</span><span class="p">,</span>
+        <span class="n">parametrization</span><span class="o">=</span><span class="n">parametrization</span><span class="p">,</span>
+        <span class="n">max_iteration</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">history</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">history_details</span><span class="o">=</span><span class="p">[</span>
+            <span class="s2">"iteration"</span><span class="p">,</span>
+            <span class="s2">"parameters"</span><span class="p">,</span>
+            <span class="s2">"costs"</span><span class="p">,</span>
+            <span class="s2">"cost"</span><span class="p">,</span>
+            <span class="s2">"residuals"</span><span class="p">,</span>
+            <span class="s2">"second_term"</span><span class="p">,</span>
+            <span class="s2">"hessian"</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">history</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">history</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">"The solver did not return the initial optimization state."</span><span class="p">)</span>
+
+    <span class="n">state</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Retrieve exactly what was built by the solver.</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="n">parameters</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="s2">"parameters"</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="n">hessian</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"hessian"</span><span class="p">]</span>
+
+    <span class="n">costs</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"costs"</span><span class="p">]</span>
+    <span class="n">total_cost</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"cost"</span><span class="p">]</span>
+
+    <span class="n">residuals</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"residuals"</span><span class="p">]</span>
+
+    <span class="n">second_term</span> <span class="o">=</span> <span class="n">state</span><span class="p">[</span><span class="s2">"second_term"</span><span class="p">]</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Number of equations.</span>
+    <span class="c1">#</span>
+    <span class="c1"># Only rJ terms provide actual residual equations.</span>
+    <span class="c1"># gH terms represent a local quadratic model and therefore do not</span>
+    <span class="c1"># contribute to the residual degrees of freedom.</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="n">n_equations</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">term</span><span class="p">,</span> <span class="n">residual</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">residuals</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"rJ"</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">residual</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+                    <span class="s2">"An rJ term returned no residual in the solver history."</span>
+                <span class="p">)</span>
+
+            <span class="n">n_equations</span> <span class="o">+=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span><span class="o">.</span><span class="n">size</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Title</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">title</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="n">title</span><span class="si">:</span><span class="s2">^70</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">"-"</span> <span class="o">*</span> <span class="mi">70</span><span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Global information</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Solver state"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"------------"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">"The following quantities are taken directly from the current "</span>
+        <span class="s2">"Gauss-Newton solver."</span>
+    <span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Number of terms       :"</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">terms</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Number of equations   :"</span><span class="p">,</span> <span class="n">n_equations</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Number of parameters  :"</span><span class="p">,</span> <span class="n">n_parameters</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Total cost            : "</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">total_cost</span><span class="si">:</span><span class="s2">.6e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"||g||_inf             : "</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">second_term</span><span class="p">,</span><span class="w"> </span><span class="nb">ord</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span><span class="si">:</span><span class="s2">.6e</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Individual term information</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Term information"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"----------------"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'Term'</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'Type'</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'Equations'</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'Weight'</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">"</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'Cost'</span><span class="si">:</span><span class="s2">^20</span><span class="si">}</span><span class="s2">"</span>
+    <span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">residual</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">residuals</span><span class="p">,</span> <span class="n">costs</span><span class="p">)):</span>
+
+        <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"rJ"</span><span class="p">:</span>
+
+            <span class="n">n_eq</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span><span class="o">.</span><span class="n">size</span>
+
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;Invalid loss function &#39;</span><span class="si">{</span><span class="n">l</span><span class="si">}</span><span class="s2">&#39;. Valid options are &#39;linear&#39;, &#39;soft_l1&#39;, &#39;cauchy&#39;, &#39;arctan&#39;.&quot;</span>
+
+            <span class="n">n_eq</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">term</span><span class="o">.</span><span class="n">type</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n_eq</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">term</span><span class="o">.</span><span class="n">weight</span><span class="si">:</span><span class="s2">^15.6e</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">cost</span><span class="si">:</span><span class="s2">^20.6e</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Hessian conversion</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">hessian</span><span class="p">):</span>
+
+        <span class="n">H</span> <span class="o">=</span> <span class="n">hessian</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">H</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">hessian</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">H</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"The solver Hessian must be a 2D matrix, got </span><span class="si">{</span><span class="n">H</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">H</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">n_parameters</span><span class="p">,</span> <span class="n">n_parameters</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="s2">"The Hessian shape is inconsistent with the number of "</span>
+            <span class="s2">"optimized parameters: "</span>
+            <span class="sa">f</span><span class="s2">"H.shape=</span><span class="si">{</span><span class="n">H</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">, n_parameters=</span><span class="si">{</span><span class="n">n_parameters</span><span class="si">}</span><span class="s2">."</span>
+        <span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Hessian symmetry</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1">#</span>
+    <span class="c1"># Numerically, H should be symmetric because it is constructed as</span>
+    <span class="c1"># J.T @ J or as a symmetric Hessian from a gH term.</span>
+    <span class="c1">#</span>
+    <span class="c1"># Symmetrizing here removes tiny numerical asymmetries without</span>
+    <span class="c1"># changing the actual Gauss-Newton system in practice.</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="n">H</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">H</span> <span class="o">+</span> <span class="n">H</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Hessian analysis using SVD</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Hessian analysis"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"----------------"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"The Hessian below is the exact Gauss-Newton system built "</span> <span class="s2">"by the solver."</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"It is expressed in the input parameter space."</span><span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># SVD</span>
+    <span class="c1">#</span>
+    <span class="c1"># H = U @ diag(S) @ Vt</span>
+    <span class="c1">#</span>
+    <span class="c1"># The columns of Vt.T are the right singular vectors.</span>
+    <span class="c1"># These vectors represent directions in parameter space.</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="n">U</span><span class="p">,</span> <span class="n">singular_values</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span>
+        <span class="n">H</span><span class="p">,</span>
+        <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">singular_values</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+
+        <span class="n">lambda_max</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">lambda_min</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="n">condition_number</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">lambda_max</span> <span class="o">=</span> <span class="n">singular_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="n">non_zero</span> <span class="o">=</span> <span class="n">singular_values</span> <span class="o">&gt;</span> <span class="mf">1e-12</span>
+
+        <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">non_zero</span><span class="p">):</span>
+
+            <span class="n">lambda_min</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">singular_values</span><span class="p">[</span><span class="n">non_zero</span><span class="p">])</span>
+
+            <span class="n">condition_number</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">lambda_max</span> <span class="o">/</span> <span class="n">lambda_min</span> <span class="k">if</span> <span class="n">lambda_min</span> <span class="o">&gt;</span> <span class="mf">0.0</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
             <span class="p">)</span>
 
-    <span class="n">_n_terms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">residual_func</span><span class="p">)</span>
-    <span class="n">_n_parameters</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">size</span>
-    <span class="n">_parameters</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-    <span class="c1"># Compute the residuals, Jacobian and robust cost function values for each term in the least squares problem</span>
-    <span class="n">residual_arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">R_func</span><span class="p">(</span><span class="n">_parameters</span><span class="p">)</span> <span class="k">for</span> <span class="n">R_func</span> <span class="ow">in</span> <span class="n">residual_func</span><span class="p">]</span>
-    <span class="n">jacobian_matrices</span> <span class="o">=</span> <span class="p">[</span><span class="n">J_func</span><span class="p">(</span><span class="n">_parameters</span><span class="p">)</span> <span class="k">for</span> <span class="n">J_func</span> <span class="ow">in</span> <span class="n">jacobian_func</span><span class="p">]</span>
-    <span class="n">rhos_arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">r_func</span><span class="p">(</span><span class="n">R</span><span class="p">)</span> <span class="k">for</span> <span class="n">r_func</span><span class="p">,</span> <span class="n">R</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">rho_func</span><span class="p">,</span> <span class="n">residual_arrays</span><span class="p">)]</span>
-
-    <span class="c1"># Cost computation</span>
-    <span class="n">costs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rho</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">rho</span> <span class="ow">in</span> <span class="n">rhos_arrays</span><span class="p">]</span>
-    <span class="n">total_cost</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">c</span> <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">costs</span><span class="p">))</span>
-
-    <span class="c1"># Build tilted residuals and Jacobian based on the robust cost function</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_n_terms</span><span class="p">):</span>
-        <span class="n">residual_arrays</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">jacobian_matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_tilde_R_and_tilde_J</span><span class="p">(</span>
-            <span class="n">residual_arrays</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-            <span class="n">jacobian_matrices</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
-            <span class="n">rhos_arrays</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
-            <span class="n">rhos_arrays</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span>
-        <span class="p">)</span>
-
-    <span class="c1"># ----------- Title print ----------------</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">title</span><span class="si">:</span><span class="s2">^50</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;-&quot;</span> <span class="o">*</span> <span class="mi">50</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># ----------- Global informations -----------</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of terms in the least squares problem: </span><span class="si">{</span><span class="n">_n_terms</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">_n_equations</span> <span class="o">=</span> <span class="n">residual_arrays</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of equations in the first term (assuming data): </span><span class="si">{</span><span class="n">_n_equations</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of parameters: </span><span class="si">{</span><span class="n">_n_parameters</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Total cost value Ctot = ½Σ w*ρ(|R|²): </span><span class="si">{</span><span class="n">total_cost</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="c1"># ----------- Sub term contributions -----------</span>
-    <span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;LS Term&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Nequations&#39;</span><span class="si">:</span><span class="s2">^12</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Nparams&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Density (%)&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Loss ρ&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Weight w&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Cost ½ρ(|R|²)&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Cost (%)&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">J</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">jacobian_matrices</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">J</span><span class="p">):</span>
-            <span class="n">n_residuals_i</span><span class="p">,</span> <span class="n">n_parameters_i</span> <span class="o">=</span> <span class="n">J</span><span class="o">.</span><span class="n">shape</span>
-            <span class="n">density</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">J</span><span class="o">.</span><span class="n">nnz</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_residuals_i</span> <span class="o">*</span> <span class="n">n_parameters_i</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">n_residuals_i</span><span class="p">,</span> <span class="n">n_parameters_i</span> <span class="o">=</span> <span class="n">J</span><span class="o">.</span><span class="n">shape</span>
-            <span class="n">density</span> <span class="o">=</span> <span class="mf">100.0</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">J</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n_residuals_i</span> <span class="o">*</span> <span class="n">n_parameters_i</span><span class="p">)</span>
-        <span class="n">cost_i</span> <span class="o">=</span> <span class="n">costs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">weight_i</span> <span class="o">=</span> <span class="n">weight</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">loss_i</span> <span class="o">=</span> <span class="n">loss</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">cost_percent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
-            <span class="nb">round</span><span class="p">(</span>
-                <span class="mf">100.0</span> <span class="o">*</span> <span class="n">cost_i</span> <span class="o">*</span> <span class="n">weight_i</span> <span class="o">/</span> <span class="n">total_cost</span> <span class="k">if</span> <span class="n">total_cost</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;inf&quot;</span><span class="p">,</span> <span class="mi">0</span>
+
+            <span class="n">lambda_min</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="n">condition_number</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Largest singular value  : "</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">lambda_max</span><span class="si">:</span><span class="s2">.6e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Smallest singular value : "</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">lambda_min</span><span class="si">:</span><span class="s2">.6e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Condition number        : "</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">condition_number</span><span class="si">:</span><span class="s2">.6e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Trace(H)                : "</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">numpy</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">H</span><span class="p">)</span><span class="si">:</span><span class="s2">.6e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Singular values</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Singular values of H"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"--------------------"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'Index'</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2">"</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'λ²'</span><span class="si">:</span><span class="s2">^20</span><span class="si">}</span><span class="s2">"</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'1/λ²'</span><span class="si">:</span><span class="s2">^20</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">singular_values</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mf">1e-12</span><span class="p">:</span>
+
+            <span class="n">inverse</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">value</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="n">inverse</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2">"</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">^20.6e</span><span class="si">}</span><span class="s2">"</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">inverse</span><span class="si">:</span><span class="s2">^20.6e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Parameter sensitivity</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Parameter sensitivity"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"---------------------"</span><span class="p">)</span>
+
+    <span class="n">degrees_of_freedom</span> <span class="o">=</span> <span class="n">n_equations</span> <span class="o">-</span> <span class="n">n_parameters</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Degrees of freedom    : "</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">degrees_of_freedom</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">degrees_of_freedom</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+
+        <span class="c1"># The first term is assumed to represent the observational data,</span>
+        <span class="c1"># consistently with the previous implementation.</span>
+        <span class="n">sigma2</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">costs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">degrees_of_freedom</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="n">sigma2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Estimated residual variance σ² : "</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">sigma2</span><span class="si">:</span><span class="s2">.6e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Covariance</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1">#</span>
+    <span class="c1"># Use the SVD rather than numpy.linalg.inv(H).</span>
+    <span class="c1">#</span>
+    <span class="c1"># This is numerically safer and naturally exposes poorly observable</span>
+    <span class="c1"># directions.</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="n">covariance</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">sigma2</span><span class="p">):</span>
+
+        <span class="k">if</span> <span class="n">singular_values</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+
+            <span class="n">tolerance</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">H</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">singular_values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
             <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">singular_values</span> <span class="o">&gt;</span> <span class="n">tolerance</span><span class="p">):</span>
+
+                <span class="n">covariance</span> <span class="o">=</span> <span class="n">sigma2</span> <span class="o">*</span> <span class="n">Vt</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">singular_values</span><span class="p">)</span> <span class="o">@</span> <span class="n">Vt</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="nb">print</span><span class="p">(</span>
+                    <span class="s2">"</span><span class="se">\n</span><span class="s2">Covariance matrix cannot be computed "</span>
+                    <span class="s2">"as a regular inverse because H is singular "</span>
+                    <span class="s2">"or numerically rank deficient."</span>
+                <span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Covariance matrix cannot be computed "</span> <span class="s2">"because H is empty."</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="s2">"</span><span class="se">\n</span><span class="s2">Covariance matrix cannot be estimated "</span>
+            <span class="s2">"because there are not enough degrees of freedom."</span>
         <span class="p">)</span>
-        <span class="n">row</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">n_residuals_i</span><span class="si">:</span><span class="s2">^12</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">n_parameters_i</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">density</span><span class="si">:</span><span class="s2">^15.2f</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">loss_i</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">weight_i</span><span class="si">:</span><span class="s2">^10.2e</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">cost_i</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">cost_percent</span><span class="si">:</span><span class="s2">^10.2f</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
-    <span class="c1"># ----------- Singular values analysis -----------</span>
-    <span class="n">M</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="p">(</span><span class="n">J</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">J</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">J</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">jacobian_matrices</span><span class="p">))</span>
-    <span class="n">M</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span> <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="k">else</span> <span class="n">M</span>
-    <span class="n">U</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-    <span class="n">s_max</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">s_min</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="n">cond</span> <span class="o">=</span> <span class="n">s_max</span> <span class="o">/</span> <span class="n">s_min</span> <span class="k">if</span> <span class="n">s_min</span> <span class="o">&gt;</span> <span class="mf">1e-12</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Parameter table</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Singular values λ² (max/min) of Σ wJᵀJ : </span><span class="si">{</span><span class="n">s_max</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">s_min</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Condition number (max λ² / min λ²): </span><span class="si">{</span><span class="n">cond</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;λ² Index&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;λ² Value&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Var 1/λ²&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">S</span><span class="p">):</span>
-        <span class="n">var</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">s</span> <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mf">1e-12</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>  <span class="c1"># Avoid division by zero</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">s</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">var</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">covariance</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-    <span class="c1"># ----------- Parameter sensitivity analysis -----------</span>
-    <span class="n">sigma_2</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="mi">2</span> <span class="o">*</span> <span class="n">costs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">_n_equations</span> <span class="o">-</span> <span class="n">_n_parameters</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">_n_equations</span> <span class="o">&gt;</span> <span class="n">_n_parameters</span>
-        <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="n">cov</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">sigma_2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="k">if</span> <span class="n">_n_equations</span> <span class="o">&gt;</span> <span class="n">_n_parameters</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
-    <span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Vt = (right singular vectors) of the combined Jacobian matrix Σ wJᵀJ:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Estimated residual variance σ² = 2*C0/(Neq-Np): </span><span class="si">{</span><span class="n">sigma_2</span><span class="si">:</span><span class="s2">.3e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="n">indices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">_n_parameters</span> <span class="o">&gt;=</span> <span class="mi">3</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">_n_parameters</span><span class="p">))</span>
-    <span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="s1">&#39;Param Index&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Value P&#39;</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Var V=σ²M⁻¹&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">&#39;Ratio √V/|P|&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">:</span>
-        <span class="n">header</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="s1">&#39;Vt[&#39;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="s1">&#39;]&#39;</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_n_parameters</span><span class="p">):</span>
-        <span class="n">var</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="n">j</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="k">if</span> <span class="n">_n_equations</span> <span class="o">&gt;</span> <span class="n">_n_parameters</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
-        <span class="n">ratio</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">)</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="n">j</span><span class="p">])</span> <span class="k">if</span> <span class="n">parameters</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="s1">'Parameter'</span><span class="si">:</span><span class="s2">^12</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'Value'</span><span class="si">:</span><span class="s2">^20</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'Variance'</span><span class="si">:</span><span class="s2">^20</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'Std'</span><span class="si">:</span><span class="s2">^20</span><span class="si">}</span><span class="s2">"</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'Std / |Value|'</span><span class="si">:</span><span class="s2">^20</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span>
-        <span class="n">row</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">j</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">parameters</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="si">:</span><span class="s2">^10.3e</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">var</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">ratio</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">:</span>
-            <span class="n">row</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">&quot; </span><span class="si">{</span><span class="n">Vt</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="w"> </span><span class="n">j</span><span class="p">]</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 
-    <span class="c1"># ----------- End of analysis -----------</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">50</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_parameters</span><span class="p">):</span>
+
+            <span class="n">variance</span> <span class="o">=</span> <span class="n">covariance</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span>
+
+            <span class="n">std</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="n">variance</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">0.0</span><span class="p">:</span>
+
+                <span class="n">relative_std</span> <span class="o">=</span> <span class="n">std</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+            <span class="k">else</span><span class="p">:</span>
+
+                <span class="n">relative_std</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">)</span>
+
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">i</span><span class="si">:</span><span class="s2">^12</span><span class="si">}</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">parameters</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">^20.6e</span><span class="si">}</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">variance</span><span class="si">:</span><span class="s2">^20.6e</span><span class="si">}</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">std</span><span class="si">:</span><span class="s2">^20.6e</span><span class="si">}</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">relative_std</span><span class="si">:</span><span class="s2">^20.6e</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Best and worst SVD parameter-space directions</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">SVD parameter-space directions"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"------------------------------"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"The right singular vectors of H describe directions in "</span> <span class="s2">"parameter space."</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span>
+        <span class="s2">"Large singular values correspond to strongly observable "</span>
+        <span class="s2">"directions, while small singular values correspond to "</span>
+        <span class="s2">"weakly observable directions."</span>
+    <span class="p">)</span>
+
+    <span class="n">n_display</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_parameters</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Best observable directions"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"--------------------------"</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_display</span><span class="p">):</span>
+
+        <span class="n">singular_value</span> <span class="o">=</span> <span class="n">singular_values</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span>
+        <span class="n">vector</span> <span class="o">=</span> <span class="n">Vt</span><span class="p">[</span><span class="n">mode</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Mode </span><span class="si">{</span><span class="n">mode</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">"</span> <span class="sa">f</span><span class="s2">"  (λ² = </span><span class="si">{</span><span class="n">singular_value</span><span class="si">:</span><span class="s2">.6e</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">coefficient</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  p[</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">] : "</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">coefficient</span><span class="si">:</span><span class="s2">+.6e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Worst observable directions"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"---------------------------"</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_display</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+
+        <span class="n">index</span> <span class="o">=</span> <span class="o">-</span><span class="n">mode</span>
+
+        <span class="n">singular_value</span> <span class="o">=</span> <span class="n">singular_values</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="n">vector</span> <span class="o">=</span> <span class="n">Vt</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="p">:]</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Mode </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">"</span> <span class="sa">f</span><span class="s2">"  (λ² = </span><span class="si">{</span><span class="n">singular_value</span><span class="si">:</span><span class="s2">.6e</span><span class="si">}</span><span class="s2">)"</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">coefficient</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"  p[</span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">] : "</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">coefficient</span><span class="si">:</span><span class="s2">+.6e</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Right singular vectors Vt"</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"-------------------------"</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Each row of Vt is one parameter-space singular vector."</span><span class="p">)</span>
+
+    <span class="n">numpy</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span>
+        <span class="n">precision</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+        <span class="n">suppress</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="n">Vt</span><span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># End</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="s2">"="</span> <span class="o">*</span> <span class="mi">70</span> <span class="o">+</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span></div>
 
 </pre></div>
 
@@ -698,8 +954,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -733,7 +989,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.18.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
 </p></div>
       
     </div>

@@ -21,29 +21,32 @@
 .. _sphx_glr__gallery_curve_fitting.py:
 
 Curve fitting
-=================
+==================================
 
-This example shows how to fit a curve to a set of data points using
-pysolve-gn. We will use the Gauss-Newton method to minimize the
-residuals between the observed data points and the curve defined by a
-parametric function.
+This example shows how to use pysolve-gn package.
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-25
+We will fit an exponential curve to noisy data.
+
+.. GENERATED FROM PYTHON SOURCE LINES 13-26
 
 Define the model function
 --------------------------
 
-First, we will define the model function that represents the curve we want to fit.
-In this example, we will use an exponential function defined as:
+Lets consider the following exponential model.
 
 .. math::
 
-    y = a \cdot e^{b \cdot x}
+    y = a \cdot e^{b x}
 
+We generate a small and noisy dataset. In this situation, the fitted
+parameters can deviate significantly from the true parameters.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-46
+The parameters :math:`a` and :math:`b` will be estimated from the noisy data.
+
+.. GENERATED FROM PYTHON SOURCE LINES 26-51
 
 .. code-block:: Python
+
 
 
     import numpy as np
@@ -53,17 +56,20 @@ In this example, we will use an exponential function defined as:
     np.random.seed(0)
 
 
-    # Define the model function
     def model(params, x):
         a, b = params
         return a * np.exp(b * x)
 
 
-    # Generate synthetic data points
-    x_data = np.linspace(0, 3, 100)
-    true_params = [2.5, 0.5]  # True parameters for the curve: y = a * exp(b * x)
+    n_points = 100
+    x_data = np.linspace(0, 3, n_points)
+
+    true_params = np.array([2.5, 0.5])
+
     y_true = model(true_params, x_data)
-    y_data = y_true + 0.5 * np.random.normal(size=y_true.shape)  # Add noise to the data
+
+    # Add relatively strong noise to make the effect of regularization visible.
+    y_data = y_true + 1.0 * np.random.normal(size=y_true.shape)
 
 
 
@@ -73,47 +79,61 @@ In this example, we will use an exponential function defined as:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-58
+.. GENERATED FROM PYTHON SOURCE LINES 52-78
 
-Create the residual and Jacobian functions
--------------------------------------------
+Create the data term
+--------------------
 
-Secondly, we will define the residual function, and the
-Jacobian function. The residual function computes the difference between the
-observed data points and the model predictions, and the Jacobian function computes
-the derivatives of the residuals with respect to the parameters.
+The data term represents the residuals between the observations and
+the model predictions.
 
-This equation is called a **term** in pysolve-gn, and it represents a single
-component of the optimization problem. See :class:`pysolvegn.Term` for more details
-on how to define terms in pysolve-gn.
+.. math::
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-83
+    r_j(\mathbf{p}) =
+    a e^{b x_j} - y_j
+
+The Jacobian is:
+
+.. math::
+
+    \frac{\partial r_j}{\partial a} = e^{b x_j}
+
+.. math::
+
+    \frac{\partial r_j}{\partial b}
+    = a x_j e^{b x_j}
+
+.. seealso::
+
+    The class :class:`pysolvegn.Term` to store the residual and jacobian functions.
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 78-103
 
 .. code-block:: Python
 
 
 
-    # Define the residual function
-    def residual_function(params, x, y):
-        return model(params, x) - y
+    def residual_function(params):
+        return model(params, x_data) - y_data
 
 
-    residual_func = lambda params: residual_function(params, x_data, y_data)
-
-
-    # Define the Jacobian function
-    def jacobian_function(params, x):
+    def jacobian_function(params):
         a, b = params
-        J = np.zeros((len(x), len(params)))
-        J[:, 0] = np.exp(b * x)  # Derivative with respect to a
-        J[:, 1] = a * x * np.exp(b * x)  # Derivative with respect to b
+
+        J = np.zeros((len(x_data), len(params)))
+
+        J[:, 0] = np.exp(b * x_data)
+        J[:, 1] = a * x_data * np.exp(b * x_data)
+
         return J
 
 
-    jacobian_func = lambda params: jacobian_function(params, x_data)
-
     data_term = pysolvegn.Term.from_rJ(
-        residual_func=residual_func, jacobian_func=jacobian_func, loss="linear", weight=1.0
+        residual_func=residual_function,
+        jacobian_func=jacobian_function,
+        loss="linear",
+        weight=1.0,
     )
 
 
@@ -123,34 +143,31 @@ on how to define terms in pysolve-gn.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-90
 
-Perform curve fitting
-----------------------
+.. GENERATED FROM PYTHON SOURCE LINES 104-110
 
-Now we can use the :func:`pysolvegn.solve` function to perform the curve fitting.
-We will provide the term object and an initial guess for the parameters.
-The function will return the estimated parameters that best fit the data.
+Performing optimization
+---------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-106
+We solve the problem using only the :func:`pysolvegn.solve` function.
+This function takes the data term, an initialisation and convergence criterion.
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 110-122
 
 .. code-block:: Python
 
 
-    # Initial guess for the parameters
-    initial_params = [2.0, 0.4]
+    initial_params = np.array([1.0, 1.0])
 
-    result = pysolvegn.solve(
+    optimized_parameters = pysolvegn.solve(
         terms=[data_term],
-        x0=initial_params,
-        max_iteration=10,
-        xtol=1e-6,
-        ftol=1e-6,
-        verbosity=3,
+        p0=initial_params,
+        max_iteration=100,
+        xtol=1e-8,
+        ftol=1e-8,
+        verbosity=2,
     )
-    print("Estimated parameters:", result)
-
-    y_retrieved = model(result, x_data)
 
 
 
@@ -166,56 +183,91 @@ The function will return the estimated parameters that best fit the data.
     Step norm: ||Δp|| 
     Optimality: ||g|| 
 
-    Iteration  Total time (s)      Cost C            ΔC           ||Δp||_2         ||g||_∞        ||Δp||_∞         ||g||_2         Cond(H)        Trace(H)       Cost C_0    
-        0         6.335e-04       2.747e+02                                       2.037e+03                       2.088e+03       1.745e+02       8.516e+03      2.747e+02   
-        1         8.860e-04       3.587e+01      -2.389e+02       4.882e-01       1.106e+03       4.637e-01       1.121e+03       3.965e+02       2.727e+04      3.587e+01   
-        2         1.088e-03       1.275e+01      -2.311e+01       4.206e-02       5.361e+01       4.204e-02       5.422e+01       3.529e+02       2.208e+04      1.275e+01   
-        3         1.248e-03       1.268e+01      -7.435e-02       1.495e-02       3.749e-01       1.413e-02       3.749e-01       3.519e+02       2.178e+04      1.268e+01   
-        4         1.395e-03       1.268e+01      -3.310e-05       9.676e-04       1.139e-02       9.513e-04       1.139e-02       3.520e+02       2.178e+04      1.268e+01   
-        5         1.532e-03       1.268e+01      -3.624e-08       3.230e-05       3.960e-04       3.177e-05       3.960e-04       3.520e+02       2.178e+04      1.268e+01   
+    Iteration  Total time (s)      Cost C            ΔC           ||Δp||_2         ||g||_∞    
+        0         3.119e-04       4.287e+02                                       5.101e+03   
+        1         4.981e-04       9.622e+01      -3.325e+02       8.856e-01       9.936e+02   
+        2         6.063e-04       5.346e+01      -4.277e+01       6.382e-01       3.246e+02   
+        3         6.948e-04       5.072e+01      -2.738e+00       4.633e-02       4.134e+00   
+        4         7.784e-04       5.072e+01      -6.618e-04       2.843e-03       4.314e-02   
+        5         8.607e-04       5.072e+01      -3.914e-07       1.021e-04       2.567e-03   
 
-    [ftol] Convergence achieved (df < ftol * F) : 3.6238969158830514e-08 < 1.268019451067345e-05.
-    Estimated parameters: [2.48024441 0.50550361]
-
+    [ftol] Convergence achieved (df < ftol * F) : 3.914015067607579e-07 < 5.071655044568008e-07.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 107-109
 
-Plot the results
-----------------------
+.. GENERATED FROM PYTHON SOURCE LINES 123-125
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-128
+Display the fitted parameters
+------------------------------
+
+.. GENERATED FROM PYTHON SOURCE LINES 125-170
 
 .. code-block:: Python
 
 
-    # Display the results
+    print("True parameters:")
+    print(true_params)
+
+    print("\nEstimated parameters:")
+    print(optimized_parameters)
+
+    x_plot = np.linspace(0, 3, 300)
+    y_plot = model(optimized_parameters, x_plot)
+    y_true_plot = model(true_params, x_plot)
+
     plt.figure(figsize=(10, 6))
-    plt.scatter(x_data, y_data, label="Data Points", color="red", s=20)
-    plt.plot(x_data, y_true, label="True Curve", color="blue", linewidth=2)
-    plt.plot(
+
+    plt.scatter(
         x_data,
-        y_retrieved,
-        label="Fitted Curve",
-        color="green",
+        y_data,
+        label="Data Points",
+        color="red",
+        s=35,
+    )
+
+    plt.plot(
+        x_plot,
+        y_true_plot,
+        label="True Curve",
+        color="blue",
+        linewidth=2,
+    )
+
+    plt.plot(
+        x_plot,
+        y_plot,
+        label="Optimized Curve",
+        color="orange",
         linestyle="--",
         linewidth=2,
     )
-    plt.title("Curve Fitting using Gauss-Newton Method")
+
+    plt.title("Curve Fitting")
     plt.xlabel("x")
     plt.ylabel("y")
     plt.legend()
     plt.grid()
+
     plt.show()
 
 
 
 .. image-sg:: /_gallery/images/sphx_glr_curve_fitting_001.png
-   :alt: Curve Fitting using Gauss-Newton Method
+   :alt: Curve Fitting
    :srcset: /_gallery/images/sphx_glr_curve_fitting_001.png
    :class: sphx-glr-single-img
 
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    True parameters:
+    [2.5 0.5]
+
+    Estimated parameters:
+    [2.45861374 0.51137177]
 
 
 
@@ -223,7 +275,7 @@ Plot the results
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.084 seconds)
+   **Total running time of the script:** (0 minutes 0.057 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_curve_fitting.py:

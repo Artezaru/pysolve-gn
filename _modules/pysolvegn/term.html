@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.term &#8212; pysolvegn 0.2.1 documentation</title>
+    <title>pysolvegn.term &#8212; pysolvegn 0.3.0 documentation</title>
   
   
   
@@ -26,8 +26,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=0790524f97105ba85085" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -38,12 +38,12 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=0790524f97105ba85085"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=37f418d5"></script>
+    <script src="../../_static/documentation_options.js?v=e259d695"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -124,7 +124,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.2.1 documentation</p>
+    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
   
 </a></div>
     
@@ -355,7 +355,7 @@
                 <article class="bd-article">
                   
   <h1>Source code for pysolvegn.term</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""</span>
 <span class="sd">pysolve-gn - Robust Gauss-Newton Least Squares Solver.</span>
 <span class="sd">Copyright (C) 2026 Artezaru, artezaru.github@proton.me</span>
 
@@ -371,14 +371,14 @@
 
 <span class="sd">You should have received a copy of the GNU General Public License</span>
 <span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Real</span><span class="p">,</span> <span class="n">Integral</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Real</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.derivation</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_numerical_jacobian</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.implemented</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.implemented_conf</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">_IMPLEMENTED_LOSS_FUNCTIONS</span><span class="p">,</span>
     <span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="p">,</span>
 <span class="p">)</span>
@@ -388,7 +388,7 @@
 <div class="viewcode-block" id="Term">
 <a class="viewcode-back" href="../../_autosummary/pysolvegn.Term.html#pysolvegn.Term">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Term</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    A class representing a term in the least squares problem, which can be either a</span>
 <span class="sd">    residual term or a regularization term.</span>
 
@@ -458,15 +458,15 @@
 <span class="sd">    residual_func : Optional[Callable] (default=None)</span>
 <span class="sd">        The function to compute the residuals in the least squares problem.</span>
 <span class="sd">        The function should take as inputs the parameters</span>
-<span class="sd">        (array-like with shape (n_parameters,)) and return the residuals as a</span>
-<span class="sd">        1D numpy array with shape (n_residuals,) representing each</span>
+<span class="sd">        (array-like with shape ``(n_parameters,)``) and return the residuals as a</span>
+<span class="sd">        1D numpy array with shape ``(n_residuals,)`` representing each</span>
 <span class="sd">        :math:`\mathbf{r}_{j}(\mathbf{p})` where :math:`j=0,...,n_{\text{residuals}-1}`.</span>
 
 <span class="sd">    jacobian_func : Optional[Callable] (default=None)</span>
 <span class="sd">        The function to compute the Jacobian matrix of the residuals with respect to the parameters.</span>
 <span class="sd">        The function should take as inputs the parameters</span>
-<span class="sd">        (array-like with shape (n_parameters,)) and return the Jacobian matrix as a 2D numpy array</span>
-<span class="sd">        with shape (n_residuals, n_parameters) representing each</span>
+<span class="sd">        (array-like with shape ``(n_parameters,)``) and return the Jacobian matrix as a 2D numpy array</span>
+<span class="sd">        with shape ``(n_residuals, n_parameters)`` representing each</span>
 <span class="sd">        :math:`\mathbf{J}_{j}(\mathbf{p})` where :math:`j=0,...,n_{\text{residuals}-1}`</span>
 <span class="sd">        such that :math:`\mathbf{J}_j(\mathbf{p}) = \frac{\partial \mathbf{r}_j}{\partial \mathbf{p}}`.</span>
 <span class="sd">        If not provided, the Jacobian will be computed numerically using finite differences.</span>
@@ -475,33 +475,33 @@
 <span class="sd">        The function to compute the second term :math:`\mathbf{g}_i(\mathbf{p})`</span>
 <span class="sd">        of the least squares problem.</span>
 <span class="sd">        The function should take as inputs the parameters</span>
-<span class="sd">        (array-like with shape (n_parameters,)) and return the second term as a</span>
-<span class="sd">        1D numpy array with shape (n_parameters,).</span>
-<span class="sd">        If provided, loss must be &quot;linear&quot;.</span>
+<span class="sd">        (array-like with shape ``(n_parameters,)``) and return the second term as a</span>
+<span class="sd">        1D numpy array with shape ``(n_parameters,)``.</span>
+<span class="sd">        If provided, loss must be "linear".</span>
 
 <span class="sd">    hessian_func: Optional[Callable] (default=None)</span>
 <span class="sd">        The function to compute the Hessian :math:`\mathbf{H}_i(\mathbf{p})`</span>
 <span class="sd">        of the least squares problem.</span>
 <span class="sd">        The function should take as inputs the parameters</span>
-<span class="sd">        (array-like with shape (n_parameters,)) and return the Hessian as a</span>
-<span class="sd">        2D numpy array with shape (n_parameters, n_parameters).</span>
-<span class="sd">        If provided, loss must be &quot;linear&quot;.</span>
+<span class="sd">        (array-like with shape ``(n_parameters,)``) and return the Hessian as a</span>
+<span class="sd">        2D numpy array with shape ``(n_parameters, n_parameters)``.</span>
+<span class="sd">        If provided, loss must be "linear".</span>
 
 <span class="sd">    weight: Real (default=1.0)</span>
 <span class="sd">        The weight of the term in the least squares problem. The weight will be</span>
 <span class="sd">        applied to both the residuals and the Jacobian matrix, as well as the</span>
 <span class="sd">        second term and Hessian if provided.</span>
 
-<span class="sd">    loss: str (default=&quot;linear&quot;)</span>
+<span class="sd">    loss: str (default="linear")</span>
 <span class="sd">        The loss function to use for the term in the least squares problem. The loss</span>
 <span class="sd">        function will be applied to the residuals of the term, and will affect how</span>
 <span class="sd">        the second term and Hessian are computed from the residuals and Jacobian.</span>
-<span class="sd">        Available loss functions are &quot;linear&quot;, &quot;cauchy&quot;, &quot;arctan&quot;, and &quot;soft_l1&quot;.</span>
-<span class="sd">        Must be &quot;linear&quot; if the term is defined by the second term and Hessian functions.</span>
+<span class="sd">        Available loss functions are "linear", "cauchy", "arctan", and "soft_l1".</span>
+<span class="sd">        Must be "linear" if the term is defined by the second term and Hessian functions.</span>
 
-<span class="sd">    finite_difference: str (default=&quot;central&quot;)</span>
+<span class="sd">    finite_difference: str (default="central")</span>
 <span class="sd">        The finite difference method to use for computing the numerical Jacobian if the</span>
-<span class="sd">        Jacobian function is not provided. Must be one of ``&quot;central&quot;``, ``&quot;forward&quot;``, or ``&quot;backward&quot;``.</span>
+<span class="sd">        Jacobian function is not provided. Must be one of ``"central"``, ``"forward"``, or ``"backward"``.</span>
 
 
 <span class="sd">    Notes</span>
@@ -516,18 +516,19 @@
 <span class="sd">    -------</span>
 
 <span class="sd">    - 0.1.0: Initial version of the :class:`Term` class.</span>
+<span class="sd">    - 0.3.0: Removing the possibility to update the finite difference method after initialization.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="s2">&quot;_residual_func&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_jacobian_func&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_second_term_func&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_hessian_func&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_weight&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_loss&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_finite_difference&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;_use_finite_difference_jacobian&quot;</span><span class="p">,</span>
+        <span class="s2">"_residual_func"</span><span class="p">,</span>
+        <span class="s2">"_jacobian_func"</span><span class="p">,</span>
+        <span class="s2">"_second_term_func"</span><span class="p">,</span>
+        <span class="s2">"_hessian_func"</span><span class="p">,</span>
+        <span class="s2">"_weight"</span><span class="p">,</span>
+        <span class="s2">"_loss"</span><span class="p">,</span>
+        <span class="s2">"_finite_difference"</span><span class="p">,</span>
+        <span class="s2">"_use_finite_difference_jacobian"</span><span class="p">,</span>
     <span class="p">]</span>
 
 <div class="viewcode-block" id="Term.__init__">
@@ -546,69 +547,69 @@
             <span class="n">second_term_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">hessian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;A Term object can be defined by either the residual and Jacobian &quot;</span>
-                <span class="s2">&quot;functions, or the second term and Hessian functions, but not both.&quot;</span>
+                <span class="s2">"A Term object can be defined by either the residual and Jacobian "</span>
+                <span class="s2">"functions, or the second term and Hessian functions, but not both."</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">residual_func</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">jacobian_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
             <span class="n">second_term_func</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">hessian_func</span> <span class="ow">is</span> <span class="kc">None</span>
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;A Term object must be defined by either the residual and Jacobian &quot;</span>
-                <span class="s2">&quot;functions, or the second term and Hessian functions.&quot;</span>
+                <span class="s2">"A Term object must be defined by either the residual and Jacobian "</span>
+                <span class="s2">"functions, or the second term and Hessian functions."</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">second_term_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">hessian_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Both second_term_func and hessian_func must be provided together.&quot;</span>
+                <span class="s2">"Both second_term_func and hessian_func must be provided together."</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">residual_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">jacobian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;A term cannot have a Jacobian function without a residual function.&quot;</span>
+                <span class="s2">"A term cannot have a Jacobian function without a residual function."</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">residual_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">residual_func</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;residual_func must be a callable function, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">residual_func</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">"residual_func must be a callable function, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">residual_func</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">jacobian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">jacobian_func</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;jacobian_func must be a callable function, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">jacobian_func</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">"jacobian_func must be a callable function, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">jacobian_func</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">second_term_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">second_term_func</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;second_term_func must be a callable function, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">second_term_func</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">"second_term_func must be a callable function, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">second_term_func</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
         <span class="k">if</span> <span class="n">hessian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">hessian_func</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;hessian_func must be a callable function, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">hessian_func</span><span class="p">)</span><span class="si">}</span><span class="s2">.&quot;</span>
+                <span class="sa">f</span><span class="s2">"hessian_func must be a callable function, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">hessian_func</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">weight</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">weight</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;weight must be a real number.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"weight must be a real number."</span><span class="p">)</span>
         <span class="n">weight</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">loss</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">loss</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="s2">"linear"</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;loss must be a string.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"loss must be a string."</span><span class="p">)</span>
         <span class="n">loss</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">loss</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_IMPLEMENTED_LOSS_FUNCTIONS</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;loss must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_LOSS_FUNCTIONS</span><span class="si">}</span><span class="s2">, got &#39;</span><span class="si">{</span><span class="n">loss</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+                <span class="sa">f</span><span class="s2">"loss must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_LOSS_FUNCTIONS</span><span class="si">}</span><span class="s2">, got '</span><span class="si">{</span><span class="n">loss</span><span class="si">}</span><span class="s2">'."</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">finite_difference</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">finite_difference</span> <span class="o">=</span> <span class="s2">&quot;central&quot;</span>
+            <span class="n">finite_difference</span> <span class="o">=</span> <span class="s2">"central"</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">finite_difference</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;finite_difference must be a string.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"finite_difference must be a string."</span><span class="p">)</span>
         <span class="n">finite_difference</span> <span class="o">=</span> <span class="n">finite_difference</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">finite_difference</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;finite_difference must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="si">}</span><span class="s2">, got &#39;</span><span class="si">{</span><span class="n">finite_difference</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+                <span class="sa">f</span><span class="s2">"finite_difference must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="si">}</span><span class="s2">, got '</span><span class="si">{</span><span class="n">finite_difference</span><span class="si">}</span><span class="s2">'."</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_residual_func</span> <span class="o">=</span> <span class="n">residual_func</span>
@@ -632,7 +633,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">residual_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        [Get] the residual function of the term.</span>
 
 <span class="sd">        .. note::</span>
@@ -644,7 +645,7 @@
 <span class="sd">        Optional[Callable]</span>
 <span class="sd">            The residual function of the term, or None if the term is defined by the second term</span>
 <span class="sd">            and Hessian functions instead of the residual and Jacobian functions.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_residual_func</span>
 
     <span class="nd">@property</span>
@@ -653,7 +654,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        [Get] the Jacobian function of the term.</span>
 
 <span class="sd">        .. note::</span>
@@ -665,7 +666,7 @@
 <span class="sd">        Optional[Callable]</span>
 <span class="sd">            The Jacobian function of the term, or None if the term is defined by the second term</span>
 <span class="sd">            and Hessian functions instead of the residual and Jacobian functions.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_func</span>
 
     <span class="nd">@property</span>
@@ -674,7 +675,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">second_term_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        [Get] the second term function of the term.</span>
 
 <span class="sd">        .. note::</span>
@@ -687,7 +688,7 @@
 <span class="sd">            The second term function of the term, or None if the term is defined by the residual</span>
 <span class="sd">            and Jacobian functions instead of the second term and Hessian functions.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_second_term_func</span>
 
     <span class="nd">@property</span>
@@ -696,7 +697,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">hessian_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        [Get] the Hessian function of the term.</span>
 
 <span class="sd">        .. note::</span>
@@ -709,7 +710,7 @@
 <span class="sd">            The Hessian function of the term, or None if the term is defined by the residual</span>
 <span class="sd">            and Jacobian functions instead of the second term and Hessian functions.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hessian_func</span>
 
     <span class="nd">@property</span>
@@ -718,7 +719,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Real</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        [Get/Set] the weight of the term in the least squares problem.</span>
 
 <span class="sd">        Parameters</span>
@@ -730,7 +731,7 @@
 <span class="sd">        -------</span>
 <span class="sd">        Real</span>
 <span class="sd">            The current weight of the term in the least squares problem.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span>
 
     <span class="nd">@weight</span><span class="o">.</span><span class="n">setter</span>
@@ -738,117 +739,98 @@
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">value</span> <span class="o">=</span> <span class="mf">1.0</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;weight must be a real number.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"weight must be a real number."</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;weight must be non-negative.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"weight must be non-negative."</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        [Get/Set] the loss function of the term in the least squares problem.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        value : Optional[str] (default=&quot;linear&quot;)</span>
+<span class="sd">        value : Optional[str] (default="linear")</span>
 <span class="sd">            The new loss function to set for the term. Must be a string and one of</span>
-<span class="sd">            &quot;linear&quot;, &quot;cauchy&quot;, &quot;arctan&quot;, or &quot;soft_l1&quot;.</span>
+<span class="sd">            "linear", "cauchy", "arctan", or "soft_l1".</span>
 
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            The current loss function of the term in the least squares problem.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loss</span>
 
     <span class="nd">@loss</span><span class="o">.</span><span class="n">setter</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;linear&quot;</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="s2">"linear"</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;loss must be a string.&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"loss must be a string."</span><span class="p">)</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_IMPLEMENTED_LOSS_FUNCTIONS</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;loss must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_LOSS_FUNCTIONS</span><span class="si">}</span><span class="s2">, got &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
+                <span class="sa">f</span><span class="s2">"loss must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_LOSS_FUNCTIONS</span><span class="si">}</span><span class="s2">, got '</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">'."</span>
             <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_loss</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">finite_difference</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        [Get/Set] the finite difference method for numerical Jacobian computation of the term.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        value : Optional[str] (default=&quot;central&quot;)</span>
-<span class="sd">            The new finite difference method to set for numerical Jacobian computation of the term.</span>
-<span class="sd">            Must be a string and one of &quot;central&quot;, &quot;forward&quot;, or &quot;backward&quot;.</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get] the finite difference method for numerical Jacobian computation of the term.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
 <span class="sd">            The current finite difference method for numerical Jacobian computation of the term.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finite_difference</span>
-
-    <span class="nd">@finite_difference</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">finite_difference</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="s2">&quot;central&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;finite_difference must be a string.&quot;</span><span class="p">)</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">&quot;finite_difference must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="si">}</span><span class="s2">, got &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;.&quot;</span>
-            <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_finite_difference</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">rho_function</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        [Get] the rho function corresponding to the current loss function of the term.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        Callable</span>
 <span class="sd">            The rho function corresponding to the current loss function of the term.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="n">get_rho_function_by_name</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_loss</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        [Get] the type of the term, which can be either &quot;rJ&quot; for terms defined</span>
-<span class="sd">        by residual and Jacobian functions, or &quot;gH&quot; for terms defined by second</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get] the type of the term, which can be either "rJ" for terms defined</span>
+<span class="sd">        by residual and Jacobian functions, or "gH" for terms defined by second</span>
 <span class="sd">        term and Hessian functions.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        str</span>
-<span class="sd">            The type of the term, either &quot;rJ&quot; or &quot;gH&quot;.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">            The type of the term, either "rJ" or "gH".</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_residual_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;rJ&quot;</span>
+            <span class="k">return</span> <span class="s2">"rJ"</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_second_term_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hessian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s2">&quot;gH&quot;</span>
+            <span class="k">return</span> <span class="s2">"gH"</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">&quot;Invalid Term: must be defined by either rJ or gH functions.&quot;</span>
+                <span class="s2">"Invalid Term: must be defined by either rJ or gH functions."</span>
             <span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">use_finite_difference</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        [Get] whether the term is using a finite difference Jacobian function.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        bool</span>
 <span class="sd">            True if the term is using a finite difference Jacobian function, False otherwise.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_finite_difference_jacobian</span>
 
     <span class="nd">@classmethod</span>
@@ -857,10 +839,11 @@
         <span class="n">residual_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">jacobian_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">weight</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Real</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
         <span class="n">loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">finite_difference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Term</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Create a Term object from the residual and Jacobian functions.</span>
 
 <span class="sd">        The term will be defined by the residual and Jacobian functions,</span>
@@ -871,30 +854,30 @@
 <span class="sd">        residual_func : Optional[Callable] (default=None)</span>
 <span class="sd">            The function to compute the residuals in the least squares problem.</span>
 <span class="sd">            The function should take as inputs the parameters</span>
-<span class="sd">            (array-like with shape (n_parameters,)) and return the residuals as a</span>
-<span class="sd">            1D numpy array with shape (n_residuals,) representing each</span>
+<span class="sd">            (array-like with shape ``(n_parameters,)``) and return the residuals as a</span>
+<span class="sd">            1D numpy array with shape ``(n_residuals,)`` representing each</span>
 <span class="sd">            :math:`\mathbf{R}_{j}(\mathbf{p})` where :math:`j=0,...,n_{\text{residuals}-1}`.</span>
 
 <span class="sd">        jacobian_func : Optional[Callable] (default=None)</span>
 <span class="sd">            The function to compute the Jacobian matrix of the residuals with respect to the parameters.</span>
 <span class="sd">            The function should take as inputs the parameters</span>
-<span class="sd">            (array-like with shape (n_parameters,)) and return the Jacobian matrix as a 2D numpy array</span>
-<span class="sd">            with shape (n_residuals, n_parameters) representing each</span>
+<span class="sd">            (array-like with shape ``(n_parameters,)``) and return the Jacobian matrix as a 2D numpy array</span>
+<span class="sd">            with shape ``(n_residuals, n_parameters)`` representing each</span>
 <span class="sd">            :math:`\mathbf{J}_{j}(\mathbf{p})` where :math:`j=0,...,n_{\text{residuals}-1}`.</span>
 
 <span class="sd">        weight: Real (default=1.0)</span>
 <span class="sd">            The weight of the term in the least squares problem. The weight will be</span>
 <span class="sd">            applied to both the residuals and the Jacobian matrix.</span>
 
-<span class="sd">        loss: str (default=&quot;linear&quot;)</span>
+<span class="sd">        loss: str (default="linear")</span>
 <span class="sd">            The loss function to use for the term in the least squares problem. The loss</span>
 <span class="sd">            function will be applied to the residuals of the term, and will affect how</span>
 <span class="sd">            the second term and Hessian are computed from the residuals and Jacobian.</span>
-<span class="sd">            Available loss functions are &quot;linear&quot;, &quot;cauchy&quot;, &quot;arctan&quot;, and &quot;soft_l1&quot;.</span>
+<span class="sd">            Available loss functions are "linear", "cauchy", "arctan", and "soft_l1".</span>
 
-<span class="sd">        finite_difference: str (default=&quot;central&quot;)</span>
+<span class="sd">        finite_difference: str (default="central")</span>
 <span class="sd">            The finite difference method to use for computing the numerical Jacobian if the</span>
-<span class="sd">            Jacobian function is not provided. Must be one of ``&quot;central&quot;``, ``&quot;forward&quot;``, or ``&quot;backward&quot;``.</span>
+<span class="sd">            Jacobian function is not provided. Must be one of ``"central"``, ``"forward"``, or ``"backward"``.</span>
 
 
 <span class="sd">        Returns</span>
@@ -903,7 +886,7 @@
 <span class="sd">            A Term object defined by the given residual and Jacobian functions, weight, loss, and</span>
 <span class="sd">            finite difference method.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">residual_func</span><span class="o">=</span><span class="n">residual_func</span><span class="p">,</span>
             <span class="n">jacobian_func</span><span class="o">=</span><span class="n">jacobian_func</span><span class="p">,</span>
@@ -921,7 +904,7 @@
         <span class="n">hessian_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">weight</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Real</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Term</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">        Create a Term object from the second term and Hessian functions.</span>
 
 <span class="sd">        The term will be defined by the second term and Hessian functions,</span>
@@ -932,14 +915,14 @@
 <span class="sd">        second_term_func: Optional[Callable] (default=None)</span>
 <span class="sd">            The function to compute the second term of the least squares problem.</span>
 <span class="sd">            The function should take as inputs the parameters</span>
-<span class="sd">            (array-like with shape (n_parameters,)) and return the second term as a</span>
-<span class="sd">            1D numpy array with shape (n_parameters,).</span>
+<span class="sd">            (array-like with shape ``(n_parameters,)``) and return the second term as a</span>
+<span class="sd">            1D numpy array with shape ``(n_parameters,)``.</span>
 
 <span class="sd">        hessian_func: Optional[Callable] (default=None)</span>
 <span class="sd">            The function to compute the Hessian of the least squares problem.</span>
 <span class="sd">            The function should take as inputs the parameters</span>
-<span class="sd">            (array-like with shape (n_parameters,)) and return the Hessian as a</span>
-<span class="sd">            2D numpy array with shape (n_parameters, n_parameters).</span>
+<span class="sd">            (array-like with shape ``(n_parameters,)``) and return the Hessian as a</span>
+<span class="sd">            2D numpy array with shape ``(n_parameters, n_parameters)``.</span>
 
 <span class="sd">        weight: Real (default=1.0)</span>
 <span class="sd">            The weight of the term in the least squares problem. The weight will be</span>
@@ -950,14 +933,14 @@
 <span class="sd">        Term</span>
 <span class="sd">            A Term object defined by the given second term and Hessian functions, weight, and loss.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
             <span class="n">residual_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">jacobian_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">second_term_func</span><span class="o">=</span><span class="n">second_term_func</span><span class="p">,</span>
             <span class="n">hessian_func</span><span class="o">=</span><span class="n">hessian_func</span><span class="p">,</span>
             <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
-            <span class="n">loss</span><span class="o">=</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span>
+            <span class="n">loss</span><span class="o">=</span><span class="s2">"linear"</span><span class="p">,</span>
             <span class="n">finite_difference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">)</span></div>
 
@@ -990,8 +973,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=0790524f97105ba85085"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=0790524f97105ba85085"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1025,7 +1008,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.18.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
 </p></div>
       
     </div>
