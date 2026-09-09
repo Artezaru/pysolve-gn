@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from typing import Callable, Optional, Union
 from numbers import Real
 
 import numpy
@@ -29,8 +30,7 @@ def build_squared_regularization(
     stds: ArrayLike,
     *,
     weight: Real = 1.0,
-    loss: str = "linear",
-    finite_difference: str = "central",
+    loss: Optional[Union[str, Callable]] = None,
 ) -> Term:
     r"""
     Build a squared regularization term based on a Gaussian prior.
@@ -39,7 +39,7 @@ def build_squared_regularization(
 
     .. math::
 
-        R_{\mathrm{reg},i}(\mathbf{p})
+        r_{\mathrm{reg},i}(\mathbf{p})
         =
         \frac{p_i - \mu_i}{\sigma_i}
 
@@ -66,15 +66,11 @@ def build_squared_regularization(
         Standard deviation values of the Gaussian prior for each parameter.
         All values must be strictly positive.
 
-    weight : Real, optional (default=1.0)
+    weight : Real (default=1.0)
         Weight of the regularization term.
 
-    loss : str, optional (default="linear")
+    loss : Optional[Union[str, Callable]] (default=None)
         Loss function applied to the regularization residuals.
-
-    finite_difference : str, optional (default="central")
-        Finite difference method used by :class:`Term` if the Jacobian
-        is not explicitly available.
 
     Returns
     -------
@@ -136,7 +132,6 @@ def build_squared_regularization(
         jacobian_func=jacobian_func,
         weight=weight,
         loss=loss,
-        finite_difference=finite_difference,
     )
 
 
@@ -146,8 +141,7 @@ def build_soft_squared_regularization(
     stds: ArrayLike,
     *,
     weight: Real = 1.0,
-    loss: str = "linear",
-    finite_difference: str = "central",
+    loss: Optional[Union[str, Callable]] = None,
 ) -> Term:
     r"""
     Build a soft squared regularization term based on a Gaussian prior.
@@ -159,7 +153,7 @@ def build_soft_squared_regularization(
 
     .. math::
 
-        R_{\mathrm{reg},i}(\mathbf{p}) =
+        r_{\mathrm{reg},i}(\mathbf{p}) =
         \begin{cases}
             \dfrac{p_i - (\mu_i-\tau_i)}{\sigma_i}
             & \text{if } p_i < \mu_i-\tau_i \\[6pt]
@@ -198,15 +192,11 @@ def build_soft_squared_regularization(
         regularization outside the threshold.
         All values must be strictly positive.
 
-    weight : Real, optional (default=1.0)
+    weight : Real (default=1.0)
         Weight of the regularization term.
 
-    loss : str, optional (default="linear")
+    loss : Optional[Union[str, Callable]] (default=None)
         Loss function applied to the regularization residuals.
-
-    finite_difference : str, optional (default="central")
-        Finite difference method used by :class:`Term` if the Jacobian
-        is not explicitly available.
 
     Returns
     -------
@@ -298,5 +288,4 @@ def build_soft_squared_regularization(
         jacobian_func=jacobian_func,
         weight=weight,
         loss=loss,
-        finite_difference=finite_difference,
     )

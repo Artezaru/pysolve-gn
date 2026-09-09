@@ -64,7 +64,6 @@ fitted_params = pysolvegn.solve_gauss_newton(
     xtol=1e-6,
     ftol=1e-6,
     verbosity=2,
-    loss="linear",
 )
 ```
 

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Mathematical Background &#8212; pysolvegn 0.3.0 documentation</title>
+    <title>Mathematical Background &#8212; pysolvegn 1.0.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=e259d695"></script>
+    <script src="_static/documentation_options.js?v=8d563738"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -54,8 +54,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'math';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Usage" href="usage.html" />
-    <link rel="prev" title="pysolvegn.study_optimization" href="_autosummary/pysolvegn.study_optimization.html" />
+    <link rel="next" title="API Reference" href="api.html" />
+    <link rel="prev" title="Installation" href="installation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -120,7 +120,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
+    <p class="title logo__title">pysolvegn 1.0.0 documentation</p>
   
 </a></div>
     
@@ -141,16 +141,16 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="api.html">
-    API Reference
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Mathematical Background
   </a>
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
-    Mathematical Background
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API Reference
   </a>
 </li>
 
@@ -241,16 +241,16 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="api.html">
-    API Reference
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Mathematical Background
   </a>
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
-    Mathematical Background
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API Reference
   </a>
 </li>
 
@@ -349,174 +349,326 @@
 <nav class="contents local" id="table-of-contents">
 <p class="topic-title">Table of Contents</p>
 <ul class="simple">
-<li><p><a class="reference internal" href="#robust-least-squares-optimization-by-the-gauss-newton-method" id="id1">Robust Least Squares Optimization by the Gauss-Newton Method</a></p>
+<li><p><a class="reference internal" href="#gauss-newton-optimization" id="id2">Gauss-Newton optimization</a></p>
 <ul>
-<li><p><a class="reference internal" href="#demonstration" id="id2">Demonstration</a></p></li>
+<li><p><a class="reference internal" href="#demonstration" id="id3">Demonstration</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#adding-some-regularization-to-the-gauss-newton-update" id="id3">Adding some regularization to the Gauss-Newton update</a></p></li>
-<li><p><a class="reference internal" href="#changing-the-parametrization" id="id4">Changing the parametrization</a></p></li>
+<li><p><a class="reference internal" href="#robust-least-squares-optimization-by-the-gauss-newton-method" id="id4">Robust least squares optimization by the Gauss-Newton Method</a></p>
+<ul>
+<li><p><a class="reference internal" href="#id1" id="id5">Demonstration</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#adding-regularization-to-the-gauss-newton-update" id="id6">Adding regularization to the Gauss-Newton update</a></p></li>
+<li><p><a class="reference internal" href="#changing-the-parametrization" id="id7">Changing the parametrization</a></p></li>
 </ul>
 </nav>
-<section id="robust-least-squares-optimization-by-the-gauss-newton-method">
-<h2><a class="toc-backref" href="#id1" role="doc-backlink">Robust Least Squares Optimization by the Gauss-Newton Method</a><a class="headerlink" href="#robust-least-squares-optimization-by-the-gauss-newton-method" title="Link to this heading">#</a></h2>
-<p>Consider a least squares problem of the form:</p>
+<section id="gauss-newton-optimization">
+<h2><a class="toc-backref" href="#id2" role="doc-backlink">Gauss-Newton optimization</a><a class="headerlink" href="#gauss-newton-optimization" title="Link to this heading">#</a></h2>
+<p>Consider a least squares problem on the form:</p>
 <div class="math notranslate nohighlight">
-\[\min_{\mathbf{p}} \frac{1}{2} \sum_j \rho\left(\| \mathbf{r}_j(\mathbf{p}) \|^2\right)\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{r}_j(\mathbf{p})\)</span> is a residual function (<span class="math notranslate nohighlight">\(\mathbb{R}^{n_p} \rightarrow \mathbb{R}\)</span>)
-depending on the parameters <span class="math notranslate nohighlight">\(\mathbf{p} \in \mathbb{R}^{n_p}\)</span>, and <span class="math notranslate nohighlight">\(\rho\)</span> is a robust
-cost function (<span class="math notranslate nohighlight">\(\mathbb{R} \rightarrow \mathbb{R}\)</span>) that reduces the influence of outliers.</p>
-<p>At each iteration of the Gauss-Newton method, we search for an update <span class="math notranslate nohighlight">\(\Delta p\)</span>
-to the current parameters <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span> that minimizes the robust cost function.</p>
+\[\min_{\mathbf{p}} = \frac{1}{2} \left(\| \mathbf{r}(\mathbf{p}) \|^2\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{r}\)</span> is a residual function (<span class="math notranslate nohighlight">\(\mathbb{R}^{n_p} \rightarrow \mathbb{R}^{n_r}\)</span>)
+depending on the parameters <span class="math notranslate nohighlight">\(\mathbf{p} \in \mathbb{R}^{n_p}\)</span> and returning a vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{n_r}\)</span>.</p>
+<p>The problem is solve using an iterative algorithm based on the Gauss-Newton method.
+At each iteration, an update <span class="math notranslate nohighlight">\(\Delta \mathbf{p}\)</span> to the current parameters <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span>
+is searched to minimize the cost function.</p>
 <p>The solution is given by:</p>
 <div class="math notranslate nohighlight">
-\[\Delta p = - \left(\tilde{\mathbf{J}}^T \tilde{\mathbf{J}}\right)^{-1} \tilde{\mathbf{J}}^T \tilde{\mathbf{r}}\]</div>
+\[\Delta \mathbf{p} = - \left(\mathbf{J}^T \mathbf{J}\right)^{-1} \mathbf{J}^T \mathbf{r}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{r}\)</span> is the full residual vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{n_r}\)</span> evaluated at <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span>
+and <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> is the full jacobian matrix in <span class="math notranslate nohighlight">\(\mathbb{M}_{n_r, n_p}(\mathbb{R})\)</span> containing
+each <span class="math notranslate nohighlight">\(\frac{\partial r_j}{\partial p_l} \forall j \in \llbracket 1, n_r \rrbracket \forall l \in \llbracket 1, n_p \rrbracket\)</span>.</p>
+<p>The next iteration is performed for <span class="math notranslate nohighlight">\(\mathbf{p_{k+1}} = \mathbf{p_k} + \Delta \mathbf{p}\)</span> until convergence.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The class <a class="reference internal" href="_autosummary/pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.Term</span></code></a> to represent a least square problem.</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">rJ</span></code>-type term, this class store two <code class="docutils literal notranslate"><span class="pre">Callable</span></code> to compute
+the residual vector <span class="math notranslate nohighlight">\(\mathbf{r}\)</span> (as a 1D-array with shape <code class="docutils literal notranslate"><span class="pre">(n_residuals,)</span></code>)
+and jacobian matrix <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> (as a 2D-array with shape <code class="docutils literal notranslate"><span class="pre">(n_residuals,</span> <span class="pre">n_parameters)</span></code>)
+from a set of parameters <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> (as a 1D-array with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>).</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">gH</span></code>-type term, this class store two <code class="docutils literal notranslate"><span class="pre">Callable</span></code> to compute
+the Hessian matrix <span class="math notranslate nohighlight">\(\mathbf{H} = \mathbf{J}^T \mathbf{J}\)</span> (as a 2D-array with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,</span> <span class="pre">n_parameters)</span></code>)
+and the gradient vector <span class="math notranslate nohighlight">\(\mathbf{g} = \mathbf{J}^T \mathbf{r}\)</span> (as a 1D-array with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>)
+from a set of parameters <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> (as a 1D-array with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>).</p>
+</div>
+<section id="demonstration">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Demonstration</a><a class="headerlink" href="#demonstration" title="Link to this heading">#</a></h3>
+<p>Consider a least squares problem of the form:</p>
+<div class="math notranslate nohighlight">
+\[\min_{\mathbf{p}} = \frac{1}{2} \left(\| \mathbf{r}(\mathbf{p}) \|^2\right)\]</div>
+<p>Developing the residuals <span class="math notranslate nohighlight">\(\mathbf{r}(\mathbf{p})\)</span> around the current parameters <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{r}(\mathbf{p_k} + \Delta \mathbf{p})
+\approx
+\mathbf{r}
++ \mathbf{J} \Delta \mathbf{p}
++ \frac{1}{2}
+\begin{bmatrix}
+\Delta \mathbf{p}^T \mathbf{H}_1 \Delta \mathbf{p} \\
+\vdots \\
+\Delta \mathbf{p}^T \mathbf{H}_{n_r} \Delta \mathbf{p}
+\end{bmatrix}
++ \ldots\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{J}(\mathbf{p_k}) = \nabla \mathbf{r}(\mathbf{p_k})\)</span> is the Jacobian
+of the residuals with respect to the parameters, and <span class="math notranslate nohighlight">\(\mathbf{H}_j(\mathbf{p_k})\)</span>
+is the Hessian of the <span class="math notranslate nohighlight">\(j\)</span>-th residual with respect to the parameters. By convention,
+the quantities are considered evaluated at <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span> such that
+<span class="math notranslate nohighlight">\(\mathbf{r} = \mathbf{r}(\mathbf{p_k})\)</span>.</p>
+<p>Therefore, for the least squares cost</p>
+<div class="math notranslate nohighlight">
+\[F(\mathbf{p}) = \frac{1}{2} \| \mathbf{r}(\mathbf{p}) \|^2\]</div>
+<p>Using the Taylor expansion above and retaining terms up to second order in
+<span class="math notranslate nohighlight">\(\Delta \mathbf{p}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[F(\mathbf{p_k} + \Delta \mathbf{p})
+\approx
+F(\mathbf{p_k})
++ \mathbf{J}^T \mathbf{r} \, \Delta \mathbf{p}
++ \frac{1}{2}
+\Delta \mathbf{p}^T
+\left(
+   \mathbf{J}^T \mathbf{J}
+   + \sum_{j=1}^{n_r} r_j \mathbf{H}_j
+\right)
+\Delta \mathbf{p}\]</div>
+<p>The gradient of the least squares cost is therefore</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{g} = \nabla F(\mathbf{p_k}) = \mathbf{J}^T \mathbf{r}\]</div>
+<p>and its exact Hessian is</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{H} = \mathbf{J}^T \mathbf{J} + \sum_{j=1}^{n_r} r_j \mathbf{H}_j\]</div>
+<p>The Gauss-Newton approximation consists in neglecting the second term of the
+Hessian, giving</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{H}_{GN} = \mathbf{J}^T \mathbf{J}\]</div>
+<p>The Gauss-Newton step is then obtained by solving</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{H}_{GN} \Delta \mathbf{p} = -\mathbf{g}.\]</div>
+<p>When <span class="math notranslate nohighlight">\(\mathbf{J}^T \mathbf{J}\)</span> is invertible, this can formally be written as</p>
+<div class="math notranslate nohighlight">
+\[\Delta \mathbf{p} = -(\mathbf{J}^T \mathbf{J})^{-1}\mathbf{J}^T\mathbf{r}.\]</div>
+</section>
+</section>
+<section id="robust-least-squares-optimization-by-the-gauss-newton-method">
+<h2><a class="toc-backref" href="#id4" role="doc-backlink">Robust least squares optimization by the Gauss-Newton Method</a><a class="headerlink" href="#robust-least-squares-optimization-by-the-gauss-newton-method" title="Link to this heading">#</a></h2>
+<p>Robust cost functions <span class="math notranslate nohighlight">\(\rho : \mathbb{R} \rightarrow \mathbb{R}\)</span> can be used to reduce the influence of outliers.
+In that case, the standard least squares cost is replaced by a robust cost function
+that reduces the contribution of residuals with large errors.</p>
+<p>Consider a robust least squares problem of the form:</p>
+<div class="math notranslate nohighlight">
+\[\min_{\mathbf{p}} \frac{1}{2} \sum_{j \in \llbracket 1, n_r \rrbracket}
+\rho \left(\| \mathbf{r}_j(\mathbf{p}) \|^2\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{r}_j(\mathbf{p})\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th residual function (<span class="math notranslate nohighlight">\(\mathbb{R}^{n_p} \rightarrow \mathbb{R}\)</span>)
+depending on the parameters <span class="math notranslate nohighlight">\(\mathbf{p} \in \mathbb{R}^{n_p}\)</span>.</p>
+<p>The update <span class="math notranslate nohighlight">\(\Delta \mathbf{p}\)</span> to the current parameters <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span>
+is searched to minimize the cost function and the solution is given by:</p>
+<div class="math notranslate nohighlight">
+\[\Delta \mathbf{p} = - \left(\tilde{\mathbf{J}}^T \tilde{\mathbf{J}}\right)^{-1} \tilde{\mathbf{J}}^T \tilde{\mathbf{r}}\]</div>
 <p>Where :</p>
 <div class="math notranslate nohighlight">
 \[\tilde{\mathbf{J}} = \sqrt{W_J} \mathbf{J} \quad \tilde{\mathbf{r}} = \frac{W_R}{\sqrt{W_J}} \mathbf{r}\]</div>
-<p>Where <span class="math notranslate nohighlight">\(\mathbf{r}\)</span> is the full residual vector in <span class="math notranslate nohighlight">\(\mathbb{R}^{n_r}\)</span> containing each <span class="math notranslate nohighlight">\(\mathbf{r}_j\)</span> evaluated at <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span>
-and <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> is the full jacobian matrix in <span class="math notranslate nohighlight">\(\mathbb{M}_{n_r, n_p}(\mathbb{R})\)</span> containing each <span class="math notranslate nohighlight">\(\mathbf{J}_j = \nabla \mathbf{r}_j\)</span>
-evaluated at <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span>. The <span class="math notranslate nohighlight">\(W\)</span> factors are given by the following equations evaluated at <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span>:</p>
+<p>The <span class="math notranslate nohighlight">\(W\)</span> factors are given by the following equations evaluated at <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[W_J = \text{diag}\left(\rho'(|\mathbf{r}_j|^2) + 2 \rho''(|\mathbf{r}_j|^2) |\mathbf{r}_j|^2\right)\]</div>
 <div class="math notranslate nohighlight">
 \[W_R = \text{diag}\left(\rho'(|\mathbf{r}_j|^2)\right)\]</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>The class <a class="reference internal" href="_autosummary/pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.Term</span></code></a> to represent each term in the least squares problem by storing
-the functions to compute from <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> (as a 1D-array with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>)
-the residual vector <span class="math notranslate nohighlight">\(\mathbf{r}\)</span> (as a 1D-array with shape <code class="docutils literal notranslate"><span class="pre">(n_residual,)</span></code>) and
-jacobian matrix <span class="math notranslate nohighlight">\(\mathbf{J}\)</span> (as a 2D-array with shape <code class="docutils literal notranslate"><span class="pre">(n_residual,</span> <span class="pre">n_parameters)</span></code>).</p>
+<p>The class <a class="reference internal" href="_autosummary/pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.Term</span></code></a> to represent a least square problem.</p>
+<p>In addition to the <code class="docutils literal notranslate"><span class="pre">Callable</span></code> to compute the operators, this class stores
+the robust cost function to use for the optimization problem.
+This function returns the values of <span class="math notranslate nohighlight">\(\rho\)</span>, <span class="math notranslate nohighlight">\(\rho^{(1)}\)</span>
+and <span class="math notranslate nohighlight">\(\rho^{(2)}\)</span> (as a three 1D-array with shape <code class="docutils literal notranslate"><span class="pre">(n_residuals,)</span></code>)
+from the squared of the residual vector <span class="math notranslate nohighlight">\(\|\mathbf{r}\|^2\)</span> (as a 1D-array with shape <code class="docutils literal notranslate"><span class="pre">(n_residuals,)</span></code>).</p>
 </div>
-<section id="demonstration">
-<h3><a class="toc-backref" href="#id2" role="doc-backlink">Demonstration</a><a class="headerlink" href="#demonstration" title="Link to this heading">#</a></h3>
-<p>Consider a least squares problem of the form:</p>
+<section id="id1">
+<h3><a class="toc-backref" href="#id5" role="doc-backlink">Demonstration</a><a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<p>Consider a robust least squares problem of the form:</p>
 <div class="math notranslate nohighlight">
-\[\min_{\mathbf{p}} \frac{1}{2} \sum_j \rho\left(\| \mathbf{r}_j(\mathbf{p}) \|^2\right)\]</div>
-<p>Developing the residuals <span class="math notranslate nohighlight">\(\mathbf{r}_j(\mathbf{p})\)</span> around the current parameters <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span>:</p>
+\[\min_{\mathbf{p}} \frac{1}{2} \sum_{j \in \llbracket 1, n_r \rrbracket}
+\rho \left(\| \mathbf{r}_j(\mathbf{p}) \|^2\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{r}_j(\mathbf{p})\)</span> is the <span class="math notranslate nohighlight">\(j\)</span>-th scalar residual and
+<span class="math notranslate nohighlight">\(\rho\)</span> is the robust cost function.</p>
+<p>Developing the residuals <span class="math notranslate nohighlight">\(\mathbf{r}_j(\mathbf{p})\)</span> around the current parameters
+<span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span> gives:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{r}_j(\mathbf{p_k} + \Delta p) \approx \mathbf{r}_j + \mathbf{J}_j \Delta p + 0.5 \Delta p^T \mathbf{H}_j \Delta p + \ldots\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{J}_j(\mathbf{p_k}) = \nabla \mathbf{r}_j(\mathbf{p_k})\)</span> is the Jacobian
-of the residuals with respect to the parameters, and <span class="math notranslate nohighlight">\(\mathbf{H}_j(\mathbf{p_k})\)</span>
-is the Hessian of the residuals. By convention, the quantities are considered evaluated
-at <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span> such that <span class="math notranslate nohighlight">\(\mathbf{r}_j = \mathbf{r}_j(\mathbf{p_k})\)</span></p>
-<p>Let <span class="math notranslate nohighlight">\(Z_j = \| \mathbf{r}_j \|^2\)</span> be the squared
-norm of the residuals at the current parameters.
-The robust cost function can be developed around <span class="math notranslate nohighlight">\(Z_j\)</span>:</p>
+\[\mathbf{r}_j(\mathbf{p_k} + \Delta \mathbf{p})
+\approx
+\mathbf{r}_j
++ \mathbf{J}_j \Delta \mathbf{p}
++ \frac{1}{2}
+\Delta \mathbf{p}^T \mathbf{H}_j \Delta \mathbf{p}
++ \ldots\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{J}_j(\mathbf{p_k}) = \nabla \mathbf{r}_j(\mathbf{p_k})\)</span> is the
+Jacobian of the <span class="math notranslate nohighlight">\(j\)</span>-th residual with respect to the parameters, and
+<span class="math notranslate nohighlight">\(\mathbf{H}_j(\mathbf{p_k})\)</span> is its Hessian. By convention, all
+quantities are considered evaluated at <span class="math notranslate nohighlight">\(\mathbf{p_k}\)</span>, such that
+<span class="math notranslate nohighlight">\(\mathbf{r}_j = \mathbf{r}_j(\mathbf{p_k})\)</span>.</p>
+<p>Let <span class="math notranslate nohighlight">\(Z_j = \| \mathbf{r}_j \|^2\)</span> be the squared residual at the current parameters.
+The robust cost function can then be developed around <span class="math notranslate nohighlight">\(Z_j\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\rho(Z_j + \delta Z_j) \approx \rho(Z_j) + \rho'(Z_j)\delta Z_j + 0.5 \rho''(Z_j) \delta Z_j^2 + \ldots\]</div>
-<p>where <span class="math notranslate nohighlight">\(\delta Z_j\)</span> is the change in the squared norm due to the parameter update:</p>
+\[\rho(Z_j + \delta Z_j) \approx \rho(Z_j) + \rho'(Z_j)\delta Z_j + \frac{1}{2} \rho''(Z_j) \delta Z_j^2 + \ldots\]</div>
+<p>where <span class="math notranslate nohighlight">\(\delta Z_j\)</span> is the change in the squared residual resulting
+from the parameter update:</p>
 <div class="math notranslate nohighlight">
-\[\delta Z_j = \| \mathbf{r}_j(\mathbf{p_k} + \Delta p) \|^2 - \| \mathbf{r}_j(\mathbf{p_k}) \|^2\]</div>
-<p>By only keeping up to the second order terms, we can approximate <span class="math notranslate nohighlight">\(\delta Z_j\)</span> as:</p>
+\[\delta Z_j = \| \mathbf{r}_j(\mathbf{p_k} + \Delta \mathbf{p}) \|^2 - \| \mathbf{r}_j(\mathbf{p_k}) \|^2\]</div>
+<p>Using the Taylor expansion of the residual and retaining terms up to
+second order in <span class="math notranslate nohighlight">\(\Delta \mathbf{p}\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\delta Z_j \approx \Delta p^T \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{r}_j^T \mathbf{H}_j \right) \Delta p + 2 \mathbf{r}_j^T \mathbf{J}_j \Delta p + ...\]</div>
+\[\delta Z_j \approx 2 \mathbf{r}_j^T \mathbf{J}_j \Delta \mathbf{p} + \Delta \mathbf{p}^T \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{r}_j^T \mathbf{H}_j \right) \Delta \mathbf{p} + \ldots\]</div>
 <p>In a similar way, the squared term <span class="math notranslate nohighlight">\(\delta Z_j^2\)</span> can be approximated as:</p>
 <div class="math notranslate nohighlight">
-\[\delta Z_j^2 \approx 4 \left( \mathbf{r}_j^T \mathbf{J}_j \Delta p \right)^2 + ...\]</div>
-<p>Thus, by injecting all the approximations into the robust cost function,
-we optain :</p>
+\[\delta Z_j^2 \approx 4 \left( \mathbf{r}_j^T \mathbf{J}_j \Delta \mathbf{p} \right)^2 + \ldots\]</div>
+<p>Substituting these expressions into the Taylor expansion of the robust
+cost function gives:</p>
 <div class="math notranslate nohighlight">
 \[\rho(Z_j + \delta Z_j) \approx
 \rho(Z_j) +
-\rho'(Z_j) \Big[ \Delta p^T \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{r}_j^T \mathbf{H}_j \right) \Delta p + 2 \mathbf{r}_j^T \mathbf{J}_j \Delta p \Big] +
-2 \rho''(Z_j) \left( \mathbf{r}_j^T \mathbf{J}_j \Delta p \right)^2 + ...\]</div>
-<p>With Gauss-Newton, we shearch for the update <span class="math notranslate nohighlight">\(\Delta p\)</span> that minimizes
-the robust cost function, which is equivalent to solving the zero of the gradient
-of the robust cost function with respect to the parameters.</p>
-<div class="math notranslate nohighlight">
-\[\nabla_{\Delta p} \rho(Z_j + \delta Z_j) = 0\]</div>
-<p>The Gauss-Newton update can be obtained by solving the following linear system:</p>
-<div class="math notranslate nohighlight">
-\[\mathbf{H} \, \Delta p = - \mathbf{g}\]</div>
-<p>Where <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> is the gradient of the robust cost function with respect to the
-parameters, and <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> is the Hessian approximation of the robust cost function
-with respect to the parameters.</p>
-<p>By summing over all residuals, the gradient and Hessian approximation are:</p>
+\rho'(Z_j) \Big[ \Delta \mathbf{p}^T \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{r}_j^T \mathbf{H}_j \right) \Delta \mathbf{p} + 2 \mathbf{r}_j^T \mathbf{J}_j \Delta \mathbf{p} \Big] +
+2 \rho''(Z_j) \left( \mathbf{r}_j^T \mathbf{J}_j \Delta \mathbf{p} \right)^2 + \ldots\]</div>
+<p>By summing over all residuals, the gradient and the Hessian of the robust cost with respect to the parameters is therefore:</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{g}  \approx \sum_j 2 \rho'(Z_j) \mathbf{J}_j^T \mathbf{r}_j\]</div>
 <div class="math notranslate nohighlight">
 \[\mathbf{H} \approx \sum_j \Big[2 \rho'(Z_j) \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{r}_j^T \mathbf{H}_j \right) + 4 \rho''(Z_j) \mathbf{J}_j^T \mathbf{r}_j \mathbf{r}_j^T \mathbf{J}_j \Big]\]</div>
-<p>Finally, the Gauss-Newton suggested to ignore the second order term of the residuals,
-as at convergence, the residuals should be small, and thus the second order term
-<span class="math notranslate nohighlight">\(\mathbf{r}_j^T \mathbf{H}_j\)</span> should be negligible compared to the first order
-term <span class="math notranslate nohighlight">\(\mathbf{J}_j^T \mathbf{J}_j\)</span>.</p>
+<p>The Gauss-Newton approximation consists in neglecting the second-order
+derivatives of the residuals. The term involving <span class="math notranslate nohighlight">\(r_j \mathbf{H}_j\)</span>
+is neglected.</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{H} \approx \sum_j \Big[2 \rho'(Z_j) \mathbf{J}_j^T \mathbf{J}_j + 4 \rho''(Z_j) \mathbf{J}_j^T \mathbf{r}_j \mathbf{r}_j^T \mathbf{J}_j \Big]\]</div>
 <div class="math notranslate nohighlight">
 \[\mathbf{H} \approx \sum_j 2 \mathbf{J}_j^T \Big[ \rho'(Z_j) + 2 \rho''(Z_j) Z_j \Big] \mathbf{J}_j\]</div>
-<p>Finally, we can build a diagonal matrix <span class="math notranslate nohighlight">\(W_J\)</span> and a vector <span class="math notranslate nohighlight">\(W_R\)</span> that depend on the
-robust cost function and the squared norm of the residuals to solve the complete linear system
-as:</p>
+<p>Finally, defining a diagonal matrix <span class="math notranslate nohighlight">\(W_J\)</span> and a vector <span class="math notranslate nohighlight">\(W_R\)</span>, the Hessian and gradient approximation
+can be written as:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{J}^T \sqrt{W_J}^T \sqrt{W_J} \mathbf{J} \Delta p = - W_R \mathbf{J}^T \mathbf{r}\]</div>
+\[\mathbf{H} = \mathbf{J}^T \sqrt{W_J}^T \sqrt{W_J} \mathbf{J} \quad  \mathbf{g} = W_R \mathbf{J}^T \mathbf{r}\]</div>
+<p>where:</p>
 <div class="math notranslate nohighlight">
 \[W_J = \text{diag}\left(\rho'(|\mathbf{r}_j|^2) + 2 \rho''(|\mathbf{r}_j|^2) |\mathbf{r}_j|^2\right)\]</div>
 <div class="math notranslate nohighlight">
 \[W_R = \text{diag}\left(\rho'(|\mathbf{r}_j|^2)\right)\]</div>
-<p>We observe that the system is similar to solve:</p>
+<p>This system can be expressed as a standard least squares system by
+introducing a modified Jacobian and a modified residual:</p>
 <div class="math notranslate nohighlight">
-\[\tilde{\mathbf{J}}^T \tilde{\mathbf{J}} \Delta p = - \tilde{\mathbf{J}}^T \tilde{\mathbf{r}}\]</div>
-<p>With a modified Jacobian and a modified residual :</p>
+\[\tilde{\mathbf{J}} = \sqrt{W_J}\mathbf{J} \quad \tilde{\mathbf{r}} = W_J^{-1/2} W_R \mathbf{r}.\]</div>
+<p>Such that:</p>
 <div class="math notranslate nohighlight">
-\[\tilde{\mathbf{J}} = \sqrt{W_J} \mathbf{J} \quad \tilde{\mathbf{r}} = \frac{W_R}{\sqrt{W_J}} \mathbf{r}\]</div>
+\[\tilde{\mathbf{J}}^T \tilde{\mathbf{J}} \Delta \mathbf{p} = -\tilde{\mathbf{J}}^T \tilde{\mathbf{r}}.\]</div>
 </section>
 </section>
-<section id="adding-some-regularization-to-the-gauss-newton-update">
-<h2><a class="toc-backref" href="#id3" role="doc-backlink">Adding some regularization to the Gauss-Newton update</a><a class="headerlink" href="#adding-some-regularization-to-the-gauss-newton-update" title="Link to this heading">#</a></h2>
-<p>Sometimes, we may also have regularization terms. In this case the problem can be
-written as a sum of a sub least squares problem:</p>
+<section id="adding-regularization-to-the-gauss-newton-update">
+<h2><a class="toc-backref" href="#id6" role="doc-backlink">Adding regularization to the Gauss-Newton update</a><a class="headerlink" href="#adding-regularization-to-the-gauss-newton-update" title="Link to this heading">#</a></h2>
+<p>In many optimization problems, the objective function is composed of several
+least squares terms. The first term usually corresponds to the data fitting
+problem, while the remaining terms can be used to regularize the solution.</p>
+<p>The resulting objective function can be written as:</p>
 <div class="math notranslate nohighlight">
-\[\min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{r}_{i,j}(\mathbf{p}) \|^2\right)\]</div>
-<p>Where <span class="math notranslate nohighlight">\(w_i\)</span> is a weight for each sub least squares problem,
-and <span class="math notranslate nohighlight">\(\rho_i\)</span> is a robust cost function for each sub least squares problem.</p>
+\[\min_{\mathbf{p}}
+\frac{1}{2}
+\sum_{i}
+w_i
+\sum_{j}
+\rho_i
+\left(
+   \| \mathbf{r}_{i,j}(\mathbf{p}) \|^2
+\right)\]</div>
+<p>where <span class="math notranslate nohighlight">\(i\)</span> indexes the different least squares terms and <span class="math notranslate nohighlight">\(j\)</span>
+indexes the residuals within each term.</p>
+<p>The scalar <span class="math notranslate nohighlight">\(w_i\)</span> is the weight associated with the <span class="math notranslate nohighlight">\(i\)</span>-th term,
+and <span class="math notranslate nohighlight">\(\rho_i\)</span> is its robust cost function. Each term can therefore have
+its own residuals, weight, and robust cost function.</p>
+<p>By convention, the first term (<span class="math notranslate nohighlight">\(i=0\)</span>) is the main least squares term,
+which usually contains the data residuals. The remaining terms
+(<span class="math notranslate nohighlight">\(i \geq 1\)</span>) are considered regularization terms.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>By nomenclature, we assume that the first sub least squares problem (i.e. <span class="math notranslate nohighlight">\(i=0\)</span>)
-is the main least squares problem containing the data residuals, and the other sub
-least squares problems (i.e. <span class="math notranslate nohighlight">\(i \geq 1\)</span>) are regularization terms.</p>
+<p>A regularization term can be used to introduce additional constraints or
+prior information into the optimization problem. Its weight <span class="math notranslate nohighlight">\(w_i\)</span>
+controls its influence relative to the other terms.</p>
 </div>
-<p>In this case, the Gauss-Newton update can be written as:</p>
+<p>For each term, the robust Gauss-Newton approximation described above provides
+a modified residual <span class="math notranslate nohighlight">\(\tilde{\mathbf{r}}_i\)</span> and a modified Jacobian
+<span class="math notranslate nohighlight">\(\tilde{\mathbf{J}}_i\)</span>.</p>
+<p>Since the objective function is the sum of all the terms, their contributions
+to the gradient and Hessian approximation can be summed directly. The global
+Gauss-Newton system is therefore:</p>
 <div class="math notranslate nohighlight">
-\[\sum_{i} w_i \tilde{\mathbf{J}}_i^T \tilde{\mathbf{J}}_i \Delta p = -\sum_{i} w_i \tilde{\mathbf{J}}_i^T \tilde{\mathbf{r}}_i\]</div>
+\[\left(
+   \sum_i
+   w_i
+   \tilde{\mathbf{J}}_i^T
+   \tilde{\mathbf{J}}_i
+\right)
+\Delta \mathbf{p}
+=
+-
+\sum_i
+w_i
+\tilde{\mathbf{J}}_i^T
+\tilde{\mathbf{r}}_i.\]</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The class <a class="reference internal" href="_autosummary/pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.Term</span></code></a> to represent a term in a least square problem.</p>
+<p>In addition to the <code class="docutils literal notranslate"><span class="pre">Callable</span></code> to compute the operators, this class stores
+the weight associated to the term.</p>
+</div>
 </section>
 <section id="changing-the-parametrization">
-<h2><a class="toc-backref" href="#id4" role="doc-backlink">Changing the parametrization</a><a class="headerlink" href="#changing-the-parametrization" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Changing the parametrization</a><a class="headerlink" href="#changing-the-parametrization" title="Link to this heading">#</a></h2>
 <p>Consider a least squares problem of the form:</p>
 <div class="math notranslate nohighlight">
-\[\min_{\mathbf{p}_{\mathrm{out}}} \frac{1}{2} \sum_{i} w_i \sum_j
-\rho_i\left(\| \mathbf{r}_{i,j}(\mathbf{p}_{\mathrm{out}}) \|^2\right)\]</div>
-<p>A parametrization can be introduced to optimize the problem using a different set
-of input parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{in}}\)</span>. The parametrization is defined
-by a transformation</p>
+\[\min_{\mathbf{p}_{\mathrm{out}}}
+\frac{1}{2}
+\sum_i w_i \sum_j
+\rho_i
+\left(
+   \| \mathbf{r}_{i,j}(\mathbf{p}_{\mathrm{out}}) \|^2
+\right)\]</div>
+<p>In some applications, it is convenient to optimize the problem using a
+different set of parameters than those expected by the residual functions.
+This can be achieved by introducing a parametrization that maps the input
+parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{in}}\)</span> to the output parameters
+<span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{out}}\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{p}_{\mathrm{out}} = P(\mathbf{p}_{\mathrm{in}})\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{in}} \in \mathbb{R}^{n_{p_{\mathrm{in}}}}\)</span> are the
-parameters actually optimized by the Gauss-Newton algorithm, and
-<span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{out}} \in \mathbb{R}^{n_{p_{\mathrm{out}}}}\)</span> are the
-parameters passed to the residual functions.</p>
-<p>The original optimization problem can therefore be rewritten as</p>
+\[\mathbf{p}_{\mathrm{out}}
+=
+P(\mathbf{p}_{\mathrm{in}})\]</div>
+<p>where <span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{in}} \in \mathbb{R}^{n_{p_{\mathrm{in}}}}\)</span>
+are the parameters optimized by the Gauss-Newton algorithm, while
+<span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{out}} \in \mathbb{R}^{n_{p_{\mathrm{out}}}}\)</span>
+are the parameters passed to the residual functions.</p>
+<p>The optimization problem can therefore be rewritten directly in terms of
+the input parameters:</p>
 <div class="math notranslate nohighlight">
-\[\min_{\mathbf{p}_{\mathrm{in}}} \frac{1}{2} \sum_{i} w_i \sum_j
-\rho_i\left(
+\[\min_{\mathbf{p}_{\mathrm{in}}}
+\frac{1}{2}
+\sum_i w_i \sum_j
+\rho_i
+\left(
    \left\|
-   \mathbf{r}_{i,j}\left(P(\mathbf{p}_{\mathrm{in}})\right)
+   \mathbf{r}_{i,j}
+   \left(
+      P(\mathbf{p}_{\mathrm{in}})
+   \right)
    \right\|^2
 \right)\]</div>
 <p>At each iteration, the Gauss-Newton algorithm searches for an update
-<span class="math notranslate nohighlight">\(\Delta\mathbf{p}_{\mathrm{in}}\)</span> to the input parameters
-<span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{in}}\)</span>.</p>
-<p>The output parameters are obtained from the current input parameters as</p>
+<span class="math notranslate nohighlight">\(\Delta\mathbf{p}_{\mathrm{in}}\)</span> in the space of input parameters.
+The corresponding output parameters are obtained through the parametrization:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{p}_{\mathrm{out}} = P(\mathbf{p}_{\mathrm{in}}).\]</div>
-<p>Using</p>
+\[\mathbf{p}_{\mathrm{out}}
+=
+P(\mathbf{p}_{\mathrm{in}}).\]</div>
+<p>To compute the Jacobian of the residuals with respect to the parameters
+being optimized, we introduce the Jacobian of the parametrization:</p>
 <div class="math notranslate nohighlight">
-\[\mathbf{J}_P(\mathbf{p}_{\mathrm{in}})
+\[\mathbf{J}_P
 =
 \frac{\partial \mathbf{p}_{\mathrm{out}}}
      {\partial \mathbf{p}_{\mathrm{in}}}\]</div>
-<p>to denote the Jacobian matrix of the parametrization, the chain rule gives the
-Jacobian of each residual with respect to the parameters being optimized:</p>
+<p>Using the chain rule, the Jacobian of the <span class="math notranslate nohighlight">\(j\)</span>-th residual of the
+<span class="math notranslate nohighlight">\(i\)</span>-th term with respect to the input parameters is:</p>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}\mathbf{J}_{i,j,\mathrm{in}}
 =
@@ -527,58 +679,75 @@ Jacobian of each residual with respect to the parameters being optimized:</p>
      {\partial \mathbf{p}_{\mathrm{out}}}
 \frac{\partial \mathbf{p}_{\mathrm{out}}}
      {\partial \mathbf{p}_{\mathrm{in}}}\\=
-\mathbf{J}_{i,j}\mathbf{J}_P.\end{aligned}\end{align} \]</div>
-<p>Consequently, the modified Jacobian used by the Gauss-Newton algorithm is</p>
+\mathbf{J}_{i,j}
+\mathbf{J}_P\end{aligned}\end{align} \]</div>
+<p>Therefore, the parametrization only modifies the Jacobian used by the
+Gauss-Newton algorithm. The robust weighting described in the previous
+section is applied in exactly the same way, giving:</p>
 <div class="math notranslate nohighlight">
 \[\tilde{\mathbf{J}}_i
 =
-\sqrt{W_{J,i}}\,
-\mathbf{J}_i\,
+\sqrt{W_{J,i}}
+\mathbf{J}_i
 \mathbf{J}_P\]</div>
-<p>while the modified residual remains</p>
+<p>while the modified residual remains:</p>
 <div class="math notranslate nohighlight">
 \[\tilde{\mathbf{r}}_i
 =
-\frac{W_{R,i}}{\sqrt{W_{J,i}}}
+W_{J,i}^{-1/2}
+W_{R,i}
 \mathbf{r}_i\]</div>
-<p>The Gauss-Newton system is therefore solved for the update
-<span class="math notranslate nohighlight">\(\Delta\mathbf{p}_{\mathrm{in}}\)</span>:</p>
+<p>The Gauss-Newton system is consequently solved in the input parameter
+space:</p>
 <div class="math notranslate nohighlight">
-\[\sum_i w_i
-\tilde{\mathbf{J}}_i^T
-\tilde{\mathbf{J}}_i
+\[\left(
+   \sum_i
+   w_i
+   \tilde{\mathbf{J}}_i^T
+   \tilde{\mathbf{J}}_i
+\right)
 \Delta\mathbf{p}_{\mathrm{in}}
 =
--\sum_i w_i
+-
+\sum_i
+w_i
 \tilde{\mathbf{J}}_i^T
-\tilde{\mathbf{r}}_i.\]</div>
-<p>After solving this system, the input parameters are updated as</p>
+\tilde{\mathbf{r}}_i\]</div>
+<p>The important point is that <span class="math notranslate nohighlight">\(\Delta\mathbf{p}_{\mathrm{in}}\)</span> has the
+dimension of the input parameter space. The parametrization is therefore
+accounted for through <span class="math notranslate nohighlight">\(\mathbf{J}_P\)</span> when computing the Jacobians.</p>
+<p>Once the Gauss-Newton system has been solved, the input parameters are
+updated as:</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{p}_{\mathrm{in}}^{k+1}
 =
 \mathbf{p}_{\mathrm{in}}^k
 +
-\Delta\mathbf{p}_{\mathrm{in}},\]</div>
-<p>and the corresponding output parameters are obtained by applying the
+\Delta\mathbf{p}_{\mathrm{in}}\]</div>
+<p>The corresponding output parameters are then obtained by applying the
 parametrization:</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{p}_{\mathrm{out}}^{k+1}
 =
-P(\mathbf{p}_{\mathrm{in}}^{k+1}).\]</div>
-<p>This formulation makes explicit that the parametrization changes the coordinates
-of the optimization problem: the Gauss-Newton algorithm optimizes
-<span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{in}}\)</span>, while the residual functions operate on
-<span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{out}}\)</span>.</p>
+P
+\left(
+   \mathbf{p}_{\mathrm{in}}^{k+1}
+\right)\]</div>
+<p>This formulation separates the parameters used by the optimization
+algorithm from those used by the residual functions. The Gauss-Newton
+algorithm operates entirely in the input parameter space, while the
+parametrization maps these parameters to the output space required by
+the optimization terms.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>The class <a class="reference internal" href="_autosummary/pysolvegn.Parametrization.html#pysolvegn.Parametrization" title="pysolvegn.Parametrization"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.Parametrization</span></code></a> represents a parametric
-transformation by storing the functions to compute from
-<span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{in}}\)</span> (as a 1D-array with shape
-<code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) the output parameters
-<span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{out}}\)</span> (as a 1D-array with shape
-<code class="docutils literal notranslate"><span class="pre">(n_p_outputs,)</span></code>) and the Jacobian matrix
-<span class="math notranslate nohighlight">\(\mathbf{J}_P\)</span> (as a 2D-array with shape
-<code class="docutils literal notranslate"><span class="pre">(n_p_outputs,</span> <span class="pre">n_parameters)</span></code>).</p>
+<p>The class <a class="reference internal" href="_autosummary/pysolvegn.Parametrization.html#pysolvegn.Parametrization" title="pysolvegn.Parametrization"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.Parametrization</span></code></a> represents a parameter
+transformation by storing the functions required to compute the output
+parameters and the Jacobian of the transformation.</p>
+<p>Given the input parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{in}}\)</span> as a 1D-array
+with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>, the parametrization computes the output
+parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{out}}\)</span> as a 1D-array with shape
+<code class="docutils literal notranslate"><span class="pre">(n_p_outputs,)</span></code> and the Jacobian <span class="math notranslate nohighlight">\(\mathbf{J}_P\)</span> as a 2D-array
+with shape <code class="docutils literal notranslate"><span class="pre">(n_p_outputs,</span> <span class="pre">n_parameters)</span></code></p>
 </div>
 </section>
 </section>
@@ -594,20 +763,20 @@ transformation by storing the functions to compute from
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="_autosummary/pysolvegn.study_optimization.html"
+       href="installation.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">pysolvegn.study_optimization</p>
+        <p class="prev-next-title">Installation</p>
       </div>
     </a>
     <a class="right-next"
-       href="usage.html"
+       href="api.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Usage</p>
+        <p class="prev-next-title">API Reference</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -630,11 +799,15 @@ transformation by storing the functions to compute from
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robust-least-squares-optimization-by-the-gauss-newton-method">Robust Least Squares Optimization by the Gauss-Newton Method</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#gauss-newton-optimization">Gauss-Newton optimization</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#demonstration">Demonstration</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-some-regularization-to-the-gauss-newton-update">Adding some regularization to the Gauss-Newton update</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robust-least-squares-optimization-by-the-gauss-newton-method">Robust least squares optimization by the Gauss-Newton Method</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Demonstration</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-regularization-to-the-gauss-newton-update">Adding regularization to the Gauss-Newton update</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-the-parametrization">Changing the parametrization</a></li>
 </ul>
   </nav></div>

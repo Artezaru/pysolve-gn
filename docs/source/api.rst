@@ -55,6 +55,15 @@ influence of outliers in the optimization process.
 | ``arctan``                   | :math:`\rho(x) = \arctan(x)`                            |
 +------------------------------+---------------------------------------------------------+
 
+.. autosummary::
+   :toctree: _autosummary
+
+   linear_rho
+   soft_l1_rho
+   cauchy_rho
+   arctan_rho
+   get_rho_function_by_name
+
 
 Implemented Parametrizations
 ----------------------------

@@ -330,6 +330,7 @@ data_term = pysolvegn.Term.from_rJ(
     residual_func=residual_function,
     loss="linear",
     weight=1.0,
+    finite_difference="central",
 )
 
 
@@ -365,7 +366,6 @@ result = pysolvegn.solve(
     ftol=1e-8,
     verbosity=2,
 )
-
 
 print("Optimized parameters:")
 print("f  =", result[0])

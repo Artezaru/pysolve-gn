@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Curve fitting &#8212; pysolvegn 0.3.0 documentation</title>
+    <title>Curve fitting &#8212; pysolvegn 1.0.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../_static/documentation_options.js?v=8d563738"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -120,7 +120,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
+    <p class="title logo__title">pysolvegn 1.0.0 documentation</p>
   
 </a></div>
     
@@ -142,15 +142,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../api.html">
-    API Reference
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../math.html">
-    Mathematical Background
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -242,15 +242,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../api.html">
-    API Reference
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../math.html">
-    Mathematical Background
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -291,8 +291,8 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Curve fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="L_curve_analysis.html">L-curve analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="study_optimization.html">Study of camera calibration optimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="adding_regularization.html">Adding regularization (curve fitting)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="study_optimization.html">Study of camera calibration optimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="affine_parametrization.html">Camera calibration with affine parametrization</a></li>
 </ul>
 </div>
@@ -458,12 +458,12 @@ Step norm: ||Δp||
 Optimality: ||g||
 
 Iteration  Total time (s)      Cost C            ΔC           ||Δp||_2         ||g||_∞
-    0         3.119e-04       4.287e+02                                       5.101e+03
-    1         4.981e-04       9.622e+01      -3.325e+02       8.856e-01       9.936e+02
-    2         6.063e-04       5.346e+01      -4.277e+01       6.382e-01       3.246e+02
-    3         6.948e-04       5.072e+01      -2.738e+00       4.633e-02       4.134e+00
-    4         7.784e-04       5.072e+01      -6.618e-04       2.843e-03       4.314e-02
-    5         8.607e-04       5.072e+01      -3.914e-07       1.021e-04       2.567e-03
+    0         3.314e-04       4.287e+02                                       5.101e+03
+    1         5.383e-04       9.622e+01      -3.325e+02       8.856e-01       9.936e+02
+    2         6.557e-04       5.346e+01      -4.277e+01       6.382e-01       3.246e+02
+    3         7.482e-04       5.072e+01      -2.738e+00       4.633e-02       4.134e+00
+    4         8.335e-04       5.072e+01      -6.618e-04       2.843e-03       4.314e-02
+    5         9.122e-04       5.072e+01      -3.914e-07       1.021e-04       2.567e-03
 
 [ftol] Convergence achieved (df &lt; ftol * F) : 3.914015067607579e-07 &lt; 5.071655044568008e-07.
 </pre></div>
@@ -524,7 +524,7 @@ Estimated parameters:
 [2.45861374 0.51137177]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.057 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.059 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-docs-source-gallery-curve-fitting-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/a7667dd6b9230ed1e12f3d3714ea68cf/curve_fitting.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">curve_fitting.ipynb</span></code></a></p>

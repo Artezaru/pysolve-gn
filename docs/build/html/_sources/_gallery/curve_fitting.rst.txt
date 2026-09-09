@@ -184,12 +184,12 @@ This function takes the data term, an initialisation and convergence criterion.
     Optimality: ||g|| 
 
     Iteration  Total time (s)      Cost C            ΔC           ||Δp||_2         ||g||_∞    
-        0         3.119e-04       4.287e+02                                       5.101e+03   
-        1         4.981e-04       9.622e+01      -3.325e+02       8.856e-01       9.936e+02   
-        2         6.063e-04       5.346e+01      -4.277e+01       6.382e-01       3.246e+02   
-        3         6.948e-04       5.072e+01      -2.738e+00       4.633e-02       4.134e+00   
-        4         7.784e-04       5.072e+01      -6.618e-04       2.843e-03       4.314e-02   
-        5         8.607e-04       5.072e+01      -3.914e-07       1.021e-04       2.567e-03   
+        0         3.314e-04       4.287e+02                                       5.101e+03   
+        1         5.383e-04       9.622e+01      -3.325e+02       8.856e-01       9.936e+02   
+        2         6.557e-04       5.346e+01      -4.277e+01       6.382e-01       3.246e+02   
+        3         7.482e-04       5.072e+01      -2.738e+00       4.633e-02       4.134e+00   
+        4         8.335e-04       5.072e+01      -6.618e-04       2.843e-03       4.314e-02   
+        5         9.122e-04       5.072e+01      -3.914e-07       1.021e-04       2.567e-03   
 
     [ftol] Convergence achieved (df < ftol * F) : 3.914015067607579e-07 < 5.071655044568008e-07.
 
@@ -275,7 +275,7 @@ Display the fitted parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.057 seconds)
+   **Total running time of the script:** (0 minutes 0.059 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_curve_fitting.py:

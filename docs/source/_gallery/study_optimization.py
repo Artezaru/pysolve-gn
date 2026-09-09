@@ -198,6 +198,7 @@ data_term = pysolvegn.Term.from_rJ(
     residual_func=residual_function,
     loss="linear",
     weight=1.0,
+    finite_difference="central",
 )
 
 

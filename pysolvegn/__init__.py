@@ -35,6 +35,14 @@ from .implemented_regularizations import (
     build_soft_squared_regularization,
 )
 
+from .loss_functions import (
+    linear_rho,
+    soft_l1_rho,
+    cauchy_rho,
+    arctan_rho,
+    get_rho_function_by_name,
+)
+
 # Deprecated
 from .study_optimization import study_optimization
 from .L_curve import perform_Lcurve_analysis

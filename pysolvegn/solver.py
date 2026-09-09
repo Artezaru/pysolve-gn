@@ -28,7 +28,7 @@ from .implemented_conf import (
     _IMPLEMENTED_HISTORY_DETAILS,
 )
 
-from .rho_functions import (
+from .loss_functions import (
     _build_tilde_R_and_tilde_J,
 )
 
@@ -54,69 +54,43 @@ def solve(
     naninf: bool = True,
     history: bool = False,
     history_details: Optional[Union[str, Sequence[str]]] = None,
-) -> Tuple[numpy.ndarray, Optional[List[Dict]]]:
+    history_length: Optional[Integral] = None,
+) -> Union[numpy.ndarray, Tuple[numpy.ndarray, List[Dict]]]:
     r"""
-    Function to solve the least squares problem using the Gauss-Newton method
+    Function to solve a least squares problem using the Gauss-Newton method
     with robust cost functions.
 
     The function accepts multiple terms in the least squares problem,
-    each with its own residual function, Jacobian function, weight, and loss function,
+    each with its own residual function :math:`r_i`, Jacobian function
+    :math:`J_i = \frac{\partial r_i}{\partial \mathbf{p}},
+    weight :math:`w_i`, and loss function :math`\rho_i`,
     solving the following optimization problem:
 
     .. math::
 
-        \min_{\mathbf{p}_{in}} \frac{1}{2} \sum_{i} w_i \sum_j
-        \rho_i\left(
-            \left\|
-            \mathbf{r}_{i,j}\left(P(\mathbf{p}_{in})\right)
-            \right\|^2
-        \right)
+        \min_{\mathbf{p}_{in}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{r}_{i,j}\left(P(\mathbf{p}_{in})\right) \|^2\right)
 
-    where :math:`\mathbf{p}_{in}` represents the parameters actually optimized
-    by the solver, :math:`P` is a parametric transformation such that:
+    Here :math:`\mathbf{p}_{in}` represents the parameters actually optimized
+    by the solver, and :math:`P` is a parametric transformation such that:
 
     .. math::
 
         \mathbf{p}_{out} = P(\mathbf{p}_{in})
 
     represents the parameters passed to the residual and Jacobian functions
-    of the terms.
-
-    The input parameters :math:`\mathbf{p}_{in}` have shape
-    ``(n_parameters,)``.
-
-    If no parametrization is provided, the identity transformation is implicitly
-    used:
+    of each terms. The input parameters :math:`\mathbf{p}_{in}` have shape
+    ``(n_parameters,)``. If no parametrization is provided, the identity
+    transformation is implicitly used:
 
     .. math::
 
         P(\mathbf{p}_{in}) = \mathbf{p}_{in}
 
-    Here :math:`w_i` is a weight for each sub least squares problem, and
-    :math:`\rho_i` is a robust cost function for each sub least squares problem.
-
     .. seealso::
 
-        For more details on the notations for the optimization problem and the
-        algorithm, please refer to the mathematical section of the documentation.
+        For more details on the notations for the optimization problem,
+        please refer to the mathematical section of the documentation.
 
-    The cost of each term defined by the residuals is estimated as:
-
-    .. math::
-
-        \frac{1}{2} \sum_j
-        \rho_i\left(
-            \left\|
-            \mathbf{r}_{i,j}(P(\mathbf{p}_{in}))
-            \right\|^2
-        \right)
-
-    .. important::
-
-        For terms defined directly by a Hessian and gradient, only a local quadratic model
-        of the cost is available. Since this model is defined up to an arbitrary constant,
-        an absolute cost value cannot be uniquely determined. For reporting consistency,
-        the cost contribution of these terms is set to 0.
 
     Parameters
     ----------
@@ -126,7 +100,7 @@ def solve(
         the residual function, Jacobian function, weight, and loss function
         defining the term.
         The residual and Jacobian functions of each term are evaluated using
-        the output parameters :math:`\mathbf{p}_{out} = P(\mathbf{p}_{in})`.
+        the output parametric parameters :math:`\mathbf{p}_{out} = P(\mathbf{p}_{in})`.
 
     p0: ArrayLike
         The initial guess for the parameters optimized by the solver, with shape
@@ -147,10 +121,10 @@ def solve(
         :math:`\mathbf{p}_{in}` with shape ``(n_parameters,)`` of this parametrization.
 
     max_iteration: Optional[Integral], optional (default=None)
-        Stop criterion by the number of iterations.
-        The optimization process is stopped when the number of iterations
-        exceeds ``max_iteration``. If None, no limit on the
-        number of iterations is considered.
+        Maximum number of optimization iterations.
+        If provided, the optimization process is stopped after at most
+        ``max_iteration`` iterations. If None, no limit on the number of
+        iterations is imposed.
 
     max_time: Optional[Real], optional (default=None)
         Stop criterion by the elapsed time of optimization.
@@ -175,7 +149,7 @@ def solve(
     gtol: Optional[Real], optional (default=None)
         Stop criterion by the optimality value.
         The optimization process is stopped when the optimality verifies
-        ``norm(g, ord=numpy.inf) < gtol`` where g is the scaled second term.
+        ``norm(g, ord=numpy.inf) < gtol`` where :math:`g` is the scaled second term.
         If None, this criterion is not considered.
 
     atol: Optional[Real], optional (default=None)
@@ -195,7 +169,7 @@ def solve(
         A callback function that is called at the end of each iteration of the
         optimization process. The callback function should take a dictionary
         similar to the one returned in the history of the optimization process
-        as input. If the return value of the callback function is True (or None),
+        as input. If the return value of the callback function is True,
         the optimization process will continue. If the return value is False,
         the optimization process will be stopped.
         If None, no callback function is used.
@@ -225,19 +199,29 @@ def solve(
 
     history: bool, optional (default=False)
         If True, the function will also return a tuple containing the history of
-        the optimization process.
+        the optimization process. See the Notes section for more details.
 
     history_details: Optional[Union[str, Sequence[str]]], optional (default=None)
-        The details to include in the history of the optimization process.
-        Can be a single string or a sequence of strings. See the Notes section for
-        the available details.
-        By default, the history will include:
-        ``"iteration"``, ``"elapsed_time"``,
-        ``"parameters"``,
+        Used only if ``history`` is True.
+        Specifies the details to include in the history of the optimization process.
+        It can be either a single string or a sequence of strings. See the Notes
+        section for the available details.
+        If None, the history will include the following details by default:
+        ``"iteration"``, ``"elapsed_time"``, ``"parameters"``,
         ``"delta_parameters"``, ``"delta_cost"``, ``"cost"``, and
         ``"optimality"``.
-        For a specified list of details, only the details in the list below
-        will be included in the history.
+
+    history_length: Optional[Integral], optional (default=None)
+        Used only if ``history`` is True.
+        Controls the number of iterations included in the history.
+        If None, all iterations are included in the output history.
+        If a positive integer ``N`` is given, only the first ``N`` iterations
+        are included in the output history (from 0 to :math:`N-1`).
+        If zero is given, no iterations are included.
+        If a negative integer ``M`` is given, only the last ``|M|`` iterations
+        are included in the output history.
+        If the requested history length is greater than the number of iterations
+        performed, the history will contain fewer entries than requested.
 
 
     Returns
@@ -259,6 +243,21 @@ def solve(
 
     Notes
     -----
+
+    The step of each loop iteration is as follows:
+
+    .. code-block:: text
+
+        While NOT converged:
+            1. Compute the output parameters ``p_out = P(p_in)``.
+            2. For ``rJ`` terms compute and build ``H_i = J.T J`` and ``g_i = J.T r``.
+            3. For ``gH`` terms compute ``H_i`` and ``g_i``.
+            4. Build the full system ``H Δp_in = -g``.
+            5. Perform STOP criterion checks and call the 'callback' function.
+            6. If STOP, exit optimisation and return the result and history.
+            7. If CONTINUE, solve the linear system ``H Δp_in = -g``.
+            8. Update the input parameters ``p_in = p_in + Δp_in`` (or using ``update_func`` if provided).
+
     The history contains the following keys (if requested in ``history_details``):
 
     - "iteration": Integer representing the iteration number.
@@ -271,54 +270,57 @@ def solve(
     - "costs": List of floats representing the cost function value for each term
       in the least squares problem at the current iteration, computed as
       :math:`\frac{1}{2} \sum_j
-      \rho_i(\| \mathbf{R}_{i,j}(\mathbf{p}_{out}) \|^2)`
-      for each term :math:`i`.
+      \rho_i(\| \mathbf{r}_{i,j}(\mathbf{p}_{out}) \|^2)`
+      for each term :math:`i` (only for ``rJ`` terms).
     - "cost": Float representing the cost function value at the current iteration,
       computed as
       :math:`\frac{1}{2} \sum_i w_i \sum_j
-      \rho_i(\| \mathbf{R}_{i,j}(\mathbf{p}_{out}) \|^2)`.
+      \rho_i(\| \mathbf{r}_{i,j}(\mathbf{p}_{out}) \|^2)`.
     - "delta_cost": Float representing the change of the cost function value
       between the current and previous iteration (only for iterations > 0).
     - "optimality": Float representing the optimality value at the current iteration
-      computed as ``norm(b, ord=numpy.inf)`` where b is the scaled second term.
+      computed as ``norm(g, ord=numpy.inf)`` where :math:`g` is the scaled second term.
     - "residuals": A list of numpy arrays representing the residuals for each term
-      in the least squares problem at the current iteration (only for rJ terms).
+      in the least squares problem at the current iteration (only for ``rJ`` terms).
     - "jacobians": A list of numpy arrays representing the Jacobians for each term
-      in the least squares problem at the current iteration (only for rJ terms).
+      in the least squares problem at the current iteration (only for ``rJ`` terms).
     - "second_term": The scaled second term :math:`\mathbf{g}` of the linear system
       at the current iteration.
     - "hessian": The Hessian approximation :math:`\mathbf{H}` of the linear system
       at the current iteration.
+    - "all": include all the keys.
 
-    The step of each loop iteration is as follows:
+    The cost of each term can be compute only for ``rJ`` terms and is
+    defined by :
 
-    .. code-block:: text
+    .. math::
 
-        While NOT converged:
-            1. Compute the output parameters ``p_out = P(p_in)``.
-            2. Build the system ``H Δp_in = -g``.
-            3. Call the 'callback' function and STOP if it returns False.
-            4. Check the stopping criteria and STOP if any of them is satisfied.
-            5. If CONTINUE, solve the linear system ``H Δp_in = -g``.
-            6. Update the input parameters ``p_in = p_in + Δp_in`` (or using 'update_func' if provided).
+        \frac{1}{2} \sum_j
+        \rho_i\left(
+            \left\|
+            \mathbf{r}_{i,j}(P(\mathbf{p}_{in}))
+            \right\|^2
+        \right)
 
+    .. important::
 
-    Version
-    -------
-
-    - 0.1.0: Initial version for the solver method.
-    - 0.3.0: Adding the regularization functionality to the solver.
+        For terms defined directly by a Hessian and gradient (``gH`` terms), only a local quadratic model
+        of the cost is available. Since this model is defined up to an arbitrary constant and submit to
+        cumulative errors, an absolute cost value cannot be uniquely determined.
+        For reporting consistency, the cost contribution of these terms is set to ``0.0`` by default.
+        If the term contains a ``cost_func`` function, it will be used to compute the cost of
+        the term.
 
     """
 
     # Check the validity of the input arguments and raise appropriate errors if necessary.
     if not isinstance(terms, Sequence):
-        raise ValueError("terms must be a sequence of Term objects.")
+        raise TypeError("terms must be a sequence of Term objects.")
     if len(terms) == 0:
         raise ValueError("terms sequence cannot be empty.")
     for term in terms:
         if not isinstance(term, Term):
-            raise ValueError(
+            raise TypeError(
                 "All elements of terms must be instances of the Term class."
             )
 
@@ -327,55 +329,55 @@ def solve(
         raise ValueError(f"p0 must be a 1D array, got {p0.ndim} dimensions.")
 
     if parametrization is not None and not isinstance(parametrization, Parametrization):
-        raise ValueError(
+        raise TypeError(
             "parametrization must be an instance of the Parametrization class."
         )
 
     if max_iteration is not None:
         if not isinstance(max_iteration, Integral):
-            raise ValueError("max_iteration must be an integer.")
+            raise TypeError("max_iteration must be an integer.")
         max_iteration = int(max_iteration)
         if max_iteration < 0:
             raise ValueError("max_iteration must be a non-negative integer.")
 
     if max_time is not None:
         if not isinstance(max_time, Real):
-            raise ValueError("max_time must be a real number.")
+            raise TypeError("max_time must be a real number.")
         max_time = float(max_time)
         if max_time < 0:
             raise ValueError("max_time must be a non-negative real number.")
 
     if ftol is not None:
         if not isinstance(ftol, Real):
-            raise ValueError("ftol must be a real number.")
+            raise TypeError("ftol must be a real number.")
         ftol = float(ftol)
         if ftol <= 0:
             raise ValueError("ftol must be a positive real number.")
 
     if xtol is not None:
         if not isinstance(xtol, Real):
-            raise ValueError("xtol must be a real number.")
+            raise TypeError("xtol must be a real number.")
         xtol = float(xtol)
         if xtol <= 0:
             raise ValueError("xtol must be a positive real number.")
 
     if gtol is not None:
         if not isinstance(gtol, Real):
-            raise ValueError("gtol must be a real number.")
+            raise TypeError("gtol must be a real number.")
         gtol = float(gtol)
         if gtol <= 0:
             raise ValueError("gtol must be a positive real number.")
 
     if atol is not None:
         if not isinstance(atol, Real):
-            raise ValueError("atol must be a real number.")
+            raise TypeError("atol must be a real number.")
         atol = float(atol)
         if atol <= 0:
             raise ValueError("atol must be a positive real number.")
 
     if ptol is not None:
         if not isinstance(ptol, Real):
-            raise ValueError("ptol must be a real number.")
+            raise TypeError("ptol must be a real number.")
         ptol = float(ptol)
         if ptol <= 0:
             raise ValueError("ptol must be a positive real number.")
@@ -390,23 +392,23 @@ def solve(
         )
 
     if callback_func is not None and not callable(callback_func):
-        raise ValueError("callback_func must be a callable function.")
+        raise TypeError("callback_func must be a callable function.")
 
     if update_func is not None and not callable(update_func):
-        raise ValueError("update_func must be a callable function.")
+        raise TypeError("update_func must be a callable function.")
 
     if not isinstance(verbosity, Integral):
-        raise ValueError("verbosity must be an integer.")
+        raise TypeError("verbosity must be an integer.")
     verbosity = int(verbosity)
     if verbosity < 0 or verbosity > 3:
         raise ValueError("verbosity must be an integer between 0 and 3 inclusive.")
 
     if not isinstance(naninf, bool):
-        raise ValueError("naninf must be a boolean value.")
+        raise TypeError("naninf must be a boolean value.")
     naninf = bool(naninf)
 
     if not isinstance(history, bool):
-        raise ValueError("history must be a boolean value.")
+        raise TypeError("history must be a boolean value.")
     history = bool(history)
 
     if history_details is None:
@@ -422,7 +424,7 @@ def solve(
     if isinstance(history_details, str):
         history_details = [history_details]
     if not isinstance(history_details, Sequence):
-        raise ValueError("history_details must be a string or a sequence of strings.")
+        raise TypeError("history_details must be a string or a sequence of strings.")
     for detail in history_details:
         if detail not in _IMPLEMENTED_HISTORY_DETAILS and detail != "all":
             raise ValueError(
@@ -430,6 +432,13 @@ def solve(
             )
     if "all" in history_details:
         history_details = list(_IMPLEMENTED_HISTORY_DETAILS)
+
+    if history_length is not None and not isinstance(history_length, Integral):
+        raise TypeError(
+            "history_length must be None or a positive or negative integer."
+        )
+    if history_length is not None:
+        history_length = int(history_length)
 
     # -- Select Computation --
     _compute_history = history or callback_func is not None
@@ -506,13 +515,14 @@ def solve(
 
     # Start the optimization loop
     while True:  # ! (ensure end-flag activation for term "break" statement)
+
         # Apply the parametrization
         if parametrization is not None:
             _out_parameters = parametrization.p_func(_parameters)
         else:
             _out_parameters = _parameters
 
-        # Compute r, J, H, g for each term and the cost of each term if necessary
+        # Compute r, J, H, g for each term according ``rJ`` or ``gH`` type
         r_vectors = []
         J_matrices = []
         rhos_arrays = []
@@ -528,7 +538,7 @@ def solve(
                 if term.loss == "linear":
                     rhos_arrays.append((r_vectors[-1] ** 2, 1.0, 0.0))
                 else:
-                    rhos_arrays.append(term.rho_function(r_vectors[-1]))
+                    rhos_arrays.append(term.loss_func(r_vectors[-1] ** 2))
 
             elif term.type == "gH":
                 r_vectors.append(None)
@@ -537,20 +547,23 @@ def solve(
                 g_vectors.append(term.g_func(_out_parameters))
                 H_matrices.append(term.H_func(_out_parameters))
 
-        # Build the modified residuals and Jacobian for each rJ term based on the robust cost function
+        # Compute the cost of each term (default or cost function)
         costs = []
         if _compute_cost:
             for i in range(_n_terms):
-                if terms[i].type == "rJ":
-                    costs.append(0.5 * numpy.sum(rhos_arrays[i][0]))
+                if term.c_func is not None:
+                    costs.append(float(term.c_func(_out_parameters)))
+                elif terms[i].type == "rJ":
+                    costs.append(float(0.5 * numpy.sum(rhos_arrays[i][0])))
                 elif terms[i].type == "gH":
-                    costs.append(0)
+                    costs.append(float(0))
                 else:
                     raise ValueError(f"Unknown term type: {terms[i].type}")
-            total_cost = sum(
-                w * c for w, c in zip([term.weight for term in terms], costs)
+            total_cost = float(
+                sum(w * c for w, c in zip([term.weight for term in terms], costs))
             )
 
+        # Build the modified residuals and Jacobian for each rJ term based on the robust cost function
         for i in range(_n_terms):
             if terms[i].type == "rJ" and terms[i].loss != "linear":
                 r_vectors[i], J_matrices[i] = _build_tilde_R_and_tilde_J(
@@ -590,23 +603,27 @@ def solve(
             )
         )
 
+        # Compute criterion for stopping criteria and analysis
         if _compute_optimality:
-            optimality = numpy.linalg.norm(second_term, ord=numpy.inf)
+            optimality = float(numpy.linalg.norm(second_term, ord=numpy.inf))
 
         if _compute_convergence_analysis:
-            optimality_2 = numpy.linalg.norm(second_term, ord=2)
+            optimality_2 = float(numpy.linalg.norm(second_term, ord=2))
             if scipy.sparse.issparse(Hessian):
-                cond_Hessian = scipy.sparse.linalg.norm(
-                    Hessian
-                ) * scipy.sparse.linalg.norm(scipy.sparse.linalg.inv(Hessian))
-                trace_Hessian = Hessian.diagonal().sum()
+                cond_Hessian = float(
+                    scipy.sparse.linalg.norm(Hessian)
+                    * scipy.sparse.linalg.norm(scipy.sparse.linalg.inv(Hessian))
+                )
+                trace_Hessian = float(Hessian.diagonal().sum())
             else:
-                cond_Hessian = numpy.linalg.cond(Hessian)
-                trace_Hessian = numpy.trace(Hessian)
+                cond_Hessian = float(numpy.linalg.cond(Hessian))
+                trace_Hessian = float(numpy.trace(Hessian))
 
         _elapsed_time = time.time() - _starting_time
+
         # Update history
         if _compute_history:
+
             _h = {}
             if "iteration" in history_details:
                 _h["iteration"] = _iteration
@@ -642,8 +659,17 @@ def solve(
                 _h["second_term"] = second_term.copy()
             if "hessian" in history_details:
                 _h["hessian"] = Hessian.copy()
-            _history.append(_h)
 
+            if history_length is None:
+                _history.append(_h)
+            elif history_length >= 0 and _iteration < history_length:
+                _history.append(_h)
+            elif history_length < 0:
+                _history.append(_h)
+                if len(_history) > abs(history_length):
+                    _history = _history[1:]
+
+        # Display the iteration
         _printed_row = f""
         if verbosity >= 2:
             if _delta_parameters is None:
@@ -723,8 +749,8 @@ def solve(
 
         if callback_func is not None:
             callback_result = callback_func(_history[-1])
-            if callback_result is not None and not isinstance(callback_result, bool):
-                raise ValueError("Callback function must return a boolean or None.")
+            if not isinstance(callback_result, bool):
+                raise ValueError("Callback function must return a boolean.")
             if callback_result is False:
                 _end_flag = True
                 _end_message += (
