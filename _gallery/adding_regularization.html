@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Adding regularization (curve fitting) &#8212; pysolvegn 0.3.0 documentation</title>
+    <title>Adding regularization (curve fitting) &#8212; pysolvegn 1.0.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../_static/documentation_options.js?v=8d563738"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -56,8 +56,8 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Camera calibration with affine parametrization" href="affine_parametrization.html" />
-    <link rel="prev" title="Study of camera calibration optimization" href="study_optimization.html" />
+    <link rel="next" title="Study of camera calibration optimization" href="study_optimization.html" />
+    <link rel="prev" title="L-curve analysis" href="L_curve_analysis.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -128,7 +128,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
+    <p class="title logo__title">pysolvegn 1.0.0 documentation</p>
   
 </a></div>
     
@@ -150,15 +150,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../api.html">
-    API Reference
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../math.html">
-    Mathematical Background
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -257,15 +257,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../api.html">
-    API Reference
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../math.html">
-    Mathematical Background
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -321,8 +321,8 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="curve_fitting.html">Curve fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="L_curve_analysis.html">L-curve analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="study_optimization.html">Study of camera calibration optimization</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Adding regularization (curve fitting)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="study_optimization.html">Study of camera calibration optimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="affine_parametrization.html">Camera calibration with affine parametrization</a></li>
 </ul>
 </div>
@@ -601,13 +601,13 @@ Gauss-Newton system.</p>
 [2.5 0.5]
 
 Estimated parameters without regularization:
-[2.458614 0.511372]
+[2.45861374 0.51137177]
 
 Estimated parameters with regularization:
-[2.461898 0.510802]
+[2.46189841 0.51080164]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.051 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.053 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-docs-source-gallery-adding-regularization-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/6ecb982b3d6d230db3535ffcad55b417/adding_regularization.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">adding_regularization.ipynb</span></code></a></p>
@@ -634,20 +634,20 @@ Estimated parameters with regularization:
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="study_optimization.html"
+       href="L_curve_analysis.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Study of camera calibration optimization</p>
+        <p class="prev-next-title">L-curve analysis</p>
       </div>
     </a>
     <a class="right-next"
-       href="affine_parametrization.html"
+       href="study_optimization.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Camera calibration with affine parametrization</p>
+        <p class="prev-next-title">Study of camera calibration optimization</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

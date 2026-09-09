@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.parametrization &#8212; pysolvegn 0.3.0 documentation</title>
+    <title>pysolvegn.parametrization &#8212; pysolvegn 1.0.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../../_static/documentation_options.js?v=8d563738"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -124,7 +124,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
+    <p class="title logo__title">pysolvegn 1.0.0 documentation</p>
   
 </a></div>
     
@@ -146,15 +146,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../api.html">
-    API Reference
+  <a class="nav-link nav-internal" href="../../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../math.html">
-    Mathematical Background
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Reference
   </a>
 </li>
 
@@ -251,15 +251,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../api.html">
-    API Reference
+  <a class="nav-link nav-internal" href="../../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../math.html">
-    Mathematical Background
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Reference
   </a>
 </li>
 
@@ -375,6 +375,7 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+
 <span class="kn">from</span><span class="w"> </span><span class="nn">.derivation</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_numerical_jacobian</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.implemented_conf</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="p">,</span>
@@ -437,48 +438,29 @@
 <span class="sd">    jacobian_func : Optional[Callable] (default=None)</span>
 <span class="sd">        The function to compute the Jacobian matrix of the parametric</span>
 <span class="sd">        transformation :math:`P` with respect to the input parameters.</span>
-
 <span class="sd">        The function should take as input the parameters</span>
-<span class="sd">        (array-like with shape ``(n_parameters,)``) and return the Jacobian</span>
-<span class="sd">        matrix as a 2D numpy array with shape</span>
+<span class="sd">        (1D array-like with shape ``(n_parameters,)``) and return the Jacobian</span>
+<span class="sd">        matrix as a 2D array-like with shape</span>
 <span class="sd">        ``(n_p_outputs, n_parameters)``.</span>
+<span class="sd">        Each element of the Jacobian is given by</span>
+<span class="sd">        :math:`\mathbf{J}_{P,(j,l)}=\frac{\partial p_{out,j}}{\partial p_{in,l}}`</span>
+<span class="sd">        where :math:`j=0,...,n_{p_o}-1}`</span>
+<span class="sd">        and :math:`l=0,...,n_{p}-1}`.</span>
+<span class="sd">        If not provided, ``finite_difference`` must be specified to</span>
+<span class="sd">        numerically compute the Jacobian.</span>
 
-<span class="sd">        Each row :math:`j` corresponds to the derivative of the output</span>
-<span class="sd">        parameter :math:`p_{out,j}` with respect to the input parameters:</span>
-
-<span class="sd">        .. math::</span>
-
-<span class="sd">            \mathbf{J}_{P,j}</span>
-<span class="sd">            =</span>
-<span class="sd">            \frac{\partial p_{out,j}}</span>
-<span class="sd">                 {\partial \mathbf{p}_{in}}.</span>
-
-<span class="sd">        If not provided, the Jacobian will be computed numerically using</span>
-<span class="sd">        finite differences.</span>
-
-<span class="sd">    finite_difference : str (default="central")</span>
-<span class="sd">        The finite difference method to use for computing the numerical</span>
-<span class="sd">        Jacobian if the Jacobian function is not provided. Must be one of</span>
-<span class="sd">        ``"central"``, ``"forward"``, or ``"backward"``.</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-
-<span class="sd">    - If ``jacobian_func`` is not provided, the Jacobian will be computed</span>
-<span class="sd">      numerically using finite differences.</span>
-
-<span class="sd">    Version</span>
-<span class="sd">    -------</span>
-
-<span class="sd">    - 0.3.0: Initial version of the :class:`Parametrization` class.</span>
+<span class="sd">    finite_difference : Optional[str] (default=None)</span>
+<span class="sd">        The finite difference method used to numerically compute the Jacobian</span>
+<span class="sd">        when ``jacobian_func`` is not provided.</span>
+<span class="sd">        If ``None``, the Jacobian is not computed numerically. In this case,</span>
+<span class="sd">        ``jacobian_func`` must be provided.</span>
+<span class="sd">        Available methods are ``"central"``, ``"forward"``, and ``"backward"``.</span>
 
 <span class="sd">    """</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s2">"_parametric_func"</span><span class="p">,</span>
         <span class="s2">"_jacobian_func"</span><span class="p">,</span>
-        <span class="s2">"_finite_difference"</span><span class="p">,</span>
-        <span class="s2">"_use_finite_difference_jacobian"</span><span class="p">,</span>
     <span class="p">]</span>
 
 <div class="viewcode-block" id="Parametrization.__init__">
@@ -498,40 +480,54 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"parametric_func must be a callable function, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">parametric_func</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
+
         <span class="k">if</span> <span class="n">jacobian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">jacobian_func</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">"jacobian_func must be a callable function, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">jacobian_func</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">finite_difference</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">finite_difference</span> <span class="o">=</span> <span class="s2">"central"</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">finite_difference</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"finite_difference must be a string."</span><span class="p">)</span>
-        <span class="n">finite_difference</span> <span class="o">=</span> <span class="n">finite_difference</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">finite_difference</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">parametric_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="n">jacobian_func</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">finite_difference</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"finite_difference must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="si">}</span><span class="s2">, got '</span><span class="si">{</span><span class="n">finite_difference</span><span class="si">}</span><span class="s2">'."</span>
+                <span class="s2">"Both parametric_func and jacobian_func must be provided together (or use finite_difference to numerically compute the jacobian)."</span>
             <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">jacobian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">finite_difference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"finite_difference must be None if jacobian_func is provided."</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">finite_difference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">finite_difference</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"finite_difference must be a string."</span><span class="p">)</span>
+            <span class="n">finite_difference</span> <span class="o">=</span> <span class="n">finite_difference</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">finite_difference</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"finite_difference must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="si">}</span><span class="s2">, got '</span><span class="si">{</span><span class="n">finite_difference</span><span class="si">}</span><span class="s2">'."</span>
+                <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_parametric_func</span> <span class="o">=</span> <span class="n">parametric_func</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_func</span> <span class="o">=</span> <span class="n">jacobian_func</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_finite_difference</span> <span class="o">=</span> <span class="n">finite_difference</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_use_finite_difference_jacobian</span> <span class="o">=</span> <span class="kc">False</span>
 
-        <span class="c1"># If parametric function but no Jacobian is provided, build the numerical Jacobian function</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parametric_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># If parametric but no Jacobian is provided, build the numerical Jacobian function</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_parametric_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_func</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">finite_difference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_func</span> <span class="o">=</span> <span class="n">build_numerical_jacobian</span><span class="p">(</span>
-                <span class="n">parametric_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parametric_func</span><span class="p">,</span>
-                <span class="n">method</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_finite_difference</span><span class="p">,</span>
+                <span class="n">residual_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_parametric_func</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="n">finite_difference</span><span class="p">,</span>
                 <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
-            <span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_use_finite_difference_jacobian</span> <span class="o">=</span> <span class="kc">True</span></div>
+            <span class="p">)</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">parametric_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
-<span class="sd">        [Get] the parametric function of the parametrization.</span>
+<span class="sd">        [Get] the parametric function :math:`\P: \mathbb{R}^{n_p} \rightarrow \mathbb{R}^{n_{p_o}}}` of the parametrization.</span>
+
+<span class="sd">        The parametric function take parameters as a 1D array-like of shape ``(n_parameters,)`` and return the output parameters vector as a</span>
+<span class="sd">        1D array-like with shape ``(n_p_outputs,)``.</span>
 
 <span class="sd">        .. note::</span>
 
@@ -551,7 +547,10 @@
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
-<span class="sd">        [Get] the Jacobian function of the parametrization.</span>
+<span class="sd">        [Get] the Jacobian function :math:`\mathbf{J}_i: \mathbb{R}^{n_p} \rightarrow :math:`\mathbb{M}_{n_{p_o}, n_p}(\mathbb{R})`` of the parametrization.</span>
+
+<span class="sd">        The Jacobian function take parameters as a 1D array-like of shape ``(n_parameters,)`` and return the Jacobian matrix as a</span>
+<span class="sd">        2D array-like with shape ``(n_p_outputs, n_parameters)``.</span>
 
 <span class="sd">        .. note::</span>
 
@@ -566,31 +565,7 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">J_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_func</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">finite_difference</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
-<span class="sd">        [Get] the finite difference method for numerical Jacobian computation of the parametrization.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        str</span>
-<span class="sd">            The current finite difference method for numerical Jacobian computation of the parametrization.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_finite_difference</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">use_finite_difference</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
-<span class="sd">        [Get] whether the parametrization is using a finite difference Jacobian function.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        bool</span>
-<span class="sd">            True if the parametrization is using a finite difference Jacobian function, False otherwise.</span>
-<span class="sd">        """</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_use_finite_difference_jacobian</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_func</span></div>
 
 </pre></div>
 

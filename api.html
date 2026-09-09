@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>API Reference &#8212; pysolvegn 0.3.0 documentation</title>
+    <title>API Reference &#8212; pysolvegn 1.0.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="_static/documentation_options.js?v=e259d695"></script>
+    <script src="_static/documentation_options.js?v=8d563738"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -57,7 +57,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="pysolvegn.solve" href="_autosummary/pysolvegn.solve.html" />
-    <link rel="prev" title="Installation" href="installation.html" />
+    <link rel="prev" title="Mathematical Background" href="math.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -128,7 +128,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
+    <p class="title logo__title">pysolvegn 1.0.0 documentation</p>
   
 </a></div>
     
@@ -149,16 +149,16 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
-    API Reference
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="math.html">
+    Mathematical Background
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="math.html">
-    Mathematical Background
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    API Reference
   </a>
 </li>
 
@@ -256,16 +256,16 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
-    API Reference
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="math.html">
+    Mathematical Background
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="math.html">
-    Mathematical Background
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    API Reference
   </a>
 </li>
 
@@ -322,6 +322,13 @@
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.solve.html">pysolvegn.solve</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.Term.html">pysolvegn.Term</a></li>
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.Parametrization.html">pysolvegn.Parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.linear_rho.html">pysolvegn.linear_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.soft_l1_rho.html">pysolvegn.soft_l1_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.cauchy_rho.html">pysolvegn.cauchy_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.arctan_rho.html">pysolvegn.arctan_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.get_rho_function_by_name.html">pysolvegn.get_rho_function_by_name</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="_autosummary/pysolvegn.build_affine_parametrization.html">pysolvegn.build_affine_parametrization</a></li>
@@ -429,10 +436,10 @@ minimize the cost function.</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve</span></code></a>(terms, p0[, parametrization, ...])</p></td>
-<td><p>Function to solve the least squares problem using the Gauss-Newton method with robust cost functions.</p></td>
+<td><p>Function to solve a least squares problem using the Gauss-Newton method with robust cost functions.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Term</span></code></a>([residual_func, jacobian_func, ...])</p></td>
-<td><p>A class representing a term in the least squares problem, which can be either a residual term or a regularization term.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Term</span></code></a>(*[, residual_func, jacobian_func, ...])</p></td>
+<td><p>A class representing a term in the least squares problem.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.Parametrization.html#pysolvegn.Parametrization" title="pysolvegn.Parametrization"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Parametrization</span></code></a>([parametric_func, ...])</p></td>
 <td><p>A parametric transformation <span class="math notranslate nohighlight">\(P\)</span> that maps input parameters <span class="math notranslate nohighlight">\(\vec{p_{in}}\)</span> from an input parametric space <span class="math notranslate nohighlight">\(\mathbb{R}^{n_{\mathrm{parameters}}}\)</span> to output parameters <span class="math notranslate nohighlight">\(\vec{p_{out}}\)</span> in an output parametric space <span class="math notranslate nohighlight">\(\mathbb{R}^{n_{\mathrm{p\_outputs}}}\)</span>.</p></td>
@@ -460,6 +467,26 @@ influence of outliers in the optimization process.</p>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">arctan</span></code></p></td>
 <td><p><span class="math notranslate nohighlight">\(\rho(x) = \arctan(x)\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.linear_rho.html#pysolvegn.linear_rho" title="pysolvegn.linear_rho"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linear_rho</span></code></a>(x)</p></td>
+<td><p>Compute the linear robust cost function <span class="math notranslate nohighlight">\(\rho(x) = x\)</span> and its derivatives.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.soft_l1_rho.html#pysolvegn.soft_l1_rho" title="pysolvegn.soft_l1_rho"><code class="xref py py-obj docutils literal notranslate"><span class="pre">soft_l1_rho</span></code></a>(x)</p></td>
+<td><p>Compute the soft L1 robust cost function <span class="math notranslate nohighlight">\(\rho(x) = 2(\sqrt{1 + x} - 1)\)</span> and its derivatives.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.cauchy_rho.html#pysolvegn.cauchy_rho" title="pysolvegn.cauchy_rho"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cauchy_rho</span></code></a>(x)</p></td>
+<td><p>Compute the Cauchy robust cost function <span class="math notranslate nohighlight">\(\rho(x) = \log(1 + x)\)</span> and its derivatives.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_autosummary/pysolvegn.arctan_rho.html#pysolvegn.arctan_rho" title="pysolvegn.arctan_rho"><code class="xref py py-obj docutils literal notranslate"><span class="pre">arctan_rho</span></code></a>(x)</p></td>
+<td><p>Compute the arctan robust cost function <span class="math notranslate nohighlight">\(\rho(x) = \arctan(x)\)</span> and its derivatives.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_autosummary/pysolvegn.get_rho_function_by_name.html#pysolvegn.get_rho_function_by_name" title="pysolvegn.get_rho_function_by_name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_rho_function_by_name</span></code></a>(name)</p></td>
+<td><p>Get a predefined rho function by name.</p></td>
 </tr>
 </tbody>
 </table>
@@ -536,12 +563,12 @@ by finite differences or creating residuals and jacobians for regularization ter
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="installation.html"
+       href="math.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Installation</p>
+        <p class="prev-next-title">Mathematical Background</p>
       </div>
     </a>
     <a class="right-next"
@@ -572,7 +599,9 @@ by finite differences or creating residuals and jacobians for regularization ter
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-function">Solver Function</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solver-function">Solver Function</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implemented-parametrizations">Implemented Parametrizations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implemented-regularizations">Implemented Regularizations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#additional-utilities">Additional Utilities</a></li>

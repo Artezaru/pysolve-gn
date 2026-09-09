@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.solver &#8212; pysolvegn 0.3.0 documentation</title>
+    <title>pysolvegn.solver &#8212; pysolvegn 1.0.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../../_static/documentation_options.js?v=8d563738"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -124,7 +124,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
+    <p class="title logo__title">pysolvegn 1.0.0 documentation</p>
   
 </a></div>
     
@@ -146,15 +146,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../api.html">
-    API Reference
+  <a class="nav-link nav-internal" href="../../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../math.html">
-    Mathematical Background
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Reference
   </a>
 </li>
 
@@ -251,15 +251,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../api.html">
-    API Reference
+  <a class="nav-link nav-internal" href="../../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../math.html">
-    Mathematical Background
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Reference
   </a>
 </li>
 
@@ -385,7 +385,7 @@
     <span class="n">_IMPLEMENTED_HISTORY_DETAILS</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">.rho_functions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.loss_functions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">_build_tilde_R_and_tilde_J</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -413,69 +413,43 @@
     <span class="n">naninf</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">history</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">history_details</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]]:</span>
+    <span class="n">history_length</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Integral</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">]]]:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
-<span class="sd">    Function to solve the least squares problem using the Gauss-Newton method</span>
+<span class="sd">    Function to solve a least squares problem using the Gauss-Newton method</span>
 <span class="sd">    with robust cost functions.</span>
 
 <span class="sd">    The function accepts multiple terms in the least squares problem,</span>
-<span class="sd">    each with its own residual function, Jacobian function, weight, and loss function,</span>
+<span class="sd">    each with its own residual function :math:`r_i`, Jacobian function</span>
+<span class="sd">    :math:`J_i = \frac{\partial r_i}{\partial \mathbf{p}},</span>
+<span class="sd">    weight :math:`w_i`, and loss function :math`\rho_i`,</span>
 <span class="sd">    solving the following optimization problem:</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        \min_{\mathbf{p}_{in}} \frac{1}{2} \sum_{i} w_i \sum_j</span>
-<span class="sd">        \rho_i\left(</span>
-<span class="sd">            \left\|</span>
-<span class="sd">            \mathbf{r}_{i,j}\left(P(\mathbf{p}_{in})\right)</span>
-<span class="sd">            \right\|^2</span>
-<span class="sd">        \right)</span>
+<span class="sd">        \min_{\mathbf{p}_{in}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{r}_{i,j}\left(P(\mathbf{p}_{in})\right) \|^2\right)</span>
 
-<span class="sd">    where :math:`\mathbf{p}_{in}` represents the parameters actually optimized</span>
-<span class="sd">    by the solver, :math:`P` is a parametric transformation such that:</span>
+<span class="sd">    Here :math:`\mathbf{p}_{in}` represents the parameters actually optimized</span>
+<span class="sd">    by the solver, and :math:`P` is a parametric transformation such that:</span>
 
 <span class="sd">    .. math::</span>
 
 <span class="sd">        \mathbf{p}_{out} = P(\mathbf{p}_{in})</span>
 
 <span class="sd">    represents the parameters passed to the residual and Jacobian functions</span>
-<span class="sd">    of the terms.</span>
-
-<span class="sd">    The input parameters :math:`\mathbf{p}_{in}` have shape</span>
-<span class="sd">    ``(n_parameters,)``.</span>
-
-<span class="sd">    If no parametrization is provided, the identity transformation is implicitly</span>
-<span class="sd">    used:</span>
+<span class="sd">    of each terms. The input parameters :math:`\mathbf{p}_{in}` have shape</span>
+<span class="sd">    ``(n_parameters,)``. If no parametrization is provided, the identity</span>
+<span class="sd">    transformation is implicitly used:</span>
 
 <span class="sd">    .. math::</span>
 
 <span class="sd">        P(\mathbf{p}_{in}) = \mathbf{p}_{in}</span>
 
-<span class="sd">    Here :math:`w_i` is a weight for each sub least squares problem, and</span>
-<span class="sd">    :math:`\rho_i` is a robust cost function for each sub least squares problem.</span>
-
 <span class="sd">    .. seealso::</span>
 
-<span class="sd">        For more details on the notations for the optimization problem and the</span>
-<span class="sd">        algorithm, please refer to the mathematical section of the documentation.</span>
+<span class="sd">        For more details on the notations for the optimization problem,</span>
+<span class="sd">        please refer to the mathematical section of the documentation.</span>
 
-<span class="sd">    The cost of each term defined by the residuals is estimated as:</span>
-
-<span class="sd">    .. math::</span>
-
-<span class="sd">        \frac{1}{2} \sum_j</span>
-<span class="sd">        \rho_i\left(</span>
-<span class="sd">            \left\|</span>
-<span class="sd">            \mathbf{r}_{i,j}(P(\mathbf{p}_{in}))</span>
-<span class="sd">            \right\|^2</span>
-<span class="sd">        \right)</span>
-
-<span class="sd">    .. important::</span>
-
-<span class="sd">        For terms defined directly by a Hessian and gradient, only a local quadratic model</span>
-<span class="sd">        of the cost is available. Since this model is defined up to an arbitrary constant,</span>
-<span class="sd">        an absolute cost value cannot be uniquely determined. For reporting consistency,</span>
-<span class="sd">        the cost contribution of these terms is set to 0.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -485,7 +459,7 @@
 <span class="sd">        the residual function, Jacobian function, weight, and loss function</span>
 <span class="sd">        defining the term.</span>
 <span class="sd">        The residual and Jacobian functions of each term are evaluated using</span>
-<span class="sd">        the output parameters :math:`\mathbf{p}_{out} = P(\mathbf{p}_{in})`.</span>
+<span class="sd">        the output parametric parameters :math:`\mathbf{p}_{out} = P(\mathbf{p}_{in})`.</span>
 
 <span class="sd">    p0: ArrayLike</span>
 <span class="sd">        The initial guess for the parameters optimized by the solver, with shape</span>
@@ -506,10 +480,10 @@
 <span class="sd">        :math:`\mathbf{p}_{in}` with shape ``(n_parameters,)`` of this parametrization.</span>
 
 <span class="sd">    max_iteration: Optional[Integral], optional (default=None)</span>
-<span class="sd">        Stop criterion by the number of iterations.</span>
-<span class="sd">        The optimization process is stopped when the number of iterations</span>
-<span class="sd">        exceeds ``max_iteration``. If None, no limit on the</span>
-<span class="sd">        number of iterations is considered.</span>
+<span class="sd">        Maximum number of optimization iterations.</span>
+<span class="sd">        If provided, the optimization process is stopped after at most</span>
+<span class="sd">        ``max_iteration`` iterations. If None, no limit on the number of</span>
+<span class="sd">        iterations is imposed.</span>
 
 <span class="sd">    max_time: Optional[Real], optional (default=None)</span>
 <span class="sd">        Stop criterion by the elapsed time of optimization.</span>
@@ -534,7 +508,7 @@
 <span class="sd">    gtol: Optional[Real], optional (default=None)</span>
 <span class="sd">        Stop criterion by the optimality value.</span>
 <span class="sd">        The optimization process is stopped when the optimality verifies</span>
-<span class="sd">        ``norm(g, ord=numpy.inf) &lt; gtol`` where g is the scaled second term.</span>
+<span class="sd">        ``norm(g, ord=numpy.inf) &lt; gtol`` where :math:`g` is the scaled second term.</span>
 <span class="sd">        If None, this criterion is not considered.</span>
 
 <span class="sd">    atol: Optional[Real], optional (default=None)</span>
@@ -554,7 +528,7 @@
 <span class="sd">        A callback function that is called at the end of each iteration of the</span>
 <span class="sd">        optimization process. The callback function should take a dictionary</span>
 <span class="sd">        similar to the one returned in the history of the optimization process</span>
-<span class="sd">        as input. If the return value of the callback function is True (or None),</span>
+<span class="sd">        as input. If the return value of the callback function is True,</span>
 <span class="sd">        the optimization process will continue. If the return value is False,</span>
 <span class="sd">        the optimization process will be stopped.</span>
 <span class="sd">        If None, no callback function is used.</span>
@@ -584,19 +558,29 @@
 
 <span class="sd">    history: bool, optional (default=False)</span>
 <span class="sd">        If True, the function will also return a tuple containing the history of</span>
-<span class="sd">        the optimization process.</span>
+<span class="sd">        the optimization process. See the Notes section for more details.</span>
 
 <span class="sd">    history_details: Optional[Union[str, Sequence[str]]], optional (default=None)</span>
-<span class="sd">        The details to include in the history of the optimization process.</span>
-<span class="sd">        Can be a single string or a sequence of strings. See the Notes section for</span>
-<span class="sd">        the available details.</span>
-<span class="sd">        By default, the history will include:</span>
-<span class="sd">        ``"iteration"``, ``"elapsed_time"``,</span>
-<span class="sd">        ``"parameters"``,</span>
+<span class="sd">        Used only if ``history`` is True.</span>
+<span class="sd">        Specifies the details to include in the history of the optimization process.</span>
+<span class="sd">        It can be either a single string or a sequence of strings. See the Notes</span>
+<span class="sd">        section for the available details.</span>
+<span class="sd">        If None, the history will include the following details by default:</span>
+<span class="sd">        ``"iteration"``, ``"elapsed_time"``, ``"parameters"``,</span>
 <span class="sd">        ``"delta_parameters"``, ``"delta_cost"``, ``"cost"``, and</span>
 <span class="sd">        ``"optimality"``.</span>
-<span class="sd">        For a specified list of details, only the details in the list below</span>
-<span class="sd">        will be included in the history.</span>
+
+<span class="sd">    history_length: Optional[Integral], optional (default=None)</span>
+<span class="sd">        Used only if ``history`` is True.</span>
+<span class="sd">        Controls the number of iterations included in the history.</span>
+<span class="sd">        If None, all iterations are included in the output history.</span>
+<span class="sd">        If a positive integer ``N`` is given, only the first ``N`` iterations</span>
+<span class="sd">        are included in the output history (from 0 to :math:`N-1`).</span>
+<span class="sd">        If zero is given, no iterations are included.</span>
+<span class="sd">        If a negative integer ``M`` is given, only the last ``|M|`` iterations</span>
+<span class="sd">        are included in the output history.</span>
+<span class="sd">        If the requested history length is greater than the number of iterations</span>
+<span class="sd">        performed, the history will contain fewer entries than requested.</span>
 
 
 <span class="sd">    Returns</span>
@@ -618,6 +602,21 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
+
+<span class="sd">    The step of each loop iteration is as follows:</span>
+
+<span class="sd">    .. code-block:: text</span>
+
+<span class="sd">        While NOT converged:</span>
+<span class="sd">            1. Compute the output parameters ``p_out = P(p_in)``.</span>
+<span class="sd">            2. For ``rJ`` terms compute and build ``H_i = J.T J`` and ``g_i = J.T r``.</span>
+<span class="sd">            3. For ``gH`` terms compute ``H_i`` and ``g_i``.</span>
+<span class="sd">            4. Build the full system ``H Δp_in = -g``.</span>
+<span class="sd">            5. Perform STOP criterion checks and call the 'callback' function.</span>
+<span class="sd">            6. If STOP, exit optimisation and return the result and history.</span>
+<span class="sd">            7. If CONTINUE, solve the linear system ``H Δp_in = -g``.</span>
+<span class="sd">            8. Update the input parameters ``p_in = p_in + Δp_in`` (or using ``update_func`` if provided).</span>
+
 <span class="sd">    The history contains the following keys (if requested in ``history_details``):</span>
 
 <span class="sd">    - "iteration": Integer representing the iteration number.</span>
@@ -630,54 +629,57 @@
 <span class="sd">    - "costs": List of floats representing the cost function value for each term</span>
 <span class="sd">      in the least squares problem at the current iteration, computed as</span>
 <span class="sd">      :math:`\frac{1}{2} \sum_j</span>
-<span class="sd">      \rho_i(\| \mathbf{R}_{i,j}(\mathbf{p}_{out}) \|^2)`</span>
-<span class="sd">      for each term :math:`i`.</span>
+<span class="sd">      \rho_i(\| \mathbf{r}_{i,j}(\mathbf{p}_{out}) \|^2)`</span>
+<span class="sd">      for each term :math:`i` (only for ``rJ`` terms).</span>
 <span class="sd">    - "cost": Float representing the cost function value at the current iteration,</span>
 <span class="sd">      computed as</span>
 <span class="sd">      :math:`\frac{1}{2} \sum_i w_i \sum_j</span>
-<span class="sd">      \rho_i(\| \mathbf{R}_{i,j}(\mathbf{p}_{out}) \|^2)`.</span>
+<span class="sd">      \rho_i(\| \mathbf{r}_{i,j}(\mathbf{p}_{out}) \|^2)`.</span>
 <span class="sd">    - "delta_cost": Float representing the change of the cost function value</span>
 <span class="sd">      between the current and previous iteration (only for iterations &gt; 0).</span>
 <span class="sd">    - "optimality": Float representing the optimality value at the current iteration</span>
-<span class="sd">      computed as ``norm(b, ord=numpy.inf)`` where b is the scaled second term.</span>
+<span class="sd">      computed as ``norm(g, ord=numpy.inf)`` where :math:`g` is the scaled second term.</span>
 <span class="sd">    - "residuals": A list of numpy arrays representing the residuals for each term</span>
-<span class="sd">      in the least squares problem at the current iteration (only for rJ terms).</span>
+<span class="sd">      in the least squares problem at the current iteration (only for ``rJ`` terms).</span>
 <span class="sd">    - "jacobians": A list of numpy arrays representing the Jacobians for each term</span>
-<span class="sd">      in the least squares problem at the current iteration (only for rJ terms).</span>
+<span class="sd">      in the least squares problem at the current iteration (only for ``rJ`` terms).</span>
 <span class="sd">    - "second_term": The scaled second term :math:`\mathbf{g}` of the linear system</span>
 <span class="sd">      at the current iteration.</span>
 <span class="sd">    - "hessian": The Hessian approximation :math:`\mathbf{H}` of the linear system</span>
 <span class="sd">      at the current iteration.</span>
+<span class="sd">    - "all": include all the keys.</span>
 
-<span class="sd">    The step of each loop iteration is as follows:</span>
+<span class="sd">    The cost of each term can be compute only for ``rJ`` terms and is</span>
+<span class="sd">    defined by :</span>
 
-<span class="sd">    .. code-block:: text</span>
+<span class="sd">    .. math::</span>
 
-<span class="sd">        While NOT converged:</span>
-<span class="sd">            1. Compute the output parameters ``p_out = P(p_in)``.</span>
-<span class="sd">            2. Build the system ``H Δp_in = -g``.</span>
-<span class="sd">            3. Call the 'callback' function and STOP if it returns False.</span>
-<span class="sd">            4. Check the stopping criteria and STOP if any of them is satisfied.</span>
-<span class="sd">            5. If CONTINUE, solve the linear system ``H Δp_in = -g``.</span>
-<span class="sd">            6. Update the input parameters ``p_in = p_in + Δp_in`` (or using 'update_func' if provided).</span>
+<span class="sd">        \frac{1}{2} \sum_j</span>
+<span class="sd">        \rho_i\left(</span>
+<span class="sd">            \left\|</span>
+<span class="sd">            \mathbf{r}_{i,j}(P(\mathbf{p}_{in}))</span>
+<span class="sd">            \right\|^2</span>
+<span class="sd">        \right)</span>
 
+<span class="sd">    .. important::</span>
 
-<span class="sd">    Version</span>
-<span class="sd">    -------</span>
-
-<span class="sd">    - 0.1.0: Initial version for the solver method.</span>
-<span class="sd">    - 0.3.0: Adding the regularization functionality to the solver.</span>
+<span class="sd">        For terms defined directly by a Hessian and gradient (``gH`` terms), only a local quadratic model</span>
+<span class="sd">        of the cost is available. Since this model is defined up to an arbitrary constant and submit to</span>
+<span class="sd">        cumulative errors, an absolute cost value cannot be uniquely determined.</span>
+<span class="sd">        For reporting consistency, the cost contribution of these terms is set to ``0.0`` by default.</span>
+<span class="sd">        If the term contains a ``cost_func`` function, it will be used to compute the cost of</span>
+<span class="sd">        the term.</span>
 
 <span class="sd">    """</span>
 
     <span class="c1"># Check the validity of the input arguments and raise appropriate errors if necessary.</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"terms must be a sequence of Term objects."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"terms must be a sequence of Term objects."</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"terms sequence cannot be empty."</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">terms</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">Term</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
                 <span class="s2">"All elements of terms must be instances of the Term class."</span>
             <span class="p">)</span>
 
@@ -686,55 +688,55 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"p0 must be a 1D array, got </span><span class="si">{</span><span class="n">p0</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">parametrization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parametrization</span><span class="p">,</span> <span class="n">Parametrization</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
             <span class="s2">"parametrization must be an instance of the Parametrization class."</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">max_iteration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">max_iteration</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"max_iteration must be an integer."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"max_iteration must be an integer."</span><span class="p">)</span>
         <span class="n">max_iteration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_iteration</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">max_iteration</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"max_iteration must be a non-negative integer."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">max_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">max_time</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"max_time must be a real number."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"max_time must be a real number."</span><span class="p">)</span>
         <span class="n">max_time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">max_time</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">max_time</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"max_time must be a non-negative real number."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">ftol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ftol</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"ftol must be a real number."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"ftol must be a real number."</span><span class="p">)</span>
         <span class="n">ftol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ftol</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ftol</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"ftol must be a positive real number."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">xtol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xtol</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"xtol must be a real number."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"xtol must be a real number."</span><span class="p">)</span>
         <span class="n">xtol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">xtol</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">xtol</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"xtol must be a positive real number."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">gtol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gtol</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"gtol must be a real number."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"gtol must be a real number."</span><span class="p">)</span>
         <span class="n">gtol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">gtol</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">gtol</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"gtol must be a positive real number."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">atol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atol</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"atol must be a real number."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"atol must be a real number."</span><span class="p">)</span>
         <span class="n">atol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">atol</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">atol</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"atol must be a positive real number."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">ptol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ptol</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"ptol must be a real number."</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"ptol must be a real number."</span><span class="p">)</span>
         <span class="n">ptol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ptol</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ptol</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"ptol must be a positive real number."</span><span class="p">)</span>
@@ -749,23 +751,23 @@
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">callback_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">callback_func</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"callback_func must be a callable function."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"callback_func must be a callable function."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">update_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">update_func</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"update_func must be a callable function."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"update_func must be a callable function."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">verbosity</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"verbosity must be an integer."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"verbosity must be an integer."</span><span class="p">)</span>
     <span class="n">verbosity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">verbosity</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"verbosity must be an integer between 0 and 3 inclusive."</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">naninf</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"naninf must be a boolean value."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"naninf must be a boolean value."</span><span class="p">)</span>
     <span class="n">naninf</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">naninf</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"history must be a boolean value."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"history must be a boolean value."</span><span class="p">)</span>
     <span class="n">history</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">history_details</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -781,7 +783,7 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">history_details</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
         <span class="n">history_details</span> <span class="o">=</span> <span class="p">[</span><span class="n">history_details</span><span class="p">]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">history_details</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"history_details must be a string or a sequence of strings."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"history_details must be a string or a sequence of strings."</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">detail</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">detail</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_IMPLEMENTED_HISTORY_DETAILS</span> <span class="ow">and</span> <span class="n">detail</span> <span class="o">!=</span> <span class="s2">"all"</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -789,6 +791,13 @@
             <span class="p">)</span>
     <span class="k">if</span> <span class="s2">"all"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
         <span class="n">history_details</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_IMPLEMENTED_HISTORY_DETAILS</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">history_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">history_length</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="s2">"history_length must be None or a positive or negative integer."</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="n">history_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">history_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">history_length</span><span class="p">)</span>
 
     <span class="c1"># -- Select Computation --</span>
     <span class="n">_compute_history</span> <span class="o">=</span> <span class="n">history</span> <span class="ow">or</span> <span class="n">callback_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
@@ -865,13 +874,14 @@
 
     <span class="c1"># Start the optimization loop</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>  <span class="c1"># ! (ensure end-flag activation for term "break" statement)</span>
+
         <span class="c1"># Apply the parametrization</span>
         <span class="k">if</span> <span class="n">parametrization</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">_out_parameters</span> <span class="o">=</span> <span class="n">parametrization</span><span class="o">.</span><span class="n">p_func</span><span class="p">(</span><span class="n">_parameters</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">_out_parameters</span> <span class="o">=</span> <span class="n">_parameters</span>
 
-        <span class="c1"># Compute r, J, H, g for each term and the cost of each term if necessary</span>
+        <span class="c1"># Compute r, J, H, g for each term according ``rJ`` or ``gH`` type</span>
         <span class="n">r_vectors</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">J_matrices</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">rhos_arrays</span> <span class="o">=</span> <span class="p">[]</span>
@@ -887,7 +897,7 @@
                 <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">loss</span> <span class="o">==</span> <span class="s2">"linear"</span><span class="p">:</span>
                     <span class="n">rhos_arrays</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">r_vectors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="n">rhos_arrays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">term</span><span class="o">.</span><span class="n">rho_function</span><span class="p">(</span><span class="n">r_vectors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+                    <span class="n">rhos_arrays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">term</span><span class="o">.</span><span class="n">loss_func</span><span class="p">(</span><span class="n">r_vectors</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
 
             <span class="k">elif</span> <span class="n">term</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"gH"</span><span class="p">:</span>
                 <span class="n">r_vectors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
@@ -896,20 +906,23 @@
                 <span class="n">g_vectors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">term</span><span class="o">.</span><span class="n">g_func</span><span class="p">(</span><span class="n">_out_parameters</span><span class="p">))</span>
                 <span class="n">H_matrices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">term</span><span class="o">.</span><span class="n">H_func</span><span class="p">(</span><span class="n">_out_parameters</span><span class="p">))</span>
 
-        <span class="c1"># Build the modified residuals and Jacobian for each rJ term based on the robust cost function</span>
+        <span class="c1"># Compute the cost of each term (default or cost function)</span>
         <span class="n">costs</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">_compute_cost</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_n_terms</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"rJ"</span><span class="p">:</span>
-                    <span class="n">costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rhos_arrays</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span>
+                <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">c_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">term</span><span class="o">.</span><span class="n">c_func</span><span class="p">(</span><span class="n">_out_parameters</span><span class="p">)))</span>
+                <span class="k">elif</span> <span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"rJ"</span><span class="p">:</span>
+                    <span class="n">costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rhos_arrays</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">])))</span>
                 <span class="k">elif</span> <span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"gH"</span><span class="p">:</span>
-                    <span class="n">costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="n">costs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown term type: </span><span class="si">{</span><span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">type</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
-            <span class="n">total_cost</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
-                <span class="n">w</span> <span class="o">*</span> <span class="n">c</span> <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">term</span><span class="o">.</span><span class="n">weight</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">terms</span><span class="p">],</span> <span class="n">costs</span><span class="p">)</span>
+            <span class="n">total_cost</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                <span class="nb">sum</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">c</span> <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">term</span><span class="o">.</span><span class="n">weight</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">terms</span><span class="p">],</span> <span class="n">costs</span><span class="p">))</span>
             <span class="p">)</span>
 
+        <span class="c1"># Build the modified residuals and Jacobian for each rJ term based on the robust cost function</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">_n_terms</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"rJ"</span> <span class="ow">and</span> <span class="n">terms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">loss</span> <span class="o">!=</span> <span class="s2">"linear"</span><span class="p">:</span>
                 <span class="n">r_vectors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">J_matrices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">_build_tilde_R_and_tilde_J</span><span class="p">(</span>
@@ -949,23 +962,27 @@
             <span class="p">)</span>
         <span class="p">)</span>
 
+        <span class="c1"># Compute criterion for stopping criteria and analysis</span>
         <span class="k">if</span> <span class="n">_compute_optimality</span><span class="p">:</span>
-            <span class="n">optimality</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">second_term</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
+            <span class="n">optimality</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">second_term</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span><span class="p">))</span>
 
         <span class="k">if</span> <span class="n">_compute_convergence_analysis</span><span class="p">:</span>
-            <span class="n">optimality_2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">second_term</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">optimality_2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">second_term</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">Hessian</span><span class="p">):</span>
-                <span class="n">cond_Hessian</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
-                    <span class="n">Hessian</span>
-                <span class="p">)</span> <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Hessian</span><span class="p">))</span>
-                <span class="n">trace_Hessian</span> <span class="o">=</span> <span class="n">Hessian</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                <span class="n">cond_Hessian</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">Hessian</span><span class="p">)</span>
+                    <span class="o">*</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Hessian</span><span class="p">))</span>
+                <span class="p">)</span>
+                <span class="n">trace_Hessian</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">Hessian</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">cond_Hessian</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">Hessian</span><span class="p">)</span>
-                <span class="n">trace_Hessian</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">Hessian</span><span class="p">)</span>
+                <span class="n">cond_Hessian</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">cond</span><span class="p">(</span><span class="n">Hessian</span><span class="p">))</span>
+                <span class="n">trace_Hessian</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">Hessian</span><span class="p">))</span>
 
         <span class="n">_elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">_starting_time</span>
+
         <span class="c1"># Update history</span>
         <span class="k">if</span> <span class="n">_compute_history</span><span class="p">:</span>
+
             <span class="n">_h</span> <span class="o">=</span> <span class="p">{}</span>
             <span class="k">if</span> <span class="s2">"iteration"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
                 <span class="n">_h</span><span class="p">[</span><span class="s2">"iteration"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_iteration</span>
@@ -1001,8 +1018,17 @@
                 <span class="n">_h</span><span class="p">[</span><span class="s2">"second_term"</span><span class="p">]</span> <span class="o">=</span> <span class="n">second_term</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
             <span class="k">if</span> <span class="s2">"hessian"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
                 <span class="n">_h</span><span class="p">[</span><span class="s2">"hessian"</span><span class="p">]</span> <span class="o">=</span> <span class="n">Hessian</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="n">_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_h</span><span class="p">)</span>
 
+            <span class="k">if</span> <span class="n">history_length</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_h</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">history_length</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">_iteration</span> <span class="o">&lt;</span> <span class="n">history_length</span><span class="p">:</span>
+                <span class="n">_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_h</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">history_length</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_h</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">_history</span><span class="p">)</span> <span class="o">&gt;</span> <span class="nb">abs</span><span class="p">(</span><span class="n">history_length</span><span class="p">):</span>
+                    <span class="n">_history</span> <span class="o">=</span> <span class="n">_history</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+
+        <span class="c1"># Display the iteration</span>
         <span class="n">_printed_row</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">""</span>
         <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">_delta_parameters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1082,8 +1108,8 @@
 
         <span class="k">if</span> <span class="n">callback_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">callback_result</span> <span class="o">=</span> <span class="n">callback_func</span><span class="p">(</span><span class="n">_history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">callback_result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">callback_result</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Callback function must return a boolean or None."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">callback_result</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Callback function must return a boolean."</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">callback_result</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
                 <span class="n">_end_flag</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">_end_message</span> <span class="o">+=</span> <span class="p">(</span>

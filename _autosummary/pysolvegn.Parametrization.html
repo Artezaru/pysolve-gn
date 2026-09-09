@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pysolvegn.Parametrization &#8212; pysolvegn 0.3.0 documentation</title>
+    <title>pysolvegn.Parametrization &#8212; pysolvegn 1.0.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../_static/documentation_options.js?v=8d563738"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -56,7 +56,7 @@
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pysolvegn.build_affine_parametrization" href="pysolvegn.build_affine_parametrization.html" />
+    <link rel="next" title="pysolvegn.linear_rho" href="pysolvegn.linear_rho.html" />
     <link rel="prev" title="pysolvegn.Term" href="pysolvegn.Term.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -128,7 +128,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
+    <p class="title logo__title">pysolvegn 1.0.0 documentation</p>
   
 </a></div>
     
@@ -149,16 +149,16 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="../api.html">
-    API Reference
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../math.html">
-    Mathematical Background
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -256,16 +256,16 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="../api.html">
-    API Reference
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../math.html">
-    Mathematical Background
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -322,6 +322,13 @@
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve.html">pysolvegn.solve</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.Term.html">pysolvegn.Term</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">pysolvegn.Parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.linear_rho.html">pysolvegn.linear_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.soft_l1_rho.html">pysolvegn.soft_l1_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.cauchy_rho.html">pysolvegn.cauchy_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.arctan_rho.html">pysolvegn.arctan_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.get_rho_function_by_name.html">pysolvegn.get_rho_function_by_name</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_affine_parametrization.html">pysolvegn.build_affine_parametrization</a></li>
@@ -437,38 +444,26 @@ The function should take as input the parameters
 parameters as a 1D numpy array with shape <code class="docutils literal notranslate"><span class="pre">(n_p_outputs,)</span></code>,
 representing the output parameters
 <span class="math notranslate nohighlight">\(\mathbf{p}_{out}\)</span>.</p></li>
-<li><p><strong>jacobian_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – <p>The function to compute the Jacobian matrix of the parametric
-transformation <span class="math notranslate nohighlight">\(P\)</span> with respect to the input parameters.</p>
-<p>The function should take as input the parameters
-(array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) and return the Jacobian
-matrix as a 2D numpy array with shape
-<code class="docutils literal notranslate"><span class="pre">(n_p_outputs,</span> <span class="pre">n_parameters)</span></code>.</p>
-<p>Each row <span class="math notranslate nohighlight">\(j\)</span> corresponds to the derivative of the output
-parameter <span class="math notranslate nohighlight">\(p_{out,j}\)</span> with respect to the input parameters:</p>
-<div class="math notranslate nohighlight">
-\[\mathbf{J}_{P,j}
-=
-\frac{\partial p_{out,j}}
-     {\partial \mathbf{p}_{in}}.\]</div>
-<p>If not provided, the Jacobian will be computed numerically using
-finite differences.</p>
-</p></li>
-<li><p><strong>finite_difference</strong> (<em>str</em><em> (</em><em>default=&quot;central&quot;</em><em>)</em>) – The finite difference method to use for computing the numerical
-Jacobian if the Jacobian function is not provided. Must be one of
-<code class="docutils literal notranslate"><span class="pre">&quot;central&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;forward&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;backward&quot;</span></code>.</p></li>
+<li><p><strong>jacobian_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – The function to compute the Jacobian matrix of the parametric
+transformation <span class="math notranslate nohighlight">\(P\)</span> with respect to the input parameters.
+The function should take as input the parameters
+(1D array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) and return the Jacobian
+matrix as a 2D array-like with shape
+<code class="docutils literal notranslate"><span class="pre">(n_p_outputs,</span> <span class="pre">n_parameters)</span></code>.
+Each element of the Jacobian is given by
+<span class="math notranslate nohighlight">\(\mathbf{J}_{P,(j,l)}=\frac{\partial p_{out,j}}{\partial p_{in,l}}\)</span>
+where <span class="math notranslate nohighlight">\(j=0,...,n_{p_o}-1}\)</span>
+and <span class="math notranslate nohighlight">\(l=0,...,n_{p}-1}\)</span>.
+If not provided, <code class="docutils literal notranslate"><span class="pre">finite_difference</span></code> must be specified to
+numerically compute the Jacobian.</p></li>
+<li><p><strong>finite_difference</strong> (<em>Optional</em><em>[</em><em>str</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – The finite difference method used to numerically compute the Jacobian
+when <code class="docutils literal notranslate"><span class="pre">jacobian_func</span></code> is not provided.
+If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the Jacobian is not computed numerically. In this case,
+<code class="docutils literal notranslate"><span class="pre">jacobian_func</span></code> must be provided.
+Available methods are <code class="docutils literal notranslate"><span class="pre">&quot;central&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;forward&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;backward&quot;</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>If <code class="docutils literal notranslate"><span class="pre">jacobian_func</span></code> is not provided, the Jacobian will be computed
-numerically using finite differences.</p></li>
-</ul>
-<section id="version">
-<h2>Version<a class="headerlink" href="#version" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>0.3.0: Initial version of the <a class="reference internal" href="#pysolvegn.Parametrization" title="pysolvegn.Parametrization"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parametrization</span></code></a> class.</p></li>
-</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysolvegn.Parametrization.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parametric_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jacobian_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finite_difference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/parametrization.html#Parametrization.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.Parametrization.__init__" title="Link to this definition">#</a></dt>
@@ -498,25 +493,18 @@ numerically using finite differences.</p></li>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">J_func</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">finite_difference</span></code></p></td>
-<td><p>[Get] the finite difference method for numerical Jacobian computation of the parametrization.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian_func</span></code></p></td>
+<td><p>[Get] the Jacobian function <span class="math notranslate nohighlight">\(\mathbf{J}_i: \mathbb{R}^{n_p} \rightarrow :math:\)</span>mathbb{M}_{n_{p_o}, n_p}(mathbb{R})`` of the parametrization.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian_func</span></code></p></td>
-<td><p>[Get] the Jacobian function of the parametrization.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">p_func</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">p_func</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parametric_func</span></code></p></td>
-<td><p>[Get] the parametric function of the parametrization.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_finite_difference</span></code></p></td>
-<td><p>[Get] whether the parametrization is using a finite difference Jacobian function.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">parametric_func</span></code></p></td>
+<td><p>[Get] the parametric function <span class="math notranslate nohighlight">\(\P: \mathbb{R}^{n_p} \rightarrow \mathbb{R}^{n_{p_o}}}\)</span> of the parametrization.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-</section>
 </dd></dl>
 
 </section>
@@ -541,11 +529,11 @@ numerically using finite differences.</p></li>
       </div>
     </a>
     <a class="right-next"
-       href="pysolvegn.build_affine_parametrization.html"
+       href="pysolvegn.linear_rho.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pysolvegn.build_affine_parametrization</p>
+        <p class="prev-next-title">pysolvegn.linear_rho</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

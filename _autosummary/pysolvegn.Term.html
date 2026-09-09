@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pysolvegn.Term &#8212; pysolvegn 0.3.0 documentation</title>
+    <title>pysolvegn.Term &#8212; pysolvegn 1.0.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../_static/documentation_options.js?v=8d563738"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,7 +128,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
+    <p class="title logo__title">pysolvegn 1.0.0 documentation</p>
   
 </a></div>
     
@@ -149,16 +149,16 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="../api.html">
-    API Reference
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../math.html">
-    Mathematical Background
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -256,16 +256,16 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="../api.html">
-    API Reference
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../math.html">
-    Mathematical Background
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -322,6 +322,13 @@
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve.html">pysolvegn.solve</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">pysolvegn.Term</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.Parametrization.html">pysolvegn.Parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.linear_rho.html">pysolvegn.linear_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.soft_l1_rho.html">pysolvegn.soft_l1_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.cauchy_rho.html">pysolvegn.cauchy_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.arctan_rho.html">pysolvegn.arctan_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.get_rho_function_by_name.html">pysolvegn.get_rho_function_by_name</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_affine_parametrization.html">pysolvegn.build_affine_parametrization</a></li>
@@ -401,40 +408,41 @@
 <h1>pysolvegn.Term<a class="headerlink" href="#pysolvegn-term" title="Link to this heading">#</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pysolvegn.Term">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Term</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">residual_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jacobian_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">second_term_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hessian_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finite_difference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/term.html#Term"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.Term" title="Link to this definition">#</a></dt>
-<dd><p>A class representing a term in the least squares problem, which can be either a
-residual term or a regularization term.</p>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Term</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jacobian_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradient_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hessian_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finite_difference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/term.html#Term"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.Term" title="Link to this definition">#</a></dt>
+<dd><p>A class representing a term in the least squares problem.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For more details on the notations for the optimization problem,
+please refer to the mathematical section of the documentation.</p>
+</div>
 <p>For the following definition, the <span class="math notranslate nohighlight">\(i\)</span>-th term in the least squares
-problem is denoted as <span class="math notranslate nohighlight">\(\mathbf{R}_i(\mathbf{p})\)</span></p>
+problem is denoted as <span class="math notranslate nohighlight">\(\mathbf{r}_i(\mathbf{p}) \in \mathbb{R}^{n_{r_i}}`\)</span>.</p>
 <div class="math notranslate nohighlight">
 \[\min_{\mathbf{p}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{r}_{i,j}(\mathbf{p}) \|^2\right)\]</div>
-<p>Each term can be defined by two callable functions:</p>
+<p>where <span class="math notranslate nohighlight">\(i\)</span> indexes the different least squares terms (<a class="reference internal" href="#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.Term</span></code></a>) and <span class="math notranslate nohighlight">\(j\)</span>
+indexes the residuals within each term.
+Each term can be defined by two callable functions:</p>
 <ol class="arabic">
 <li><p>The <strong>Residual</strong> and <strong>Jacobian</strong> functions</p>
 <blockquote>
 <div><p>The residual function <span class="math notranslate nohighlight">\(\mathbf{r}_i(\mathbf{p})\)</span> to minimize
-and the Jacobian function
+and the associated Jacobian function
 <span class="math notranslate nohighlight">\(\mathbf{J}_i(\mathbf{p}) = \frac{\partial \mathbf{r}_i}{\partial \mathbf{p}}\)</span>
 to compute the Jacobian matrix of the residuals with respect to the parameters.</p>
-<p>Then the solver will build the second term <span class="math notranslate nohighlight">\(\mathbf{g}(\mathbf{p})\)</span> and
+<p>Then the solver will build the gradient <span class="math notranslate nohighlight">\(\mathbf{g}(\mathbf{p})\)</span> and
 the Hessian of the least squares problem <span class="math notranslate nohighlight">\(\mathbf{H}(\mathbf{p})\)</span> as:</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{g} = w_i \tilde{\mathbf{J}}_i^T \tilde{\mathbf{r}}_i\]</div>
 <div class="math notranslate nohighlight">
 \[\mathbf{H} = w_i \tilde{\mathbf{J}}_i^T \tilde{\mathbf{J}}_i\]</div>
 <p>such that <span class="math notranslate nohighlight">\(\mathbf{H} \Delta \mathbf{p} = -\mathbf{g}\)</span>.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>For more details on notations for the optimization problem and the algorithm,
-please refer to the mathematical section of the documentation.</p>
-</div>
 </div></blockquote>
 </li>
-<li><p>The <strong>Second term</strong> and <strong>Hessian</strong> functions</p>
+<li><p>The <strong>gradient</strong> and <strong>Hessian</strong> functions</p>
 <blockquote>
-<div><p>The hessian function <span class="math notranslate nohighlight">\(\mathbf{H}_i(\mathbf{p})\)</span> to compute the Hessian of
-the least squares problem and the second term function
-<span class="math notranslate nohighlight">\(\mathbf{g}_i(\mathbf{p})\)</span> to compute the second term of the
+<div><p>The Hessian function <span class="math notranslate nohighlight">\(\mathbf{H}_i(\mathbf{p})\)</span> to compute the Hessian of
+the least squares problem and the gradient function
+<span class="math notranslate nohighlight">\(\mathbf{g}_i(\mathbf{p})\)</span> to compute the gradient of the
 least squares problem.</p>
 <p>Then the solver will use them directly without building them from the residuals
 and Jacobian, such that:</p>
@@ -448,72 +456,82 @@ and Jacobian, such that:</p>
 </ol>
 <p>This class is used to represent each term in the least squares problem,
 and can be used to define the residual and Jacobian functions for each term,
-as well as the second term and Hessian functions for each term,
+as well as the gradient and Hessian functions for each term,
 which can be used to build the least squares problem.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The term must be define by (residual + jacobian) or (gradient + Hessian) not both.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>residual_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – The function to compute the residuals in the least squares problem.
-The function should take as inputs the parameters
-(array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) and return the residuals as a
-1D numpy array with shape <code class="docutils literal notranslate"><span class="pre">(n_residuals,)</span></code> representing each
-<span class="math notranslate nohighlight">\(\mathbf{r}_{j}(\mathbf{p})\)</span> where <span class="math notranslate nohighlight">\(j=0,...,n_{\text{residuals}-1}\)</span>.</p></li>
+<li><p><strong>residual_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – The function to compute the residuals <span class="math notranslate nohighlight">\(\mathbf{r}_i: \mathbb{R}^{n_p} \rightarrow \mathbb{R}^{n_{r_i}}\)</span>
+of the least squares problem. The function should take as inputs the parameters
+(1D array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) and return the residuals as a
+1D array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_residuals,)</span></code> representing each
+<span class="math notranslate nohighlight">\(\mathbf{r}_{i,j}(\mathbf{p})\)</span> where <span class="math notranslate nohighlight">\(j=0,...,n_{r_i}-1\)</span>.</p></li>
 <li><p><strong>jacobian_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – The function to compute the Jacobian matrix of the residuals with respect to the parameters.
 The function should take as inputs the parameters
-(array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) and return the Jacobian matrix as a 2D numpy array
+(1D array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) and return the Jacobian matrix as a 2D array-like
 with shape <code class="docutils literal notranslate"><span class="pre">(n_residuals,</span> <span class="pre">n_parameters)</span></code> representing each
-<span class="math notranslate nohighlight">\(\mathbf{J}_{j}(\mathbf{p})\)</span> where <span class="math notranslate nohighlight">\(j=0,...,n_{\text{residuals}-1}\)</span>
-such that <span class="math notranslate nohighlight">\(\mathbf{J}_j(\mathbf{p}) = \frac{\partial \mathbf{r}_j}{\partial \mathbf{p}}\)</span>.
-If not provided, the Jacobian will be computed numerically using finite differences.</p></li>
-<li><p><strong>second_term_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – The function to compute the second term <span class="math notranslate nohighlight">\(\mathbf{g}_i(\mathbf{p})\)</span>
+<span class="math notranslate nohighlight">\(\mathbf{J}_{i,(j,l)}(\mathbf{p}) = \frac{\partial \mathbf{r}_{i,j}}{\partial \mathbf{p}_l}\)</span> where <span class="math notranslate nohighlight">\(j=0,...,n_{r_i}-1}\)</span>
+and <span class="math notranslate nohighlight">\(l=0,...,n_{p}-1}\)</span>.
+Can be numericallty computed using <code class="docutils literal notranslate"><span class="pre">finite_difference</span></code> argument.</p></li>
+<li><p><strong>gradient_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – The function to compute the gradient <span class="math notranslate nohighlight">\(\mathbf{g}_i(\mathbf{p}) = \mathbf{J}_i^T \mathbf{r}_i\)</span>
 of the least squares problem.
 The function should take as inputs the parameters
-(array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) and return the second term as a
-1D numpy array with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>.
-If provided, loss must be “linear”.</p></li>
-<li><p><strong>hessian_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – The function to compute the Hessian <span class="math notranslate nohighlight">\(\mathbf{H}_i(\mathbf{p})\)</span>
+(1D array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) and return the gradient as a
+1D array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>.</p></li>
+<li><p><strong>hessian_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – The function to compute the Hessian <span class="math notranslate nohighlight">\(\mathbf{H}_i(\mathbf{p}) = \mathbf{J}_i^T \mathbf{J}_i\)</span>
 of the least squares problem.
 The function should take as inputs the parameters
-(array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) and return the Hessian as a
-2D numpy array with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,</span> <span class="pre">n_parameters)</span></code>.
-If provided, loss must be “linear”.</p></li>
+(1D array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) and return the Hessian matrix as a
+2D array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,</span> <span class="pre">n_parameters)</span></code>.</p></li>
+<li><p><strong>cost_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – The function to compute the cost of the term in the least squares problem.
+The function should take as inputs the parameters
+(1D array-like with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>) and return the cost as a positive
+floating value independent of the <code class="docutils literal notranslate"><span class="pre">weight</span></code>.
+If not provided, the default cost during optimization will be
+<span class="math notranslate nohighlight">\(\frac{1}{2} \sum_j \rho_i(\| \mathbf{r}_{i,j}(\mathbf{p}_{out}) \|^2)\)</span>
+for <code class="docutils literal notranslate"><span class="pre">&quot;rJ&quot;</span></code> terms and <code class="docutils literal notranslate"><span class="pre">0.0</span></code> for <code class="docutils literal notranslate"><span class="pre">&quot;gH&quot;</span></code> terms.</p></li>
 <li><p><strong>weight</strong> (<em>Real</em><em> (</em><em>default=1.0</em><em>)</em>) – The weight of the term in the least squares problem. The weight will be
-applied to both the residuals and the Jacobian matrix, as well as the
-second term and Hessian if provided.</p></li>
-<li><p><strong>loss</strong> (<em>str</em><em> (</em><em>default=&quot;linear&quot;</em><em>)</em>) – The loss function to use for the term in the least squares problem. The loss
-function will be applied to the residuals of the term, and will affect how
-the second term and Hessian are computed from the residuals and Jacobian.
-Available loss functions are “linear”, “cauchy”, “arctan”, and “soft_l1”.
-Must be “linear” if the term is defined by the second term and Hessian functions.</p></li>
-<li><p><strong>finite_difference</strong> (<em>str</em><em> (</em><em>default=&quot;central&quot;</em><em>)</em>) – The finite difference method to use for computing the numerical Jacobian if the
-Jacobian function is not provided. Must be one of <code class="docutils literal notranslate"><span class="pre">&quot;central&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;forward&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;backward&quot;</span></code>.</p></li>
+applied to both the gradient and the Hessian matrix.</p></li>
+<li><p><strong>loss</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>]</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – The loss function to use for the term in the least squares problem (only for <code class="docutils literal notranslate"><span class="pre">&quot;rJ&quot;</span></code> terms !).
+The loss function will affect how the gradient and Hessian are computed
+from the residuals and Jacobian.
+If <code class="docutils literal notranslate"><span class="pre">loss</span></code> is a string, one of the predefined loss functions is used.
+Available loss functions are <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code> (<span class="math notranslate nohighlight">\(\rho(x) = x\)</span>) [default for None],
+<code class="docutils literal notranslate"><span class="pre">&quot;cauchy&quot;</span></code> (<span class="math notranslate nohighlight">\(\rho(x) = \log(1 + x)\)</span>),
+<code class="docutils literal notranslate"><span class="pre">&quot;arctan&quot;</span></code> (<span class="math notranslate nohighlight">\(\rho(x) = \arctan(x)\)</span>), and
+<code class="docutils literal notranslate"><span class="pre">&quot;soft_l1&quot;</span></code> (<span class="math notranslate nohighlight">\(\rho(x) = 2(\sqrt{1 + x} - 1)\)</span>).
+If <code class="docutils literal notranslate"><span class="pre">loss</span></code> is a callable, it is used as a custom loss function. The
+callable must take as input a 1D array-like containing the squared
+residuals and return three 1D array-like containing, respectively, the loss
+value, its first derivative, and its second derivative.
+When a custom loss function is provided, the <code class="docutils literal notranslate"><span class="pre">loss</span></code> property is set to
+<code class="docutils literal notranslate"><span class="pre">&quot;custom&quot;</span></code> and the corresponding callable is stored in the
+<code class="docutils literal notranslate"><span class="pre">loss_func</span></code> property.</p></li>
+<li><p><strong>finite_difference</strong> (<em>Optional</em><em>[</em><em>str</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – The finite difference method used to numerically compute the Jacobian
+when <code class="docutils literal notranslate"><span class="pre">jacobian_func</span></code> is not provided.
+If <code class="docutils literal notranslate"><span class="pre">None</span></code>, the Jacobian is not computed numerically. In this case,
+<code class="docutils literal notranslate"><span class="pre">jacobian_func</span></code> must be provided.
+Available methods are <code class="docutils literal notranslate"><span class="pre">&quot;central&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;forward&quot;</span></code>, and <code class="docutils literal notranslate"><span class="pre">&quot;backward&quot;</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
-<p class="rubric">Notes</p>
-<ul class="simple">
-<li><p>Each term must be defined by either the residual and Jacobian functions, or the second term and Hessian functions, but not both.</p></li>
-<li><p>Hessian and second term must be provided together.</p></li>
-<li><p>If Residual is given without Jacobian, the jacobian will be computed numerically using finite differences.</p></li>
-</ul>
-<section id="version">
-<h2>Version<a class="headerlink" href="#version" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>0.1.0: Initial version of the <a class="reference internal" href="#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">Term</span></code></a> class.</p></li>
-<li><p>0.3.0: Removing the possibility to update the finite difference method after initialization.</p></li>
-</ul>
 <dl class="py method">
 <dt class="sig sig-object py" id="pysolvegn.Term.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">residual_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jacobian_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">second_term_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hessian_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finite_difference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/term.html#Term.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.Term.__init__" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">residual_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">jacobian_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gradient_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hessian_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finite_difference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/term.html#Term.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.Term.__init__" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>residual_func</strong> (<em>Callable</em><em> | </em><em>None</em>)</p></li>
 <li><p><strong>jacobian_func</strong> (<em>Callable</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>second_term_func</strong> (<em>Callable</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>gradient_func</strong> (<em>Callable</em><em> | </em><em>None</em>)</p></li>
 <li><p><strong>hessian_func</strong> (<em>Callable</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>weight</strong> (<em>Real</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>loss</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>cost_func</strong> (<em>Callable</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>weight</strong> (<em>Real</em>)</p></li>
+<li><p><strong>loss</strong> (<em>str</em><em> | </em><em>Callable</em><em> | </em><em>None</em>)</p></li>
 <li><p><strong>finite_difference</strong> (<em>str</em><em> | </em><em>None</em>)</p></li>
 </ul>
 </dd>
@@ -523,14 +541,14 @@ Jacobian function is not provided. Must be one of <code class="docutils literal 
 <p class="rubric">Methods</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pysolvegn.Term.__init__" title="pysolvegn.Term.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([residual_func, jacobian_func, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pysolvegn.Term.__init__" title="pysolvegn.Term.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*[, residual_func, jacobian_func, ...])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_gH</span></code>([second_term_func, hessian_func, weight])</p></td>
-<td><p>Create a Term object from the second term and Hessian functions.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_gH</span></code>([gradient_func, hessian_func, ...])</p></td>
+<td><p>Create a <a class="reference internal" href="#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.Term</span></code></a> object from the gradient and Hessian functions.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_rJ</span></code>([residual_func, jacobian_func, ...])</p></td>
-<td><p>Create a Term object from the residual and Jacobian functions.</p></td>
+<td><p>Create a <a class="reference internal" href="#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.Term</span></code></a> object from the residual and Jacobian functions.</p></td>
 </tr>
 </tbody>
 </table>
@@ -544,38 +562,38 @@ Jacobian function is not provided. Must be one of <code class="docutils literal 
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">J_func</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">finite_difference</span></code></p></td>
-<td><p>[Get] the finite difference method for numerical Jacobian computation of the term.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">g_func</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">c_func</span></code></p></td>
 <td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">cost_func</span></code></p></td>
+<td><p>[Get] the cost function <span class="math notranslate nohighlight">\(C_i: \mathbb{R}^{n_p} \rightarrow \mathbb{R}`\)</span> of the term.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">g_func</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">gradient_func</span></code></p></td>
+<td><p>[Get] the gradient function <span class="math notranslate nohighlight">\(\mathbf{g}_i: \mathbb{R}^{n_p} \rightarrow \mathbb{R}^{n_p}\)</span> of the term.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hessian_func</span></code></p></td>
-<td><p>[Get] the Hessian function of the term.</p></td>
+<td><p>[Get] the Hessian function <span class="math notranslate nohighlight">\(\mathbf{H}_i: \mathbb{R}^{n_p} \rightarrow :math:\)</span>mathbb{M}_{n_p, n_p}(mathbb{R})`` of the term.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">jacobian_func</span></code></p></td>
-<td><p>[Get] the Jacobian function of the term.</p></td>
+<td><p>[Get] the Jacobian function <span class="math notranslate nohighlight">\(\mathbf{J}_i: \mathbb{R}^{n_p} \rightarrow :math:\)</span>mathbb{M}_{n_{r_i}, n_p}(mathbb{R})`` of the term.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">loss</span></code></p></td>
-<td><p>[Get/Set] the loss function of the term in the least squares problem.</p></td>
+<td><p>[Get] the name of the loss function associated with the term in the least squares problem.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">r_func</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">loss_func</span></code></p></td>
+<td><p>[Get] the loss function <span class="math notranslate nohighlight">\(\rho: \mathbb{R} \rightarrow \mathbb{R}`\)</span> of the term in the least squares problem.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">r_func</span></code></p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">residual_func</span></code></p></td>
-<td><p>[Get] the residual function of the term.</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">residual_func</span></code></p></td>
+<td><p>[Get] the residual function <span class="math notranslate nohighlight">\(\mathbf{r}_i: \mathbb{R}^{n_p} \rightarrow \mathbb{R}^{n_{r_i}}\)</span> of the term.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">rho_function</span></code></p></td>
-<td><p>[Get] the rho function corresponding to the current loss function of the term.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">second_term_func</span></code></p></td>
-<td><p>[Get] the second term function of the term.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code></p></td>
-<td><p>[Get] the type of the term, which can be either &quot;rJ&quot; for terms defined by residual and Jacobian functions, or &quot;gH&quot; for terms defined by second term and Hessian functions.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_finite_difference</span></code></p></td>
-<td><p>[Get] whether the term is using a finite difference Jacobian function.</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">type</span></code></p></td>
+<td><p>[Get] the type of the term, which can be either <code class="docutils literal notranslate"><span class="pre">&quot;rJ&quot;</span></code> for terms defined by residual and Jacobian functions, or <code class="docutils literal notranslate"><span class="pre">&quot;gH&quot;</span></code> for terms defined by second term and Hessian functions.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">weight</span></code></p></td>
 <td><p>[Get/Set] the weight of the term in the least squares problem.</p></td>
@@ -583,7 +601,6 @@ Jacobian function is not provided. Must be one of <code class="docutils literal 
 </tbody>
 </table>
 </div>
-</section>
 </dd></dl>
 
 </section>

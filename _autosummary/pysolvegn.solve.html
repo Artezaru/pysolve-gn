@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pysolvegn.solve &#8212; pysolvegn 0.3.0 documentation</title>
+    <title>pysolvegn.solve &#8212; pysolvegn 1.0.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../_static/documentation_options.js?v=8d563738"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,7 +128,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
+    <p class="title logo__title">pysolvegn 1.0.0 documentation</p>
   
 </a></div>
     
@@ -149,16 +149,16 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="../api.html">
-    API Reference
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../math.html">
-    Mathematical Background
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -256,16 +256,16 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="../api.html">
-    API Reference
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../math.html">
-    Mathematical Background
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -322,6 +322,13 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">pysolvegn.solve</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.Term.html">pysolvegn.Term</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.Parametrization.html">pysolvegn.Parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.linear_rho.html">pysolvegn.linear_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.soft_l1_rho.html">pysolvegn.soft_l1_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.cauchy_rho.html">pysolvegn.cauchy_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.arctan_rho.html">pysolvegn.arctan_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.get_rho_function_by_name.html">pysolvegn.get_rho_function_by_name</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_affine_parametrization.html">pysolvegn.build_affine_parametrization</a></li>
@@ -401,52 +408,30 @@
 <h1>pysolvegn.solve<a class="headerlink" href="#pysolvegn-solve" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysolvegn.solve">
-<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">terms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parametrization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ftol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ptol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">naninf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history_details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/solver.html#solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.solve" title="Link to this definition">#</a></dt>
-<dd><p>Function to solve the least squares problem using the Gauss-Newton method
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">terms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parametrization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ftol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ptol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">naninf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history_details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/solver.html#solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.solve" title="Link to this definition">#</a></dt>
+<dd><p>Function to solve a least squares problem using the Gauss-Newton method
 with robust cost functions.</p>
 <p>The function accepts multiple terms in the least squares problem,
-each with its own residual function, Jacobian function, weight, and loss function,
+each with its own residual function <span class="math notranslate nohighlight">\(r_i\)</span>, Jacobian function
+<span class="math notranslate nohighlight">\(J_i = \frac{\partial r_i}{\partial \mathbf{p}},
+weight :math:`w_i\)</span>, and loss function :math`rho_i`,
 solving the following optimization problem:</p>
 <div class="math notranslate nohighlight">
-\[\min_{\mathbf{p}_{in}} \frac{1}{2} \sum_{i} w_i \sum_j
-\rho_i\left(
-    \left\|
-    \mathbf{r}_{i,j}\left(P(\mathbf{p}_{in})\right)
-    \right\|^2
-\right)\]</div>
-<p>where <span class="math notranslate nohighlight">\(\mathbf{p}_{in}\)</span> represents the parameters actually optimized
-by the solver, <span class="math notranslate nohighlight">\(P\)</span> is a parametric transformation such that:</p>
+\[\min_{\mathbf{p}_{in}} \frac{1}{2} \sum_{i} w_i \sum_j \rho_i\left(\| \mathbf{r}_{i,j}\left(P(\mathbf{p}_{in})\right) \|^2\right)\]</div>
+<p>Here <span class="math notranslate nohighlight">\(\mathbf{p}_{in}\)</span> represents the parameters actually optimized
+by the solver, and <span class="math notranslate nohighlight">\(P\)</span> is a parametric transformation such that:</p>
 <div class="math notranslate nohighlight">
 \[\mathbf{p}_{out} = P(\mathbf{p}_{in})\]</div>
 <p>represents the parameters passed to the residual and Jacobian functions
-of the terms.</p>
-<p>The input parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{in}\)</span> have shape
-<code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>.</p>
-<p>If no parametrization is provided, the identity transformation is implicitly
-used:</p>
+of each terms. The input parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{in}\)</span> have shape
+<code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>. If no parametrization is provided, the identity
+transformation is implicitly used:</p>
 <div class="math notranslate nohighlight">
 \[P(\mathbf{p}_{in}) = \mathbf{p}_{in}\]</div>
-<p>Here <span class="math notranslate nohighlight">\(w_i\)</span> is a weight for each sub least squares problem, and
-<span class="math notranslate nohighlight">\(\rho_i\)</span> is a robust cost function for each sub least squares problem.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>For more details on the notations for the optimization problem and the
-algorithm, please refer to the mathematical section of the documentation.</p>
-</div>
-<p>The cost of each term defined by the residuals is estimated as:</p>
-<div class="math notranslate nohighlight">
-\[\frac{1}{2} \sum_j
-\rho_i\left(
-    \left\|
-    \mathbf{r}_{i,j}(P(\mathbf{p}_{in}))
-    \right\|^2
-\right)\]</div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>For terms defined directly by a Hessian and gradient, only a local quadratic model
-of the cost is available. Since this model is defined up to an arbitrary constant,
-an absolute cost value cannot be uniquely determined. For reporting consistency,
-the cost contribution of these terms is set to 0.</p>
+<p>For more details on the notations for the optimization problem,
+please refer to the mathematical section of the documentation.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -456,7 +441,7 @@ Each term should be an instance of the <a class="reference internal" href="pysol
 the residual function, Jacobian function, weight, and loss function
 defining the term.
 The residual and Jacobian functions of each term are evaluated using
-the output parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{out} = P(\mathbf{p}_{in})\)</span>.</p></li>
+the output parametric parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{out} = P(\mathbf{p}_{in})\)</span>.</p></li>
 <li><p><strong>p0</strong> (<em>ArrayLike</em>) – The initial guess for the parameters optimized by the solver, with shape
 <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>.
 If a parametrization is provided, <code class="docutils literal notranslate"><span class="pre">p0</span></code> represents the initial input
@@ -471,10 +456,10 @@ will be used for the optimization process.</p></li>
 optimized by the solver to the parameters passed to the terms.
 If provided, the solver optimizes the input parameters
 <span class="math notranslate nohighlight">\(\mathbf{p}_{in}\)</span> with shape <code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code> of this parametrization.</p></li>
-<li><p><strong>max_iteration</strong> (<em>Optional</em><em>[</em><em>Integral</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the number of iterations.
-The optimization process is stopped when the number of iterations
-exceeds <code class="docutils literal notranslate"><span class="pre">max_iteration</span></code>. If None, no limit on the
-number of iterations is considered.</p></li>
+<li><p><strong>max_iteration</strong> (<em>Optional</em><em>[</em><em>Integral</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Maximum number of optimization iterations.
+If provided, the optimization process is stopped after at most
+<code class="docutils literal notranslate"><span class="pre">max_iteration</span></code> iterations. If None, no limit on the number of
+iterations is imposed.</p></li>
 <li><p><strong>max_time</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the elapsed time of optimization.
 The optimization process is stopped when the time elapsed since the
 beginning of the optimization exceeds <code class="docutils literal notranslate"><span class="pre">max_time</span></code> seconds. If None, no limit
@@ -491,7 +476,7 @@ change of the input parameters between two iterations.
 If None, this criterion is not considered.</p></li>
 <li><p><strong>gtol</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the optimality value.
 The optimization process is stopped when the optimality verifies
-<code class="docutils literal notranslate"><span class="pre">norm(g,</span> <span class="pre">ord=numpy.inf)</span> <span class="pre">&lt;</span> <span class="pre">gtol</span></code> where g is the scaled second term.
+<code class="docutils literal notranslate"><span class="pre">norm(g,</span> <span class="pre">ord=numpy.inf)</span> <span class="pre">&lt;</span> <span class="pre">gtol</span></code> where <span class="math notranslate nohighlight">\(g\)</span> is the scaled second term.
 If None, this criterion is not considered.</p></li>
 <li><p><strong>atol</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the absolute cost function value.
 The optimization process is stopped when <code class="docutils literal notranslate"><span class="pre">F</span> <span class="pre">&lt;</span> <span class="pre">atol</span></code> where F is the cost
@@ -505,7 +490,7 @@ If None, this criterion is not considered.</p></li>
 <li><p><strong>callback_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>]</em><em>, </em><em>bool</em><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – A callback function that is called at the end of each iteration of the
 optimization process. The callback function should take a dictionary
 similar to the one returned in the history of the optimization process
-as input. If the return value of the callback function is True (or None),
+as input. If the return value of the callback function is True,
 the optimization process will continue. If the return value is False,
 the optimization process will be stopped.
 If None, no callback function is used.</p></li>
@@ -527,17 +512,25 @@ if any NaN or Inf value is encountered in the cost function value
 or parameters during the optimization process.
 If False, the optimization process will continue.</p></li>
 <li><p><strong>history</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=False</em><em>)</em>) – If True, the function will also return a tuple containing the history of
-the optimization process.</p></li>
-<li><p><strong>history_details</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – The details to include in the history of the optimization process.
-Can be a single string or a sequence of strings. See the Notes section for
-the available details.
-By default, the history will include:
-<code class="docutils literal notranslate"><span class="pre">&quot;iteration&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;elapsed_time&quot;</span></code>,
-<code class="docutils literal notranslate"><span class="pre">&quot;parameters&quot;</span></code>,
+the optimization process. See the Notes section for more details.</p></li>
+<li><p><strong>history_details</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Used only if <code class="docutils literal notranslate"><span class="pre">history</span></code> is True.
+Specifies the details to include in the history of the optimization process.
+It can be either a single string or a sequence of strings. See the Notes
+section for the available details.
+If None, the history will include the following details by default:
+<code class="docutils literal notranslate"><span class="pre">&quot;iteration&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;elapsed_time&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;parameters&quot;</span></code>,
 <code class="docutils literal notranslate"><span class="pre">&quot;delta_parameters&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;delta_cost&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;cost&quot;</span></code>, and
-<code class="docutils literal notranslate"><span class="pre">&quot;optimality&quot;</span></code>.
-For a specified list of details, only the details in the list below
-will be included in the history.</p></li>
+<code class="docutils literal notranslate"><span class="pre">&quot;optimality&quot;</span></code>.</p></li>
+<li><p><strong>history_length</strong> (<em>Optional</em><em>[</em><em>Integral</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Used only if <code class="docutils literal notranslate"><span class="pre">history</span></code> is True.
+Controls the number of iterations included in the history.
+If None, all iterations are included in the output history.
+If a positive integer <code class="docutils literal notranslate"><span class="pre">N</span></code> is given, only the first <code class="docutils literal notranslate"><span class="pre">N</span></code> iterations
+are included in the output history (from 0 to <span class="math notranslate nohighlight">\(N-1\)</span>).
+If zero is given, no iterations are included.
+If a negative integer <code class="docutils literal notranslate"><span class="pre">M</span></code> is given, only the last <code class="docutils literal notranslate"><span class="pre">|M|</span></code> iterations
+are included in the output history.
+If the requested history length is greater than the number of iterations
+performed, the history will contain fewer entries than requested.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -556,10 +549,22 @@ containing the keys described below.</p></li>
 </p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><em>Tuple</em>[<em>ndarray</em>, <em>List</em>[<em>Dict</em>] | None]</p>
+<dd class="field-odd"><p><em>ndarray</em> | <em>Tuple</em>[<em>ndarray</em>, <em>List</em>[<em>Dict</em>]]</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
+<p>The step of each loop iteration is as follows:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>While NOT converged:
+    1. Compute the output parameters ``p_out = P(p_in)``.
+    2. For ``rJ`` terms compute and build ``H_i = J.T J`` and ``g_i = J.T r``.
+    3. For ``gH`` terms compute ``H_i`` and ``g_i``.
+    4. Build the full system ``H Δp_in = -g``.
+    5. Perform STOP criterion checks and call the 'callback' function.
+    6. If STOP, exit optimisation and return the result and history.
+    7. If CONTINUE, solve the linear system ``H Δp_in = -g``.
+    8. Update the input parameters ``p_in = p_in + Δp_in`` (or using ``update_func`` if provided).
+</pre></div>
+</div>
 <p>The history contains the following keys (if requested in <code class="docutils literal notranslate"><span class="pre">history_details</span></code>):</p>
 <ul class="simple">
 <li><p>“iteration”: Integer representing the iteration number.</p></li>
@@ -572,42 +577,44 @@ containing the keys described below.</p></li>
 <li><p>“costs”: List of floats representing the cost function value for each term
 in the least squares problem at the current iteration, computed as
 <span class="math notranslate nohighlight">\(\frac{1}{2} \sum_j
-\rho_i(\| \mathbf{R}_{i,j}(\mathbf{p}_{out}) \|^2)\)</span>
-for each term <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+\rho_i(\| \mathbf{r}_{i,j}(\mathbf{p}_{out}) \|^2)\)</span>
+for each term <span class="math notranslate nohighlight">\(i\)</span> (only for <code class="docutils literal notranslate"><span class="pre">rJ</span></code> terms).</p></li>
 <li><p>“cost”: Float representing the cost function value at the current iteration,
 computed as
 <span class="math notranslate nohighlight">\(\frac{1}{2} \sum_i w_i \sum_j
-\rho_i(\| \mathbf{R}_{i,j}(\mathbf{p}_{out}) \|^2)\)</span>.</p></li>
+\rho_i(\| \mathbf{r}_{i,j}(\mathbf{p}_{out}) \|^2)\)</span>.</p></li>
 <li><p>“delta_cost”: Float representing the change of the cost function value
 between the current and previous iteration (only for iterations &gt; 0).</p></li>
 <li><p>“optimality”: Float representing the optimality value at the current iteration
-computed as <code class="docutils literal notranslate"><span class="pre">norm(b,</span> <span class="pre">ord=numpy.inf)</span></code> where b is the scaled second term.</p></li>
+computed as <code class="docutils literal notranslate"><span class="pre">norm(g,</span> <span class="pre">ord=numpy.inf)</span></code> where <span class="math notranslate nohighlight">\(g\)</span> is the scaled second term.</p></li>
 <li><p>“residuals”: A list of numpy arrays representing the residuals for each term
-in the least squares problem at the current iteration (only for rJ terms).</p></li>
+in the least squares problem at the current iteration (only for <code class="docutils literal notranslate"><span class="pre">rJ</span></code> terms).</p></li>
 <li><p>“jacobians”: A list of numpy arrays representing the Jacobians for each term
-in the least squares problem at the current iteration (only for rJ terms).</p></li>
+in the least squares problem at the current iteration (only for <code class="docutils literal notranslate"><span class="pre">rJ</span></code> terms).</p></li>
 <li><p>“second_term”: The scaled second term <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> of the linear system
 at the current iteration.</p></li>
 <li><p>“hessian”: The Hessian approximation <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> of the linear system
 at the current iteration.</p></li>
+<li><p>“all”: include all the keys.</p></li>
 </ul>
-<p>The step of each loop iteration is as follows:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>While NOT converged:
-    1. Compute the output parameters ``p_out = P(p_in)``.
-    2. Build the system ``H Δp_in = -g``.
-    3. Call the 'callback' function and STOP if it returns False.
-    4. Check the stopping criteria and STOP if any of them is satisfied.
-    5. If CONTINUE, solve the linear system ``H Δp_in = -g``.
-    6. Update the input parameters ``p_in = p_in + Δp_in`` (or using 'update_func' if provided).
-</pre></div>
+<p>The cost of each term can be compute only for <code class="docutils literal notranslate"><span class="pre">rJ</span></code> terms and is
+defined by :</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{2} \sum_j
+\rho_i\left(
+    \left\|
+    \mathbf{r}_{i,j}(P(\mathbf{p}_{in}))
+    \right\|^2
+\right)\]</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>For terms defined directly by a Hessian and gradient (<code class="docutils literal notranslate"><span class="pre">gH</span></code> terms), only a local quadratic model
+of the cost is available. Since this model is defined up to an arbitrary constant and submit to
+cumulative errors, an absolute cost value cannot be uniquely determined.
+For reporting consistency, the cost contribution of these terms is set to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> by default.
+If the term contains a <code class="docutils literal notranslate"><span class="pre">cost_func</span></code> function, it will be used to compute the cost of
+the term.</p>
 </div>
-<section id="version">
-<h2>Version<a class="headerlink" href="#version" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>0.1.0: Initial version for the solver method.</p></li>
-<li><p>0.3.0: Adding the regularization functionality to the solver.</p></li>
-</ul>
-</section>
 </dd></dl>
 
 </section>

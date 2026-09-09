@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.implemented_regularizations &#8212; pysolvegn 0.3.0 documentation</title>
+    <title>pysolvegn.implemented_regularizations &#8212; pysolvegn 1.0.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../../_static/documentation_options.js?v=8d563738"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -124,7 +124,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
+    <p class="title logo__title">pysolvegn 1.0.0 documentation</p>
   
 </a></div>
     
@@ -146,15 +146,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../api.html">
-    API Reference
+  <a class="nav-link nav-internal" href="../../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../math.html">
-    Mathematical Background
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Reference
   </a>
 </li>
 
@@ -251,15 +251,15 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../api.html">
-    API Reference
+  <a class="nav-link nav-internal" href="../../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../math.html">
-    Mathematical Background
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Reference
   </a>
 </li>
 
@@ -373,6 +373,7 @@
 <span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">"""</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Real</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
@@ -388,8 +389,7 @@
     <span class="n">stds</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">weight</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-    <span class="n">loss</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"linear"</span><span class="p">,</span>
-    <span class="n">finite_difference</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"central"</span><span class="p">,</span>
+    <span class="n">loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Term</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Build a squared regularization term based on a Gaussian prior.</span>
@@ -398,7 +398,7 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        R_{\mathrm{reg},i}(\mathbf{p})</span>
+<span class="sd">        r_{\mathrm{reg},i}(\mathbf{p})</span>
 <span class="sd">        =</span>
 <span class="sd">        \frac{p_i - \mu_i}{\sigma_i}</span>
 
@@ -425,15 +425,11 @@
 <span class="sd">        Standard deviation values of the Gaussian prior for each parameter.</span>
 <span class="sd">        All values must be strictly positive.</span>
 
-<span class="sd">    weight : Real, optional (default=1.0)</span>
+<span class="sd">    weight : Real (default=1.0)</span>
 <span class="sd">        Weight of the regularization term.</span>
 
-<span class="sd">    loss : str, optional (default="linear")</span>
+<span class="sd">    loss : Optional[Union[str, Callable]] (default=None)</span>
 <span class="sd">        Loss function applied to the regularization residuals.</span>
-
-<span class="sd">    finite_difference : str, optional (default="central")</span>
-<span class="sd">        Finite difference method used by :class:`Term` if the Jacobian</span>
-<span class="sd">        is not explicitly available.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -495,7 +491,6 @@
         <span class="n">jacobian_func</span><span class="o">=</span><span class="n">jacobian_func</span><span class="p">,</span>
         <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
         <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
-        <span class="n">finite_difference</span><span class="o">=</span><span class="n">finite_difference</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 
@@ -508,8 +503,7 @@
     <span class="n">stds</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
     <span class="n">weight</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
-    <span class="n">loss</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"linear"</span><span class="p">,</span>
-    <span class="n">finite_difference</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"central"</span><span class="p">,</span>
+    <span class="n">loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Term</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Build a soft squared regularization term based on a Gaussian prior.</span>
@@ -521,7 +515,7 @@
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        R_{\mathrm{reg},i}(\mathbf{p}) =</span>
+<span class="sd">        r_{\mathrm{reg},i}(\mathbf{p}) =</span>
 <span class="sd">        \begin{cases}</span>
 <span class="sd">            \dfrac{p_i - (\mu_i-\tau_i)}{\sigma_i}</span>
 <span class="sd">            &amp; \text{if } p_i &lt; \mu_i-\tau_i \\[6pt]</span>
@@ -560,15 +554,11 @@
 <span class="sd">        regularization outside the threshold.</span>
 <span class="sd">        All values must be strictly positive.</span>
 
-<span class="sd">    weight : Real, optional (default=1.0)</span>
+<span class="sd">    weight : Real (default=1.0)</span>
 <span class="sd">        Weight of the regularization term.</span>
 
-<span class="sd">    loss : str, optional (default="linear")</span>
+<span class="sd">    loss : Optional[Union[str, Callable]] (default=None)</span>
 <span class="sd">        Loss function applied to the regularization residuals.</span>
-
-<span class="sd">    finite_difference : str, optional (default="central")</span>
-<span class="sd">        Finite difference method used by :class:`Term` if the Jacobian</span>
-<span class="sd">        is not explicitly available.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -660,7 +650,6 @@
         <span class="n">jacobian_func</span><span class="o">=</span><span class="n">jacobian_func</span><span class="p">,</span>
         <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
         <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
-        <span class="n">finite_difference</span><span class="o">=</span><span class="n">finite_difference</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 </pre></div>

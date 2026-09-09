@@ -229,7 +229,7 @@ parameter vector.
 
 There is no parametrization between the solver and the camera model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 186-204
+.. GENERATED FROM PYTHON SOURCE LINES 186-205
 
 .. code-block:: Python
 
@@ -248,6 +248,7 @@ There is no parametrization between the solver and the camera model.
         residual_func=residual_function,
         loss="linear",
         weight=1.0,
+        finite_difference="central",
     )
 
 
@@ -258,7 +259,7 @@ There is no parametrization between the solver and the camera model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 205-211
+.. GENERATED FROM PYTHON SOURCE LINES 206-212
 
 Define the initial parameters
 -----------------------------
@@ -267,7 +268,7 @@ All nine camera parameters are independent optimization variables:
 
     ``[fx, fy, cx, cy, k1, k2, p1, p2, k3]``
 
-.. GENERATED FROM PYTHON SOURCE LINES 211-228
+.. GENERATED FROM PYTHON SOURCE LINES 212-229
 
 .. code-block:: Python
 
@@ -295,7 +296,7 @@ All nine camera parameters are independent optimization variables:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 229-243
+.. GENERATED FROM PYTHON SOURCE LINES 230-244
 
 Study the optimization problem
 ------------------------------
@@ -312,7 +313,7 @@ Consequently, no optimization step is performed.
 The Gauss-Newton Hessian is computed directly in the complete
 nine-dimensional parameter space.
 
-.. GENERATED FROM PYTHON SOURCE LINES 243-252
+.. GENERATED FROM PYTHON SOURCE LINES 244-253
 
 .. code-block:: Python
 
@@ -498,7 +499,7 @@ nine-dimensional parameter space.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 253-267
+.. GENERATED FROM PYTHON SOURCE LINES 254-268
 
 Study the optimization problem at convergence
 -----------------------------------------------
@@ -515,7 +516,7 @@ Consequently, no optimization step is performed.
 The Gauss-Newton Hessian is computed directly in the complete
 nine-dimensional parameter space.
 
-.. GENERATED FROM PYTHON SOURCE LINES 267-282
+.. GENERATED FROM PYTHON SOURCE LINES 268-283
 
 .. code-block:: Python
 
@@ -710,7 +711,7 @@ nine-dimensional parameter space.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.010 seconds)
+   **Total running time of the script:** (0 minutes 0.017 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_study_optimization.py:

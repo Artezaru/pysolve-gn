@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pysolvegn.build_squared_regularization &#8212; pysolvegn 0.3.0 documentation</title>
+    <title>pysolvegn.build_squared_regularization &#8212; pysolvegn 1.0.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
-    <script src="../_static/documentation_options.js?v=e259d695"></script>
+    <script src="../_static/documentation_options.js?v=8d563738"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -128,7 +128,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 0.3.0 documentation</p>
+    <p class="title logo__title">pysolvegn 1.0.0 documentation</p>
   
 </a></div>
     
@@ -149,16 +149,16 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="../api.html">
-    API Reference
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../math.html">
-    Mathematical Background
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -256,16 +256,16 @@
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="../api.html">
-    API Reference
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../math.html">
-    Mathematical Background
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
   </a>
 </li>
 
@@ -322,6 +322,13 @@
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve.html">pysolvegn.solve</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.Term.html">pysolvegn.Term</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.Parametrization.html">pysolvegn.Parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.linear_rho.html">pysolvegn.linear_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.soft_l1_rho.html">pysolvegn.soft_l1_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.cauchy_rho.html">pysolvegn.cauchy_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.arctan_rho.html">pysolvegn.arctan_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.get_rho_function_by_name.html">pysolvegn.get_rho_function_by_name</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_affine_parametrization.html">pysolvegn.build_affine_parametrization</a></li>
@@ -401,11 +408,11 @@
 <h1>pysolvegn.build_squared_regularization<a class="headerlink" href="#pysolvegn-build-squared-regularization" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysolvegn.build_squared_regularization">
-<span class="sig-name descname"><span class="pre">build_squared_regularization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stds</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">finite_difference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'central'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/implemented_regularizations.html#build_squared_regularization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.build_squared_regularization" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">build_squared_regularization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stds</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/implemented_regularizations.html#build_squared_regularization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.build_squared_regularization" title="Link to this definition">#</a></dt>
 <dd><p>Build a squared regularization term based on a Gaussian prior.</p>
 <p>The regularization residuals are defined as:</p>
 <div class="math notranslate nohighlight">
-\[R_{\mathrm{reg},i}(\mathbf{p})
+\[r_{\mathrm{reg},i}(\mathbf{p})
 =
 \frac{p_i - \mu_i}{\sigma_i}\]</div>
 <p>with Jacobian:</p>
@@ -424,10 +431,8 @@
 <li><p><strong>means</strong> (<em>ArrayLike</em>) – Mean values of the Gaussian prior for each parameter.</p></li>
 <li><p><strong>stds</strong> (<em>ArrayLike</em>) – Standard deviation values of the Gaussian prior for each parameter.
 All values must be strictly positive.</p></li>
-<li><p><strong>weight</strong> (<em>Real</em><em>, </em><em>optional</em><em> (</em><em>default=1.0</em><em>)</em>) – Weight of the regularization term.</p></li>
-<li><p><strong>loss</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;linear&quot;</em><em>)</em>) – Loss function applied to the regularization residuals.</p></li>
-<li><p><strong>finite_difference</strong> (<em>str</em><em>, </em><em>optional</em><em> (</em><em>default=&quot;central&quot;</em><em>)</em>) – Finite difference method used by <a class="reference internal" href="pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">Term</span></code></a> if the Jacobian
-is not explicitly available.</p></li>
+<li><p><strong>weight</strong> (<em>Real</em><em> (</em><em>default=1.0</em><em>)</em>) – Weight of the regularization term.</p></li>
+<li><p><strong>loss</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>]</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – Loss function applied to the regularization residuals.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

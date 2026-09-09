@@ -27,17 +27,17 @@
    
       ~Term.H_func
       ~Term.J_func
-      ~Term.finite_difference
+      ~Term.c_func
+      ~Term.cost_func
       ~Term.g_func
+      ~Term.gradient_func
       ~Term.hessian_func
       ~Term.jacobian_func
       ~Term.loss
+      ~Term.loss_func
       ~Term.r_func
       ~Term.residual_func
-      ~Term.rho_function
-      ~Term.second_term_func
       ~Term.type
-      ~Term.use_finite_difference
       ~Term.weight
    
    

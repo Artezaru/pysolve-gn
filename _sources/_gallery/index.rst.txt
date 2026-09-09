@@ -64,23 +64,6 @@ Basic examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use pysolvegn.study_optimization to study the Gauss-Newton Hessian of a camera calibration problem.">
-
-.. only:: html
-
-  .. image:: /_gallery/images/thumb/sphx_glr_study_optimization_thumb.png
-    :alt:
-
-  :doc:`/_gallery/study_optimization`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Study of camera calibration optimization</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use regularization with pysolve-gn. This example is the continuation of the basic curve fitting example, demonstrating how to incorporate regularization.">
 
 .. only:: html
@@ -93,6 +76,23 @@ Basic examples
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Adding regularization (curve fitting)</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use pysolvegn.study_optimization to study the Gauss-Newton Hessian of a camera calibration problem.">
+
+.. only:: html
+
+  .. image:: /_gallery/images/thumb/sphx_glr_study_optimization_thumb.png
+    :alt:
+
+  :doc:`/_gallery/study_optimization`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Study of camera calibration optimization</div>
     </div>
 
 
@@ -125,8 +125,8 @@ Basic examples
 
    /_gallery/curve_fitting
    /_gallery/L_curve_analysis
-   /_gallery/study_optimization
    /_gallery/adding_regularization
+   /_gallery/study_optimization
    /_gallery/affine_parametrization
 
 

@@ -314,10 +314,10 @@ Display the fitted parameters
     [2.5 0.5]
 
     Estimated parameters without regularization:
-    [2.458614 0.511372]
+    [2.45861374 0.51137177]
 
     Estimated parameters with regularization:
-    [2.461898 0.510802]
+    [2.46189841 0.51080164]
 
 
 
@@ -325,7 +325,7 @@ Display the fitted parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.051 seconds)
+   **Total running time of the script:** (0 minutes 0.053 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_adding_regularization.py:
