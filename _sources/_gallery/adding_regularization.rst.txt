@@ -325,7 +325,7 @@ Display the fitted parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.053 seconds)
+   **Total running time of the script:** (0 minutes 0.068 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_adding_regularization.py:

@@ -30,7 +30,7 @@ The solution is given by:
 
 where :math:`\mathbf{r}` is the full residual vector in :math:`\mathbb{R}^{n_r}` evaluated at :math:`\mathbf{p_k}`
 and :math:`\mathbf{J}` is the full jacobian matrix in :math:`\mathbb{M}_{n_r, n_p}(\mathbb{R})` containing
-each :math:`\frac{\partial r_j}{\partial p_l} \forall j \in \llbracket 1, n_r \rrbracket \forall l \in \llbracket 1, n_p \rrbracket`.
+each :math:`\frac{\partial r_j}{\partial p_l} \forall j \in ( 1, n_r ) \forall l \in ( 1, n_p )`.
 
 The next iteration is performed for :math:`\mathbf{p_{k+1}} = \mathbf{p_k} + \Delta \mathbf{p}` until convergence.
 
@@ -146,7 +146,7 @@ Consider a robust least squares problem of the form:
 
 .. math::
 
-   \min_{\mathbf{p}} \frac{1}{2} \sum_{j \in \llbracket 1, n_r \rrbracket}
+   \min_{\mathbf{p}} \frac{1}{2} \sum_{j \in ( 1, n_r )}
    \rho \left(\| \mathbf{r}_j(\mathbf{p}) \|^2\right)
 
 where :math:`\mathbf{r}_j(\mathbf{p})` is the :math:`j`-th residual function (:math:`\mathbb{R}^{n_p} \rightarrow \mathbb{R}`)
@@ -193,7 +193,7 @@ Consider a robust least squares problem of the form:
 
 .. math::
 
-   \min_{\mathbf{p}} \frac{1}{2} \sum_{j \in \llbracket 1, n_r \rrbracket}
+   \min_{\mathbf{p}} \frac{1}{2} \sum_{j \in ( 1, n_r )}
    \rho \left(\| \mathbf{r}_j(\mathbf{p}) \|^2\right)
 
 where :math:`\mathbf{r}_j(\mathbf{p})` is the :math:`j`-th scalar residual and
