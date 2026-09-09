@@ -467,10 +467,10 @@ The fixed values ``cx`` and ``cy`` are not included in ``p0``.
     Optimality: ||g|| 
 
     Iteration  Total time (s)      Cost C            ΔC           ||Δp||_2         ||g||_∞    
-        0         9.251e-04       1.820e+04                                       3.531e+05   
-        1         1.550e-03       4.645e+02      -1.773e+04       5.036e+01       7.587e+04   
-        2         2.267e-03       4.029e+01      -4.242e+02       1.331e-02       6.102e-04   
-        3         3.042e-03       4.029e+01      -5.009e-12       2.359e-06       5.756e-05   
+        0         7.479e-04       1.820e+04                                       3.531e+05   
+        1         1.267e-03       4.645e+02      -1.773e+04       5.036e+01       7.587e+04   
+        2         1.764e-03       4.029e+01      -4.242e+02       1.331e-02       6.102e-04   
+        3         2.235e-03       4.029e+01      -5.009e-12       2.359e-06       5.756e-05   
 
     [ftol] Convergence achieved (df < ftol * F) : 5.009326287108706e-12 < 4.029126160133067e-07.
     [xtol] Convergence achieved (||Δp|| < xtol * (xtol + ||p||)) : 2.3594721019156887e-06 < 8.503566580015324e-06.
@@ -691,7 +691,7 @@ Visualize the calibration result
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.068 seconds)
+   **Total running time of the script:** (0 minutes 0.062 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_affine_parametrization.py:

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.solver &#8212; pysolvegn 1.0.0 documentation</title>
+    <title>pysolvegn.solver &#8212; pysolvegn 1.0.1 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=8d563738"></script>
+    <script src="../../_static/documentation_options.js?v=292eb321"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 1.0.0 documentation</p>
+    <p class="title logo__title">pysolvegn 1.0.1 documentation</p>
   
 </a></div>
     
@@ -374,7 +374,7 @@
 <div class="viewcode-block" id="solve">
 <a class="viewcode-back" href="../../_autosummary/pysolvegn.solve.html#pysolvegn.solve">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">solve</span><span class="p">(</span>
-    <span class="n">terms</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Term</span><span class="p">],</span>
+    <span class="n">terms</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Term</span><span class="p">]],</span>
     <span class="n">p0</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
     <span class="n">parametrization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Parametrization</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
@@ -431,7 +431,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    terms: Sequence[Term]</span>
+<span class="sd">    terms: Union[Term, Sequence[Term]]</span>
 <span class="sd">        The list of terms defining the least squares problem.</span>
 <span class="sd">        Each term should be an instance of the :class:`Term` class containing</span>
 <span class="sd">        the residual function, Jacobian function, weight, and loss function</span>
@@ -651,6 +651,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Check the validity of the input arguments and raise appropriate errors if necessary.</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">Term</span><span class="p">):</span>
+        <span class="n">terms</span> <span class="o">=</span> <span class="p">[</span><span class="n">terms</span><span class="p">]</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">&quot;terms must be a sequence of Term objects.&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>

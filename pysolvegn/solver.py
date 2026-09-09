@@ -37,7 +37,7 @@ from .parametrization import Parametrization
 
 
 def solve(
-    terms: Sequence[Term],
+    terms: Union[Term, Sequence[Term]],
     p0: ArrayLike,
     parametrization: Optional[Parametrization] = None,
     *,
@@ -94,7 +94,7 @@ def solve(
 
     Parameters
     ----------
-    terms: Sequence[Term]
+    terms: Union[Term, Sequence[Term]]
         The list of terms defining the least squares problem.
         Each term should be an instance of the :class:`Term` class containing
         the residual function, Jacobian function, weight, and loss function
@@ -314,6 +314,8 @@ def solve(
     """
 
     # Check the validity of the input arguments and raise appropriate errors if necessary.
+    if isinstance(terms, Term):
+        terms = [terms]
     if not isinstance(terms, Sequence):
         raise TypeError("terms must be a sequence of Term objects.")
     if len(terms) == 0:

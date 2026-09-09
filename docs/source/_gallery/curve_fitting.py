@@ -111,7 +111,7 @@ data_term = pysolvegn.Term.from_rJ(
 initial_params = np.array([1.0, 1.0])
 
 optimized_parameters = pysolvegn.solve(
-    terms=[data_term],
+    terms=data_term,
     p0=initial_params,
     max_iteration=100,
     xtol=1e-8,

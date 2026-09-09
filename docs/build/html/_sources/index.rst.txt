@@ -92,26 +92,6 @@ Contents
          To the API reference
 
     .. grid-item-card::
-      :img-top: /_static/_icons/math.png
-      :text-align: center
-
-      Mathematical Background
-      ^^^
-
-      This section provides the mathematical foundation and theoretical concepts 
-      underlying the package. It includes explanations of the algorithms, formulas, 
-      and principles used in the computations.
-
-      +++
-
-      .. button-ref:: math
-         :expand:
-         :color: secondary
-         :click-parent:
-
-         To the mathematical background
-
-    .. grid-item-card::
       :img-top: /_static/_icons/examples.png
       :text-align: center
 
