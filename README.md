@@ -4,16 +4,28 @@
 
 Robust Gauss-Newton Least Squares Solver.
 
-**pysolve-gn** is a Python package designed to solve the generalized nonlinear least 
-squares problem using the Gauss-Newton method. The package provides efficient algorithms 
-for solving nonlinear optimization problems, making it suitable for a wide range of 
+**pysolve-gn** is a Python package designed to solve the generalized nonlinear least
+squares problem using the Gauss-Newton method. The package provides efficient algorithms
+for solving nonlinear optimization problems, making it suitable for a wide range of
 applications in data fitting, machine learning, and scientific computing.
+
+Main features:
+
+- **Multiple terms**: combine data terms and regularization terms, each with its own weight,
+  defined either by residuals and Jacobian (`rJ`) or by gradient and Hessian (`gH`).
+- **Robust loss functions**: `"linear"`, `"soft_l1"`, `"huber"`, `"cauchy"`, `"arctan"`,
+  `"tukey"` or a custom loss, with a soft threshold `loss_scale` expressed in the unit of
+  the residuals.
+- **Levenberg-Marquardt damping**: `damping="lm"` or `"lm-diag"` for difficult problems.
+- **Parametrization**: optimize the problem in another parameter space `p_out = P(p_in)`.
+- **Finite differences**: numerical Jacobians when the analytical ones are not available.
+- **Batch solver**: solve thousands of independent problems at once with `solve_batch`,
+  each problem converging at its own pace.
 
 ## Examples
 
 ```python
 import numpy as np
-import matplotlib.pyplot as plt
 import pysolvegn
 
 np.random.seed(0)
@@ -33,39 +45,64 @@ y_data = y_true + 0.5 * np.random.normal(size=y_true.shape)  # Add noise to the 
 
 
 # Define the residual function
-def residual_function(params, x, y):
-    return model(params, x) - y
-
-
-residual_func = lambda params: residual_function(params, x_data, y_data)
+def residual_func(params):
+    return model(params, x_data) - y_data
 
 
 # Define the Jacobian function
-def jacobian_function(params, x):
+def jacobian_func(params):
     a, b = params
-    J = np.zeros((len(x), len(params)))
-    J[:, 0] = np.exp(b * x)  # Derivative with respect to a
-    J[:, 1] = a * x * np.exp(b * x)  # Derivative with respect to b
+    J = np.zeros((len(x_data), len(params)))
+    J[:, 0] = np.exp(b * x_data)  # Derivative with respect to a
+    J[:, 1] = a * x_data * np.exp(b * x_data)  # Derivative with respect to b
     return J
 
 
-jacobian_func = lambda params: jacobian_function(params, x_data)
-
 data_term = pysolvegn.Term.from_rJ(
-    residual_func=residual_func, jacobian_func=jacobian_func, loss="linear", weight=1.0
+    residual_func=residual_func,
+    jacobian_func=jacobian_func,
+    loss="linear",
+    weight=1.0,
 )
 
-initial_params = [2.0, 0.4]
+initial_params = np.array([2.0, 0.4])
 
-fitted_params = pysolvegn.solve_gauss_newton(
-    terms=data_term
+result = pysolvegn.solve(
+    terms=data_term,
     p0=initial_params,
     max_iteration=10,
     xtol=1e-6,
     ftol=1e-6,
     verbosity=2,
 )
+
+print(result.success)     # True if a convergence criterion was satisfied
+print(result.message)   # Why the optimization stopped
+print(result.parameters)  # Fitted parameters [a, b]
 ```
+
+To reduce the influence of outliers, use a robust loss function with a soft threshold
+`loss_scale` close to the expected noise level (in the unit of the residuals), and
+Levenberg-Marquardt damping:
+
+```python
+robust_term = pysolvegn.Term.from_rJ(
+    residual_func=residual_func,
+    jacobian_func=jacobian_func,
+    loss="cauchy",
+    loss_scale=1.0,
+)
+
+result = pysolvegn.solve(
+    terms=robust_term,
+    p0=initial_params,
+    max_iteration=50,
+    ftol=1e-8,
+    damping="lm-diag",
+)
+```
+
+More examples are available in the [online documentation](https://Artezaru.github.io/pysolve-gn).
 
 ## Authors
 

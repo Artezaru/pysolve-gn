@@ -16,12 +16,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from typing import Sequence, Optional
+from typing import Sequence, Optional, Union
 
 from numpy.typing import ArrayLike
 
 import numpy
-import scipy
+import scipy.sparse
 
 from .term import Term
 from .solver import solve
@@ -29,7 +29,7 @@ from .parametrization import Parametrization
 
 
 def study_optimization(
-    terms: Sequence[Term],
+    terms: Union[Term, Sequence[Term]],
     p0: ArrayLike,
     parametrization: Optional[Parametrization] = None,
     *,
@@ -54,9 +54,10 @@ def study_optimization(
     .. math::
 
         H =
-        \sum_i w_i J_i^T J_i
+        \sum_i w_i \tilde{J}_i^T \tilde{J}_i
 
-    for ``rJ`` terms, and:
+    for ``rJ`` terms (where :math:`\tilde{J}_i` is the Jacobian modified by the robust
+    loss function and, if provided, the chain rule of the parametrization), and:
 
     .. math::
 
@@ -65,9 +66,8 @@ def study_optimization(
 
     for ``gH`` terms.
 
-    If a parametrization is provided to the solver through the terms'
-    parameter functions, the Hessian is expressed in the corresponding
-    input parameter space.
+    If a parametrization is provided, the Hessian is expressed in the
+    input parameter space of the parametrization.
 
     The function displays:
 
@@ -84,7 +84,7 @@ def study_optimization(
 
     Parameters
     ----------
-    terms : Sequence[Term]
+    terms : Union[Term, Sequence[Term]]
         Terms defining the least-squares problem.
 
     p0 : ArrayLike
@@ -110,7 +110,7 @@ def study_optimization(
     This guarantees that the exact same implementation used during
     optimization is responsible for constructing the Hessian.
 
-    The returned history contains:
+    The history of the returned :class:`pysolvegn.SolveResult` contains:
 
     - ``parameters``
     - ``costs``
@@ -126,6 +126,9 @@ def study_optimization(
     # ------------------------------------------------------------------
     # Input validation
     # ------------------------------------------------------------------
+
+    if isinstance(terms, Term):
+        terms = [terms]
 
     if not isinstance(terms, Sequence):
         raise ValueError("terms must be a sequence of Term objects.")
@@ -159,7 +162,7 @@ def study_optimization(
     # H * delta_parameters = -second_term.
     # ------------------------------------------------------------------
 
-    _, history = solve(
+    result = solve(
         terms=terms,
         p0=p0,
         parametrization=parametrization,
@@ -176,8 +179,13 @@ def study_optimization(
         ],
     )
 
-    if history is None or len(history) == 0:
-        raise RuntimeError("The solver did not return the initial optimization state.")
+    history = result.history
+
+    if len(history) == 0:
+        # The initial state could not be evaluated (NaN or Inf value in p0 or p_out)
+        raise RuntimeError(
+            "The solver did not return the initial optimization state:\n" + result.message
+        )
 
     state = history[-1]
 

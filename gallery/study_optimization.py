@@ -254,19 +254,16 @@ pysolvegn.study_optimization(
 # Study the optimization problem at convergence
 # -----------------------------------------------
 #
-# ``study_optimization`` evaluates the least-squares problem at the
-# initial parameter vector.
+# The problem is first solved with :func:`pysolvegn.solve`, which returns a
+# :class:`pysolvegn.SolveResult`. The optimized parameters are stored in
+# ``result.parameters``.
 #
-# It internally calls ``solve`` with:
-#
-#     ``max_iteration=0``
-#
-# Consequently, no optimization step is performed.
-#
-# The Gauss-Newton Hessian is computed directly in the complete
-# nine-dimensional parameter space.
+# ``study_optimization`` is then called at these converged parameters: the
+# residual variance, the covariance and the standard deviations of the
+# parameters are now meaningful, since the residuals only contain the
+# measurement noise.
 
-converged_parameters = pysolvegn.solve(
+result = pysolvegn.solve(
     terms=[data_term],
     p0=initial_parameters,
     max_iteration=100,
@@ -274,6 +271,11 @@ converged_parameters = pysolvegn.solve(
     xtol=1e-6,
     gtol=1e-6,
 )
+
+print("Success:", result.success)
+print(result.message)
+
+converged_parameters = result.parameters
 
 pysolvegn.study_optimization(
     terms=[data_term],

@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.derivation &#8212; pysolvegn 1.0.1 documentation</title>
+    <title>pysolvegn.derivation &#8212; pysolvegn 2.0.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../_static/documentation_options.js?v=51b770b3"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 1.0.1 documentation</p>
+    <p class="title logo__title">pysolvegn 2.0.0 documentation</p>
   
 </a></div>
     
@@ -462,6 +462,129 @@
                 <span class="p">)</span> <span class="o">/</span> <span class="n">perturbation</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
             <span class="n">perturbation</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+        <span class="k">return</span> <span class="n">jacobian</span>
+
+    <span class="k">return</span> <span class="n">jacobian_func</span></div>
+
+
+<div class="viewcode-block" id="build_batch_numerical_jacobian">
+<a class="viewcode-back" href="../../_autosummary/pysolvegn.build_batch_numerical_jacobian.html#pysolvegn.build_batch_numerical_jacobian">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_batch_numerical_jacobian</span><span class="p">(</span>
+    <span class="n">residual_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
+    <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;central&quot;</span><span class="p">,</span>
+    <span class="n">epsilon</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Build a batched Jacobian function for the batched Gauss-Newton optimization by computing</span>
+<span class="sd">    the numerical derivatives of a batched residual function with respect to the parameters</span>
+<span class="sd">    using finite differences.</span>
+
+<span class="sd">    This is the batched counterpart of :func:`pysolvegn.build_numerical_jacobian`: the ``m``</span>
+<span class="sd">    problems of the batch are perturbed simultaneously, so the residual function is called</span>
+<span class="sd">    ``n_parameters + 1`` times (``2 * n_parameters + 1`` times for the ``&quot;central&quot;`` method)</span>
+<span class="sd">    whatever the number of problems.</span>
+
+<span class="sd">    For the problem :math:`k`, with :math:`\epsilon_{k,j} = \epsilon \max(1, |p_{k,j}|)`,</span>
+<span class="sd">    the ``&quot;central&quot;`` method computes:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        J_{k,i,j} = \frac{R_{k,i}(p_k + \epsilon_{k,j} e_j) - R_{k,i}(p_k - \epsilon_{k,j} e_j)}{2\epsilon_{k,j}}</span>
+
+<span class="sd">    With the ``&quot;forward&quot;`` method:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        J_{k,i,j} = \frac{R_{k,i}(p_k + \epsilon_{k,j} e_j) - R_{k,i}(p_k)}{\epsilon_{k,j}}</span>
+
+<span class="sd">    With the ``&quot;backward&quot;`` method:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        J_{k,i,j} = \frac{R_{k,i}(p_k) - R_{k,i}(p_k - \epsilon_{k,j} e_j)}{\epsilon_{k,j}}</span>
+
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    residual_func : Callable</span>
+<span class="sd">        A batched function ``residual_func(parameters, indices)`` that computes the residuals.</span>
+<span class="sd">        It takes the parameters of ``m`` independent problems as a 2D array with shape</span>
+<span class="sd">        ``(m, n_parameters)`` (``m`` is any positive integer) and the indices of these</span>
+<span class="sd">        problems in the full batch as a 1D array with shape ``(m,)``, and returns a 2D</span>
+<span class="sd">        array of residuals with shape ``(m, n_residuals)``, where the row ``a`` of the</span>
+<span class="sd">        residuals only depends on the row ``a`` of the parameters.</span>
+
+<span class="sd">    method : str, optional (default=&quot;central&quot;)</span>
+<span class="sd">        The finite difference method to use for computing the numerical Jacobian.</span>
+<span class="sd">        Must be one of &quot;central&quot;, &quot;forward&quot;, or &quot;backward&quot;.</span>
+
+<span class="sd">    epsilon : Real, optional (default=1e-8)</span>
+<span class="sd">        A small perturbation value used for finite difference approximation of the Jacobian.</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    jacobian_func : Callable</span>
+<span class="sd">        A batched function ``jacobian_func(parameters, indices)`` that computes the Jacobian</span>
+<span class="sd">        matrices of the ``m`` problems. It takes the parameters with shape</span>
+<span class="sd">        ``(m, n_parameters)`` and the indices with shape ``(m,)``, and returns a 3D array with shape ``(m, n_residuals, n_parameters)``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">residual_func</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The residual function must be callable.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Epsilon must be a real number.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">epsilon</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Epsilon must be a positive number.&quot;</span><span class="p">)</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Method must be a string.&quot;</span><span class="p">)</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;central&quot;</span><span class="p">,</span> <span class="s2">&quot;forward&quot;</span><span class="p">,</span> <span class="s2">&quot;backward&quot;</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Method must be one of &#39;central&#39;, &#39;forward&#39;, or &#39;backward&#39;.&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parameters</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The parameters must be a 2D array with shape (m, n_parameters).&quot;</span><span class="p">)</span>
+        <span class="n">n_problems</span><span class="p">,</span> <span class="n">n_parameters</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">residual_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">residual</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The residual function must return a numpy array.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">residual</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">residual</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">n_problems</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;The residual function must return a 2D array with shape (m, n_residuals).&quot;</span>
+            <span class="p">)</span>
+
+        <span class="n">n_residual</span> <span class="o">=</span> <span class="n">residual</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_problems</span><span class="p">,</span> <span class="n">n_residual</span><span class="p">,</span> <span class="n">n_parameters</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">perturbed</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_parameters</span><span class="p">):</span>
+            <span class="n">perturbation</span> <span class="o">=</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]))</span>  <span class="c1"># (m,)</span>
+
+            <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;central&quot;</span><span class="p">:</span>
+                <span class="n">perturbed</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">perturbation</span>
+                <span class="n">residual_plus</span> <span class="o">=</span> <span class="n">residual_func</span><span class="p">(</span><span class="n">perturbed</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+                <span class="n">perturbed</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">-</span> <span class="n">perturbation</span>
+                <span class="n">residual_minus</span> <span class="o">=</span> <span class="n">residual_func</span><span class="p">(</span><span class="n">perturbed</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+                <span class="n">jacobian</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">residual_plus</span> <span class="o">-</span> <span class="n">residual_minus</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
+                    <span class="mi">2</span> <span class="o">*</span> <span class="n">perturbation</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;forward&quot;</span><span class="p">:</span>
+                <span class="n">perturbed</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">perturbation</span>
+                <span class="n">jacobian</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">residual_func</span><span class="p">(</span><span class="n">perturbed</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span> <span class="o">-</span> <span class="n">residual</span>
+                <span class="p">)</span> <span class="o">/</span> <span class="n">perturbation</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;backward&quot;</span><span class="p">:</span>
+                <span class="n">perturbed</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">-</span> <span class="n">perturbation</span>
+                <span class="n">jacobian</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">residual</span> <span class="o">-</span> <span class="n">residual_func</span><span class="p">(</span><span class="n">perturbed</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+                <span class="p">)</span> <span class="o">/</span> <span class="n">perturbation</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+
+            <span class="n">perturbed</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">jacobian</span>
 

@@ -22,6 +22,44 @@ from numpy.typing import ArrayLike
 import numpy
 
 from .parametrization import Parametrization
+from .batch_parametrization import BatchParametrization
+
+
+def _sigmoid(x: numpy.ndarray) -> numpy.ndarray:
+    # Numerically stable sigmoid (any shape).
+    result = numpy.empty_like(x)
+
+    positive = x >= 0.0
+    result[positive] = 1.0 / (1.0 + numpy.exp(-x[positive]))
+
+    exp_x = numpy.exp(x[~positive])
+    result[~positive] = exp_x / (1.0 + exp_x)
+
+    return result
+
+
+def _check_batch_p_in(p_in: ArrayLike, n_parameters: int) -> numpy.ndarray:
+    # Batch mode: input parameters of m problems with shape (m, n_parameters)
+    p_in = numpy.asarray(p_in, dtype=numpy.float64)
+
+    if p_in.ndim != 2:
+        raise ValueError(f"p_in must be a 2D array, got {p_in.ndim} dimensions.")
+
+    if p_in.shape[1] != n_parameters:
+        raise ValueError(
+            f"p_in must have shape (m, {n_parameters}), " f"got {p_in.shape}."
+        )
+
+    return p_in
+
+
+def _batch_diagonal(diagonal: numpy.ndarray) -> numpy.ndarray:
+    # Stack of diagonal matrices (m, n, n) from the diagonals (m, n)
+    m, n = diagonal.shape
+    jacobian = numpy.zeros((m, n, n), dtype=numpy.float64)
+    index = numpy.arange(n)
+    jacobian[:, index, index] = diagonal
+    return jacobian
 
 
 def build_affine_parametrization(
@@ -386,18 +424,7 @@ def build_sigmoid_parametrization(
         raise ValueError("Each lower bound must be strictly smaller than upper.")
 
     n_parameters = lower.shape[0]
-
-    def sigmoid(x: numpy.ndarray) -> numpy.ndarray:
-        # Numerically stable sigmoid.
-        result = numpy.empty_like(x)
-
-        positive = x >= 0.0
-        result[positive] = 1.0 / (1.0 + numpy.exp(-x[positive]))
-
-        exp_x = numpy.exp(x[~positive])
-        result[~positive] = exp_x / (1.0 + exp_x)
-
-        return result
+    sigmoid = _sigmoid
 
     def parametric_func(p_in: numpy.ndarray) -> numpy.ndarray:
         p_in = numpy.asarray(p_in, dtype=numpy.float64)
@@ -508,6 +535,214 @@ def build_positive_parametrization(
         return numpy.diag(numpy.exp(p_in))
 
     return Parametrization(
+        parametric_func=parametric_func,
+        jacobian_func=jacobian_func,
+    )
+
+
+# ======================================================================
+# Batch versions (same transformation for all the problems of the batch)
+# ======================================================================
+
+
+def build_batch_affine_parametrization(
+    modes: ArrayLike,
+    offset: Optional[ArrayLike] = None,
+) -> BatchParametrization:
+    r"""
+    Build a :class:`BatchParametrization` based on an affine transformation
+    (batched counterpart of :func:`build_affine_parametrization`).
+
+    The same transformation is applied to each problem :math:`k` of the batch:
+
+    .. math::
+
+        \mathbf{p}_{out,k}
+        =
+        M \mathbf{p}_{in,k}
+        +
+        \mathbf{p}_0
+
+    with the constant Jacobian :math:`\mathbf{J}_{P,k} = M`.
+
+    Parameters
+    ----------
+    modes : ArrayLike
+        The matrix of the affine transformation with shape
+        ``(n_p_outputs, n_parameters)``.
+
+    offset : Optional[ArrayLike], optional
+        The offset of the affine transformation with shape
+        ``(n_p_outputs,)``.
+        If ``None``, a zero offset is used.
+
+    Returns
+    -------
+    BatchParametrization
+        A :class:`BatchParametrization` implementing the affine transformation:
+        ``(m, n_parameters) -> (m, n_p_outputs)``.
+    """
+    single = build_affine_parametrization(modes, offset)  # validation
+    modes = numpy.asarray(modes, dtype=numpy.float64)
+    offset = single.p_func(numpy.zeros(modes.shape[1]))  # M @ 0 + offset
+    n_p_outputs, n_parameters = modes.shape
+
+    def parametric_func(p_in: ArrayLike) -> numpy.ndarray:
+        p_in = _check_batch_p_in(p_in, n_parameters)
+        return p_in @ modes.T + offset
+
+    def jacobian_func(p_in: ArrayLike) -> numpy.ndarray:
+        p_in = _check_batch_p_in(p_in, n_parameters)
+        return numpy.broadcast_to(modes, (p_in.shape[0], n_p_outputs, n_parameters)).copy()
+
+    return BatchParametrization(
+        parametric_func=parametric_func,
+        jacobian_func=jacobian_func,
+    )
+
+
+def build_batch_fixed_parametrization(
+    n_p_outputs: int,
+    optimized_indices: Sequence[int],
+    fixed_parameters: Optional[ArrayLike] = None,
+) -> BatchParametrization:
+    r"""
+    Build a :class:`BatchParametrization` that fixes some output parameters while
+    optimizing only a selected subset of them (batched counterpart of
+    :func:`build_fixed_parametrization`).
+
+    The same parameters are fixed, at the same values, for all the problems of the
+    batch.
+
+    Parameters
+    ----------
+    n_p_outputs : int
+        Number of output parameters.
+
+    optimized_indices : Sequence[int]
+        Indices of the output parameters that are optimized.
+        The order defines the order of the input parameters.
+
+    fixed_parameters : Optional[ArrayLike], optional
+        Initial/fixed values of all output parameters, with shape
+        ``(n_p_outputs,)``.
+        If ``None``, all fixed parameters are initialized to zero.
+
+    Returns
+    -------
+    BatchParametrization
+        The resulting parametrization: ``(m, len(optimized_indices)) -> (m, n_p_outputs)``.
+    """
+    single = build_fixed_parametrization(n_p_outputs, optimized_indices, fixed_parameters)  # validation
+    optimized_indices = [int(index) for index in optimized_indices]
+    n_parameters = len(optimized_indices)
+    selection_matrix = single.J_func(numpy.zeros(n_parameters))
+    fixed_parameters = (
+        numpy.zeros(int(n_p_outputs), dtype=numpy.float64)
+        if fixed_parameters is None
+        else numpy.asarray(fixed_parameters, dtype=numpy.float64).copy()
+    )
+
+    def parametric_func(p_in: numpy.ndarray) -> numpy.ndarray:
+        p_in = _check_batch_p_in(p_in, n_parameters)
+        p_out = numpy.tile(fixed_parameters, (p_in.shape[0], 1))
+        p_out[:, optimized_indices] = p_in
+        return p_out
+
+    def jacobian_func(p_in: numpy.ndarray) -> numpy.ndarray:
+        p_in = _check_batch_p_in(p_in, n_parameters)
+        return numpy.broadcast_to(
+            selection_matrix, (p_in.shape[0],) + selection_matrix.shape
+        ).copy()
+
+    return BatchParametrization(
+        parametric_func=parametric_func,
+        jacobian_func=jacobian_func,
+    )
+
+
+def build_batch_sigmoid_parametrization(
+    lower: ArrayLike,
+    upper: ArrayLike,
+) -> BatchParametrization:
+    r"""
+    Build a :class:`BatchParametrization` that constrains parameters to a finite
+    interval using a sigmoid transformation (batched counterpart of
+    :func:`build_sigmoid_parametrization`).
+
+    The same bounds are used for all the problems of the batch:
+
+    .. math::
+
+        p_{out,k,i} = l_i + (u_i - l_i) \sigma(p_{in,k,i})
+
+    Parameters
+    ----------
+    lower : ArrayLike
+        Lower bounds with shape ``(n_parameters,)``.
+
+    upper : ArrayLike
+        Upper bounds with shape ``(n_parameters,)``.
+
+    Returns
+    -------
+    BatchParametrization
+        The resulting bounded parametrization: ``(m, n_parameters) -> (m, n_parameters)``.
+    """
+    build_sigmoid_parametrization(lower, upper)  # validation
+    lower = numpy.asarray(lower, dtype=numpy.float64).copy()
+    upper = numpy.asarray(upper, dtype=numpy.float64).copy()
+    n_parameters = lower.shape[0]
+
+    def parametric_func(p_in: numpy.ndarray) -> numpy.ndarray:
+        p_in = _check_batch_p_in(p_in, n_parameters)
+        s = _sigmoid(p_in)
+        return lower + (upper - lower) * s
+
+    def jacobian_func(p_in: numpy.ndarray) -> numpy.ndarray:
+        p_in = _check_batch_p_in(p_in, n_parameters)
+        s = _sigmoid(p_in)
+        return _batch_diagonal((upper - lower) * s * (1.0 - s))
+
+    return BatchParametrization(
+        parametric_func=parametric_func,
+        jacobian_func=jacobian_func,
+    )
+
+
+def build_batch_positive_parametrization(
+    n_parameters: int,
+) -> BatchParametrization:
+    r"""
+    Build a :class:`BatchParametrization` that constrains parameters to be strictly
+    positive (batched counterpart of :func:`build_positive_parametrization`):
+
+    .. math::
+
+        p_{out,k,i} = \exp(p_{in,k,i}).
+
+    Parameters
+    ----------
+    n_parameters : int
+        Number of positive output parameters and input parameters.
+
+    Returns
+    -------
+    BatchParametrization
+        The resulting positive parametrization: ``(m, n_parameters) -> (m, n_parameters)``.
+    """
+    build_positive_parametrization(n_parameters)  # validation
+    n_parameters = int(n_parameters)
+
+    def parametric_func(p_in: numpy.ndarray) -> numpy.ndarray:
+        p_in = _check_batch_p_in(p_in, n_parameters)
+        return numpy.exp(p_in)
+
+    def jacobian_func(p_in: numpy.ndarray) -> numpy.ndarray:
+        p_in = _check_batch_p_in(p_in, n_parameters)
+        return _batch_diagonal(numpy.exp(p_in))
+
+    return BatchParametrization(
         parametric_func=parametric_func,
         jacobian_func=jacobian_func,
     )

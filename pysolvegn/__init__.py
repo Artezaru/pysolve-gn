@@ -18,21 +18,39 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from .__version__ import __version__
 
-from .derivation import build_numerical_jacobian
+from .derivation import (
+    build_numerical_jacobian,
+    build_batch_numerical_jacobian,
+)
+
+# Single problem
 from .term import Term
 from .parametrization import Parametrization
-from .solver import solve
+from .solver import solve, SolveResult
+
+# Batch of independent problems
+from .batch_term import BatchTerm
+from .batch_parametrization import BatchParametrization
+from .batch_solver import solve_batch, BatchSolveResult
 
 from .implemented_parametrizations import (
     build_affine_parametrization,
     build_fixed_parametrization,
     build_sigmoid_parametrization,
     build_positive_parametrization,
+    build_batch_affine_parametrization,
+    build_batch_fixed_parametrization,
+    build_batch_sigmoid_parametrization,
+    build_batch_positive_parametrization,
 )
 
 from .implemented_regularizations import (
     build_squared_regularization,
     build_soft_squared_regularization,
+    build_absolute_regularization,
+    build_batch_squared_regularization,
+    build_batch_soft_squared_regularization,
+    build_batch_absolute_regularization,
 )
 
 from .loss_functions import (
@@ -40,6 +58,9 @@ from .loss_functions import (
     soft_l1_rho,
     cauchy_rho,
     arctan_rho,
+    huber_rho,
+    tukey_rho,
+    scale_rho_function,
     get_rho_function_by_name,
 )
 

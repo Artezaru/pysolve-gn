@@ -14,6 +14,7 @@ Basic examples
     curve_fitting.py
     adding_regularization.py
     affine_parametrization.py
+    batch_undistortion.py
     analyze_problem.py
     L_curve_analysis.py
 
@@ -23,23 +24,6 @@ Basic examples
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use pysolve-gn package.">
-
-.. only:: html
-
-  .. image:: /_gallery/images/thumb/sphx_glr_curve_fitting_thumb.png
-    :alt:
-
-  :doc:`/_gallery/curve_fitting`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Curve fitting</div>
-    </div>
-
 
 .. raw:: html
 
@@ -60,18 +44,18 @@ Basic examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use regularization with pysolve-gn. This example is the continuation of the basic curve fitting example, demonstrating how to incorporate regularization.">
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use pysolve-gn package.">
 
 .. only:: html
 
-  .. image:: /_gallery/images/thumb/sphx_glr_adding_regularization_thumb.png
+  .. image:: /_gallery/images/thumb/sphx_glr_curve_fitting_thumb.png
     :alt:
 
-  :doc:`/_gallery/adding_regularization`
+  :doc:`/_gallery/curve_fitting`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Adding regularization (curve fitting)</div>
+      <div class="sphx-glr-thumbnail-title">Curve fitting</div>
     </div>
 
 
@@ -94,6 +78,23 @@ Basic examples
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use regularization with pysolve-gn. This example is the continuation of the basic curve fitting example, demonstrating how to incorporate regularization.">
+
+.. only:: html
+
+  .. image:: /_gallery/images/thumb/sphx_glr_adding_regularization_thumb.png
+    :alt:
+
+  :doc:`/_gallery/adding_regularization`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Adding regularization (curve fitting)</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use a parametrization with pysolve-gn.">
 
 .. only:: html
@@ -109,6 +110,23 @@ Basic examples
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to use pysolvegn.solve_batch to solve a large number of small independent least squares problems at once.">
+
+.. only:: html
+
+  .. image:: /_gallery/images/thumb/sphx_glr_batch_undistortion_thumb.png
+    :alt:
+
+  :doc:`/_gallery/batch_undistortion`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Undistortion of image points with a batch solver</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -119,11 +137,12 @@ Basic examples
 .. toctree::
    :hidden:
 
-   /_gallery/curve_fitting
    /_gallery/L_curve_analysis
-   /_gallery/adding_regularization
+   /_gallery/curve_fitting
    /_gallery/study_optimization
+   /_gallery/adding_regularization
    /_gallery/affine_parametrization
+   /_gallery/batch_undistortion
 
 
 .. only:: html

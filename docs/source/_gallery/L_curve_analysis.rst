@@ -78,10 +78,10 @@ add some noise and bias to the data to make the problem more realistic.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-63
+.. GENERATED FROM PYTHON SOURCE LINES 52-68
 
-Create the residual and Jacobian functions
--------------------------------------------
+Create the data and regularization terms
+-----------------------------------------
 
 Secondly, we will define the residual function, and the
 Jacobian function. The residual function computes the difference between the
@@ -92,46 +92,49 @@ This equation is called a **term** in pysolve-gn, and it represents a single
 component of the optimization problem. See :class:`pysolvegn.Term` for more details
 on how to define terms in pysolve-gn.
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-101
+The regularization term is built with
+:func:`pysolvegn.build_soft_squared_regularization`: it is null when the parameters
+are within ``thresholds`` of the estimated values, and increases quadratically
+outside this interval.
+
+.. GENERATED FROM PYTHON SOURCE LINES 68-104
 
 .. code-block:: Python
 
 
 
     # Define the residual function
-    def residual_function(params, x, y):
-        return model(params, x) - y
-
-
-    residual_func = lambda params: residual_function(params, x_data, y_data)
+    def residual_function(params):
+        return model(params, x_data) - y_data
 
 
     # Define the Jacobian function
-    def jacobian_function(params, x):
+    def jacobian_function(params):
         a, b = params
-        J = np.zeros((len(x), len(params)))
-        J[:, 0] = np.exp(b * x)  # Derivative with respect to a
-        J[:, 1] = a * x * np.exp(b * x)  # Derivative with respect to b
+        J = np.zeros((len(x_data), len(params)))
+        J[:, 0] = np.exp(b * x_data)  # Derivative with respect to a
+        J[:, 1] = a * x_data * np.exp(b * x_data)  # Derivative with respect to b
         return J
 
 
-    jacobian_func = lambda params: jacobian_function(params, x_data)
-
-    # Build the regularization term
-    estimated_params = [2.2, 0.55]
-    estimated_stds = [0.5, 0.2]
-    estimated_trust = [0.1, 0.05]
-
-    reg_term = pysolvegn.build_soft_squared_regularization(
-        means=estimated_params,
-        stds=estimated_stds,
-        thresholds=estimated_trust,
+    data_term = pysolvegn.Term.from_rJ(
+        residual_func=residual_function,
+        jacobian_func=jacobian_function,
         loss="linear",
         weight=1.0,
     )
 
-    data_terms = pysolvegn.Term.from_rJ(
-        residual_func=residual_func, jacobian_func=jacobian_func, loss="linear", weight=1.0
+    # Build the regularization term
+    estimated_params = np.array([2.2, 0.55])
+    estimated_stds = np.array([0.5, 0.2])
+    estimated_trust = np.array([0.1, 0.05])
+
+    reg_term = pysolvegn.build_soft_squared_regularization(
+        means=estimated_params,
+        thresholds=estimated_trust,
+        stds=estimated_stds,
+        loss="linear",
+        weight=1.0,
     )
 
 
@@ -141,16 +144,21 @@ on how to define terms in pysolve-gn.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-108
+.. GENERATED FROM PYTHON SOURCE LINES 105-116
 
 Perform L-curve analysis
 --------------------------
 
-Now we can perform L-curve analysis by solving the optimization problem for a range of
-regularization weights. We will use the ``solve`` function to solve the optimization
-problem for each weight, and we will store the results to analyze later.
+Now we can perform L-curve analysis with :func:`pysolvegn.perform_Lcurve_analysis`.
+For each regularization weight, the problem is solved with :func:`pysolvegn.solve`
+(the additional keyword arguments, here the stopping criteria, are passed to it),
+and the costs of the data term and of the regularization term at the solution are
+used to build the L-curve.
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-122
+With ``optimal=True``, the corner of the L-curve (maximal curvature) is estimated
+and displayed.
+
+.. GENERATED FROM PYTHON SOURCE LINES 116-130
 
 .. code-block:: Python
 
@@ -158,17 +166,17 @@ problem for each weight, and we will store the results to analyze later.
     weights = np.logspace(-2, 4, 50)  # Range of regularization weights to test
 
     pysolvegn.perform_Lcurve_analysis(
-        data_term=data_terms,
+        data_term=data_term,
         reg_term=reg_term,
         p0=estimated_params,
         reg_weights=weights,
+        n_labels=20,
+        optimal=True,
         max_iteration=10,
         xtol=1e-6,
         ftol=1e-6,
         verbosity=0,
-        n_labels=20,
     )
-
 
 
 .. image-sg:: /_gallery/images/sphx_glr_L_curve_analysis_001.png
@@ -177,13 +185,19 @@ problem for each weight, and we will store the results to analyze later.
    :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    Optimal regularization weight (corner of L-curve): 4.715e+01
+
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.228 seconds)
+   **Total running time of the script:** (0 minutes 0.256 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_L_curve_analysis.py:

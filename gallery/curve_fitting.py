@@ -44,7 +44,7 @@ true_params = np.array([2.5, 0.5])
 
 y_true = model(true_params, x_data)
 
-# Add relatively strong noise to make the effect of regularization visible.
+# Add a relatively strong noise to the observations.
 y_data = y_true + 1.0 * np.random.normal(size=y_true.shape)
 
 
@@ -105,12 +105,17 @@ data_term = pysolvegn.Term.from_rJ(
 # ---------------------------
 #
 # We solve the problem using only the :func:`pysolvegn.solve` function.
-# This function takes the data term, an initialisation and convergence criterion.
+# This function takes the data term, an initialisation and convergence criteria.
+#
+# The function returns a :class:`pysolvegn.SolveResult` object containing the
+# optimized parameters (``result.parameters``) and information about the
+# optimization: ``result.success`` indicates whether a convergence criterion
+# was satisfied, and ``result.message`` describes why the optimization stopped.
 #
 
 initial_params = np.array([1.0, 1.0])
 
-optimized_parameters = pysolvegn.solve(
+result = pysolvegn.solve(
     terms=data_term,
     p0=initial_params,
     max_iteration=100,
@@ -119,11 +124,18 @@ optimized_parameters = pysolvegn.solve(
     verbosity=2,
 )
 
+optimized_parameters = result.parameters
+
 # %%
 # Display the fitted parameters
 # ------------------------------
 
-print("True parameters:")
+print("Success:", result.success)
+print("Message:", result.message)
+print("Number of iterations:", result.n_iterations)
+print("Final cost:", result.cost)
+
+print("\nTrue parameters:")
 print(true_params)
 
 print("\nEstimated parameters:")

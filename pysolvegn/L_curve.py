@@ -21,11 +21,11 @@ from numbers import Real, Integral
 from numpy.typing import ArrayLike
 
 import numpy
-import scipy
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
 
 from .solver import solve
+from .evaluation import _evaluate_cost
 from .term import Term
 from .parametrization import Parametrization
 
@@ -142,7 +142,8 @@ def perform_Lcurve_analysis(
 
     **kwargs : Any
         Additional keyword arguments passed directly to
-        :func:`pysolvegn.solve` for every regularization weight as convergence criterion.
+        :func:`pysolvegn.solve` for every regularization weight (convergence criteria,
+        ``damping``, ``verbosity``, ...).
 
 
     Returns
@@ -184,6 +185,12 @@ def perform_Lcurve_analysis(
     The data and regularization terms therefore operate in the output
     parameter space, while the Gauss-Newton solver optimizes the input
     parameter space.
+
+    The costs :math:`F_{data}` and :math:`F_{reg}` (without weight) used to build the
+    L-curve are evaluated at the output parameters returned by :func:`pysolvegn.solve`
+    (``SolveResult.term_parameters``). A warning is printed (``verbosity >= 1``) for the
+    regularization weights whose optimization did not converge (``SolveResult.success``
+    is False).
 
     For each regularization weight :math:`\lambda`, let
 
@@ -282,28 +289,39 @@ def perform_Lcurve_analysis(
     _save_back_reg_weight = reg_term.weight
     results = []
 
-    for index, weight in enumerate(reg_weights):
-        if verbosity >= 1:
-            print(
-                f"\nEvaluating regularization weight: {weight:.3e} [{index + 1}/{len(reg_weights)}]"
+    try:
+        for index, weight in enumerate(reg_weights):
+            if verbosity >= 1:
+                print(
+                    f"\nEvaluating regularization weight: {weight:.3e} [{index + 1}/{len(reg_weights)}]"
+                )
+
+            reg_term.weight = weight
+
+            result = solve(
+                terms=[data_term, reg_term],
+                p0=p0,
+                parametrization=parametrization,
+                **kwargs,
             )
 
-        reg_term.weight = weight
+            if verbosity >= 1 and not result.success:
+                print(
+                    f"Warning: the optimization did not converge for the regularization "
+                    f"weight {weight:.3e}:\n{result.message}"
+                )
 
-        out_parameters, history = solve(
-            terms=[data_term, reg_term],
-            p0=p0,
-            parametrization=parametrization,
-            history=True,
-            history_details=["costs"],
-            **kwargs,
-        )
+            # Costs of the terms (without weight) at the returned parameters
+            if result.term_parameters is None:
+                cost_data, cost_reg = numpy.nan, numpy.nan  # optimization not started (NaN in p0)
+            else:
+                costs = _evaluate_cost([data_term, reg_term], result.term_parameters).costs
+                cost_data = costs[0]  # Cost of the data fitting term
+                cost_reg = costs[1]  # Cost of the regularization term
+            results.append((weight, cost_data, cost_reg, result.parameters))
 
-        cost_data = history[-1]["costs"][0]  # Cost of the data fitting term
-        cost_reg = history[-1]["costs"][1]  # Cost of the regularization term
-        results.append((weight, cost_data, cost_reg, out_parameters))
-
-    reg_term.weight = _save_back_reg_weight
+    finally:
+        reg_term.weight = _save_back_reg_weight
 
     weights, cost_data, cost_reg, parameters = zip(*results)
 

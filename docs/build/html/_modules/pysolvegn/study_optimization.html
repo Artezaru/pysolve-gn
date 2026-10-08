@@ -7,7 +7,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.study_optimization &#8212; pysolvegn 1.0.1 documentation</title>
+    <title>pysolvegn.study_optimization &#8212; pysolvegn 2.0.0 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../_static/documentation_options.js?v=51b770b3"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 1.0.1 documentation</p>
+    <p class="title logo__title">pysolvegn 2.0.0 documentation</p>
   
 </a></div>
     
@@ -351,12 +351,12 @@
 <span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.sparse</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.term</span><span class="w"> </span><span class="kn">import</span> <span class="n">Term</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.solver</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve</span>
@@ -366,7 +366,7 @@
 <div class="viewcode-block" id="study_optimization">
 <a class="viewcode-back" href="../../_autosummary/pysolvegn.study_optimization.html#pysolvegn.study_optimization">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">study_optimization</span><span class="p">(</span>
-    <span class="n">terms</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Term</span><span class="p">],</span>
+    <span class="n">terms</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Term</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Term</span><span class="p">]],</span>
     <span class="n">p0</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
     <span class="n">parametrization</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Parametrization</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="o">*</span><span class="p">,</span>
@@ -391,9 +391,10 @@
 <span class="sd">    .. math::</span>
 
 <span class="sd">        H =</span>
-<span class="sd">        \sum_i w_i J_i^T J_i</span>
+<span class="sd">        \sum_i w_i \tilde{J}_i^T \tilde{J}_i</span>
 
-<span class="sd">    for ``rJ`` terms, and:</span>
+<span class="sd">    for ``rJ`` terms (where :math:`\tilde{J}_i` is the Jacobian modified by the robust</span>
+<span class="sd">    loss function and, if provided, the chain rule of the parametrization), and:</span>
 
 <span class="sd">    .. math::</span>
 
@@ -402,9 +403,8 @@
 
 <span class="sd">    for ``gH`` terms.</span>
 
-<span class="sd">    If a parametrization is provided to the solver through the terms&#39;</span>
-<span class="sd">    parameter functions, the Hessian is expressed in the corresponding</span>
-<span class="sd">    input parameter space.</span>
+<span class="sd">    If a parametrization is provided, the Hessian is expressed in the</span>
+<span class="sd">    input parameter space of the parametrization.</span>
 
 <span class="sd">    The function displays:</span>
 
@@ -421,7 +421,7 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    terms : Sequence[Term]</span>
+<span class="sd">    terms : Union[Term, Sequence[Term]]</span>
 <span class="sd">        Terms defining the least-squares problem.</span>
 
 <span class="sd">    p0 : ArrayLike</span>
@@ -447,7 +447,7 @@
 <span class="sd">    This guarantees that the exact same implementation used during</span>
 <span class="sd">    optimization is responsible for constructing the Hessian.</span>
 
-<span class="sd">    The returned history contains:</span>
+<span class="sd">    The history of the returned :class:`pysolvegn.SolveResult` contains:</span>
 
 <span class="sd">    - ``parameters``</span>
 <span class="sd">    - ``costs``</span>
@@ -463,6 +463,9 @@
     <span class="c1"># ------------------------------------------------------------------</span>
     <span class="c1"># Input validation</span>
     <span class="c1"># ------------------------------------------------------------------</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">Term</span><span class="p">):</span>
+        <span class="n">terms</span> <span class="o">=</span> <span class="p">[</span><span class="n">terms</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;terms must be a sequence of Term objects.&quot;</span><span class="p">)</span>
@@ -496,7 +499,7 @@
     <span class="c1"># H * delta_parameters = -second_term.</span>
     <span class="c1"># ------------------------------------------------------------------</span>
 
-    <span class="n">_</span><span class="p">,</span> <span class="n">history</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">solve</span><span class="p">(</span>
         <span class="n">terms</span><span class="o">=</span><span class="n">terms</span><span class="p">,</span>
         <span class="n">p0</span><span class="o">=</span><span class="n">p0</span><span class="p">,</span>
         <span class="n">parametrization</span><span class="o">=</span><span class="n">parametrization</span><span class="p">,</span>
@@ -513,8 +516,13 @@
         <span class="p">],</span>
     <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">history</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">history</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;The solver did not return the initial optimization state.&quot;</span><span class="p">)</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">history</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">history</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># The initial state could not be evaluated (NaN or Inf value in p0 or p_out)</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span>
+            <span class="s2">&quot;The solver did not return the initial optimization state:</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">result</span><span class="o">.</span><span class="n">message</span>
+        <span class="p">)</span>
 
     <span class="n">state</span> <span class="o">=</span> <span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 

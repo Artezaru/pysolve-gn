@@ -12,5 +12,6 @@ Basic examples
     curve_fitting.py
     adding_regularization.py
     affine_parametrization.py
+    batch_undistortion.py
     analyze_problem.py
     L_curve_analysis.py

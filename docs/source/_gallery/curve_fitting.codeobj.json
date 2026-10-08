@@ -300,6 +300,15 @@
    "name": "ylabel"
   }
  ],
+ "pysolvegn.SolveResult": [
+  {
+   "is_class": false,
+   "is_explicit": true,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "SolveResult"
+  }
+ ],
  "pysolvegn.Term": [
   {
    "is_class": false,
@@ -362,6 +371,74 @@
    "module": "builtins",
    "module_short": "builtins",
    "name": "function"
+  }
+ ],
+ "result": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pysolvegn.solver",
+   "module_short": "pysolvegn",
+   "name": "SolveResult"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "SolveResult"
+  }
+ ],
+ "result.cost": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "float"
+  }
+ ],
+ "result.message": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pysolvegn.solver",
+   "module_short": "pysolvegn",
+   "name": "SolveResult.message"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "SolveResult.message"
+  }
+ ],
+ "result.n_iterations": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "int"
+  }
+ ],
+ "result.parameters": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "result.success": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "bool"
   }
  ],
  "true_params": [

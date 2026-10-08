@@ -25,7 +25,11 @@ from .implemented_conf import (
     _IMPLEMENTED_LOSS_FUNCTIONS,
     _IMPLEMENTED_FINITE_DIFFERENCE_METHODS,
 )
-from .loss_functions import get_rho_function_by_name
+from .loss_functions import (
+    get_rho_function_by_name,
+    scale_rho_function,
+    _validate_loss_scale,
+)
 
 
 class Term(object):
@@ -151,8 +155,10 @@ class Term(object):
         If ``loss`` is a string, one of the predefined loss functions is used.
         Available loss functions are ``"linear"`` (:math:`\rho(x) = x`) [default for None],
         ``"cauchy"`` (:math:`\rho(x) = \log(1 + x)`),
-        ``"arctan"`` (:math:`\rho(x) = \arctan(x)`), and
-        ``"soft_l1"`` (:math:`\rho(x) = 2(\sqrt{1 + x} - 1)`).
+        ``"arctan"`` (:math:`\rho(x) = \arctan(x)`),
+        ``"soft_l1"`` (:math:`\rho(x) = 2(\sqrt{1 + x} - 1)`),
+        ``"huber"`` (:math:`\rho(x) = x` if :math:`x \leq 1`, :math:`2\sqrt{x} - 1` otherwise), and
+        ``"tukey"`` (:math:`\rho(x) = (1 - (1 - x)^3) / 3` if :math:`x \leq 1`, :math:`1/3` otherwise).
         If ``loss`` is a callable, it is used as a custom loss function. The
         callable must take as input a 1D array-like containing the squared
         residuals and return three 1D array-like containing, respectively, the loss
@@ -160,6 +166,15 @@ class Term(object):
         When a custom loss function is provided, the ``loss`` property is set to
         ``"custom"`` and the corresponding callable is stored in the
         ``loss_func`` property.
+
+    loss_scale: Real (default=1.0)
+        The soft threshold :math:`C` of the loss function (only for ``"rJ"`` terms !),
+        expressed in the unit of the residuals: the residuals with :math:`|r| \lesssim C`
+        are treated as inliers and the larger ones as outliers.
+        The loss function (predefined **or custom**) is replaced by its scaled version
+        :math:`\rho_C(x) = C^2 \rho\left(\frac{x}{C^2}\right)`.
+        Same as ``f_scale`` in ``scipy.optimize.least_squares``. It has no effect
+        on the ``"linear"`` loss. Must be finite and strictly positive.
 
     finite_difference: Optional[str] (default=None)
         The finite difference method used to numerically compute the Jacobian
@@ -179,6 +194,7 @@ class Term(object):
         "_weight",
         "_loss",
         "_loss_func",
+        "_loss_scale",
     ]
 
     def __init__(
@@ -191,6 +207,7 @@ class Term(object):
         cost_func: Optional[Callable] = None,
         weight: Real = 1.0,
         loss: Optional[Union[str, Callable]] = None,
+        loss_scale: Real = 1.0,
         finite_difference: Optional[str] = None,
     ):
         if (residual_func is not None or jacobian_func is not None) and (
@@ -259,7 +276,11 @@ class Term(object):
         weight = float(weight)
 
         if (gradient_func is not None or hessian_func is not None) and loss is not None:
-            raise ValueError(f"loss must be None for 'gH' terms.")
+            raise ValueError("loss must be None for 'gH' terms.")
+
+        loss_scale = _validate_loss_scale(loss_scale)
+        if (gradient_func is not None or hessian_func is not None) and loss_scale != 1.0:
+            raise ValueError("loss_scale must be 1.0 for 'gH' terms.")
 
         if gradient_func is not None or hessian_func is not None:
             loss_name = None
@@ -270,7 +291,7 @@ class Term(object):
 
             if isinstance(loss, str):
                 loss_name = loss.lower()
-                if loss not in _IMPLEMENTED_LOSS_FUNCTIONS:
+                if loss_name not in _IMPLEMENTED_LOSS_FUNCTIONS:
                     raise ValueError(
                         f"loss must be one of {_IMPLEMENTED_LOSS_FUNCTIONS}, got '{loss}'."
                     )
@@ -282,6 +303,10 @@ class Term(object):
                     )
                 loss_func = loss
                 loss_name = "custom"
+
+            # Generic scaling rho_C(x) = C^2 rho(x / C^2) (identity for "linear" or C = 1)
+            if loss_name != "linear":
+                loss_func = scale_rho_function(loss_func, loss_scale)
 
         if finite_difference is not None:
             if not isinstance(finite_difference, str):
@@ -300,6 +325,7 @@ class Term(object):
         self._weight: float = weight
         self._loss: Optional[str] = loss_name
         self._loss_func: Optional[Callable] = loss_func
+        self._loss_scale: float = loss_scale
 
         # If residual but no Jacobian is provided, build the numerical Jacobian function
         if self._residual_func is not None and (
@@ -457,7 +483,7 @@ class Term(object):
         if not isinstance(value, Real):
             raise TypeError("weight must be a real number.")
         if value <= 0.0:
-            raise ValueError("weight must be non-negative.")
+            raise ValueError("weight must be a positive number.")
         self._weight = float(value)
 
     @property
@@ -488,12 +514,32 @@ class Term(object):
         - The first derivative of the loss with shape ``(n_parameters,)``.
         - The second derivative of the loss with shape ``(n_parameters,)``.
 
+        .. note::
+
+            If ``loss_scale`` is not ``1.0``, this is the scaled loss function
+            :math:`\rho_C(x) = C^2 \rho(x / C^2)` (and its derivatives).
+
         Returns
         -------
         Optional[Callable]
             The current loss function of the term in the least squares problem or None for ``"gH"`` terms.
         """
         return self._loss_func
+
+    @property
+    def loss_scale(self) -> float:
+        r"""
+        [Get] the soft threshold :math:`C` of the loss function, in the unit of the residuals.
+
+        The loss function is :math:`\rho_C(x) = C^2 \rho(x / C^2)`. Always ``1.0``
+        for ``"gH"`` terms.
+
+        Returns
+        -------
+        float
+            The loss scale of the term.
+        """
+        return self._loss_scale
 
     @property
     def type(self) -> str:
@@ -522,9 +568,10 @@ class Term(object):
         residual_func: Optional[Callable] = None,
         jacobian_func: Optional[Callable] = None,
         *,
-        weight: Optional[Real] = None,
+        weight: Real = 1.0,
         cost_func: Optional[Callable] = None,
-        loss: Optional[str] = None,
+        loss: Optional[Union[str, Callable]] = None,
+        loss_scale: Real = 1.0,
         finite_difference: Optional[str] = None,
     ) -> Term:
         r"""
@@ -568,8 +615,10 @@ class Term(object):
             If ``loss`` is a string, one of the predefined loss functions is used.
             Available loss functions are ``"linear"`` (:math:`\rho(x) = x`) [default for None],
             ``"cauchy"`` (:math:`\rho(x) = \log(1 + x)`),
-            ``"arctan"`` (:math:`\rho(x) = \arctan(x)`), and
-            ``"soft_l1"`` (:math:`\rho(x) = 2(\sqrt{1 + x} - 1)`).
+            ``"arctan"`` (:math:`\rho(x) = \arctan(x)`),
+            ``"soft_l1"`` (:math:`\rho(x) = 2(\sqrt{1 + x} - 1)`),
+            ``"huber"`` (:math:`\rho(x) = x` if :math:`x \leq 1`, :math:`2\sqrt{x} - 1` otherwise), and
+            ``"tukey"`` (:math:`\rho(x) = (1 - (1 - x)^3) / 3` if :math:`x \leq 1`, :math:`1/3` otherwise).
             If ``loss`` is a callable, it is used as a custom loss function. The
             callable must take as input a 1D array-like containing the squared
             residuals and return three 1D array-like containing, respectively, the loss
@@ -577,6 +626,19 @@ class Term(object):
             When a custom loss function is provided, the ``loss`` property is set to
             ``"custom"`` and the corresponding callable is stored in the
             ``loss_func`` property.
+
+        loss_scale: Real (default=1.0)
+            The soft threshold :math:`C` of the loss function (only for ``"rJ"`` terms !),
+            expressed in the unit of the residuals: the residuals with :math:`|r| \lesssim C`
+            are treated as inliers and the larger ones as outliers.
+            The loss function (predefined **or custom**) is replaced by its scaled version:
+
+            .. math::
+
+                \rho_C(x) = C^2 \rho\left(\frac{x}{C^2}\right)
+
+            (same as ``f_scale`` in ``scipy.optimize.least_squares``). It has no effect
+            on the ``"linear"`` loss. Must be finite and strictly positive.
 
         finite_difference: Optional[str] (default=None)
             The finite difference method used to numerically compute the Jacobian
@@ -599,6 +661,7 @@ class Term(object):
             cost_func=cost_func,
             weight=weight,
             loss=loss,
+            loss_scale=loss_scale,
             finite_difference=finite_difference,
         )
 
@@ -608,7 +671,7 @@ class Term(object):
         gradient_func: Optional[Callable] = None,
         hessian_func: Optional[Callable] = None,
         *,
-        weight: Optional[Real] = None,
+        weight: Real = 1.0,
         cost_func: Optional[Callable] = None,
     ) -> Term:
         r"""
@@ -653,7 +716,8 @@ class Term(object):
             jacobian_func=None,
             gradient_func=gradient_func,
             hessian_func=hessian_func,
+            cost_func=cost_func,
             weight=weight,
-            loss="linear",
+            loss=None,
             finite_difference=None,
         )

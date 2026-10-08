@@ -68,7 +68,7 @@ The parameters :math:`a` and :math:`b` will be estimated from the noisy data.
 
     y_true = model(true_params, x_data)
 
-    # Add relatively strong noise to make the effect of regularization visible.
+    # Add a relatively strong noise to the observations.
     y_data = y_true + 1.0 * np.random.normal(size=y_true.shape)
 
 
@@ -144,23 +144,28 @@ The Jacobian is:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-110
+.. GENERATED FROM PYTHON SOURCE LINES 104-115
 
 Performing optimization
 ---------------------------
 
 We solve the problem using only the :func:`pysolvegn.solve` function.
-This function takes the data term, an initialisation and convergence criterion.
+This function takes the data term, an initialisation and convergence criteria.
+
+The function returns a :class:`pysolvegn.SolveResult` object containing the
+optimized parameters (``result.parameters``) and information about the
+optimization: ``result.success`` indicates whether a convergence criterion
+was satisfied, and ``result.message`` describes why the optimization stopped.
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-122
+.. GENERATED FROM PYTHON SOURCE LINES 115-129
 
 .. code-block:: Python
 
 
     initial_params = np.array([1.0, 1.0])
 
-    optimized_parameters = pysolvegn.solve(
+    result = pysolvegn.solve(
         terms=data_term,
         p0=initial_params,
         max_iteration=100,
@@ -168,6 +173,8 @@ This function takes the data term, an initialisation and convergence criterion.
         ftol=1e-8,
         verbosity=2,
     )
+
+    optimized_parameters = result.parameters
 
 
 
@@ -184,29 +191,33 @@ This function takes the data term, an initialisation and convergence criterion.
     Optimality: ||g|| 
 
     Iteration  Total time (s)      Cost C            ΔC           ||Δp||_2         ||g||_∞    
-        0         3.612e-04       4.287e+02                                       5.101e+03   
-        1         5.751e-04       9.622e+01      -3.325e+02       8.856e-01       9.936e+02   
-        2         7.217e-04       5.346e+01      -4.277e+01       6.382e-01       3.246e+02   
-        3         8.528e-04       5.072e+01      -2.738e+00       4.633e-02       4.134e+00   
-        4         9.348e-04       5.072e+01      -6.618e-04       2.843e-03       4.314e-02   
-        5         1.016e-03       5.072e+01      -3.914e-07       1.021e-04       2.567e-03   
-
-    [ftol] Convergence achieved (df < ftol * F) : 3.914015067607579e-07 < 5.071655044568008e-07.
-
+        0         6.177e-05       4.287e+02                                       5.101e+03   
+        1         1.622e-04       9.622e+01      -3.325e+02       8.856e-01       9.936e+02   
+        2         2.320e-04       5.346e+01      -4.277e+01       6.382e-01       3.246e+02   
+        3         2.900e-04       5.072e+01      -2.738e+00       4.633e-02       4.134e+00   
+        4         3.500e-04       5.072e+01      -6.618e-04       2.843e-03       4.314e-02   
+        5         4.024e-04       5.072e+01      -3.914e-07       1.021e-04       2.567e-03   
+    [ftol] Convergence achieved: 0 <= F_previous - F < ftol * F with ftol = 1e-08.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-125
+
+.. GENERATED FROM PYTHON SOURCE LINES 130-132
 
 Display the fitted parameters
 ------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-170
+.. GENERATED FROM PYTHON SOURCE LINES 132-181
 
 .. code-block:: Python
 
 
-    print("True parameters:")
+    print("Success:", result.success)
+    print("Message:", result.message)
+    print("Number of iterations:", result.n_iterations)
+    print("Final cost:", result.cost)
+
+    print("\nTrue parameters:")
     print(true_params)
 
     print("\nEstimated parameters:")
@@ -252,7 +263,6 @@ Display the fitted parameters
     plt.show()
 
 
-
 .. image-sg:: /_gallery/images/sphx_glr_curve_fitting_001.png
    :alt: Curve Fitting
    :srcset: /_gallery/images/sphx_glr_curve_fitting_001.png
@@ -262,6 +272,11 @@ Display the fitted parameters
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
+
+    Success: True
+    Message: [ftol] Convergence achieved: 0 <= F_previous - F < ftol * F with ftol = 1e-08.
+    Number of iterations: 5
+    Final cost: 50.716550445680085
 
     True parameters:
     [2.5 0.5]
@@ -275,7 +290,7 @@ Display the fitted parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.061 seconds)
+   **Total running time of the script:** (0 minutes 0.046 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_curve_fitting.py:

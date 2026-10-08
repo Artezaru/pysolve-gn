@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Curve fitting &#8212; pysolvegn 1.0.1 documentation</title>
+    <title>Curve fitting &#8212; pysolvegn 2.0.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../_static/documentation_options.js?v=51b770b3"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -54,8 +54,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '_gallery/curve_fitting';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="L-curve analysis" href="L_curve_analysis.html" />
-    <link rel="prev" title="Usage" href="../usage.html" />
+    <link rel="next" title="Study of camera calibration optimization" href="study_optimization.html" />
+    <link rel="prev" title="L-curve analysis" href="L_curve_analysis.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -120,7 +120,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 1.0.1 documentation</p>
+    <p class="title logo__title">pysolvegn 2.0.0 documentation</p>
   
 </a></div>
     
@@ -289,11 +289,12 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Curve fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="L_curve_analysis.html">L-curve analysis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="adding_regularization.html">Adding regularization (curve fitting)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Curve fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="study_optimization.html">Study of camera calibration optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="adding_regularization.html">Adding regularization (curve fitting)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="affine_parametrization.html">Camera calibration with affine parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="batch_undistortion.html">Undistortion of image points with a batch solver</a></li>
 </ul>
 </div>
 </nav></div>
@@ -390,7 +391,7 @@ parameters can deviate significantly from the true parameters.</p>
 
 <span class="n">y_true</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">true_params</span><span class="p">,</span> <span class="n">x_data</span><span class="p">)</span>
 
-<span class="c1"># Add relatively strong noise to make the effect of regularization visible.</span>
+<span class="c1"># Add a relatively strong noise to the observations.</span>
 <span class="n">y_data</span> <span class="o">=</span> <span class="n">y_true</span> <span class="o">+</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="n">size</span><span class="o">=</span><span class="n">y_true</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -439,10 +440,14 @@ a e^{b x_j} - y_j\]</div>
 <section id="performing-optimization">
 <h2>Performing optimization<a class="headerlink" href="#performing-optimization" title="Link to this heading">#</a></h2>
 <p>We solve the problem using only the <a class="reference internal" href="../_autosummary/pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">pysolvegn.solve()</span></code></a> function.
-This function takes the data term, an initialisation and convergence criterion.</p>
+This function takes the data term, an initialisation and convergence criteria.</p>
+<p>The function returns a <a class="reference internal" href="../_autosummary/pysolvegn.SolveResult.html#pysolvegn.SolveResult" title="pysolvegn.SolveResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.SolveResult</span></code></a> object containing the
+optimized parameters (<code class="docutils literal notranslate"><span class="pre">result.parameters</span></code>) and information about the
+optimization: <code class="docutils literal notranslate"><span class="pre">result.success</span></code> indicates whether a convergence criterion
+was satisfied, and <code class="docutils literal notranslate"><span class="pre">result.message</span></code> describes why the optimization stopped.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">initial_params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
 
-<span class="n">optimized_parameters</span> <span class="o">=</span> <span class="n">pysolvegn</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pysolvegn</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
     <span class="n">terms</span><span class="o">=</span><span class="n">data_term</span><span class="p">,</span>
     <span class="n">p0</span><span class="o">=</span><span class="n">initial_params</span><span class="p">,</span>
     <span class="n">max_iteration</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
@@ -450,6 +455,8 @@ This function takes the data term, an initialisation and convergence criterion.<
     <span class="n">ftol</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
     <span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="n">optimized_parameters</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">parameters</span>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Individual costs [rJ term]: C_i = 0.5 * ρ(||r_i||^2)
@@ -458,20 +465,24 @@ Step norm: ||Δp||
 Optimality: ||g||
 
 Iteration  Total time (s)      Cost C            ΔC           ||Δp||_2         ||g||_∞
-    0         3.612e-04       4.287e+02                                       5.101e+03
-    1         5.751e-04       9.622e+01      -3.325e+02       8.856e-01       9.936e+02
-    2         7.217e-04       5.346e+01      -4.277e+01       6.382e-01       3.246e+02
-    3         8.528e-04       5.072e+01      -2.738e+00       4.633e-02       4.134e+00
-    4         9.348e-04       5.072e+01      -6.618e-04       2.843e-03       4.314e-02
-    5         1.016e-03       5.072e+01      -3.914e-07       1.021e-04       2.567e-03
-
-[ftol] Convergence achieved (df &lt; ftol * F) : 3.914015067607579e-07 &lt; 5.071655044568008e-07.
+    0         6.177e-05       4.287e+02                                       5.101e+03
+    1         1.622e-04       9.622e+01      -3.325e+02       8.856e-01       9.936e+02
+    2         2.320e-04       5.346e+01      -4.277e+01       6.382e-01       3.246e+02
+    3         2.900e-04       5.072e+01      -2.738e+00       4.633e-02       4.134e+00
+    4         3.500e-04       5.072e+01      -6.618e-04       2.843e-03       4.314e-02
+    5         4.024e-04       5.072e+01      -3.914e-07       1.021e-04       2.567e-03
+[ftol] Convergence achieved: 0 &lt;= F_previous - F &lt; ftol * F with ftol = 1e-08.
 </pre></div>
 </div>
 </section>
 <section id="display-the-fitted-parameters">
 <h2>Display the fitted parameters<a class="headerlink" href="#display-the-fitted-parameters" title="Link to this heading">#</a></h2>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;True parameters:&quot;</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Success:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Message:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">message</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of iterations:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">n_iterations</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final cost:&quot;</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">True parameters:&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">true_params</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Estimated parameters:&quot;</span><span class="p">)</span>
@@ -517,14 +528,19 @@ Iteration  Total time (s)      Cost C            ΔC           ||Δp||_2        
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../_images/sphx_glr_curve_fitting_001.png" srcset="../_images/sphx_glr_curve_fitting_001.png" alt="Curve Fitting" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>True parameters:
+<img src="../_images/sphx_glr_curve_fitting_001.png" srcset="../_images/sphx_glr_curve_fitting_001.png" alt="Curve Fitting" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Success: True
+Message: [ftol] Convergence achieved: 0 &lt;= F_previous - F &lt; ftol * F with ftol = 1e-08.
+Number of iterations: 5
+Final cost: 50.716550445680085
+
+True parameters:
 [2.5 0.5]
 
 Estimated parameters:
 [2.45861374 0.51137177]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.061 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.046 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-docs-source-gallery-curve-fitting-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/a7667dd6b9230ed1e12f3d3714ea68cf/curve_fitting.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">curve_fitting.ipynb</span></code></a></p>
@@ -551,20 +567,20 @@ Estimated parameters:
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../usage.html"
+       href="L_curve_analysis.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Usage</p>
+        <p class="prev-next-title">L-curve analysis</p>
       </div>
     </a>
     <a class="right-next"
-       href="L_curve_analysis.html"
+       href="study_optimization.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">L-curve analysis</p>
+        <p class="prev-next-title">Study of camera calibration optimization</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

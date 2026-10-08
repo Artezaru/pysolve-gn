@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pysolvegn.build_soft_squared_regularization &#8212; pysolvegn 1.0.1 documentation</title>
+    <title>pysolvegn.build_soft_squared_regularization &#8212; pysolvegn 2.0.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../_static/documentation_options.js?v=51b770b3"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -54,7 +54,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/pysolvegn.build_soft_squared_regularization';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pysolvegn.build_numerical_jacobian" href="pysolvegn.build_numerical_jacobian.html" />
+    <link rel="next" title="pysolvegn.build_absolute_regularization" href="pysolvegn.build_absolute_regularization.html" />
     <link rel="prev" title="pysolvegn.build_squared_regularization" href="pysolvegn.build_squared_regularization.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -120,7 +120,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 1.0.1 documentation</p>
+    <p class="title logo__title">pysolvegn 2.0.0 documentation</p>
   
 </a></div>
     
@@ -290,15 +290,9 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve.html">pysolvegn.solve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.SolveResult.html">pysolvegn.SolveResult</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.Term.html">pysolvegn.Term</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.Parametrization.html">pysolvegn.Parametrization</a></li>
-</ul>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.linear_rho.html">pysolvegn.linear_rho</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.soft_l1_rho.html">pysolvegn.soft_l1_rho</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.cauchy_rho.html">pysolvegn.cauchy_rho</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.arctan_rho.html">pysolvegn.arctan_rho</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pysolvegn.get_rho_function_by_name.html">pysolvegn.get_rho_function_by_name</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_affine_parametrization.html">pysolvegn.build_affine_parametrization</a></li>
@@ -309,11 +303,42 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_squared_regularization.html">pysolvegn.build_squared_regularization</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">pysolvegn.build_soft_squared_regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_absolute_regularization.html">pysolvegn.build_absolute_regularization</a></li>
 </ul>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.perform_Lcurve_analysis.html">pysolvegn.perform_Lcurve_analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pysolvegn.study_optimization.html">pysolvegn.study_optimization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve_batch.html">pysolvegn.solve_batch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.BatchSolveResult.html">pysolvegn.BatchSolveResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.BatchTerm.html">pysolvegn.BatchTerm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.BatchParametrization.html">pysolvegn.BatchParametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_affine_parametrization.html">pysolvegn.build_batch_affine_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_fixed_parametrization.html">pysolvegn.build_batch_fixed_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_sigmoid_parametrization.html">pysolvegn.build_batch_sigmoid_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_positive_parametrization.html">pysolvegn.build_batch_positive_parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_squared_regularization.html">pysolvegn.build_batch_squared_regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_soft_squared_regularization.html">pysolvegn.build_batch_soft_squared_regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_absolute_regularization.html">pysolvegn.build_batch_absolute_regularization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_numerical_jacobian.html">pysolvegn.build_batch_numerical_jacobian</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.linear_rho.html">pysolvegn.linear_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.soft_l1_rho.html">pysolvegn.soft_l1_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.huber_rho.html">pysolvegn.huber_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.cauchy_rho.html">pysolvegn.cauchy_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.arctan_rho.html">pysolvegn.arctan_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.tukey_rho.html">pysolvegn.tukey_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.scale_rho_function.html">pysolvegn.scale_rho_function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.get_rho_function_by_name.html">pysolvegn.get_rho_function_by_name</a></li>
 </ul>
 </div>
 </nav></div>
@@ -378,7 +403,7 @@
 <h1>pysolvegn.build_soft_squared_regularization<a class="headerlink" href="#pysolvegn-build-soft-squared-regularization" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysolvegn.build_soft_squared_regularization">
-<span class="sig-name descname"><span class="pre">build_soft_squared_regularization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stds</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/implemented_regularizations.html#build_soft_squared_regularization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.build_soft_squared_regularization" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">build_soft_squared_regularization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stds</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/implemented_regularizations.html#build_soft_squared_regularization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.build_soft_squared_regularization" title="Link to this definition">#</a></dt>
 <dd><p>Build a soft squared regularization term based on a Gaussian prior.</p>
 <p>The regularization is null inside a symmetric threshold around the
 mean and increases quadratically outside this interval.</p>
@@ -403,7 +428,11 @@ mean and increases quadratically outside this interval.</p>
     &amp; \text{otherwise}.
 \end{cases}\end{split}\]</div>
 <p>The resulting <a class="reference internal" href="pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">Term</span></code></a> can be directly passed to
-<code class="xref py py-func docutils literal notranslate"><span class="pre">pysolve_gn.solve()</span></code>.</p>
+<a class="reference internal" href="pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">pysolvegn.solve()</span></code></a>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="pysolvegn.build_batch_soft_squared_regularization.html#pysolvegn.build_batch_soft_squared_regularization" title="pysolvegn.build_batch_soft_squared_regularization"><code class="xref py py-func docutils literal notranslate"><span class="pre">build_batch_soft_squared_regularization()</span></code></a> for the batched version.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -415,6 +444,8 @@ regularization outside the threshold.
 All values must be strictly positive.</p></li>
 <li><p><strong>weight</strong> (<em>Real</em><em> (</em><em>default=1.0</em><em>)</em>) – Weight of the regularization term.</p></li>
 <li><p><strong>loss</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>]</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – Loss function applied to the regularization residuals.</p></li>
+<li><p><strong>loss_scale</strong> (<em>Real</em><em> (</em><em>default=1.0</em><em>)</em>) – Soft threshold of the loss function, in the unit of the residuals
+(number of standard deviations), see <a class="reference internal" href="pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.Term</span></code></a>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -448,11 +479,11 @@ All values must be strictly positive.</p></li>
       </div>
     </a>
     <a class="right-next"
-       href="pysolvegn.build_numerical_jacobian.html"
+       href="pysolvegn.build_absolute_regularization.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pysolvegn.build_numerical_jacobian</p>
+        <p class="prev-next-title">pysolvegn.build_absolute_regularization</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

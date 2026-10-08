@@ -47,8 +47,8 @@ true_params = np.array([2.5, 0.5])
 
 y_true = model(true_params, x_data)
 
-# Add relatively strong noise to make the effect of regularization visible.
-y_data = y_true + 1.0 * np.random.normal(size=y_true.shape)
+# Add relatively strong noise and bias to make the effect of regularization visible.
+y_data = y_true + 1.2 * np.random.normal(size=y_true.shape)
 
 
 def residual_function(params):
@@ -106,16 +106,16 @@ data_term = pysolvegn.Term.from_rJ(
 #
 # .. note::
 #
-#    This regularization term can be define similarly to the data term, given a residual function and a Jacobian function
-#    or directly using the provided helper function `pysolvegn.build_squared_regularization`.
+#    This regularization term can be defined similarly to the data term, given a residual function and a Jacobian function
+#    or directly using the provided helper function :func:`pysolvegn.build_squared_regularization`.
 
-prior_means = np.array([2.5, 0.5])
+prior_means = np.array([2.4, 0.5])
 prior_stds = np.array([0.5, 0.2])
 
 regularization_term = pysolvegn.build_squared_regularization(
     means=prior_means,
     stds=prior_stds,
-    weight=1.0,  # Can be change to update the regularization strength
+    weight=0.1 * y_data.size ** 2,  # Can be changed to update the regularization strength
 )
 
 # %%
@@ -140,6 +140,9 @@ regularization_term = pysolvegn.build_squared_regularization(
 #
 # Both the data term and the regularization term contribute to the
 # Gauss-Newton system.
+#
+# :func:`pysolvegn.solve` returns a :class:`pysolvegn.SolveResult`: the optimized
+# parameters are stored in ``result.parameters``.
 
 result_without_regularization = pysolvegn.solve(
     terms=[
@@ -173,10 +176,12 @@ print("True parameters:")
 print(true_params)
 
 print("\nEstimated parameters without regularization:")
-print(result_without_regularization)
+print(result_without_regularization.parameters)
+print("Success:", result_without_regularization.success)
 
 print("\nEstimated parameters with regularization:")
-print(result_with_regularization)
+print(result_with_regularization.parameters)
+print("Success:", result_with_regularization.success)
 
 # Use a dense set of points to display the fitted curves smoothly.
 x_plot = np.linspace(0, 3, 300)
@@ -184,11 +189,11 @@ x_plot = np.linspace(0, 3, 300)
 y_true_plot = model(true_params, x_plot)
 
 y_without_regularization_plot = model(
-    result_without_regularization,
+    result_without_regularization.parameters,
     x_plot,
 )
 y_with_regularization_plot = model(
-    result_with_regularization,
+    result_with_regularization.parameters,
     x_plot,
 )
 

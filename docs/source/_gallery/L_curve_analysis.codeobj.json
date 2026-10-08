@@ -1,5 +1,5 @@
 {
- "data_terms": [
+ "data_term": [
   {
    "is_class": false,
    "is_explicit": false,
@@ -19,36 +19,27 @@
   {
    "is_class": false,
    "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "list"
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
   }
  ],
  "estimated_stds": [
   {
    "is_class": false,
    "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "list"
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
   }
  ],
  "estimated_trust": [
   {
    "is_class": false,
    "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "list"
-  }
- ],
- "jacobian_func": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "function"
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
   }
  ],
  "jacobian_function": [
@@ -67,6 +58,22 @@
    "module": "builtins",
    "module_short": "builtins",
    "name": "function"
+  }
+ ],
+ "np.array": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "builtin_function_or_method"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "array"
   }
  ],
  "np.exp": [
@@ -211,6 +218,13 @@
    "module": "pysolvegn",
    "module_short": "pysolvegn",
    "name": "build_soft_squared_regularization"
+  },
+  {
+   "is_class": false,
+   "is_explicit": true,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "build_soft_squared_regularization"
   }
  ],
  "pysolvegn.perform_Lcurve_analysis": [
@@ -227,6 +241,22 @@
    "module": "pysolvegn",
    "module_short": "pysolvegn",
    "name": "perform_Lcurve_analysis"
+  },
+  {
+   "is_class": false,
+   "is_explicit": true,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "perform_Lcurve_analysis"
+  }
+ ],
+ "pysolvegn.solve": [
+  {
+   "is_class": false,
+   "is_explicit": true,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "solve"
   }
  ],
  "reg_term": [
@@ -243,15 +273,6 @@
    "module": "pysolvegn",
    "module_short": "pysolvegn",
    "name": "Term"
-  }
- ],
- "residual_func": [
-  {
-   "is_class": false,
-   "is_explicit": false,
-   "module": "builtins",
-   "module_short": "builtins",
-   "name": "function"
   }
  ],
  "residual_function": [

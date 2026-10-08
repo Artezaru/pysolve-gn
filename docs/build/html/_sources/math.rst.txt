@@ -309,6 +309,225 @@ Such that:
 
 
 
+Non-positive curvature weights: fallback on :math:`\rho'`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The construction above requires :math:`\sqrt{W_J}`, so every diagonal element
+
+.. math::
+
+   W_{J,j} = \rho'(Z_j) + 2 \rho''(Z_j) Z_j
+
+must be strictly positive. This always holds for a convex loss function, but
+not for the loss functions that are designed to reject outliers. For these
+loss functions, :math:`\rho''` is negative and dominates :math:`\rho'` for large
+residuals:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 15 30 35 20
+
+   * - Loss
+     - :math:`\rho'(Z)`
+     - :math:`W_J(Z) = \rho'(Z) + 2\rho''(Z) Z`
+     - :math:`W_J \leq 0` when
+   * - ``"linear"``
+     - :math:`1`
+     - :math:`1`
+     - never
+   * - ``"soft_l1"``
+     - :math:`(1 + Z)^{-1/2}`
+     - :math:`(1 + Z)^{-3/2}`
+     - never
+   * - ``"huber"``
+     - :math:`1` if :math:`Z \leq 1`, :math:`Z^{-1/2}` otherwise
+     - :math:`1` if :math:`Z \leq 1`, :math:`0` otherwise
+     - :math:`Z > 1`
+   * - ``"cauchy"``
+     - :math:`(1 + Z)^{-1}`
+     - :math:`(1 - Z)(1 + Z)^{-2}`
+     - :math:`Z \geq 1`
+   * - ``"arctan"``
+     - :math:`(1 + Z^2)^{-1}`
+     - :math:`(1 - 3Z^2)(1 + Z^2)^{-2}`
+     - :math:`Z \geq 1/\sqrt{3}`
+   * - ``"tukey"``
+     - :math:`(1 - Z)^2` if :math:`Z \leq 1`, :math:`0` otherwise
+     - :math:`(1 - Z)(1 - 5Z)` if :math:`Z \leq 1`, :math:`0` otherwise
+     - :math:`Z \geq 1/5`
+
+A negative :math:`W_{J,j}` means that the cost of the :math:`j`-th residual is
+locally concave: the corresponding contribution
+:math:`W_{J,j} \mathbf{J}_j^T \mathbf{J}_j` to the Hessian is negative
+semi-definite, and the total Hessian may become indefinite (the step is then no
+longer guaranteed to be a descent direction).
+
+Simply clamping :math:`W_{J,j}` to a small value :math:`\varepsilon` is not a good
+solution. The gradient stays exact, but the contribution of the residual to the
+Hessian becomes :math:`\varepsilon \mathbf{J}_j^T \mathbf{J}_j \approx 0`. When
+many residuals are in this regime (e.g. a poor initial guess, or residuals
+expressed in a unit much larger than the threshold of the loss), the Hessian
+becomes almost singular and the step explodes.
+
+Instead, the second-order correction of the loss is dropped for these residuals
+(as in Ceres Solver):
+
+.. math::
+
+   W_{J,j} =
+   \begin{cases}
+      \rho'(Z_j) + 2 \rho''(Z_j) Z_j & \text{if } \rho'(Z_j) + 2 \rho''(Z_j) Z_j > \varepsilon \\
+      \max\left(\rho'(Z_j), 0\right) & \text{otherwise}
+   \end{cases}
+
+with :math:`\varepsilon = 10^{-12}`. In the fallback case, the modified residual and
+Jacobian become:
+
+.. math::
+
+   \tilde{\mathbf{r}}_j = \frac{\rho'(Z_j)}{\sqrt{\rho'(Z_j)}} \mathbf{r}_j = \sqrt{\rho'(Z_j)} \, \mathbf{r}_j
+   \quad
+   \tilde{\mathbf{J}}_j = \sqrt{\rho'(Z_j)} \, \mathbf{J}_j
+
+which is exactly the classical *Iteratively Reweighted Least Squares* (IRLS)
+weighting: the residual is treated as a standard least squares residual with the
+weight :math:`\rho'(Z_j)`. This choice has three properties:
+
+- **The gradient is unchanged**: in both cases
+  :math:`\tilde{\mathbf{J}}_j^T \tilde{\mathbf{r}}_j = \rho'(Z_j) \mathbf{J}_j^T \mathbf{r}_j`,
+  so the stationary points of the problem are the same.
+- **The Hessian approximation stays positive semi-definite**: each contribution
+  :math:`W_{J,j} \mathbf{J}_j^T \mathbf{J}_j` uses :math:`W_{J,j} \geq 0`. When it is
+  invertible, the step :math:`\Delta \mathbf{p} = -\mathbf{H}^{-1} \mathbf{g}` is a
+  descent direction (:math:`\mathbf{g}^T \Delta \mathbf{p} < 0`).
+- **The residual keeps a curvature proportional to its influence**: an outlier with
+  a small :math:`\rho'(Z_j)` contributes little to both the gradient and the Hessian,
+  instead of contributing to the gradient only.
+
+If :math:`\rho'(Z_j) \leq 0` too (e.g. ``"tukey"`` beyond its threshold, where
+:math:`\rho' = 0`), then :math:`W_{J,j} = 0` and the residual is simply ignored:
+:math:`\tilde{\mathbf{r}}_j = 0` and :math:`\tilde{\mathbf{J}}_j = 0`.
+
+.. warning::
+
+   With a redescending loss such as ``"tukey"``, if all the residuals are beyond the
+   threshold, the gradient and the Hessian are both zero and the system is singular.
+   These loss functions require a good initial guess (e.g. the solution obtained
+   with ``"cauchy"`` or ``"huber"``).
+
+.. note::
+
+   The fallback only modifies the Hessian approximation, never the gradient or the
+   cost. The Levenberg-Marquardt damping (``damping="lm"`` or ``"lm-diag"``) remains
+   useful on top of it to control the step length far from the solution.
+
+
+Scaling a problem
+-----------------
+
+All the predefined loss functions have their transition between the quadratic
+regime (:math:`\rho(Z) \approx Z`, inliers) and the robust regime (outliers) around
+:math:`Z = 1`, that is :math:`|\mathbf{r}_j| \approx 1` **in the unit of the residuals**.
+
+The result of a robust optimization therefore depends on the unit of the residuals.
+For example, for residuals expressed in millimeters with a noise of a few
+millimeters, all the residuals are in the robust regime of the loss function: every
+residual is treated as an outlier and the optimization can fail or converge to a
+poor solution. The same problem expressed in meters works as expected.
+
+To control the threshold, a **soft threshold** :math:`C > 0` (``loss_scale``),
+expressed in the unit of the residuals, is introduced. The loss function
+:math:`\rho` is replaced by its scaled version:
+
+.. math::
+
+   \rho_C(Z) = C^2 \rho\left(\frac{Z}{C^2}\right)
+
+The transition is now located at :math:`Z = C^2`, that is
+:math:`|\mathbf{r}_j| \approx C`. This definition is the same as the
+``f_scale`` argument of ``scipy.optimize.least_squares``.
+
+Derivatives
+~~~~~~~~~~~
+
+Denoting :math:`u_j = Z_j / C^2` the dimensionless squared residual, the derivatives
+of the scaled loss function are:
+
+.. math::
+
+   \rho_C'(Z_j) = \rho'(u_j)
+   \quad
+   \rho_C''(Z_j) = \frac{1}{C^2} \rho''(u_j)
+
+The weights of the robust Gauss-Newton system become:
+
+.. math::
+
+   W_{R,j} = \rho'(u_j)
+   \quad
+   W_{J,j} = \rho'(u_j) + 2 \frac{\rho''(u_j)}{C^2} Z_j = \rho'(u_j) + 2 \rho''(u_j) u_j
+
+Both weights are dimensionless and only depend on the ratio
+:math:`|\mathbf{r}_j| / C`. The fallback on :math:`\rho'` described in the previous
+section is applied in the same way on :math:`W_{J,j}`.
+
+Properties
+~~~~~~~~~~
+
+- **Small residuals are unchanged.** Since all the predefined loss functions satisfy
+  :math:`\rho(0) = 0` and :math:`\rho'(0) = 1`, for :math:`|\mathbf{r}_j| \ll C`:
+
+  .. math::
+
+     \rho_C(Z_j) \approx C^2 \frac{Z_j}{C^2} = Z_j
+
+  The inliers are treated as in a standard least squares problem, whatever :math:`C`.
+
+- **The linear loss is invariant.** For :math:`\rho(Z) = Z`,
+  :math:`\rho_C(Z) = Z` for every :math:`C`.
+
+- **Unit invariance.** If the residuals are multiplied by a factor :math:`\alpha`
+  (change of unit) and :math:`C` is multiplied by the same factor, then
+  :math:`u_j` is unchanged and the cost is multiplied by :math:`\alpha^2`:
+
+  .. math::
+
+     \rho_{\alpha C}(\alpha^2 Z_j) = \alpha^2 \rho_C(Z_j)
+
+  The minimizer is therefore the same: the solution does not depend on the unit of
+  the residuals, as long as :math:`C` is expressed in the same unit.
+
+- **Equivalence with a weighted problem.** Since
+
+  .. math::
+
+     \rho_C\left(\|\mathbf{r}_j\|^2\right)
+     = C^2 \rho\left(\left\|\frac{\mathbf{r}_j}{C}\right\|^2\right)
+
+  a term with the loss :math:`\rho_C` and the weight :math:`w_i` is equivalent to a
+  term with the loss :math:`\rho`, the residuals :math:`\mathbf{r}_i / C`, the Jacobian
+  :math:`\mathbf{J}_i / C` and the weight :math:`w_i C^2`. ``loss_scale`` performs this
+  normalization automatically, without modifying the residual functions or the weight.
+
+- **Any loss function can be scaled.** The scaling only uses the values of
+  :math:`\rho`, :math:`\rho'` and :math:`\rho''`, so it applies in the same way to
+  the predefined loss functions and to a custom loss function.
+
+.. tip::
+
+   A good starting value for :math:`C` is the expected magnitude of the inlier
+   residuals, e.g. two or three times the standard deviation of the measurement noise.
+   Residuals larger than a few :math:`C` are then progressively considered as outliers.
+
+.. seealso::
+
+   The ``loss_scale`` argument of :class:`pysolvegn.Term` (and
+   :class:`pysolvegn.BatchTerm`), which stores the soft threshold :math:`C` and
+   replaces the loss function :math:`\rho` (predefined or custom) by :math:`\rho_C`.
+   The same :math:`C` is used for all the residuals of a term, so terms with
+   residuals in different units should use different values.
+
+
 Adding regularization to the Gauss-Newton update
 ------------------------------------------------
 
@@ -554,3 +773,237 @@ the optimization terms.
    parameters :math:`\mathbf{p}_{\mathrm{out}}` as a 1D-array with shape
    ``(n_p_outputs,)`` and the Jacobian :math:`\mathbf{J}_P` as a 2D-array
    with shape ``(n_p_outputs, n_parameters)``
+
+Solving a batch of independent problems
+---------------------------------------
+
+Many applications require solving the same least squares problem for a large
+number of independent datasets (e.g. one fit per pixel, per point or per image).
+Consider :math:`K` independent problems sharing the same terms, indexed by
+:math:`k \in (1, K)`:
+
+.. math::
+
+   \min_{\mathbf{p}_{\mathrm{in},k}}
+   \frac{1}{2}
+   \sum_i w_{i,k} \sum_j
+   \rho_i
+   \left(
+      \left\| \mathbf{r}_{i,j}\left(P(\mathbf{p}_{\mathrm{in},k}), k\right) \right\|^2
+   \right)
+   \quad \forall k \in (1, K)
+
+The residual functions, the robust cost functions :math:`\rho_i` and the
+parametrization :math:`P` have the same form for all the problems (:math:`P` is
+strictly identical for all of them), but each problem
+has its own parameters :math:`\mathbf{p}_{\mathrm{in},k} \in \mathbb{R}^{n_p}`, its
+own data (the residuals depend on :math:`k`) and possibly its own weights
+:math:`w_{i,k}`.
+
+Block-diagonal structure
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+These :math:`K` problems could be stacked into a single problem with
+:math:`K n_p` parameters. Since the residuals of the problem :math:`k` only depend
+on :math:`\mathbf{p}_{\mathrm{in},k}`, the stacked Jacobian is block-diagonal, and so
+is the Gauss-Newton system:
+
+.. math::
+
+   \begin{bmatrix}
+      \mathbf{H}_1 & & \\
+      & \ddots & \\
+      & & \mathbf{H}_K
+   \end{bmatrix}
+   \begin{bmatrix}
+      \Delta \mathbf{p}_{\mathrm{in},1} \\
+      \vdots \\
+      \Delta \mathbf{p}_{\mathrm{in},K}
+   \end{bmatrix}
+   =
+   -
+   \begin{bmatrix}
+      \mathbf{g}_1 \\
+      \vdots \\
+      \mathbf{g}_K
+   \end{bmatrix}
+
+where, for each problem :math:`k`, the Hessian approximation and the gradient are
+built exactly as in the previous sections (robust weighting, fallback on
+:math:`\rho'`, loss scaling and parametrization):
+
+.. math::
+
+   \mathbf{H}_k = \sum_i w_{i,k} \, \tilde{\mathbf{J}}_{i,k}^T \tilde{\mathbf{J}}_{i,k}
+   \quad
+   \mathbf{g}_k = \sum_i w_{i,k} \, \tilde{\mathbf{J}}_{i,k}^T \tilde{\mathbf{r}}_{i,k}
+   \quad
+   \tilde{\mathbf{J}}_{i,k} = \sqrt{W_{J,i,k}} \, \mathbf{J}_{i,k} \mathbf{J}_{P,k}
+
+The global system therefore decouples into :math:`K` small independent systems of
+size :math:`n_p \times n_p`:
+
+.. math::
+
+   \mathbf{H}_k \Delta \mathbf{p}_{\mathrm{in},k} = -\mathbf{g}_k
+   \quad \forall k \in (1, K)
+
+Instead of one system of size :math:`K n_p`, the batch solver solves :math:`K`
+systems of size :math:`n_p` in a single vectorized operation. The cost of an
+iteration is linear in :math:`K`, and all the quantities are stored as arrays with
+a leading batch dimension:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 40 60
+
+   * - Quantity
+     - Shape
+   * - Parameters :math:`\mathbf{p}_{\mathrm{in}}`
+     - ``(K, n_parameters)``
+   * - Residuals :math:`\mathbf{r}_i`
+     - ``(K, n_residuals_i)``
+   * - Jacobians :math:`\mathbf{J}_i`
+     - ``(K, n_residuals_i, n_p_outputs)``
+   * - Jacobian of the parametrization :math:`\mathbf{J}_P`
+     - ``(K, n_p_outputs, n_parameters)``
+   * - Gradients :math:`\mathbf{g}`
+     - ``(K, n_parameters)``
+   * - Hessians :math:`\mathbf{H}`
+     - ``(K, n_parameters, n_parameters)``
+   * - Weights :math:`w_i`
+     - scalar, or ``(K,)`` for one weight per problem
+
+Independent convergence
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Since the problems are independent, each one converges at its own pace: an easy
+problem may converge in a few iterations, while a difficult one requires many more.
+The stopping criteria (``ftol``, ``atol``, ``gtol``, ``xtol``, ``ptol``) are therefore
+evaluated **for each problem separately**, using its own cost :math:`F_k`, gradient
+:math:`\mathbf{g}_k` and update :math:`\Delta \mathbf{p}_{\mathrm{in},k}`. For instance,
+the problem :math:`k` satisfies ``ftol`` when:
+
+.. math::
+
+   |F_k^{(n)} - F_k^{(n-1)}| < \mathrm{ftol} \cdot F_k^{(n)}
+
+The solver maintains the set :math:`\mathcal{A}^{(n)}` of the problems still in
+processing at iteration :math:`n` (the *active set*), with
+:math:`m = |\mathcal{A}^{(n)}| \leq K`:
+
+.. math::
+
+   \mathcal{A}^{(0)} = (1, K)
+   \quad
+   \mathcal{A}^{(n+1)} = \mathcal{A}^{(n)} \setminus \left\{ k \text{ stopped at iteration } n \right\}
+
+At each iteration, only the :math:`m` active problems are evaluated, and their
+parameters are updated:
+
+.. math::
+
+   \mathbf{p}_{\mathrm{in},k}^{(n+1)} =
+   \begin{cases}
+      \mathbf{p}_{\mathrm{in},k}^{(n)} + \Delta \mathbf{p}_{\mathrm{in},k} & \text{if } k \in \mathcal{A}^{(n+1)} \\
+      \mathbf{p}_{\mathrm{in},k}^{(n)} & \text{otherwise (frozen)}
+   \end{cases}
+
+This has two consequences:
+
+- **The converged problems are not modified anymore.** Their parameters are frozen
+  at the iteration at which they satisfied a criterion, exactly as if each problem
+  had been solved alone with :func:`pysolvegn.solve`.
+- **The work decreases during the optimization.** The cost of an iteration is
+  proportional to the number :math:`m` of active problems, not to :math:`K`.
+
+A problem can also be stopped without being converged: when its system is singular,
+when NaN or Inf values appear in its parameters, or when a global limit is reached
+(``max_iteration``, ``max_time`` or the callback), which stops all the remaining
+active problems. The solver reports, for each problem, whether it has converged.
+
+.. note::
+
+   The global cost :math:`\sum_k F_k` has no particular meaning for independent
+   problems (a single badly fitted problem dominates it). The logged values are
+   therefore averaged over the active problems.
+
+Evaluating a subset of problems
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Because of the active set, the callables of the terms are called with the parameters
+of the :math:`m` active problems only, together with their indices in the batch:
+
+.. math::
+
+   \left(
+      \begin{bmatrix}
+         \mathbf{p}_{k_1} \\
+         \vdots \\
+         \mathbf{p}_{k_m}
+      \end{bmatrix},
+      \begin{bmatrix}
+         k_1 \\
+         \vdots \\
+         k_m
+      \end{bmatrix}
+   \right)
+   \longmapsto
+   \begin{bmatrix}
+      \mathbf{r}(\mathbf{p}_{k_1}, k_1) \\
+      \vdots \\
+      \mathbf{r}(\mathbf{p}_{k_m}, k_m)
+   \end{bmatrix}
+
+The row :math:`a` of every output must only depend on the row :math:`a` of the
+parameters and on the data of the problem :math:`k_a` (selected with the indices,
+e.g. ``observations[indices]``). The number :math:`m` changes from one call to the
+next, so the callables must never assume :math:`m = K`.
+
+The parametrization :math:`P` is the same for all the problems: it does not depend on
+:math:`k`, so its callables only receive the parameters of the :math:`m` active problems
+(without indices) and are applied row by row:
+
+.. math::
+
+   \begin{bmatrix}
+      \mathbf{p}_{\mathrm{in},k_1} \\
+      \vdots \\
+      \mathbf{p}_{\mathrm{in},k_m}
+   \end{bmatrix}
+   \longmapsto
+   \begin{bmatrix}
+      P(\mathbf{p}_{\mathrm{in},k_1}) \\
+      \vdots \\
+      P(\mathbf{p}_{\mathrm{in},k_m})
+   \end{bmatrix}
+
+The same convention is used for the vector weights: the weights of the active
+problems are :math:`(w_{i,k_1}, \ldots, w_{i,k_m})`. The weights must be strictly
+positive: a zero weight would cancel all the contributions of a problem and make
+its system :math:`\mathbf{H}_k` singular.
+
+.. note::
+
+   The loss scale :math:`C_i` (``loss_scale``) of a term is shared by all the
+   problems of the batch. Problems whose residuals have very different magnitudes
+   should be normalized in the residual functions (e.g. by dividing by a
+   per-problem noise level selected with the indices).
+
+.. seealso::
+
+   The function :func:`pysolvegn.solve_batch` solves a batch of independent problems.
+
+   The class :class:`pysolvegn.BatchTerm` represents a term of the batch. Its
+   ``Callable`` take the parameters as a 2D-array with shape ``(m, n_parameters)``
+   and the indices as a 1D-array with shape ``(m,)``, and return the residuals as
+   a 2D-array with shape ``(m, n_residuals)`` and the Jacobians as a 3D-array with
+   shape ``(m, n_residuals, n_parameters)``. Its weight is either a scalar or a
+   1D-array with shape ``(K,)``.
+
+   The class :class:`pysolvegn.BatchParametrization` represents the parameter
+   transformation :math:`P` of the batch. The same transformation is applied to all
+   the problems: its ``Callable`` only take the input parameters as a 2D-array with
+   shape ``(m, n_parameters)`` (no indices) and return the output parameters with shape
+   ``(m, n_p_outputs)`` and the Jacobians :math:`\mathbf{J}_{P,k}` with shape
+   ``(m, n_p_outputs, n_parameters)``.

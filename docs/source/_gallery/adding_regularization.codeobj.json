@@ -300,6 +300,15 @@
    "name": "ndarray"
   }
  ],
+ "pysolvegn.SolveResult": [
+  {
+   "is_class": false,
+   "is_explicit": true,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "SolveResult"
+  }
+ ],
  "pysolvegn.Term": [
   {
    "is_class": false,
@@ -346,6 +355,13 @@
    "module": "pysolvegn",
    "module_short": "pysolvegn",
    "name": "build_squared_regularization"
+  },
+  {
+   "is_class": false,
+   "is_explicit": true,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "build_squared_regularization"
   }
  ],
  "pysolvegn.solve": [
@@ -359,6 +375,13 @@
   {
    "is_class": false,
    "is_explicit": false,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "solve"
+  },
+  {
+   "is_class": false,
+   "is_explicit": true,
    "module": "pysolvegn",
    "module_short": "pysolvegn",
    "name": "solve"
@@ -393,18 +416,68 @@
   {
    "is_class": false,
    "is_explicit": false,
-   "module": "numpy",
-   "module_short": "numpy",
-   "name": "ndarray"
+   "module": "pysolvegn.solver",
+   "module_short": "pysolvegn",
+   "name": "SolveResult"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "SolveResult"
   }
  ],
- "result_without_regularization": [
+ "result_with_regularization.parameters": [
   {
    "is_class": false,
    "is_explicit": false,
    "module": "numpy",
    "module_short": "numpy",
    "name": "ndarray"
+  }
+ ],
+ "result_with_regularization.success": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "bool"
+  }
+ ],
+ "result_without_regularization": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pysolvegn.solver",
+   "module_short": "pysolvegn",
+   "name": "SolveResult"
+  },
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "pysolvegn",
+   "module_short": "pysolvegn",
+   "name": "SolveResult"
+  }
+ ],
+ "result_without_regularization.parameters": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "numpy",
+   "module_short": "numpy",
+   "name": "ndarray"
+  }
+ ],
+ "result_without_regularization.success": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "bool"
   }
  ],
  "true_params": [
@@ -441,6 +514,15 @@
    "module": "numpy",
    "module_short": "numpy",
    "name": "ndarray"
+  }
+ ],
+ "y_data.size": [
+  {
+   "is_class": false,
+   "is_explicit": false,
+   "module": "builtins",
+   "module_short": "builtins",
+   "name": "int"
   }
  ],
  "y_true": [

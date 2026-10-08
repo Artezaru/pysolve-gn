@@ -129,3 +129,123 @@ def build_numerical_jacobian(
         return jacobian
 
     return jacobian_func
+
+def build_batch_numerical_jacobian(
+    residual_func: Callable,
+    method: str = "central",
+    epsilon: Real = 1e-8,
+) -> Callable:
+    r"""
+    Build a batched Jacobian function for the batched Gauss-Newton optimization by computing
+    the numerical derivatives of a batched residual function with respect to the parameters
+    using finite differences.
+
+    This is the batched counterpart of :func:`pysolvegn.build_numerical_jacobian`: the ``m``
+    problems of the batch are perturbed simultaneously, so the residual function is called
+    ``n_parameters + 1`` times (``2 * n_parameters + 1`` times for the ``"central"`` method)
+    whatever the number of problems.
+
+    For the problem :math:`k`, with :math:`\epsilon_{k,j} = \epsilon \max(1, |p_{k,j}|)`,
+    the ``"central"`` method computes:
+
+    .. math::
+
+        J_{k,i,j} = \frac{R_{k,i}(p_k + \epsilon_{k,j} e_j) - R_{k,i}(p_k - \epsilon_{k,j} e_j)}{2\epsilon_{k,j}}
+
+    With the ``"forward"`` method:
+
+    .. math::
+
+        J_{k,i,j} = \frac{R_{k,i}(p_k + \epsilon_{k,j} e_j) - R_{k,i}(p_k)}{\epsilon_{k,j}}
+
+    With the ``"backward"`` method:
+
+    .. math::
+
+        J_{k,i,j} = \frac{R_{k,i}(p_k) - R_{k,i}(p_k - \epsilon_{k,j} e_j)}{\epsilon_{k,j}}
+
+
+    Parameters
+    ----------
+    residual_func : Callable
+        A batched function ``residual_func(parameters, indices)`` that computes the residuals.
+        It takes the parameters of ``m`` independent problems as a 2D array with shape
+        ``(m, n_parameters)`` (``m`` is any positive integer) and the indices of these
+        problems in the full batch as a 1D array with shape ``(m,)``, and returns a 2D
+        array of residuals with shape ``(m, n_residuals)``, where the row ``a`` of the
+        residuals only depends on the row ``a`` of the parameters.
+
+    method : str, optional (default="central")
+        The finite difference method to use for computing the numerical Jacobian.
+        Must be one of "central", "forward", or "backward".
+
+    epsilon : Real, optional (default=1e-8)
+        A small perturbation value used for finite difference approximation of the Jacobian.
+
+
+    Returns
+    -------
+    jacobian_func : Callable
+        A batched function ``jacobian_func(parameters, indices)`` that computes the Jacobian
+        matrices of the ``m`` problems. It takes the parameters with shape
+        ``(m, n_parameters)`` and the indices with shape ``(m,)``, and returns a 3D array with shape ``(m, n_residuals, n_parameters)``.
+
+    """
+    if not callable(residual_func):
+        raise ValueError("The residual function must be callable.")
+    if not isinstance(epsilon, Real):
+        raise ValueError("Epsilon must be a real number.")
+    if epsilon <= 0:
+        raise ValueError("Epsilon must be a positive number.")
+    epsilon = float(epsilon)
+    if not isinstance(method, str):
+        raise ValueError("Method must be a string.")
+    method = method.lower()
+    if method not in ["central", "forward", "backward"]:
+        raise ValueError("Method must be one of 'central', 'forward', or 'backward'.")
+
+    def jacobian_func(parameters: numpy.ndarray, indices: numpy.ndarray) -> numpy.ndarray:
+        parameters = numpy.asarray(parameters, dtype=numpy.float64)
+        if parameters.ndim != 2:
+            raise ValueError("The parameters must be a 2D array with shape (m, n_parameters).")
+        n_problems, n_parameters = parameters.shape
+        residual = residual_func(parameters, indices)
+
+        if not isinstance(residual, numpy.ndarray):
+            raise ValueError("The residual function must return a numpy array.")
+        if residual.ndim != 2 or residual.shape[0] != n_problems:
+            raise ValueError(
+                "The residual function must return a 2D array with shape (m, n_residuals)."
+            )
+
+        n_residual = residual.shape[1]
+        jacobian = numpy.zeros((n_problems, n_residual, n_parameters), dtype=numpy.float64)
+        perturbed = parameters.copy()
+
+        for index in range(n_parameters):
+            perturbation = epsilon * numpy.maximum(1.0, numpy.abs(parameters[:, index]))  # (m,)
+
+            if method == "central":
+                perturbed[:, index] = parameters[:, index] + perturbation
+                residual_plus = residual_func(perturbed, indices)
+                perturbed[:, index] = parameters[:, index] - perturbation
+                residual_minus = residual_func(perturbed, indices)
+                jacobian[:, :, index] = (residual_plus - residual_minus) / (
+                    2 * perturbation[:, None]
+                )
+            elif method == "forward":
+                perturbed[:, index] = parameters[:, index] + perturbation
+                jacobian[:, :, index] = (
+                    residual_func(perturbed, indices) - residual
+                ) / perturbation[:, None]
+            elif method == "backward":
+                perturbed[:, index] = parameters[:, index] - perturbation
+                jacobian[:, :, index] = (
+                    residual - residual_func(perturbed, indices)
+                ) / perturbation[:, None]
+
+            perturbed[:, index] = parameters[:, index]
+
+        return jacobian
+
+    return jacobian_func
