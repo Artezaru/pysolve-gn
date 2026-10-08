@@ -1,0 +1,6 @@
+﻿pysolvegn.build\_batch\_numerical\_jacobian
+===========================================
+
+.. currentmodule:: pysolvegn
+
+.. autofunction:: build_batch_numerical_jacobian

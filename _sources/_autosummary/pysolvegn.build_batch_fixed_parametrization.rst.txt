@@ -1,0 +1,6 @@
+﻿pysolvegn.build\_batch\_fixed\_parametrization
+==============================================
+
+.. currentmodule:: pysolvegn
+
+.. autofunction:: build_batch_fixed_parametrization

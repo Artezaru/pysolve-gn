@@ -1,0 +1,6 @@
+﻿pysolvegn.huber\_rho
+====================
+
+.. currentmodule:: pysolvegn
+
+.. autofunction:: huber_rho

@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pysolvegn.solve_batch &#8212; pysolvegn 2.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../_static/documentation_options.js?v=51b770b3"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/pysolvegn.solve_batch';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pysolvegn.BatchSolveResult" href="pysolvegn.BatchSolveResult.html" />
+    <link rel="prev" title="pysolvegn.study_optimization" href="pysolvegn.study_optimization.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pysolvegn 2.0.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../usage.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../usage.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve.html">pysolvegn.solve</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.SolveResult.html">pysolvegn.SolveResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.Term.html">pysolvegn.Term</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.Parametrization.html">pysolvegn.Parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_affine_parametrization.html">pysolvegn.build_affine_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_fixed_parametrization.html">pysolvegn.build_fixed_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_sigmoid_parametrization.html">pysolvegn.build_sigmoid_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_positive_parametrization.html">pysolvegn.build_positive_parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_squared_regularization.html">pysolvegn.build_squared_regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_soft_squared_regularization.html">pysolvegn.build_soft_squared_regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_absolute_regularization.html">pysolvegn.build_absolute_regularization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.perform_Lcurve_analysis.html">pysolvegn.perform_Lcurve_analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.study_optimization.html">pysolvegn.study_optimization</a></li>
+</ul>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">pysolvegn.solve_batch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.BatchSolveResult.html">pysolvegn.BatchSolveResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.BatchTerm.html">pysolvegn.BatchTerm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.BatchParametrization.html">pysolvegn.BatchParametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_affine_parametrization.html">pysolvegn.build_batch_affine_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_fixed_parametrization.html">pysolvegn.build_batch_fixed_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_sigmoid_parametrization.html">pysolvegn.build_batch_sigmoid_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_positive_parametrization.html">pysolvegn.build_batch_positive_parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_squared_regularization.html">pysolvegn.build_batch_squared_regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_soft_squared_regularization.html">pysolvegn.build_batch_soft_squared_regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_absolute_regularization.html">pysolvegn.build_batch_absolute_regularization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_numerical_jacobian.html">pysolvegn.build_batch_numerical_jacobian</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.linear_rho.html">pysolvegn.linear_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.soft_l1_rho.html">pysolvegn.soft_l1_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.huber_rho.html">pysolvegn.huber_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.cauchy_rho.html">pysolvegn.cauchy_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.arctan_rho.html">pysolvegn.arctan_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.tukey_rho.html">pysolvegn.tukey_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.scale_rho_function.html">pysolvegn.scale_rho_function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.get_rho_function_by_name.html">pysolvegn.get_rho_function_by_name</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../api.html" class="nav-link">API Reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pysolvegn.solve_batch</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="pysolvegn-solve-batch">
+<h1>pysolvegn.solve_batch<a class="headerlink" href="#pysolvegn-solve-batch" title="Link to this heading">#</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="pysolvegn.solve_batch">
+<span class="sig-name descname"><span class="pre">solve_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">terms</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parametrization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iteration</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ftol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ptol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">callback_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">update_func</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">damping</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lm_conf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbosity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history_details</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/batch_solver.html#solve_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.solve_batch" title="Link to this definition">#</a></dt>
+<dd><p>Function to solve a batch of <code class="docutils literal notranslate"><span class="pre">k</span></code> independent least squares problems using the
+Gauss-Newton method with robust cost functions.</p>
+<p>This is the batched counterpart of <a class="reference internal" href="pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">pysolvegn.solve()</span></code></a>. The parameters of the
+<code class="docutils literal notranslate"><span class="pre">k</span></code> problems are stored in an array with shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n_parameters)</span></code> and each
+problem <span class="math notranslate nohighlight">\(k\)</span> solves:</p>
+<div class="math notranslate nohighlight">
+\[\min_{\mathbf{p}_{in,k}} \frac{1}{2} \sum_{i} w_{i,k} \sum_j \rho_i\left(\| \mathbf{r}_{i,j}\left(P(\mathbf{p}_{in,k}), k\right) \|^2\right)\]</div>
+<p>where each term <span class="math notranslate nohighlight">\(i\)</span> is a <a class="reference internal" href="pysolvegn.BatchTerm.html#pysolvegn.BatchTerm" title="pysolvegn.BatchTerm"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.BatchTerm</span></code></a> with its own residual
+function, Jacobian function, weight <span class="math notranslate nohighlight">\(w_{i,k}\)</span> (scalar or one value per problem)
+and loss function <span class="math notranslate nohighlight">\(\rho_i\)</span>.</p>
+<p>Here <span class="math notranslate nohighlight">\(\mathbf{p}_{in,k}\)</span> represents the parameters of the problem <span class="math notranslate nohighlight">\(k\)</span>
+actually optimized by the solver, and <span class="math notranslate nohighlight">\(P\)</span> is a parametric transformation
+(<a class="reference internal" href="pysolvegn.BatchParametrization.html#pysolvegn.BatchParametrization" title="pysolvegn.BatchParametrization"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.BatchParametrization</span></code></a>), <strong>the same for all the problems</strong>, such that:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{p}_{out,k} = P(\mathbf{p}_{in,k})\]</div>
+<p>represents the parameters passed to the residual and Jacobian functions
+of each terms. If no parametrization is provided, the identity
+transformation is implicitly used:</p>
+<div class="math notranslate nohighlight">
+\[P(\mathbf{p}_{in,k}) = \mathbf{p}_{in,k}\]</div>
+<p>The stopping criteria are applied to <strong>each problem independently</strong>: a problem
+satisfying a criterion is removed from the processing and its parameters are frozen,
+while the other problems keep iterating. The terms are therefore only evaluated on
+the <code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">&lt;=</span> <span class="pre">k</span></code> problems still in processing: <code class="docutils literal notranslate"><span class="pre">m</span></code> is NOT fixed and changes during the
+optimization (see <a class="reference internal" href="pysolvegn.BatchTerm.html#pysolvegn.BatchTerm" title="pysolvegn.BatchTerm"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.BatchTerm</span></code></a> for the <code class="docutils literal notranslate"><span class="pre">(parameters,</span> <span class="pre">indices)</span></code>
+convention). Each problem gives exactly the same result as if it was solved alone
+with <a class="reference internal" href="pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">pysolvegn.solve()</span></code></a>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For more details on the notations for the optimization problem,
+please refer to the mathematical section of the documentation.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>terms</strong> (<em>Union</em><em>[</em><a class="reference internal" href="pysolvegn.BatchTerm.html#pysolvegn.BatchTerm" title="pysolvegn.BatchTerm"><em>BatchTerm</em></a><em>, </em><em>Sequence</em><em>[</em><a class="reference internal" href="pysolvegn.BatchTerm.html#pysolvegn.BatchTerm" title="pysolvegn.BatchTerm"><em>BatchTerm</em></a><em>]</em><em>]</em>) – The list of terms defining the least squares problems.
+Each term should be an instance of the <a class="reference internal" href="pysolvegn.BatchTerm.html#pysolvegn.BatchTerm" title="pysolvegn.BatchTerm"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchTerm</span></code></a> class containing
+the residual function, Jacobian function, weight, and loss function
+defining the term. A term with a vector weight must have a weight with
+shape <code class="docutils literal notranslate"><span class="pre">(k,)</span></code>.
+The residual and Jacobian functions of each term are evaluated using
+the output parametric parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{out} = P(\mathbf{p}_{in})\)</span>
+of the problems in processing, with shape <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n_p_outputs)</span></code>, and their indices.</p></li>
+<li><p><strong>p0</strong> (<em>ArrayLike</em>) – The initial guess for the parameters optimized by the solver, with shape
+<code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n_parameters)</span></code>.
+If a parametrization is provided, <code class="docutils literal notranslate"><span class="pre">p0</span></code> represents the initial input
+parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{in}\)</span> of the parametrization. The initial
+output parameters passed to the terms are obtained as
+<span class="math notranslate nohighlight">\(\mathbf{p}_{out} = P(\mathbf{p}_{in})\)</span>.
+If no parametrization is provided, <code class="docutils literal notranslate"><span class="pre">p0</span></code> directly represents the
+parameters passed to the terms.
+The array will not be modified by this function. A copy of the parameters
+will be used for the optimization process.</p></li>
+<li><p><strong>parametrization</strong> (<em>Optional</em><em>[</em><a class="reference internal" href="pysolvegn.BatchParametrization.html#pysolvegn.BatchParametrization" title="pysolvegn.BatchParametrization"><em>BatchParametrization</em></a><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – The parametrization defining the transformation from the parameters
+optimized by the solver to the parameters passed to the terms (the same for
+all the problems).
+If provided, the solver optimizes the input parameters
+<span class="math notranslate nohighlight">\(\mathbf{p}_{in}\)</span> with shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n_parameters)</span></code> of this parametrization.</p></li>
+<li><p><strong>max_iteration</strong> (<em>Optional</em><em>[</em><em>Integral</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Maximum number of optimization iterations.
+If provided, all the problems still in processing are stopped after at most
+<code class="docutils literal notranslate"><span class="pre">max_iteration</span></code> iterations. If None, no limit on the number of
+iterations is imposed.</p></li>
+<li><p><strong>max_time</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the elapsed time of optimization.
+All the problems still in processing are stopped when the time elapsed since the
+beginning of the optimization exceeds <code class="docutils literal notranslate"><span class="pre">max_time</span></code> seconds. If None, no limit
+on the computation time is considered.</p></li>
+<li><p><strong>ftol</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the change of the cost function value.
+A problem is stopped when <code class="docutils literal notranslate"><span class="pre">0</span> <span class="pre">&lt;=</span> <span class="pre">dF</span> <span class="pre">&lt;</span> <span class="pre">ftol</span> <span class="pre">*</span> <span class="pre">F</span></code> where F is its
+cost function value and <code class="docutils literal notranslate"><span class="pre">dF</span> <span class="pre">=</span> <span class="pre">F_previous</span> <span class="pre">-</span> <span class="pre">F</span></code> is the decrease of its cost
+function value between two iterations (an increase of the cost never satisfies
+this criterion). If None, this criterion is not considered.</p></li>
+<li><p><strong>xtol</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the change of the optimized parameters.
+A problem is stopped when
+<code class="docutils literal notranslate"><span class="pre">||dp||</span> <span class="pre">&lt;</span> <span class="pre">xtol</span> <span class="pre">*</span> <span class="pre">(xtol</span> <span class="pre">+</span> <span class="pre">||p||)</span></code>
+where p is its input parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{in,k}\)</span> and dp is the
+change of its input parameters between two iterations.
+If None, this criterion is not considered.</p></li>
+<li><p><strong>gtol</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the optimality value.
+A problem is stopped when its optimality verifies
+<code class="docutils literal notranslate"><span class="pre">norm(g,</span> <span class="pre">ord=numpy.inf)</span> <span class="pre">&lt;</span> <span class="pre">gtol</span></code> where <span class="math notranslate nohighlight">\(g\)</span> is its scaled second term.
+If None, this criterion is not considered.</p></li>
+<li><p><strong>atol</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the absolute cost function value.
+A problem is stopped when <code class="docutils literal notranslate"><span class="pre">F</span> <span class="pre">&lt;</span> <span class="pre">atol</span></code> where F is its cost
+function value.
+If None, this criterion is not considered.</p></li>
+<li><p><strong>ptol</strong> (<em>Optional</em><em>[</em><em>Real</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Stop criterion by the change of the optimized parameters.
+A problem is stopped when
+<code class="docutils literal notranslate"><span class="pre">norm(dp,</span> <span class="pre">ord=numpy.inf)</span> <span class="pre">&lt;</span> <span class="pre">ptol</span></code>
+where dp is the change of its input parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{in,k}\)</span>.
+If None, this criterion is not considered.</p></li>
+<li><p><strong>callback_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>]</em><em>, </em><em>Union</em><em>[</em><em>bool</em><em>, </em><em>ArrayLike</em><em>]</em><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – <p>A function called at each iteration, after the built-in stopping criteria,
+to implement custom stopping criteria. It receives a dictionary with the keys
+<code class="docutils literal notranslate"><span class="pre">&quot;indices&quot;</span></code> (indices of the <code class="docutils literal notranslate"><span class="pre">m</span></code> problems in processing, shape <code class="docutils literal notranslate"><span class="pre">(m,)</span></code>),
+<code class="docutils literal notranslate"><span class="pre">&quot;parameters&quot;</span></code> <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n_parameters)</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;delta_parameters&quot;</span></code>
+<code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n_parameters)</span></code> (None at the first iteration), <code class="docutils literal notranslate"><span class="pre">&quot;cost&quot;</span></code> <code class="docutils literal notranslate"><span class="pre">(m,)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;second_term&quot;</span></code> <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n_parameters)</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;hessian&quot;</span></code>
+<code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n_parameters,</span> <span class="pre">n_parameters)</span></code> of the current iteration, and must return
+either a boolean (applied to all the problems in processing) or an array of
+booleans with shape <code class="docutils literal notranslate"><span class="pre">(m,)</span></code>: True to continue, False to stop the problem
+(<code class="docutils literal notranslate"><span class="pre">success=False</span></code>).
+If None, no callback function is used.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;hessian&quot;</span></code> is not a copy: do not modify it in place (copy it first
+with <code class="docutils literal notranslate"><span class="pre">hessian.copy()</span></code>), as it is used afterwards to compute the update.</p>
+</div>
+</p></li>
+<li><p><strong>update_func</strong> (<em>Optional</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>numpy.ndarray</em><em>, </em><em>numpy.ndarray</em><em>, </em><em>numpy.ndarray</em><em>]</em><em>, </em><em>ArrayLike</em><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – A function that is called at the end of each iteration of the optimization
+process to modify the update of the parameters.
+The function should take (copies of) the current input parameters
+<span class="math notranslate nohighlight">\(\mathbf{p}_{in}^{k}\)</span> and the Gauss-Newton updates
+<span class="math notranslate nohighlight">\(\Delta\mathbf{p}_{in}\)</span> (solutions of <span class="math notranslate nohighlight">\(\mathbf{H} \Delta\mathbf{p}_{in} = -\mathbf{g}\)</span>)
+of <code class="docutils literal notranslate"><span class="pre">m</span></code> problems, both with shape <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n_parameters)</span></code>, and the indices of these
+problems with shape <code class="docutils literal notranslate"><span class="pre">(m,)</span></code>, and return the updates
+<span class="math notranslate nohighlight">\(\Delta\mathbf{p}_{in}^{*}\)</span> actually applied, with shape <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n_parameters)</span></code>,
+such that <span class="math notranslate nohighlight">\(\mathbf{p}_{in}^{k+1} = \mathbf{p}_{in}^{k} + \Delta\mathbf{p}_{in}^{*}\)</span>.
+The returned updates are the ones stored in the history (<code class="docutils literal notranslate"><span class="pre">&quot;delta_parameters&quot;</span></code>).
+With Levenberg-Marquardt (<code class="docutils literal notranslate"><span class="pre">damping</span></code> not None), <code class="docutils literal notranslate"><span class="pre">update_func</span></code> is applied to
+each trial step before its cost is tested, so the applied update is the tested one.
+If None, the Gauss-Newton update is directly applied:
+<span class="math notranslate nohighlight">\(\Delta\mathbf{p}_{in}^{*} = \Delta\mathbf{p}_{in}\)</span>.</p></li>
+<li><p><strong>damping</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – <p>The method used to compute the update <span class="math notranslate nohighlight">\(\Delta\mathbf{p}_{in}\)</span> of each problem:</p>
+<ul>
+<li><p>None: Gauss-Newton, the update is the solution of
+<span class="math notranslate nohighlight">\(\mathbf{H} \Delta\mathbf{p}_{in} = -\mathbf{g}\)</span> and is always applied.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;lm&quot;</span></code>: Levenberg-Marquardt, the update is the solution of
+<span class="math notranslate nohighlight">\((\mathbf{H} + \lambda \mathbf{I}) \Delta\mathbf{p}_{in} = -\mathbf{g}\)</span>, with
+the initial value <span class="math notranslate nohighlight">\(\lambda = 10^{-3} \max(\mathrm{diag}(\mathbf{H}))\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;lm-diag&quot;</span></code>: Levenberg-Marquardt with the Marquardt scaling, the update is the
+solution of <span class="math notranslate nohighlight">\((\mathbf{H} + \lambda \mathbf{D}) \Delta\mathbf{p}_{in} = -\mathbf{g}\)</span>
+where <span class="math notranslate nohighlight">\(\mathbf{D} = \mathrm{diag}(\mathbf{H})\)</span> (with a floor of
+<span class="math notranslate nohighlight">\(10^{-12} \max(\mathrm{diag}(\mathbf{H}))\)</span>), with the initial value
+<span class="math notranslate nohighlight">\(\lambda = 10^{-3}\)</span>. Unlike <code class="docutils literal notranslate"><span class="pre">&quot;lm&quot;</span></code>, the damping is insensitive to the
+scale of each parameter.</p></li>
+</ul>
+<p>Each problem has its own damping <span class="math notranslate nohighlight">\(\lambda\)</span>. With <code class="docutils literal notranslate"><span class="pre">&quot;lm&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;lm-diag&quot;</span></code>,
+a trial step is accepted only if it does not increase the cost of the problem:
+otherwise its <span class="math notranslate nohighlight">\(\lambda\)</span> is multiplied by 10 and its system is solved again.
+After an accepted step, <span class="math notranslate nohighlight">\(\lambda\)</span> is divided by 10. If no acceptable step is
+found after 50 consecutive rejections, the problem is stopped with
+<code class="docutils literal notranslate"><span class="pre">success=False</span></code>. The values of <span class="math notranslate nohighlight">\(\lambda\)</span> are available in the history
+(<code class="docutils literal notranslate"><span class="pre">&quot;damping&quot;</span></code>) and their mean is displayed with <code class="docutils literal notranslate"><span class="pre">verbosity</span> <span class="pre">&gt;=</span> <span class="pre">2</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>With Levenberg-Marquardt, the cost of every term must be computable to test
+the steps: all <code class="docutils literal notranslate"><span class="pre">gH</span></code> terms must define a <code class="docutils literal notranslate"><span class="pre">cost_func</span></code>.</p>
+</div>
+</p></li>
+<li><p><strong>lm_conf</strong> (<em>Optional</em><em>[</em><em>Mapping</em><em>[</em><em>str</em><em>, </em><em>Real</em><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Used only if <code class="docutils literal notranslate"><span class="pre">damping</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;lm&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;lm-diag&quot;</span></code>.
+Dictionary to change the default settings of the Levenberg-Marquardt damping
+(<code class="docutils literal notranslate"><span class="pre">&quot;initial_scale&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;factor&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;max_rejections&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;diag_floor&quot;</span></code>,
+see <a class="reference internal" href="pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">pysolvegn.solve()</span></code></a>). The missing keys keep their default value. The
+same settings are used for all the problems.</p></li>
+<li><p><strong>verbosity</strong> (<em>Integral</em><em>, </em><em>optional</em><em> (</em><em>default=0</em><em>)</em>) – The level of verbosity for logging the optimization process.
+0: No logging
+1: Log only the final results of the optimization process.
+2: Log the results at each iteration of the optimization process.
+3: Details logging for debugging purposes.
+The logged values are averaged over the problems in processing at the
+current iteration (the total cost of the batch has no meaning).</p></li>
+<li><p><strong>history</strong> (<em>bool</em><em>, </em><em>optional</em><em> (</em><em>default=False</em><em>)</em>) – If True, the history of the optimization process is stored in the
+<code class="docutils literal notranslate"><span class="pre">history</span></code> attribute of the returned <a class="reference internal" href="pysolvegn.BatchSolveResult.html#pysolvegn.BatchSolveResult" title="pysolvegn.BatchSolveResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchSolveResult</span></code></a>.
+See the Notes section for more details.</p></li>
+<li><p><strong>history_details</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Sequence</em><em>[</em><em>str</em><em>]</em><em>]</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Used only if <code class="docutils literal notranslate"><span class="pre">history</span></code> is True.
+Specifies the details to include in the history of the optimization process.
+It can be either a single string or a sequence of strings. See the Notes
+section for the available details.
+If None, the history will include the following details by default:
+<code class="docutils literal notranslate"><span class="pre">&quot;iteration&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;elapsed_time&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;n_processing&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;parameters&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;delta_parameters&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;delta_cost&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;cost&quot;</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">&quot;optimality&quot;</span></code>.</p></li>
+<li><p><strong>history_length</strong> (<em>Optional</em><em>[</em><em>Integral</em><em>]</em><em>, </em><em>optional</em><em> (</em><em>default=None</em><em>)</em>) – Used only if <code class="docutils literal notranslate"><span class="pre">history</span></code> is True.
+Controls the number of iterations included in the history.
+If None, all iterations are included in the output history.
+If a positive integer <code class="docutils literal notranslate"><span class="pre">N</span></code> is given, only the first <code class="docutils literal notranslate"><span class="pre">N</span></code> iterations
+are included in the output history (from 0 to <span class="math notranslate nohighlight">\(N-1\)</span>).
+If zero is given, no iterations are included.
+If a negative integer <code class="docutils literal notranslate"><span class="pre">M</span></code> is given, only the last <code class="docutils literal notranslate"><span class="pre">|M|</span></code> iterations
+are included in the output history.
+If the requested history length is greater than the number of iterations
+performed, the history will contain fewer entries than requested.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><p><strong>result</strong> – The result of the optimization (see <a class="reference internal" href="pysolvegn.BatchSolveResult.html#pysolvegn.BatchSolveResult" title="pysolvegn.BatchSolveResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.BatchSolveResult</span></code></a>), with
+the following attributes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">parameters</span></code> (numpy.ndarray): the optimized input parameters
+<span class="math notranslate nohighlight">\(\mathbf{p}_{in}\)</span> with shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n_parameters)</span></code>. If a parametrization
+is provided, the corresponding output parameters are obtained as
+<span class="math notranslate nohighlight">\(\mathbf{p}_{out} = P(\mathbf{p}_{in})\)</span>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">history</span></code> (List[Dict]): the history of the optimization process, one
+dictionary per iteration containing the keys described below
+(empty if <code class="docutils literal notranslate"><span class="pre">history</span></code> is False).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">success</span></code> (numpy.ndarray): array of booleans with shape <code class="docutils literal notranslate"><span class="pre">(k,)</span></code>, True for
+each problem for which a convergence criterion (<code class="docutils literal notranslate"><span class="pre">ftol</span></code>, <code class="docutils literal notranslate"><span class="pre">atol</span></code>, <code class="docutils literal notranslate"><span class="pre">gtol</span></code>,
+<code class="docutils literal notranslate"><span class="pre">xtol</span></code> or <code class="docutils literal notranslate"><span class="pre">ptol</span></code>) was satisfied and which was not stopped by a NaN or Inf
+value, a singular linear system, the callback function or a failure of the
+Levenberg-Marquardt step (see <a class="reference internal" href="pysolvegn.BatchSolveResult.html#pysolvegn.BatchSolveResult" title="pysolvegn.BatchSolveResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">BatchSolveResult</span></code></a> for the priority rules).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stop_code</span></code> (numpy.ndarray): the stopping criteria of each problem (bit
+mask). The methods <code class="docutils literal notranslate"><span class="pre">result.stopped_by(name)</span></code>, <code class="docutils literal notranslate"><span class="pre">result.reasons(k)</span></code> and the property
+<code class="docutils literal notranslate"><span class="pre">result.message</span></code> describe them.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_iterations</span></code> (numpy.ndarray): the number of updates applied to each problem.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cost</span></code> (Optional[numpy.ndarray]): the cost of each problem at the returned parameters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">optimality</span></code> (numpy.ndarray): <code class="docutils literal notranslate"><span class="pre">norm(g_k,</span> <span class="pre">ord=numpy.inf)</span></code> of each problem at
+the returned parameters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">term_parameters</span></code> (Optional[numpy.ndarray]): <span class="math notranslate nohighlight">\(\mathbf{p}_{out}\)</span> at the
+returned parameters.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">elapsed_time</span></code> (float): the total time of the optimization in seconds.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n_rejected</span></code> (numpy.ndarray): the number of rejected Levenberg-Marquardt
+trial steps of each problem.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">config</span></code> (Dict): the stopping criteria, <code class="docutils literal notranslate"><span class="pre">damping</span></code> and <code class="docutils literal notranslate"><span class="pre">lm_conf</span></code> requested.</p></li>
+</ul>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="pysolvegn.BatchSolveResult.html#pysolvegn.BatchSolveResult" title="pysolvegn.BatchSolveResult">BatchSolveResult</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The solver always checks for NaN or Inf values in the initial parameters <code class="docutils literal notranslate"><span class="pre">p0</span></code>, the
+output parameters <code class="docutils literal notranslate"><span class="pre">p_out</span></code> and the update <code class="docutils literal notranslate"><span class="pre">Δp_in*</span></code> (and, with <code class="docutils literal notranslate"><span class="pre">damping=&quot;lm&quot;</span></code>, in
+the costs used to accept the steps) of each problem: the problem is then stopped with
+<code class="docutils literal notranslate"><span class="pre">success=False</span></code> and its last valid parameters are returned.</p>
+<p>The step of each loop iteration is as follows (each step is applied to the <code class="docutils literal notranslate"><span class="pre">m</span></code>
+problems in processing, and “stop” means that the concerned problems are removed from
+the processing):</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>0.  [STOP check] Stop the problems for which ``p0`` contains NaN or Inf values.
+    If all the problems are stopped, return immediately.
+
+While at least one problem is in processing:
+    1.  Compute the output parameters ``p_out = P(p_in)`` (``p_out = p_in`` if no parametrization).
+    2.  [STOP check] Stop the problems for which ``p_out`` contains NaN or Inf values.
+    3.  For ``rJ`` terms, compute ``r_i``, ``J_i`` and the cost ``c_i``, apply the robust
+        loss (``r_i -&gt; r~_i``, ``J_i -&gt; J~_i``) and the chain rule ``J~_i -&gt; J~_i @ J_P``,
+        then build ``H_i = J~_i.T J~_i`` and ``g_i = J~_i.T r~_i``.
+    4.  For ``gH`` terms, compute ``H_i``, ``g_i`` and the cost ``c_i`` (``0.0`` without
+        ``cost_func``), then apply the chain rule ``H_i -&gt; J_P.T H_i J_P`` and ``g_i -&gt; J_P.T g_i``.
+    5.  Assemble the m systems ``H Δp_in = -g`` with ``H = sum(w_i H_i)`` and
+        ``g = sum(w_i g_i)``, and the costs ``C = sum(w_i c_i)``.
+    6.  [STOP checks] Store the history, check the stopping criteria of each problem
+        (``ftol``, ``atol``, ``gtol``, ``xtol``, ``ptol``, ``max_iteration`` and ``max_time``)
+        and call the ``callback_func`` with the current state (``indices``, ``parameters``,
+        ``delta_parameters``, ``cost``, ``second_term`` and ``hessian``).
+    7.  Remove the stopped problems from the processing (their parameters are frozen,
+        see :class:`BatchSolveResult` for the value of ``success``). Exit the loop if
+        no problem remains.
+    8.  For the remaining problems, compute the update ``Δp_in``:
+
+        - ``damping=None``: solve ``H Δp_in = -g``. Stop the problems with a
+          singular system.
+        - ``damping="lm"`` or ``"lm-diag"``: solve ``(H + λ D) Δp_in = -g`` (``D = I`` or
+          ``diag(H)``), apply ``update_func`` and compute the cost ``C_new`` at
+          ``p_in + Δp_in*``. While ``C_new &gt; C``, multiply ``λ`` by 10 and solve again
+          (a trial step with a singular system or NaN/Inf output parameters is also
+          rejected). Then divide ``λ`` by 10. Stop the problems for which ``C`` or
+          ``C_new`` contains NaN or Inf values, or for which no step is accepted
+          after 50 rejections.
+    9.  (Gauss-Newton only) Compute the applied update ``Δp_in* = update_func(p_in, Δp_in, indices)``
+        (``Δp_in* = Δp_in`` if no ``update_func``).
+    10. [STOP check] Stop the problems for which ``Δp_in*`` contains NaN or Inf values
+        WITHOUT applying the update (their last valid ``p_in`` is returned).
+    11. Update the input parameters ``p_in = p_in + Δp_in*`` of the remaining problems.
+</pre></div>
+</div>
+<p>The history contains the following keys (if requested in <code class="docutils literal notranslate"><span class="pre">history_details</span></code>).
+All the per-problem arrays have a first dimension of size <code class="docutils literal notranslate"><span class="pre">k</span></code> (all the problems of
+the batch). For the problems not in processing at the current iteration, the values
+of the last iteration during which they were processed are kept (frozen values),
+except for <code class="docutils literal notranslate"><span class="pre">&quot;delta_parameters&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;delta_cost&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;damping&quot;</span></code> which are set
+to NaN.</p>
+<ul class="simple">
+<li><p>“iteration”: Integer representing the iteration number.</p></li>
+<li><p>“elapsed_time”: Float representing the time elapsed since the beginning of the optimization process in seconds.</p></li>
+<li><p>“n_processing”: Integer representing the number of problems in processing at the current iteration.</p></li>
+<li><p>“is_processing”: Numpy array of booleans with shape <code class="docutils literal notranslate"><span class="pre">(k,)</span></code>, True for the problems
+in processing at the current iteration.</p></li>
+<li><p>“parameters”: Numpy array with shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n_parameters)</span></code> representing the input
+parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{in}\)</span> at the current iteration.</p></li>
+<li><p>“delta_parameters”: Numpy array with shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n_parameters)</span></code> representing the
+updates <span class="math notranslate nohighlight">\(\Delta\mathbf{p}_{in}^{*}\)</span> applied between the previous and the current
+iteration (after <code class="docutils literal notranslate"><span class="pre">update_func</span></code> if provided), None at the first iteration.</p></li>
+<li><p>“costs”: List of numpy arrays with shape <code class="docutils literal notranslate"><span class="pre">(k,)</span></code> representing the cost function
+value (without weight) of each term at the current iteration: the <code class="docutils literal notranslate"><span class="pre">cost_func</span></code> of
+the term if provided, otherwise
+<span class="math notranslate nohighlight">\(\frac{1}{2} \sum_j \rho_i(\| \mathbf{r}_{i,j}(\mathbf{p}_{out,k}) \|^2)\)</span>
+for <code class="docutils literal notranslate"><span class="pre">rJ</span></code> terms and <code class="docutils literal notranslate"><span class="pre">0.0</span></code> for <code class="docutils literal notranslate"><span class="pre">gH</span></code> terms.</p></li>
+<li><p>“cost”: Numpy array with shape <code class="docutils literal notranslate"><span class="pre">(k,)</span></code> representing the cost function value of
+each problem at the current iteration, computed as
+<span class="math notranslate nohighlight">\(\frac{1}{2} \sum_i w_{i,k} \sum_j
+\rho_i(\| \mathbf{r}_{i,j}(\mathbf{p}_{out,k}) \|^2)\)</span>.</p></li>
+<li><p>“delta_cost”: Numpy array with shape <code class="docutils literal notranslate"><span class="pre">(k,)</span></code> representing the change of the cost
+function value of each problem between the previous and the current iteration
+(<code class="docutils literal notranslate"><span class="pre">C</span> <span class="pre">-</span> <span class="pre">C_previous</span></code>), None at the first iteration.</p></li>
+<li><p>“optimality”: Numpy array with shape <code class="docutils literal notranslate"><span class="pre">(k,)</span></code> representing the optimality value of
+each problem at the current iteration computed as <code class="docutils literal notranslate"><span class="pre">norm(g,</span> <span class="pre">ord=numpy.inf)</span></code> where
+<span class="math notranslate nohighlight">\(g\)</span> is the scaled second term.</p></li>
+<li><p>“residuals”: A list of numpy arrays with shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n_residuals_i)</span></code> representing the
+raw residuals of each term at the current iteration, before the robust loss
+modification (None for <code class="docutils literal notranslate"><span class="pre">gH</span></code> terms).</p></li>
+<li><p>“jacobians”: A list of numpy arrays with shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n_residuals_i,</span> <span class="pre">n_p_outputs)</span></code>
+representing the raw Jacobians of each term at the current iteration, with respect
+to the output parameters (before the robust loss modification and the chain rule of
+the parametrization; None for <code class="docutils literal notranslate"><span class="pre">gH</span></code> terms).</p></li>
+<li><p>“second_term”: Numpy array with shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n_parameters)</span></code> representing the scaled
+second term <span class="math notranslate nohighlight">\(\mathbf{g}\)</span> of each linear system at the current iteration.</p></li>
+<li><p>“hessian”: Numpy array with shape <code class="docutils literal notranslate"><span class="pre">(k,</span> <span class="pre">n_parameters,</span> <span class="pre">n_parameters)</span></code> representing the
+Hessian approximation <span class="math notranslate nohighlight">\(\mathbf{H}\)</span> of each linear system at the current iteration.</p></li>
+<li><p>“damping”: Numpy array with shape <code class="docutils literal notranslate"><span class="pre">(k,)</span></code> representing the Levenberg-Marquardt
+damping <span class="math notranslate nohighlight">\(\lambda\)</span> used for the accepted step leading to the current iteration
+(None at the first iteration and if <code class="docutils literal notranslate"><span class="pre">damping</span></code> is None).</p></li>
+<li><p>“all”: include all the keys.</p></li>
+</ul>
+<p>The cost of each term can be compute only for <code class="docutils literal notranslate"><span class="pre">rJ</span></code> terms and is
+defined by :</p>
+<div class="math notranslate nohighlight">
+\[\frac{1}{2} \sum_j
+\rho_i\left(
+    \left\|
+    \mathbf{r}_{i,j}(P(\mathbf{p}_{in,k}))
+    \right\|^2
+\right)\]</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>For terms defined directly by a Hessian and gradient (<code class="docutils literal notranslate"><span class="pre">gH</span></code> terms), only a local quadratic model
+of the cost is available. Since this model is defined up to an arbitrary constant and submit to
+cumulative errors, an absolute cost value cannot be uniquely determined.
+For reporting consistency, the cost contribution of these terms is set to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> by default.
+If the term contains a <code class="docutils literal notranslate"><span class="pre">cost_func</span></code> function, it will be used to compute the cost of
+the term.</p>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pysolvegn.study_optimization.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pysolvegn.study_optimization</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="pysolvegn.BatchSolveResult.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pysolvegn.BatchSolveResult</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.solve_batch"><code class="docutils literal notranslate"><span class="pre">solve_batch()</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/_autosummary/pysolvegn.solve_batch.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026-2026, Artezaru.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

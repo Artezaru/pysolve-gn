@@ -1,0 +1,6 @@
+﻿pysolvegn.build\_batch\_sigmoid\_parametrization
+================================================
+
+.. currentmodule:: pysolvegn
+
+.. autofunction:: build_batch_sigmoid_parametrization

@@ -1,0 +1,41 @@
+﻿pysolvegn.SolveResult
+=====================
+
+.. currentmodule:: pysolvegn
+
+.. autoclass:: SolveResult
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~SolveResult.__init__
+      ~SolveResult.stopped_by
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~SolveResult.message
+      ~SolveResult.reasons
+      ~SolveResult.parameters
+      ~SolveResult.history
+      ~SolveResult.success
+      ~SolveResult.stop_code
+      ~SolveResult.n_iterations
+      ~SolveResult.cost
+      ~SolveResult.optimality
+      ~SolveResult.term_parameters
+      ~SolveResult.elapsed_time
+      ~SolveResult.n_rejected
+      ~SolveResult.config
+   
+   

@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Undistortion of image points with a batch solver &#8212; pysolvegn 2.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../_static/documentation_options.js?v=51b770b3"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_gallery/batch_undistortion';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Camera calibration with affine parametrization" href="affine_parametrization.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pysolvegn 2.0.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../usage.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../usage.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="L_curve_analysis.html">L-curve analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="curve_fitting.html">Curve fitting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="study_optimization.html">Study of camera calibration optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="adding_regularization.html">Adding regularization (curve fitting)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="affine_parametrization.html">Camera calibration with affine parametrization</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Undistortion of image points with a batch solver</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../usage.html" class="nav-link">Usage</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Undistortion of image points with a batch solver</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-docs-source-gallery-batch-undistortion-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="undistortion-of-image-points-with-a-batch-solver">
+<span id="sphx-glr-gallery-batch-undistortion-py"></span><span id="sphx-glr-docs-source-gallery-batch-undistortion-py"></span><h1>Undistortion of image points with a batch solver<a class="headerlink" href="#undistortion-of-image-points-with-a-batch-solver" title="Link to this heading">#</a></h1>
+<p>This example shows how to use <a class="reference internal" href="../_autosummary/pysolvegn.solve_batch.html#pysolvegn.solve_batch" title="pysolvegn.solve_batch"><code class="xref py py-func docutils literal notranslate"><span class="pre">pysolvegn.solve_batch()</span></code></a> to solve a large number
+of small independent least squares problems at once.</p>
+<p>We consider the same camera model as in the camera calibration examples, but the
+problem is reversed: the camera parameters are <strong>known</strong>, and we look for the
+<strong>undistorted</strong> normalized coordinates <span class="math notranslate nohighlight">\((x, y)\)</span> of each observed (distorted)
+image point <span class="math notranslate nohighlight">\((u, v)\)</span>.</p>
+<p>The distortion model has no analytical inverse. Each image point therefore requires
+solving a small non-linear problem with 2 unknowns <span class="math notranslate nohighlight">\((x, y)\)</span> and 2 residuals.
+With <span class="math notranslate nohighlight">\(N\)</span> image points, we obtain <span class="math notranslate nohighlight">\(N\)</span> <strong>independent</strong> problems, which are
+solved together with a batch solver.</p>
+<section id="camera-model">
+<h2>Camera model<a class="headerlink" href="#camera-model" title="Link to this heading">#</a></h2>
+<p>We use the Brown-Conrady camera distortion model.</p>
+<p>For normalized coordinates <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code>, the distorted coordinates are:</p>
+<div class="math notranslate nohighlight">
+\[x_d =
+    x(1 + k_1 r^2 + k_2 r^4 + k_3 r^6)
+    + 2p_1xy
+    + p_2(r^2 + 2x^2)\]</div>
+<div class="math notranslate nohighlight">
+\[y_d =
+    y(1 + k_1 r^2 + k_2 r^4 + k_3 r^6)
+    + p_1(r^2 + 2y^2)
+    + 2p_2xy\]</div>
+<p>where:</p>
+<div class="math notranslate nohighlight">
+\[r^2 = x^2 + y^2.\]</div>
+<p>The pixel coordinates are:</p>
+<div class="math notranslate nohighlight">
+\[u = f_x x_d + c_x\]</div>
+<div class="math notranslate nohighlight">
+\[v = f_y y_d + c_y\]</div>
+<p>The camera model below is vectorized: it computes the image coordinates of
+<code class="docutils literal notranslate"><span class="pre">n_points</span></code> normalized points at once.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">import</span><span class="w"> </span><span class="nn">time</span><span class="w">
+</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="nn">.</span><span class="nn">pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">pysolvegn</span><span class="w">
+</span><span class="w">
+</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="k">def</span><span class="w"> </span><span class="nf">camera_model</span><span class="p">(</span><span class="n">camera_params</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;
+    Compute distorted image coordinates.
+
+    Parameters
+    ----------
+    camera_params : array-like
+        Complete camera parameter vector:
+
+        [fx, fy, cx, cy, k1, k2, p1, p2, k3]
+
+    points : ndarray
+        Normalized image points with shape ``(n_points, 2)``.
+
+    Returns
+    -------
+    ndarray
+        Image coordinates with shape ``(n_points, 2)``.
+    &quot;&quot;&quot;</span><span class="w">
+</span>    <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">k3</span> <span class="o">=</span> <span class="n">camera_params</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="w">
+</span>    <span class="n">y</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">r2</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="o">*</span><span class="mi">2</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">radial</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">k2</span> <span class="o">*</span> <span class="n">r2</span><span class="o">*</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k3</span> <span class="o">*</span> <span class="n">r2</span><span class="o">*</span><span class="o">*</span><span class="mi">3</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">x_distorted</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">radial</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">p2</span> <span class="o">*</span> <span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">x</span><span class="o">*</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">y_distorted</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="n">radial</span> <span class="o">+</span> <span class="n">p1</span> <span class="o">*</span> <span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">y</span><span class="o">*</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">u</span> <span class="o">=</span> <span class="n">fx</span> <span class="o">*</span> <span class="n">x_distorted</span> <span class="o">+</span> <span class="n">cx</span><span class="w">
+</span>    <span class="n">v</span> <span class="o">=</span> <span class="n">fy</span> <span class="o">*</span> <span class="n">y_distorted</span> <span class="o">+</span> <span class="n">cy</span><span class="w">
+</span><span class="w">
+</span>    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="jacobian-with-respect-to-the-normalized-coordinates">
+<h2>Jacobian with respect to the normalized coordinates<a class="headerlink" href="#jacobian-with-respect-to-the-normalized-coordinates" title="Link to this heading">#</a></h2>
+<p>Unlike the calibration examples, the unknowns are now the normalized coordinates
+<span class="math notranslate nohighlight">\((x, y)\)</span> of each point, and the camera parameters are constants.</p>
+<p>Denoting <span class="math notranslate nohighlight">\(R = 1 + k_1 r^2 + k_2 r^4 + k_3 r^6\)</span> and
+<span class="math notranslate nohighlight">\(R' = \frac{dR}{d(r^2)} = k_1 + 2 k_2 r^2 + 3 k_3 r^4\)</span>, the derivatives of the
+distorted coordinates are:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial x_d}{\partial x} = R + 2x^2 R' + 2p_1 y + 6p_2 x
+\qquad
+\frac{\partial x_d}{\partial y} = 2xy R' + 2p_1 x + 2p_2 y\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial y_d}{\partial x} = 2xy R' + 2p_1 x + 2p_2 y
+\qquad
+\frac{\partial y_d}{\partial y} = R + 2y^2 R' + 6p_1 y + 2p_2 x\]</div>
+<p>and the Jacobian of the pixel coordinates <span class="math notranslate nohighlight">\((u, v)\)</span> is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{J} =
+\begin{bmatrix}
+f_x \frac{\partial x_d}{\partial x} &amp; f_x \frac{\partial x_d}{\partial y} \\
+f_y \frac{\partial y_d}{\partial x} &amp; f_y \frac{\partial y_d}{\partial y}
+\end{bmatrix}\end{split}\]</div>
+<p>The function returns one <span class="math notranslate nohighlight">\(2 \times 2\)</span> Jacobian per point, as an array with
+shape <code class="docutils literal notranslate"><span class="pre">(n_points,</span> <span class="pre">2,</span> <span class="pre">2)</span></code>.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="k">def</span><span class="w"> </span><span class="nf">camera_model_jacobian</span><span class="p">(</span><span class="n">camera_params</span><span class="p">,</span> <span class="n">points</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="sd">&quot;&quot;&quot;
+    Compute the Jacobian of the image coordinates with respect to the normalized
+    coordinates.
+
+    Returns
+    -------
+    ndarray
+        Jacobians with shape ``(n_points, 2, 2)``:
+        ``J[k] = [[du/dx, du/dy], [dv/dx, dv/dy]]`` for the point ``k``.
+    &quot;&quot;&quot;</span><span class="w">
+</span>    <span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span><span class="p">,</span> <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">k3</span> <span class="o">=</span> <span class="n">camera_params</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">x</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="w">
+</span>    <span class="n">y</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">r2</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="o">*</span><span class="mi">2</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">radial</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">k2</span> <span class="o">*</span> <span class="n">r2</span><span class="o">*</span><span class="o">*</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k3</span> <span class="o">*</span> <span class="n">r2</span><span class="o">*</span><span class="o">*</span><span class="mi">3</span><span class="w">
+</span>    <span class="n">radial_prime</span> <span class="o">=</span> <span class="n">k1</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">k2</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">+</span> <span class="mf">3.0</span> <span class="o">*</span> <span class="n">k3</span> <span class="o">*</span> <span class="n">r2</span><span class="o">*</span><span class="o">*</span><span class="mi">2</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">dxd_dx</span> <span class="o">=</span> <span class="n">radial</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">x</span><span class="o">*</span><span class="o">*</span><span class="mi">2</span> <span class="o">*</span> <span class="n">radial_prime</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p1</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">6.0</span> <span class="o">*</span> <span class="n">p2</span> <span class="o">*</span> <span class="n">x</span><span class="w">
+</span>    <span class="n">dxd_dy</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">radial_prime</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p2</span> <span class="o">*</span> <span class="n">y</span><span class="w">
+</span>    <span class="n">dyd_dx</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">*</span> <span class="n">radial_prime</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p2</span> <span class="o">*</span> <span class="n">y</span><span class="w">
+</span>    <span class="n">dyd_dy</span> <span class="o">=</span> <span class="n">radial</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">y</span><span class="o">*</span><span class="o">*</span><span class="mi">2</span> <span class="o">*</span> <span class="n">radial_prime</span> <span class="o">+</span> <span class="mf">6.0</span> <span class="o">*</span> <span class="n">p1</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">2.0</span> <span class="o">*</span> <span class="n">p2</span> <span class="o">*</span> <span class="n">x</span><span class="w">
+</span><span class="w">
+</span>    <span class="n">J</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span>    <span class="n">J</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">fx</span> <span class="o">*</span> <span class="n">dxd_dx</span><span class="w">
+</span>    <span class="n">J</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">fx</span> <span class="o">*</span> <span class="n">dxd_dy</span><span class="w">
+</span>    <span class="n">J</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">fy</span> <span class="o">*</span> <span class="n">dyd_dx</span><span class="w">
+</span>    <span class="n">J</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">fy</span> <span class="o">*</span> <span class="n">dyd_dy</span><span class="w">
+</span><span class="w">
+</span>    <span class="k">return</span> <span class="n">J</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="generate-the-distorted-image-points">
+<h2>Generate the distorted image points<a class="headerlink" href="#generate-the-distorted-image-points" title="Link to this heading">#</a></h2>
+<p>The camera parameters are known (same values as in the calibration examples).</p>
+<p>We generate a dense grid of <span class="math notranslate nohighlight">\(N\)</span> normalized points, and compute the
+corresponding distorted image points. Only these image points are given to the
+solver: the normalized points are kept to check the result.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">camera_parameters</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="w">
+</span>    <span class="p">[</span><span class="w">
+</span>        <span class="mf">850.0</span><span class="p">,</span>  <span class="c1"># fx</span><span class="w">
+</span>        <span class="mf">850.0</span><span class="p">,</span>  <span class="c1"># fy</span><span class="w">
+</span>        <span class="mf">640.0</span><span class="p">,</span>  <span class="c1"># cx</span><span class="w">
+</span>        <span class="mf">480.0</span><span class="p">,</span>  <span class="c1"># cy</span><span class="w">
+</span>        <span class="o">-</span><span class="mf">0.20</span><span class="p">,</span>  <span class="c1"># k1</span><span class="w">
+</span>        <span class="mf">0.05</span><span class="p">,</span>  <span class="c1"># k2</span><span class="w">
+</span>        <span class="mf">0.001</span><span class="p">,</span>  <span class="c1"># p1</span><span class="w">
+</span>        <span class="o">-</span><span class="mf">0.002</span><span class="p">,</span>  <span class="c1"># p2</span><span class="w">
+</span>        <span class="o">-</span><span class="mf">0.01</span><span class="p">,</span>  <span class="c1"># k3</span><span class="w">
+</span>    <span class="p">]</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">camera_parameters</span><span class="p">[</span><span class="p">:</span><span class="mi">4</span><span class="p">]</span><span class="w">
+</span><span class="w">
+</span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.7</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">,</span> <span class="mi">71</span><span class="p">)</span><span class="w">
+</span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">51</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">normalized_points_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="p">)</span><span class="p">,</span> <span class="n">yy</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">image_points</span> <span class="o">=</span> <span class="n">camera_model</span><span class="p">(</span><span class="n">camera_parameters</span><span class="p">,</span> <span class="n">normalized_points_true</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">n_points</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Number of independent problems:</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Number of independent problems: 3621
+</pre></div>
+</div>
+</section>
+<section id="check-the-jacobian">
+<h2>Check the Jacobian<a class="headerlink" href="#check-the-jacobian" title="Link to this heading">#</a></h2>
+<p>Before solving, we compare the analytical Jacobian with a finite difference
+approximation.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">epsilon</span> <span class="o">=</span> <span class="mf">1e-7</span><span class="w">
+</span><span class="n">J_analytical</span> <span class="o">=</span> <span class="n">camera_model_jacobian</span><span class="p">(</span><span class="n">camera_parameters</span><span class="p">,</span> <span class="n">normalized_points_true</span><span class="p">)</span><span class="w">
+</span><span class="n">J_numerical</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="w">
+</span>    <span class="p">[</span><span class="w">
+</span>        <span class="p">(</span><span class="w">
+</span>            <span class="n">camera_model</span><span class="p">(</span><span class="n">camera_parameters</span><span class="p">,</span> <span class="n">normalized_points_true</span> <span class="o">+</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">e</span><span class="p">)</span><span class="w">
+</span>            <span class="o">-</span> <span class="n">camera_model</span><span class="p">(</span><span class="n">camera_parameters</span><span class="p">,</span> <span class="n">normalized_points_true</span> <span class="o">-</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">e</span><span class="p">)</span><span class="w">
+</span>        <span class="p">)</span><span class="w">
+</span>        <span class="o">/</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">epsilon</span><span class="p">)</span><span class="w">
+</span>        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="w">
+</span>    <span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Max Jacobian error:</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">J_analytical</span> <span class="o">-</span> <span class="n">J_numerical</span><span class="p">)</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Max Jacobian error: 2.330503320990829e-06
+</pre></div>
+</div>
+</section>
+<section id="define-the-batch-term">
+<h2>Define the batch term<a class="headerlink" href="#define-the-batch-term" title="Link to this heading">#</a></h2>
+<p>Each problem <span class="math notranslate nohighlight">\(k\)</span> has 2 unknowns <span class="math notranslate nohighlight">\(\mathbf{p}_k = (x_k, y_k)\)</span> and
+2 residuals:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{r}_k(\mathbf{p}_k)
+=
+\begin{bmatrix}
+u(x_k, y_k) - u_k^{obs} \\
+v(x_k, y_k) - v_k^{obs}
+\end{bmatrix}\end{split}\]</div>
+<p>With a <a class="reference internal" href="../_autosummary/pysolvegn.BatchTerm.html#pysolvegn.BatchTerm" title="pysolvegn.BatchTerm"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.BatchTerm</span></code></a>, the residual and Jacobian functions take:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">params</span></code>: the unknowns of the <code class="docutils literal notranslate"><span class="pre">m</span></code> problems still in processing, with shape
+<code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">2)</span></code>,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">indices</span></code>: the indices of these problems in the batch, with shape <code class="docutils literal notranslate"><span class="pre">(m,)</span></code>,</p></li>
+</ul>
+<p>and return the residuals with shape <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">2)</span></code> and the Jacobians with shape
+<code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">2,</span> <span class="pre">2)</span></code>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><code class="docutils literal notranslate"><span class="pre">m</span></code> changes during the optimization, since the converged points are removed
+from the processing. The observations of each problem must therefore be
+selected with <code class="docutils literal notranslate"><span class="pre">indices</span></code> (<code class="docutils literal notranslate"><span class="pre">image_points[indices]</span></code>), never assumed to be the
+full array.</p>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="k">def</span><span class="w"> </span><span class="nf">residual_function</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <span class="k">return</span> <span class="n">camera_model</span><span class="p">(</span><span class="n">camera_parameters</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span> <span class="o">-</span> <span class="n">image_points</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="k">def</span><span class="w"> </span><span class="nf">jacobian_function</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <span class="k">return</span> <span class="n">camera_model_jacobian</span><span class="p">(</span><span class="n">camera_parameters</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../_autosummary/pysolvegn.BatchTerm.html#pysolvegn.BatchTerm" title="pysolvegn.BatchTerm"><span class="n">undistortion_term</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../_autosummary/pysolvegn.BatchTerm.html#pysolvegn.BatchTerm" title="pysolvegn.BatchTerm"><span class="n">pysolvegn</span><span class="o">.</span><span class="n">BatchTerm</span></a><span class="o">.</span><span class="n">from_rJ</span><span class="p">(</span><span class="w">
+</span>    <span class="n">residual_func</span><span class="o">=</span><span class="n">residual_function</span><span class="p">,</span><span class="w">
+</span>    <span class="n">jacobian_func</span><span class="o">=</span><span class="n">jacobian_function</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="solve-all-the-problems-at-once">
+<h2>Solve all the problems at once<a class="headerlink" href="#solve-all-the-problems-at-once" title="Link to this heading">#</a></h2>
+<p>The initial guess of each point ignores the distortion:</p>
+<div class="math notranslate nohighlight">
+\[x_k^{(0)} = \frac{u_k - c_x}{f_x}
+\qquad
+y_k^{(0)} = \frac{v_k - c_y}{f_y}\]</div>
+<p>The initial parameters are stored in an array with shape <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">2)</span></code>.</p>
+<p><a class="reference internal" href="../_autosummary/pysolvegn.solve_batch.html#pysolvegn.solve_batch" title="pysolvegn.solve_batch"><code class="xref py py-func docutils literal notranslate"><span class="pre">pysolvegn.solve_batch()</span></code></a> returns a <a class="reference internal" href="../_autosummary/pysolvegn.BatchSolveResult.html#pysolvegn.BatchSolveResult" title="pysolvegn.BatchSolveResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.BatchSolveResult</span></code></a>:
+<code class="docutils literal notranslate"><span class="pre">result.success</span></code> and <code class="docutils literal notranslate"><span class="pre">result.n_iterations</span></code> are arrays with one value per point.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">initial_points</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span><span class="w">
+</span>    <span class="p">(</span><span class="w">
+</span>        <span class="p">(</span><span class="n">image_points</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">cx</span><span class="p">)</span> <span class="o">/</span> <span class="n">fx</span><span class="p">,</span><span class="w">
+</span>        <span class="p">(</span><span class="n">image_points</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cy</span><span class="p">)</span> <span class="o">/</span> <span class="n">fy</span><span class="p">,</span><span class="w">
+</span>    <span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../_autosummary/pysolvegn.BatchSolveResult.html#pysolvegn.BatchSolveResult" title="pysolvegn.BatchSolveResult"><span class="n">result</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-function reference internal" href="../_autosummary/pysolvegn.solve_batch.html#pysolvegn.solve_batch" title="pysolvegn.solve_batch"><span class="n">pysolvegn</span><span class="o">.</span><span class="n">solve_batch</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">terms</span><span class="o">=</span><a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../_autosummary/pysolvegn.BatchTerm.html#pysolvegn.BatchTerm" title="pysolvegn.BatchTerm"><span class="n">undistortion_term</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">p0</span><span class="o">=</span><span class="n">initial_points</span><span class="p">,</span><span class="w">
+</span>    <span class="n">max_iteration</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="w">
+</span>    <span class="n">gtol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span><span class="w">
+</span>    <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span><span class="w">
+</span>    <span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">batch_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">(</span><span class="p">)</span> <span class="o">-</span> <span class="n">start</span><span class="w">
+</span><span class="w">
+</span><span class="n">undistorted_points</span> <span class="o">=</span> <a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../_autosummary/pysolvegn.BatchSolveResult.html#pysolvegn.BatchSolveResult" title="pysolvegn.BatchSolveResult"><span class="n">result</span></a><span class="o">.</span><span class="n">parameters</span><span class="w">
+</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Converged points:</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../_autosummary/pysolvegn.BatchSolveResult.html#pysolvegn.BatchSolveResult" title="pysolvegn.BatchSolveResult"><span class="n">result</span></a><span class="o">.</span><span class="n">success</span><span class="p">)</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">/</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">n_points</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Iterations per point: min</span><span class="s2">&quot;</span><span class="p">,</span> <a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../_autosummary/pysolvegn.BatchSolveResult.html#pysolvegn.BatchSolveResult" title="pysolvegn.BatchSolveResult"><span class="n">result</span></a><span class="o">.</span><span class="n">n_iterations</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="p">)</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">- max</span><span class="s2">&quot;</span><span class="p">,</span> <a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../_autosummary/pysolvegn.BatchSolveResult.html#pysolvegn.BatchSolveResult" title="pysolvegn.BatchSolveResult"><span class="n">result</span></a><span class="o">.</span><span class="n">n_iterations</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Max error on the normalized coordinates:</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>      <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">undistorted_points</span> <span class="o">-</span> <span class="n">normalized_points_true</span><span class="p">)</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Batch solver time: </span><span class="si">{</span><span class="n">batch_time</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> s</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Individual costs [rJ term]: C_i = 0.5 * ρ(||r_i||^2)
+Cost: C = sum(w_i * C_i)
+Step norm: ||Δp||
+Optimality: ||g||
+All the values are averaged over the N problems in processing.
+
+Iteration   N processing   Total time (s)      Cost C            ΔC           ||Δp||_2         ||g||_∞
+    0           3621          8.518e-04       2.885e+02                                       1.165e+04
+    1           3620          2.795e-03       1.384e-01      -2.884e+02       2.678e-02       1.628e+02
+    2           3620          4.667e-03       1.626e-07      -1.384e-01       4.472e-04       9.349e-02
+    3           3434          6.662e-03       1.376e-18      -1.715e-07       3.073e-07       1.222e-07
+    4           1315          7.833e-03       4.965e-27      -3.594e-18       1.114e-12       4.282e-11
+    5            39           8.253e-03       2.693e-27      -2.404e-26       3.692e-16       2.215e-11
+3621/3621 problems converged.
+[gtol] 3501 problem(s).
+[xtol] 1441 problem(s).
+
+Converged points: 3621 / 3621
+Iterations per point: min 0 - max 5
+Max error on the normalized coordinates: 5.551115123125783e-16
+Batch solver time: 0.009 s
+</pre></div>
+</div>
+</section>
+<section id="comparison-with-a-loop-on-the-single-solver">
+<h2>Comparison with a loop on the single solver<a class="headerlink" href="#comparison-with-a-loop-on-the-single-solver" title="Link to this heading">#</a></h2>
+<p>The same result can be obtained by calling <a class="reference internal" href="../_autosummary/pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">pysolvegn.solve()</span></code></a> for each point,
+but each call has its own Python overhead. The batch solver evaluates all the
+problems in processing with a single call of the residual and Jacobian functions.</p>
+<p>For the comparison, we only solve the first 200 points one by one.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">n_loop</span> <span class="o">=</span> <span class="mi">200</span><span class="w">
+</span><span class="w">
+</span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">loop_points</span> <span class="o">=</span> <span class="p">[</span><span class="p">]</span><span class="w">
+</span><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_loop</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../_autosummary/pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><span class="n">single_term</span></a> <span class="o">=</span> <span class="n">pysolvegn</span><span class="o">.</span><span class="n">Term</span><span class="o">.</span><span class="n">from_rJ</span><span class="p">(</span><span class="w">
+</span>        <span class="n">residual_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k</span><span class="p">:</span> <span class="n">camera_model</span><span class="p">(</span><span class="n">camera_parameters</span><span class="p">,</span> <span class="n">p</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:</span><span class="p">]</span><span class="p">)</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">image_points</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>        <span class="n">jacobian_func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">camera_model_jacobian</span><span class="p">(</span><span class="n">camera_parameters</span><span class="p">,</span> <span class="n">p</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:</span><span class="p">]</span><span class="p">)</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="p">)</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../_autosummary/pysolvegn.SolveResult.html#pysolvegn.SolveResult" title="pysolvegn.SolveResult"><span class="n">single_result</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-function reference internal" href="../_autosummary/pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><span class="n">pysolvegn</span><span class="o">.</span><span class="n">solve</span></a><span class="p">(</span><span class="w">
+</span>        <span class="n">terms</span><span class="o">=</span><a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../_autosummary/pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><span class="n">single_term</span></a><span class="p">,</span><span class="w">
+</span>        <span class="n">p0</span><span class="o">=</span><span class="n">initial_points</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>        <span class="n">max_iteration</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="w">
+</span>        <span class="n">gtol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span><span class="w">
+</span>        <span class="n">xtol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span><span class="w">
+</span>    <span class="p">)</span><span class="w">
+</span>    <span class="n">loop_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><a class="sphx-glr-backref-module-pysolvegn sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../_autosummary/pysolvegn.SolveResult.html#pysolvegn.SolveResult" title="pysolvegn.SolveResult"><span class="n">single_result</span></a><span class="o">.</span><span class="n">parameters</span><span class="p">)</span><span class="w">
+</span><span class="n">loop_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">(</span><span class="p">)</span> <span class="o">-</span> <span class="n">start</span><span class="w">
+</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Same result as the single solver:</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>      <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">loop_points</span><span class="p">)</span><span class="p">,</span> <span class="n">undistorted_points</span><span class="p">[</span><span class="p">:</span><span class="n">n_loop</span><span class="p">]</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Loop time for </span><span class="si">{</span><span class="n">n_loop</span><span class="si">}</span><span class="s2"> points : </span><span class="si">{</span><span class="n">loop_time</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> s</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Estimated loop time for </span><span class="si">{</span><span class="n">n_points</span><span class="si">}</span><span class="s2"> points : </span><span class="si">{</span><span class="n">loop_time</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">n_points</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">n_loop</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> s</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Same result as the single solver: True
+Loop time for 200 points : 0.061 s
+Estimated loop time for 3621 points : 1.097 s
+</pre></div>
+</div>
+</section>
+<section id="visualize-the-result">
+<h2>Visualize the result<a class="headerlink" href="#visualize-the-result" title="Link to this heading">#</a></h2>
+<p>Left: the observed distorted grid, and the undistorted grid recovered by the solver
+(one grid line out of 5),
+displayed in pixels with an ideal pinhole camera (<span class="math notranslate nohighlight">\(u = f_x x + c_x\)</span>,
+<span class="math notranslate nohighlight">\(v = f_y y + c_y\)</span>).</p>
+<p>Right: the error of the recovered normalized coordinates for each point.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">undistorted_pixels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span><span class="w">
+</span>    <span class="p">(</span><span class="w">
+</span>        <span class="n">fx</span> <span class="o">*</span> <span class="n">undistorted_points</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">cx</span><span class="p">,</span><span class="w">
+</span>        <span class="n">fy</span> <span class="o">*</span> <span class="n">undistorted_points</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">cy</span><span class="p">,</span><span class="w">
+</span>    <span class="p">)</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">errors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">undistorted_points</span> <span class="o">-</span> <span class="n">normalized_points_true</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax_grid</span><span class="p">,</span> <span class="n">ax_error</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="c1"># Display one grid line out of 5 (the grid has shape (51, 71)).</span><span class="w">
+</span><span class="n">grid_distorted</span> <span class="o">=</span> <span class="n">image_points</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="n">grid_undistorted</span> <span class="o">=</span> <span class="n">undistorted_pixels</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">xx</span><span class="o">.</span><span class="n">shape</span> <span class="o">+</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="k">def</span><span class="w"> </span><span class="nf">grid_lines</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <span class="c1"># Rows and columns of the grid, one line out of 5</span><span class="w">
+</span>    <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="p">:</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="p">:</span><span class="p">]</span><span class="p">)</span> <span class="o">+</span> <span class="nb">list</span><span class="p">(</span><span class="n">grid</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="p">:</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="w">
+</span><span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grid_lines</span><span class="p">(</span><span class="n">grid_distorted</span><span class="p">)</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <span class="n">ax_grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="w">
+</span>        <span class="n">line</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>        <span class="n">line</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">red</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>        <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w">
+</span>        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">Observed (distorted) grid</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span><span class="w">
+</span>    <span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">grid_lines</span><span class="p">(</span><span class="n">grid_undistorted</span><span class="p">)</span><span class="p">)</span><span class="p">:</span><span class="w">
+</span>    <span class="n">ax_grid</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="w">
+</span>        <span class="n">line</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>        <span class="n">line</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>        <span class="n">color</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">green</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>        <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="w">
+</span>        <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">--</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>        <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">Recovered undistorted grid</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">index</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span><span class="w">
+</span>    <span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">ax_grid</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Undistortion of the image points</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax_grid</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">u [pixels]</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax_grid</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">v [pixels]</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax_grid</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">upper right</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax_grid</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">ax_grid</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">equal</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">scatter</span> <span class="o">=</span> <span class="n">ax_error</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="w">
+</span>    <span class="n">normalized_points_true</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">normalized_points_true</span><span class="p">[</span><span class="p">:</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">c</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">errors</span><span class="p">,</span> <span class="mf">1e-17</span><span class="p">)</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">viridis</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="n">s</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">scatter</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax_error</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">log10(error)</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">ax_error</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Error on the recovered normalized coordinates</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax_error</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">x</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax_error</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">y</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="n">ax_error</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">equal</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<img src="../_images/sphx_glr_batch_undistortion_001.png" srcset="../_images/sphx_glr_batch_undistortion_001.png" alt="Undistortion of the image points, Error on the recovered normalized coordinates" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.247 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-docs-source-gallery-batch-undistortion-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/7557b70b5463cde20f343a9be6d8351b/batch_undistortion.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">batch_undistortion.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/be750f8b3c181bf32dcb9cdcddd37e9d/batch_undistortion.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">batch_undistortion.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/844f832ff02af0c3f7df4b716e590c15/batch_undistortion.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">batch_undistortion.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="affine_parametrization.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Camera calibration with affine parametrization</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#camera-model">Camera model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jacobian-with-respect-to-the-normalized-coordinates">Jacobian with respect to the normalized coordinates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-the-distorted-image-points">Generate the distorted image points</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#check-the-jacobian">Check the Jacobian</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#define-the-batch-term">Define the batch term</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solve-all-the-problems-at-once">Solve all the problems at once</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-with-a-loop-on-the-single-solver">Comparison with a loop on the single solver</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-the-result">Visualize the result</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/_gallery/batch_undistortion.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026-2026, Artezaru.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -499,29 +499,26 @@ nine-dimensional parameter space.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 254-268
+.. GENERATED FROM PYTHON SOURCE LINES 254-265
 
 Study the optimization problem at convergence
 -----------------------------------------------
 
-``study_optimization`` evaluates the least-squares problem at the
-initial parameter vector.
+The problem is first solved with :func:`pysolvegn.solve`, which returns a
+:class:`pysolvegn.SolveResult`. The optimized parameters are stored in
+``result.parameters``.
 
-It internally calls ``solve`` with:
+``study_optimization`` is then called at these converged parameters: the
+residual variance, the covariance and the standard deviations of the
+parameters are now meaningful, since the residuals only contain the
+measurement noise.
 
-    ``max_iteration=0``
-
-Consequently, no optimization step is performed.
-
-The Gauss-Newton Hessian is computed directly in the complete
-nine-dimensional parameter space.
-
-.. GENERATED FROM PYTHON SOURCE LINES 268-283
+.. GENERATED FROM PYTHON SOURCE LINES 265-284
 
 .. code-block:: Python
 
 
-    converged_parameters = pysolvegn.solve(
+    result = pysolvegn.solve(
         terms=[data_term],
         p0=initial_parameters,
         max_iteration=100,
@@ -529,6 +526,11 @@ nine-dimensional parameter space.
         xtol=1e-6,
         gtol=1e-6,
     )
+
+    print("Success:", result.success)
+    print(result.message)
+
+    converged_parameters = result.parameters
 
     pysolvegn.study_optimization(
         terms=[data_term],
@@ -538,11 +540,13 @@ nine-dimensional parameter space.
 
 
 
-
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
 
+    Success: True
+    [ftol] Convergence achieved: 0 <= F_previous - F < ftol * F with ftol = 1e-06.
+    [xtol] Convergence achieved: ||Δp|| < xtol * (xtol + ||p||) with xtol = 1e-06.
 
     ======================================================================
 
@@ -711,7 +715,7 @@ nine-dimensional parameter space.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.012 seconds)
+   **Total running time of the script:** (0 minutes 0.007 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_study_optimization.py:

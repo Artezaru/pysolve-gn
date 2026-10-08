@@ -250,6 +250,8 @@ image_points = image_points_true + np.random.normal(
 #
 # Therefore:
 #
+# .. code-block:: text
+#
 #     fx = f
 #     fy = f
 #     cx = cx_fixed
@@ -343,6 +345,10 @@ data_term = pysolvegn.Term.from_rJ(
 #     ``[f, k1, k2, p1, p2, k3]``
 #
 # The fixed values ``cx`` and ``cy`` are not included in ``p0``.
+#
+# :func:`pysolvegn.solve` returns a :class:`pysolvegn.SolveResult`:
+# ``result.parameters`` contains the six optimized input parameters
+# :math:`\mathbf{p}_{in}`.
 
 
 initial_parameters = np.array(
@@ -367,28 +373,33 @@ result = pysolvegn.solve(
     verbosity=2,
 )
 
+print("Success:", result.success)
 print("Optimized parameters:")
-print("f  =", result[0])
-print("k1 =", result[1])
-print("k2 =", result[2])
-print("p1 =", result[3])
-print("p2 =", result[4])
-print("k3 =", result[5])
+print("f  =", result.parameters[0])
+print("k1 =", result.parameters[1])
+print("k2 =", result.parameters[2])
+print("p1 =", result.parameters[3])
+print("p2 =", result.parameters[4])
+print("k3 =", result.parameters[5])
 
 
 # %%
 # Recover the complete camera parameter vector
 # ---------------------------------------------
 #
-# ``result`` contains the optimized input parameters.
+# ``result.parameters`` contains the optimized input parameters.
 #
 # The complete camera parameters are obtained by applying the
 # parametrization:
 #
 #     ``p_out = P(p_in)``
+#
+# They are also directly available in ``result.term_parameters``.
 
 
-estimated_parameters = parametrization.p_func(result)
+estimated_parameters = parametrization.p_func(result.parameters)
+
+assert np.allclose(estimated_parameters, result.term_parameters)
 
 print()
 print("Complete camera parameters:")
@@ -439,7 +450,7 @@ assert np.isclose(
 # this affine transformation.
 
 
-estimated_parameters_direct = modes @ result + offset
+estimated_parameters_direct = modes @ result.parameters + offset
 
 
 assert np.allclose(

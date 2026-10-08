@@ -1,0 +1,6 @@
+﻿pysolvegn.tukey\_rho
+====================
+
+.. currentmodule:: pysolvegn
+
+.. autofunction:: tukey_rho

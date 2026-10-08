@@ -1,0 +1,6 @@
+﻿pysolvegn.build\_batch\_affine\_parametrization
+===============================================
+
+.. currentmodule:: pysolvegn
+
+.. autofunction:: build_batch_affine_parametrization

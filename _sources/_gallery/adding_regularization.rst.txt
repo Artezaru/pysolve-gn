@@ -70,8 +70,8 @@ A Gaussian prior will then be used to regularize the solution.
 
     y_true = model(true_params, x_data)
 
-    # Add relatively strong noise to make the effect of regularization visible.
-    y_data = y_true + 1.0 * np.random.normal(size=y_true.shape)
+    # Add relatively strong noise and bias to make the effect of regularization visible.
+    y_data = y_true + 1.2 * np.random.normal(size=y_true.shape)
 
 
     def residual_function(params):
@@ -137,21 +137,21 @@ Here we assume that the parameters are expected to be close to
 
 .. note::
 
-   This regularization term can be define similarly to the data term, given a residual function and a Jacobian function
-   or directly using the provided helper function `pysolvegn.build_squared_regularization`.
+   This regularization term can be defined similarly to the data term, given a residual function and a Jacobian function
+   or directly using the provided helper function :func:`pysolvegn.build_squared_regularization`.
 
 .. GENERATED FROM PYTHON SOURCE LINES 111-121
 
 .. code-block:: Python
 
 
-    prior_means = np.array([2.5, 0.5])
+    prior_means = np.array([2.4, 0.5])
     prior_stds = np.array([0.5, 0.2])
 
     regularization_term = pysolvegn.build_squared_regularization(
         means=prior_means,
         stds=prior_stds,
-        weight=1.0,  # Can be change to update the regularization strength
+        weight=0.1 * y_data.size ** 2,  # Can be changed to update the regularization strength
     )
 
 
@@ -161,7 +161,7 @@ Here we assume that the parameters are expected to be close to
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 122-143
+.. GENERATED FROM PYTHON SOURCE LINES 122-146
 
 Fit with regularization
 -----------------------
@@ -185,7 +185,10 @@ The solver therefore minimizes:
 Both the data term and the regularization term contribute to the
 Gauss-Newton system.
 
-.. GENERATED FROM PYTHON SOURCE LINES 143-168
+:func:`pysolvegn.solve` returns a :class:`pysolvegn.SolveResult`: the optimized
+parameters are stored in ``result.parameters``.
+
+.. GENERATED FROM PYTHON SOURCE LINES 146-171
 
 .. code-block:: Python
 
@@ -221,12 +224,12 @@ Gauss-Newton system.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 169-171
+.. GENERATED FROM PYTHON SOURCE LINES 172-174
 
 Display the fitted parameters
 ------------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 171-238
+.. GENERATED FROM PYTHON SOURCE LINES 174-242
 
 .. code-block:: Python
 
@@ -235,10 +238,12 @@ Display the fitted parameters
     print(true_params)
 
     print("\nEstimated parameters without regularization:")
-    print(result_without_regularization)
+    print(result_without_regularization.parameters)
+    print("Success:", result_without_regularization.success)
 
     print("\nEstimated parameters with regularization:")
-    print(result_with_regularization)
+    print(result_with_regularization.parameters)
+    print("Success:", result_with_regularization.success)
 
     # Use a dense set of points to display the fitted curves smoothly.
     x_plot = np.linspace(0, 3, 300)
@@ -246,11 +251,11 @@ Display the fitted parameters
     y_true_plot = model(true_params, x_plot)
 
     y_without_regularization_plot = model(
-        result_without_regularization,
+        result_without_regularization.parameters,
         x_plot,
     )
     y_with_regularization_plot = model(
-        result_with_regularization,
+        result_with_regularization.parameters,
         x_plot,
     )
 
@@ -299,7 +304,6 @@ Display the fitted parameters
     plt.show()
 
 
-
 .. image-sg:: /_gallery/images/sphx_glr_adding_regularization_001.png
    :alt: Curve Fitting with Gaussian Regularization
    :srcset: /_gallery/images/sphx_glr_adding_regularization_001.png
@@ -314,10 +318,12 @@ Display the fitted parameters
     [2.5 0.5]
 
     Estimated parameters without regularization:
-    [2.45861374 0.51137177]
+    [2.449387 0.513832]
+    Success: True
 
     Estimated parameters with regularization:
-    [2.46189841 0.51080164]
+    [2.410583 0.509229]
+    Success: True
 
 
 
@@ -325,7 +331,7 @@ Display the fitted parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.068 seconds)
+   **Total running time of the script:** (0 minutes 0.049 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_adding_regularization.py:

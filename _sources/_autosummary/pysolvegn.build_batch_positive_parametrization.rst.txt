@@ -1,0 +1,6 @@
+﻿pysolvegn.build\_batch\_positive\_parametrization
+=================================================
+
+.. currentmodule:: pysolvegn
+
+.. autofunction:: build_batch_positive_parametrization

@@ -1,0 +1,6 @@
+﻿pysolvegn.build\_absolute\_regularization
+=========================================
+
+.. currentmodule:: pysolvegn
+
+.. autofunction:: build_absolute_regularization

@@ -1,0 +1,6 @@
+﻿pysolvegn.solve\_batch
+======================
+
+.. currentmodule:: pysolvegn
+
+.. autofunction:: solve_batch

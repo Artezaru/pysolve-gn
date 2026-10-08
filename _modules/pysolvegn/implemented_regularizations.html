@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -7,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.implemented_regularizations &#8212; pysolvegn 1.0.1 documentation</title>
+    <title>pysolvegn.implemented_regularizations &#8212; pysolvegn 2.0.0 documentation</title>
   
   
   
@@ -26,24 +25,24 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../_static/documentation_options.js?v=51b770b3"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -55,6 +54,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   
@@ -104,7 +104,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -124,7 +124,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 1.0.1 documentation</p>
+    <p class="title logo__title">pysolvegn 2.0.0 documentation</p>
   
 </a></div>
     
@@ -176,7 +176,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -187,15 +187,15 @@
         <div class="navbar-item">
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
     <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
     <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
     <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
   </ul>
 </div></div>
       
@@ -206,7 +206,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -283,15 +283,15 @@
           <div class="navbar-item">
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
     <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
     <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
     <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
   </ul>
 </div></div>
         
@@ -373,13 +373,111 @@
 <span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">"""</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Real</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.term</span><span class="w"> </span><span class="kn">import</span> <span class="n">Term</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.batch_term</span><span class="w"> </span><span class="kn">import</span> <span class="n">BatchTerm</span>
+
+
+<span class="c1"># ======================================================================</span>
+<span class="c1"># Validation helpers</span>
+<span class="c1"># ======================================================================</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_arrays</span><span class="p">(</span>
+    <span class="n">arrays</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">batch</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Convert the regularization arrays to float arrays and check their shapes.</span>
+
+<span class="sd">    - single mode (``batch=False``): every array must be 1D with shape ``(n,)``.</span>
+<span class="sd">    - batch mode (``batch=True``): every array must be 1D with shape ``(n,)`` (shared by</span>
+<span class="sd">      all the problems) or 2D with shape ``(k, n)`` (one row per problem). All the 2D</span>
+<span class="sd">      arrays must have the same number of problems ``k``.</span>
+
+<span class="sd">    All the arrays must have the same number of parameters ``n`` and finite values.</span>
+<span class="sd">    """</span>
+    <span class="n">converted</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">arrays</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="n">allowed_ndim</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="k">if</span> <span class="n">batch</span> <span class="k">else</span> <span class="p">(</span><span class="mi">1</span><span class="p">,)</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">converted</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">allowed_ndim</span><span class="p">:</span>
+            <span class="n">expected</span> <span class="o">=</span> <span class="s2">"a 1D array (n,) or a 2D array (k, n)"</span> <span class="k">if</span> <span class="n">batch</span> <span class="k">else</span> <span class="s2">"a 1D array"</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be </span><span class="si">{</span><span class="n">expected</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">array</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="o">~</span><span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">array</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must contain only finite values."</span><span class="p">)</span>
+
+    <span class="n">sizes</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">converted</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">sizes</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">"All the arrays must have the same number of parameters, got "</span>
+            <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">size</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">size</span> <span class="ow">in</span> <span class="n">sizes</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+            <span class="o">+</span> <span class="s2">"."</span>
+        <span class="p">)</span>
+
+    <span class="n">n_problems</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">array</span> <span class="ow">in</span> <span class="n">converted</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">}</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">n_problems</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">"All the 2D arrays must have the same number of problems, got "</span>
+            <span class="o">+</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">n_problems</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+            <span class="o">+</span> <span class="s2">"."</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">converted</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_positive_real</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Real</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a real number."</span><span class="p">)</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="ow">or</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a finite strictly positive number."</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_params</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="c1"># Single mode: params with shape (n,)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"params must be a 1D array, got </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"params must have size </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">params</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_batch_params</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="c1"># Batch mode: params with shape (m, n) and indices with shape (m,)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"params must be a 2D array with shape (m, </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">), got shape </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"indices must have shape (</span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">,), got </span><span class="si">{</span><span class="n">numpy</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">params</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_select</span><span class="p">(</span><span class="n">array</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="c1"># Values of the problems `indices`: shared (n,) array or per-problem (k, n) array</span>
+    <span class="k">return</span> <span class="n">array</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">array</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_batch_diagonal</span><span class="p">(</span><span class="n">diagonal</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="c1"># Stack of diagonal matrices (m, n, n) from the diagonals (m, n)</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">diagonal</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">jacobian</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">m</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">jacobian</span><span class="p">[:,</span> <span class="n">index</span><span class="p">,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">diagonal</span>
+    <span class="k">return</span> <span class="n">jacobian</span>
+
+
+<span class="c1"># ======================================================================</span>
+<span class="c1"># Squared regularization</span>
+<span class="c1"># ======================================================================</span>
 
 
 <div class="viewcode-block" id="build_squared_regularization">
@@ -390,6 +488,7 @@
     <span class="o">*</span><span class="p">,</span>
     <span class="n">weight</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">loss_scale</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Term</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Build a squared regularization term based on a Gaussian prior.</span>
@@ -414,7 +513,11 @@
 <span class="sd">        \end{cases}</span>
 
 <span class="sd">    The resulting :class:`Term` can be directly passed to</span>
-<span class="sd">    :func:`pysolve_gn.solve`.</span>
+<span class="sd">    :func:`pysolvegn.solve`.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :func:`build_batch_squared_regularization` for the batched version.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -431,59 +534,29 @@
 <span class="sd">    loss : Optional[Union[str, Callable]] (default=None)</span>
 <span class="sd">        Loss function applied to the regularization residuals.</span>
 
+<span class="sd">    loss_scale : Real (default=1.0)</span>
+<span class="sd">        Soft threshold of the loss function, in the unit of the residuals</span>
+<span class="sd">        (number of standard deviations), see :class:`pysolvegn.Term`.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Term</span>
 <span class="sd">        A :class:`Term` representing the squared Gaussian regularization.</span>
 <span class="sd">    """</span>
-    <span class="n">means</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-    <span class="n">stds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">stds</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">means</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"means must be a 1D array, got </span><span class="si">{</span><span class="n">means</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">stds</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"stds must be a 1D array, got </span><span class="si">{</span><span class="n">stds</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">means</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">stds</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"means and stds must have the same length, "</span>
-            <span class="sa">f</span><span class="s2">"got </span><span class="si">{</span><span class="n">means</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">stds</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> respectively."</span>
-        <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="o">~</span><span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">means</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"means must contain only finite values."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="o">~</span><span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">stds</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"stds must contain only finite values."</span><span class="p">)</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="n">_validate_arrays</span><span class="p">({</span><span class="s2">"means"</span><span class="p">:</span> <span class="n">means</span><span class="p">,</span> <span class="s2">"stds"</span><span class="p">:</span> <span class="n">stds</span><span class="p">},</span> <span class="n">batch</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">means</span><span class="p">,</span> <span class="n">stds</span> <span class="o">=</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">"means"</span><span class="p">],</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">"stds"</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">stds</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"stds must contain only strictly positive values."</span><span class="p">)</span>
 
+    <span class="n">n</span> <span class="o">=</span> <span class="n">means</span><span class="o">.</span><span class="n">size</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">residual_func</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"params must be a 1D array, got </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">means</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"params must have size </span><span class="si">{</span><span class="n">means</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
-
+        <span class="n">params</span> <span class="o">=</span> <span class="n">_check_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">params</span> <span class="o">-</span> <span class="n">means</span><span class="p">)</span> <span class="o">/</span> <span class="n">stds</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"params must be a 1D array, got </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">means</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"params must have size </span><span class="si">{</span><span class="n">means</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
-
+        <span class="n">_check_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">stds</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">Term</span><span class="p">(</span>
@@ -491,8 +564,92 @@
         <span class="n">jacobian_func</span><span class="o">=</span><span class="n">jacobian_func</span><span class="p">,</span>
         <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
         <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+        <span class="n">loss_scale</span><span class="o">=</span><span class="n">loss_scale</span><span class="p">,</span>
     <span class="p">)</span></div>
 
+
+
+<div class="viewcode-block" id="build_batch_squared_regularization">
+<a class="viewcode-back" href="../../_autosummary/pysolvegn.build_batch_squared_regularization.html#pysolvegn.build_batch_squared_regularization">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_batch_squared_regularization</span><span class="p">(</span>
+    <span class="n">means</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">stds</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">weight</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Real</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">loss_scale</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BatchTerm</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Build a batched squared regularization term based on a Gaussian prior</span>
+<span class="sd">    (batched counterpart of :func:`build_squared_regularization`).</span>
+
+<span class="sd">    For each problem :math:`k` of the batch:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        r_{\mathrm{reg},k,i}(\mathbf{p}_k)</span>
+<span class="sd">        =</span>
+<span class="sd">        \frac{p_{k,i} - \mu_{k,i}}{\sigma_{k,i}}</span>
+
+<span class="sd">    The resulting :class:`BatchTerm` can be directly passed to</span>
+<span class="sd">    :func:`pysolvegn.solve_batch`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    means : ArrayLike</span>
+<span class="sd">        Mean values of the Gaussian prior, with shape ``(n,)`` (same prior for all the</span>
+<span class="sd">        problems) or ``(k, n)`` (one prior per problem).</span>
+
+<span class="sd">    stds : ArrayLike</span>
+<span class="sd">        Standard deviation values of the Gaussian prior, with shape ``(n,)`` or</span>
+<span class="sd">        ``(k, n)``. All values must be strictly positive.</span>
+
+<span class="sd">    weight : Union[Real, ArrayLike] (default=1.0)</span>
+<span class="sd">        Weight of the regularization term: a scalar or one weight per problem with</span>
+<span class="sd">        shape ``(k,)`` (see :class:`pysolvegn.BatchTerm`).</span>
+
+<span class="sd">    loss : Optional[Union[str, Callable]] (default=None)</span>
+<span class="sd">        Loss function applied to the regularization residuals.</span>
+
+<span class="sd">    loss_scale : Real (default=1.0)</span>
+<span class="sd">        Soft threshold of the loss function, in the unit of the residuals</span>
+<span class="sd">        (number of standard deviations), see :class:`pysolvegn.BatchTerm`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    BatchTerm</span>
+<span class="sd">        A :class:`BatchTerm` representing the squared Gaussian regularization.</span>
+<span class="sd">    """</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="n">_validate_arrays</span><span class="p">({</span><span class="s2">"means"</span><span class="p">:</span> <span class="n">means</span><span class="p">,</span> <span class="s2">"stds"</span><span class="p">:</span> <span class="n">stds</span><span class="p">},</span> <span class="n">batch</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">means</span><span class="p">,</span> <span class="n">stds</span> <span class="o">=</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">"means"</span><span class="p">],</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">"stds"</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">stds</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"stds must contain only strictly positive values."</span><span class="p">)</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">means</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">residual_func</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">_check_batch_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">params</span> <span class="o">-</span> <span class="n">_select</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">indices</span><span class="p">))</span> <span class="o">/</span> <span class="n">_select</span><span class="p">(</span><span class="n">stds</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">_check_batch_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">inverse_stds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">_select</span><span class="p">(</span><span class="n">stds</span><span class="p">,</span> <span class="n">indices</span><span class="p">),</span> <span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_batch_diagonal</span><span class="p">(</span><span class="n">inverse_stds</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">BatchTerm</span><span class="p">(</span>
+        <span class="n">residual_func</span><span class="o">=</span><span class="n">residual_func</span><span class="p">,</span>
+        <span class="n">jacobian_func</span><span class="o">=</span><span class="n">jacobian_func</span><span class="p">,</span>
+        <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
+        <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+        <span class="n">loss_scale</span><span class="o">=</span><span class="n">loss_scale</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># ======================================================================</span>
+<span class="c1"># Soft squared regularization</span>
+<span class="c1"># ======================================================================</span>
 
 
 <div class="viewcode-block" id="build_soft_squared_regularization">
@@ -504,6 +661,7 @@
     <span class="o">*</span><span class="p">,</span>
     <span class="n">weight</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
     <span class="n">loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">loss_scale</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Term</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Build a soft squared regularization term based on a Gaussian prior.</span>
@@ -538,7 +696,11 @@
 <span class="sd">        \end{cases}</span>
 
 <span class="sd">    The resulting :class:`Term` can be directly passed to</span>
-<span class="sd">    :func:`pysolve_gn.solve`.</span>
+<span class="sd">    :func:`pysolvegn.solve`.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :func:`build_batch_soft_squared_regularization` for the batched version.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -560,40 +722,19 @@
 <span class="sd">    loss : Optional[Union[str, Callable]] (default=None)</span>
 <span class="sd">        Loss function applied to the regularization residuals.</span>
 
+<span class="sd">    loss_scale : Real (default=1.0)</span>
+<span class="sd">        Soft threshold of the loss function, in the unit of the residuals</span>
+<span class="sd">        (number of standard deviations), see :class:`pysolvegn.Term`.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Term</span>
 <span class="sd">        A :class:`Term` representing the soft squared regularization.</span>
 <span class="sd">    """</span>
-    <span class="n">means</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-    <span class="n">thresholds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-    <span class="n">stds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">stds</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">means</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"means must be a 1D array, got </span><span class="si">{</span><span class="n">means</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">thresholds</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"thresholds must be a 1D array, got </span><span class="si">{</span><span class="n">thresholds</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span>
-        <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">stds</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"stds must be a 1D array, got </span><span class="si">{</span><span class="n">stds</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">means</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">thresholds</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">stds</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"means, thresholds and stds must have the same length, "</span>
-            <span class="sa">f</span><span class="s2">"got </span><span class="si">{</span><span class="n">means</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">thresholds</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">stds</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2"> respectively."</span>
-        <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="o">~</span><span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">means</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"means must contain only finite values."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="o">~</span><span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">thresholds</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"thresholds must contain only finite values."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="o">~</span><span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">stds</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"stds must contain only finite values."</span><span class="p">)</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="n">_validate_arrays</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">"means"</span><span class="p">:</span> <span class="n">means</span><span class="p">,</span> <span class="s2">"thresholds"</span><span class="p">:</span> <span class="n">thresholds</span><span class="p">,</span> <span class="s2">"stds"</span><span class="p">:</span> <span class="n">stds</span><span class="p">},</span> <span class="n">batch</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">)</span>
+    <span class="n">means</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">,</span> <span class="n">stds</span> <span class="o">=</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">"means"</span><span class="p">],</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">"thresholds"</span><span class="p">],</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">"stds"</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">thresholds</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"thresholds must contain only non-negative values."</span><span class="p">)</span>
@@ -601,48 +742,19 @@
     <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">stds</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"stds must contain only strictly positive values."</span><span class="p">)</span>
 
+    <span class="n">n</span> <span class="o">=</span> <span class="n">means</span><span class="o">.</span><span class="n">size</span>
     <span class="n">lower_bounds</span> <span class="o">=</span> <span class="n">means</span> <span class="o">-</span> <span class="n">thresholds</span>
     <span class="n">upper_bounds</span> <span class="o">=</span> <span class="n">means</span> <span class="o">+</span> <span class="n">thresholds</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">residual_func</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"params must be a 1D array, got </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">means</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"params must have size </span><span class="si">{</span><span class="n">means</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
-
-        <span class="n">residuals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-
-        <span class="n">lower_mask</span> <span class="o">=</span> <span class="n">params</span> <span class="o">&lt;</span> <span class="n">lower_bounds</span>
-        <span class="n">upper_mask</span> <span class="o">=</span> <span class="n">params</span> <span class="o">&gt;</span> <span class="n">upper_bounds</span>
-
-        <span class="n">residuals</span><span class="p">[</span><span class="n">lower_mask</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">lower_mask</span><span class="p">]</span> <span class="o">-</span> <span class="n">lower_bounds</span><span class="p">[</span><span class="n">lower_mask</span><span class="p">])</span> <span class="o">/</span> <span class="n">stds</span><span class="p">[</span>
-            <span class="n">lower_mask</span>
-        <span class="p">]</span>
-
-        <span class="n">residuals</span><span class="p">[</span><span class="n">upper_mask</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span><span class="p">[</span><span class="n">upper_mask</span><span class="p">]</span> <span class="o">-</span> <span class="n">upper_bounds</span><span class="p">[</span><span class="n">upper_mask</span><span class="p">])</span> <span class="o">/</span> <span class="n">stds</span><span class="p">[</span>
-            <span class="n">upper_mask</span>
-        <span class="p">]</span>
-
-        <span class="k">return</span> <span class="n">residuals</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">_check_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">below</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">params</span> <span class="o">-</span> <span class="n">lower_bounds</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>  <span class="c1"># &lt; 0 if p &lt; mu - tau</span>
+        <span class="n">above</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">params</span> <span class="o">-</span> <span class="n">upper_bounds</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>  <span class="c1"># &gt; 0 if p &gt; mu + tau</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">below</span> <span class="o">+</span> <span class="n">above</span><span class="p">)</span> <span class="o">/</span> <span class="n">stds</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="n">params</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"params must be a 1D array, got </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">ndim</span><span class="si">}</span><span class="s2"> dimensions."</span>
-            <span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">params</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">means</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"params must have size </span><span class="si">{</span><span class="n">means</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">, got </span><span class="si">{</span><span class="n">params</span><span class="o">.</span><span class="n">size</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
-
+        <span class="n">params</span> <span class="o">=</span> <span class="n">_check_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="n">active</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span> <span class="o">&lt;</span> <span class="n">lower_bounds</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">params</span> <span class="o">&gt;</span> <span class="n">upper_bounds</span><span class="p">)</span>
-
         <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">active</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="n">stds</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
 
     <span class="k">return</span> <span class="n">Term</span><span class="p">(</span>
@@ -650,6 +762,275 @@
         <span class="n">jacobian_func</span><span class="o">=</span><span class="n">jacobian_func</span><span class="p">,</span>
         <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
         <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+        <span class="n">loss_scale</span><span class="o">=</span><span class="n">loss_scale</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="build_batch_soft_squared_regularization">
+<a class="viewcode-back" href="../../_autosummary/pysolvegn.build_batch_soft_squared_regularization.html#pysolvegn.build_batch_soft_squared_regularization">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_batch_soft_squared_regularization</span><span class="p">(</span>
+    <span class="n">means</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">thresholds</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">stds</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">weight</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Real</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">loss_scale</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BatchTerm</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Build a batched soft squared regularization term (batched counterpart of</span>
+<span class="sd">    :func:`build_soft_squared_regularization`).</span>
+
+<span class="sd">    For each problem :math:`k` of the batch, the regularization is null inside the</span>
+<span class="sd">    interval :math:`[\mu_{k,i} - \tau_{k,i}, \mu_{k,i} + \tau_{k,i}]` and increases</span>
+<span class="sd">    quadratically outside this interval, with the strength :math:`1 / \sigma_{k,i}`.</span>
+
+<span class="sd">    The resulting :class:`BatchTerm` can be directly passed to</span>
+<span class="sd">    :func:`pysolvegn.solve_batch`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    means : ArrayLike</span>
+<span class="sd">        Mean values, with shape ``(n,)`` (shared by all the problems) or ``(k, n)``.</span>
+
+<span class="sd">    thresholds : ArrayLike</span>
+<span class="sd">        Threshold values around the corresponding means, with shape ``(n,)`` or</span>
+<span class="sd">        ``(k, n)``. All values must be non-negative.</span>
+
+<span class="sd">    stds : ArrayLike</span>
+<span class="sd">        Standard deviation values controlling the strength of the regularization</span>
+<span class="sd">        outside the threshold, with shape ``(n,)`` or ``(k, n)``. All values must be</span>
+<span class="sd">        strictly positive.</span>
+
+<span class="sd">    weight : Union[Real, ArrayLike] (default=1.0)</span>
+<span class="sd">        Weight of the regularization term: a scalar or one weight per problem with</span>
+<span class="sd">        shape ``(k,)`` (see :class:`pysolvegn.BatchTerm`).</span>
+
+<span class="sd">    loss : Optional[Union[str, Callable]] (default=None)</span>
+<span class="sd">        Loss function applied to the regularization residuals.</span>
+
+<span class="sd">    loss_scale : Real (default=1.0)</span>
+<span class="sd">        Soft threshold of the loss function, in the unit of the residuals</span>
+<span class="sd">        (number of standard deviations), see :class:`pysolvegn.BatchTerm`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    BatchTerm</span>
+<span class="sd">        A :class:`BatchTerm` representing the soft squared regularization.</span>
+<span class="sd">    """</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="n">_validate_arrays</span><span class="p">(</span>
+        <span class="p">{</span><span class="s2">"means"</span><span class="p">:</span> <span class="n">means</span><span class="p">,</span> <span class="s2">"thresholds"</span><span class="p">:</span> <span class="n">thresholds</span><span class="p">,</span> <span class="s2">"stds"</span><span class="p">:</span> <span class="n">stds</span><span class="p">},</span> <span class="n">batch</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span>
+    <span class="n">means</span><span class="p">,</span> <span class="n">thresholds</span><span class="p">,</span> <span class="n">stds</span> <span class="o">=</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">"means"</span><span class="p">],</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">"thresholds"</span><span class="p">],</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">"stds"</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">thresholds</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"thresholds must contain only non-negative values."</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">stds</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"stds must contain only strictly positive values."</span><span class="p">)</span>
+
+    <span class="n">n</span> <span class="o">=</span> <span class="n">means</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">lower_bounds</span> <span class="o">=</span> <span class="n">means</span> <span class="o">-</span> <span class="n">thresholds</span>  <span class="c1"># (n,) or (k, n) by broadcasting</span>
+    <span class="n">upper_bounds</span> <span class="o">=</span> <span class="n">means</span> <span class="o">+</span> <span class="n">thresholds</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">residual_func</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">_check_batch_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">below</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">params</span> <span class="o">-</span> <span class="n">_select</span><span class="p">(</span><span class="n">lower_bounds</span><span class="p">,</span> <span class="n">indices</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="n">above</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">params</span> <span class="o">-</span> <span class="n">_select</span><span class="p">(</span><span class="n">upper_bounds</span><span class="p">,</span> <span class="n">indices</span><span class="p">),</span> <span class="mf">0.0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">below</span> <span class="o">+</span> <span class="n">above</span><span class="p">)</span> <span class="o">/</span> <span class="n">_select</span><span class="p">(</span><span class="n">stds</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="n">params</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="n">_check_batch_params</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">active</span> <span class="o">=</span> <span class="p">(</span><span class="n">params</span> <span class="o">&lt;</span> <span class="n">_select</span><span class="p">(</span><span class="n">lower_bounds</span><span class="p">,</span> <span class="n">indices</span><span class="p">))</span> <span class="o">|</span> <span class="p">(</span><span class="n">params</span> <span class="o">&gt;</span> <span class="n">_select</span><span class="p">(</span><span class="n">upper_bounds</span><span class="p">,</span> <span class="n">indices</span><span class="p">))</span>
+        <span class="n">inverse_stds</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">_select</span><span class="p">(</span><span class="n">stds</span><span class="p">,</span> <span class="n">indices</span><span class="p">),</span> <span class="n">params</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_batch_diagonal</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">active</span><span class="p">,</span> <span class="n">inverse_stds</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">BatchTerm</span><span class="p">(</span>
+        <span class="n">residual_func</span><span class="o">=</span><span class="n">residual_func</span><span class="p">,</span>
+        <span class="n">jacobian_func</span><span class="o">=</span><span class="n">jacobian_func</span><span class="p">,</span>
+        <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
+        <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+        <span class="n">loss_scale</span><span class="o">=</span><span class="n">loss_scale</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># ======================================================================</span>
+<span class="c1"># Absolute (L1) regularization</span>
+<span class="c1"># ======================================================================</span>
+
+
+<div class="viewcode-block" id="build_absolute_regularization">
+<a class="viewcode-back" href="../../_autosummary/pysolvegn.build_absolute_regularization.html#pysolvegn.build_absolute_regularization">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_absolute_regularization</span><span class="p">(</span>
+    <span class="n">means</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">stds</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">weight</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">epsilon</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Term</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Build an absolute value (L1) regularization term, approximated by a smooth</span>
+<span class="sd">    Charbonnier (pseudo-Huber) function.</span>
+
+<span class="sd">    The cost of the term is, for each parameter:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        C_{\mathrm{reg},i}(\mathbf{p})</span>
+<span class="sd">        =</span>
+<span class="sd">        w \left( \sqrt{z_i^2 + \varepsilon^2} - \varepsilon \right)</span>
+<span class="sd">        \quad \text{with} \quad</span>
+<span class="sd">        z_i = \frac{p_i - \mu_i}{\sigma_i}</span>
+
+<span class="sd">    which behaves as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        C_{\mathrm{reg},i} \approx w \left( |z_i| - \varepsilon \right)</span>
+<span class="sd">        \quad \text{if } |z_i| \gg \varepsilon</span>
+<span class="sd">        \qquad</span>
+<span class="sd">        C_{\mathrm{reg},i} \approx \frac{w}{2 \varepsilon} z_i^2</span>
+<span class="sd">        \quad \text{if } |z_i| \ll \varepsilon</span>
+
+<span class="sd">    The L1 penalty :math:`w |z_i|` favors sparse solutions (many parameters exactly at</span>
+<span class="sd">    their mean), unlike the squared regularization which only shrinks them. The smooth</span>
+<span class="sd">    quadratic zone of width :math:`\varepsilon` around :math:`\mu_i` keeps the</span>
+<span class="sd">    Gauss-Newton system well defined.</span>
+
+<span class="sd">    It is implemented as a :class:`Term` with the residuals :math:`z_i`, the</span>
+<span class="sd">    ``"soft_l1"`` loss function with ``loss_scale=epsilon`` and the weight</span>
+<span class="sd">    :math:`w / \varepsilon`:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \frac{1}{2} \frac{w}{\varepsilon} \rho_{\varepsilon}(z_i^2)</span>
+<span class="sd">        = \frac{w}{\varepsilon} \varepsilon^2 \left( \sqrt{1 + z_i^2 / \varepsilon^2} - 1 \right)</span>
+<span class="sd">        = w \left( \sqrt{z_i^2 + \varepsilon^2} - \varepsilon \right)</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        Using the residual :math:`\sqrt{|z_i|}` (such that :math:`\frac{1}{2} r_i^2 = \frac{1}{2}|z_i|`)</span>
+<span class="sd">        does not work with the Gauss-Newton method: its Jacobian is infinite at</span>
+<span class="sd">        :math:`z_i = 0`, and the Gauss-Newton step is :math:`\Delta z_i = -2 z_i`, so the</span>
+<span class="sd">        parameters oscillate between :math:`z_i` and :math:`-z_i` without converging.</span>
+
+<span class="sd">    .. tip::</span>
+
+<span class="sd">        A small ``epsilon`` gives a sharper L1 penalty but a stiffer problem: use</span>
+<span class="sd">        ``damping="lm-diag"`` in :func:`pysolvegn.solve`, and a tolerance on the</span>
+<span class="sd">        parameters larger than ``epsilon * stds``.</span>
+
+<span class="sd">    The resulting :class:`Term` can be directly passed to</span>
+<span class="sd">    :func:`pysolvegn.solve`.</span>
+
+<span class="sd">    .. seealso::</span>
+
+<span class="sd">        :func:`build_batch_absolute_regularization` for the batched version.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    means : ArrayLike</span>
+<span class="sd">        Center of the regularization for each parameter.</span>
+
+<span class="sd">    stds : ArrayLike</span>
+<span class="sd">        Scale of the regularization for each parameter (the penalty is</span>
+<span class="sd">        :math:`w |p_i - \mu_i| / \sigma_i`). All values must be strictly positive.</span>
+
+<span class="sd">    weight : Real (default=1.0)</span>
+<span class="sd">        Weight :math:`w` of the L1 penalty.</span>
+
+<span class="sd">    epsilon : Real (default=1e-3)</span>
+<span class="sd">        Width :math:`\varepsilon` of the smooth quadratic zone, in the unit of</span>
+<span class="sd">        :math:`z_i` (number of ``stds``). Must be strictly positive.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Term</span>
+<span class="sd">        A :class:`Term` representing the absolute value regularization.</span>
+
+<span class="sd">    """</span>
+    <span class="n">arrays</span> <span class="o">=</span> <span class="n">_validate_arrays</span><span class="p">({</span><span class="s2">"means"</span><span class="p">:</span> <span class="n">means</span><span class="p">,</span> <span class="s2">"stds"</span><span class="p">:</span> <span class="n">stds</span><span class="p">},</span> <span class="n">batch</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">means</span><span class="p">,</span> <span class="n">stds</span> <span class="o">=</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">"means"</span><span class="p">],</span> <span class="n">arrays</span><span class="p">[</span><span class="s2">"stds"</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">stds</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"stds must contain only strictly positive values."</span><span class="p">)</span>
+
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">_validate_positive_real</span><span class="p">(</span><span class="s2">"weight"</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">_validate_positive_real</span><span class="p">(</span><span class="s2">"epsilon"</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+
+    <span class="n">term</span> <span class="o">=</span> <span class="n">build_squared_regularization</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">stds</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Term</span><span class="p">(</span>
+        <span class="n">residual_func</span><span class="o">=</span><span class="n">term</span><span class="o">.</span><span class="n">residual_func</span><span class="p">,</span>
+        <span class="n">jacobian_func</span><span class="o">=</span><span class="n">term</span><span class="o">.</span><span class="n">jacobian_func</span><span class="p">,</span>
+        <span class="n">weight</span><span class="o">=</span><span class="n">weight</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">,</span>
+        <span class="n">loss</span><span class="o">=</span><span class="s2">"soft_l1"</span><span class="p">,</span>
+        <span class="n">loss_scale</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="build_batch_absolute_regularization">
+<a class="viewcode-back" href="../../_autosummary/pysolvegn.build_batch_absolute_regularization.html#pysolvegn.build_batch_absolute_regularization">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">build_batch_absolute_regularization</span><span class="p">(</span>
+    <span class="n">means</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">stds</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">weight</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Real</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">epsilon</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1e-3</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BatchTerm</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Build a batched absolute value (L1) regularization term (batched counterpart of</span>
+<span class="sd">    :func:`build_absolute_regularization`).</span>
+
+<span class="sd">    For each problem :math:`k` of the batch, the cost of the term is:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        C_{\mathrm{reg},k} = w_k \sum_i \left( \sqrt{z_{k,i}^2 + \varepsilon^2} - \varepsilon \right)</span>
+<span class="sd">        \quad \text{with} \quad</span>
+<span class="sd">        z_{k,i} = \frac{p_{k,i} - \mu_{k,i}}{\sigma_{k,i}}</span>
+
+<span class="sd">    The resulting :class:`BatchTerm` can be directly passed to</span>
+<span class="sd">    :func:`pysolvegn.solve_batch`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    means : ArrayLike</span>
+<span class="sd">        Center of the regularization, with shape ``(n,)`` (shared by all the problems)</span>
+<span class="sd">        or ``(k, n)``.</span>
+
+<span class="sd">    stds : ArrayLike</span>
+<span class="sd">        Scale of the regularization, with shape ``(n,)`` or ``(k, n)``.</span>
+<span class="sd">        All values must be strictly positive.</span>
+
+<span class="sd">    weight : Union[Real, ArrayLike] (default=1.0)</span>
+<span class="sd">        Weight :math:`w` of the L1 penalty: a scalar or one weight per problem with</span>
+<span class="sd">        shape ``(k,)``.</span>
+
+<span class="sd">    epsilon : Real (default=1e-3)</span>
+<span class="sd">        Width :math:`\varepsilon` of the smooth quadratic zone, in the unit of</span>
+<span class="sd">        :math:`z_{k,i}` (number of ``stds``). Must be strictly positive.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    BatchTerm</span>
+<span class="sd">        A :class:`BatchTerm` representing the absolute value regularization.</span>
+<span class="sd">    """</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="n">_validate_positive_real</span><span class="p">(</span><span class="s2">"epsilon"</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">_validate_positive_real</span><span class="p">(</span><span class="s2">"weight"</span><span class="p">,</span> <span class="n">weight</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">weight</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">weight</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>  <span class="c1"># (k,) checked by BatchTerm</span>
+
+    <span class="n">term</span> <span class="o">=</span> <span class="n">build_batch_squared_regularization</span><span class="p">(</span><span class="n">means</span><span class="p">,</span> <span class="n">stds</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">BatchTerm</span><span class="p">(</span>
+        <span class="n">residual_func</span><span class="o">=</span><span class="n">term</span><span class="o">.</span><span class="n">residual_func</span><span class="p">,</span>
+        <span class="n">jacobian_func</span><span class="o">=</span><span class="n">term</span><span class="o">.</span><span class="n">jacobian_func</span><span class="p">,</span>
+        <span class="n">weight</span><span class="o">=</span><span class="n">weight</span> <span class="o">/</span> <span class="n">epsilon</span><span class="p">,</span>
+        <span class="n">loss</span><span class="o">=</span><span class="s2">"soft_l1"</span><span class="p">,</span>
+        <span class="n">loss_scale</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span>
     <span class="p">)</span></div>
 
 </pre></div>
@@ -681,8 +1062,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -703,7 +1084,6 @@
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
-    <br/>
   </p>
 </div>
       
@@ -716,7 +1096,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

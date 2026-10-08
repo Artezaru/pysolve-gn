@@ -1,0 +1,41 @@
+﻿pysolvegn.BatchSolveResult
+==========================
+
+.. currentmodule:: pysolvegn
+
+.. autoclass:: BatchSolveResult
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BatchSolveResult.__init__
+      ~BatchSolveResult.reasons
+      ~BatchSolveResult.stopped_by
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BatchSolveResult.message
+      ~BatchSolveResult.parameters
+      ~BatchSolveResult.history
+      ~BatchSolveResult.success
+      ~BatchSolveResult.stop_code
+      ~BatchSolveResult.n_iterations
+      ~BatchSolveResult.cost
+      ~BatchSolveResult.optimality
+      ~BatchSolveResult.term_parameters
+      ~BatchSolveResult.elapsed_time
+      ~BatchSolveResult.n_rejected
+      ~BatchSolveResult.config
+   
+   

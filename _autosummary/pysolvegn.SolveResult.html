@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pysolvegn.SolveResult &#8212; pysolvegn 2.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../_static/documentation_options.js?v=51b770b3"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/pysolvegn.SolveResult';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="pysolvegn.Term" href="pysolvegn.Term.html" />
+    <link rel="prev" title="pysolvegn.solve" href="pysolvegn.solve.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pysolvegn 2.0.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../usage.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../math.html">
+    Mathematical Background
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../api.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../usage.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve.html">pysolvegn.solve</a></li>
+<li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">pysolvegn.SolveResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.Term.html">pysolvegn.Term</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.Parametrization.html">pysolvegn.Parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_affine_parametrization.html">pysolvegn.build_affine_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_fixed_parametrization.html">pysolvegn.build_fixed_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_sigmoid_parametrization.html">pysolvegn.build_sigmoid_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_positive_parametrization.html">pysolvegn.build_positive_parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_squared_regularization.html">pysolvegn.build_squared_regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_soft_squared_regularization.html">pysolvegn.build_soft_squared_regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_absolute_regularization.html">pysolvegn.build_absolute_regularization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_numerical_jacobian.html">pysolvegn.build_numerical_jacobian</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.perform_Lcurve_analysis.html">pysolvegn.perform_Lcurve_analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.study_optimization.html">pysolvegn.study_optimization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.solve_batch.html">pysolvegn.solve_batch</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.BatchSolveResult.html">pysolvegn.BatchSolveResult</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.BatchTerm.html">pysolvegn.BatchTerm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.BatchParametrization.html">pysolvegn.BatchParametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_affine_parametrization.html">pysolvegn.build_batch_affine_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_fixed_parametrization.html">pysolvegn.build_batch_fixed_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_sigmoid_parametrization.html">pysolvegn.build_batch_sigmoid_parametrization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_positive_parametrization.html">pysolvegn.build_batch_positive_parametrization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_squared_regularization.html">pysolvegn.build_batch_squared_regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_soft_squared_regularization.html">pysolvegn.build_batch_soft_squared_regularization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_absolute_regularization.html">pysolvegn.build_batch_absolute_regularization</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.build_batch_numerical_jacobian.html">pysolvegn.build_batch_numerical_jacobian</a></li>
+</ul>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.linear_rho.html">pysolvegn.linear_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.soft_l1_rho.html">pysolvegn.soft_l1_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.huber_rho.html">pysolvegn.huber_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.cauchy_rho.html">pysolvegn.cauchy_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.arctan_rho.html">pysolvegn.arctan_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.tukey_rho.html">pysolvegn.tukey_rho</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.scale_rho_function.html">pysolvegn.scale_rho_function</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pysolvegn.get_rho_function_by_name.html">pysolvegn.get_rho_function_by_name</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../api.html" class="nav-link">API Reference</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pysolvegn.SolveResult</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="pysolvegn-solveresult">
+<h1>pysolvegn.SolveResult<a class="headerlink" href="#pysolvegn-solveresult" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pysolvegn.SolveResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SolveResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">success</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimality</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">term_parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elapsed_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_rejected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/solver.html#SolveResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.SolveResult" title="Link to this definition">#</a></dt>
+<dd><p>Result of the optimization performed by <a class="reference internal" href="pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">pysolvegn.solve()</span></code></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameters</strong> (<em>ndarray</em>)</p></li>
+<li><p><strong>history</strong> (<em>List</em><em>[</em><em>Dict</em><em>]</em>)</p></li>
+<li><p><strong>success</strong> (<em>bool</em>)</p></li>
+<li><p><strong>stop_code</strong> (<em>int</em>)</p></li>
+<li><p><strong>n_iterations</strong> (<em>int</em>)</p></li>
+<li><p><strong>cost</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>optimality</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>term_parameters</strong> (<em>ndarray</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>elapsed_time</strong> (<em>float</em>)</p></li>
+<li><p><strong>n_rejected</strong> (<em>int</em>)</p></li>
+<li><p><strong>config</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>)</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysolvegn.SolveResult.parameters">
+<span class="sig-name descname"><span class="pre">parameters</span></span><a class="headerlink" href="#pysolvegn.SolveResult.parameters" title="Link to this definition">#</a></dt>
+<dd><p>The optimized input parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{in}\)</span> with shape
+<code class="docutils literal notranslate"><span class="pre">(n_parameters,)</span></code>.
+If no parametrization is provided, these parameters are also the
+parameters passed directly to the terms.
+If a parametrization is provided, the corresponding parameters passed to the
+terms are available in <code class="docutils literal notranslate"><span class="pre">term_parameters</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysolvegn.SolveResult.history">
+<span class="sig-name descname"><span class="pre">history</span></span><a class="headerlink" href="#pysolvegn.SolveResult.history" title="Link to this definition">#</a></dt>
+<dd><p>The history of the optimization process. Each element of the list is a
+dictionary describing one iteration (see the Notes section of
+<a class="reference internal" href="pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">pysolvegn.solve()</span></code></a> for the available keys).
+Empty if <code class="docutils literal notranslate"><span class="pre">history</span></code> is False.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysolvegn.SolveResult.success">
+<span class="sig-name descname"><span class="pre">success</span></span><a class="headerlink" href="#pysolvegn.SolveResult.success" title="Link to this definition">#</a></dt>
+<dd><p>True if the optimization stopped because a convergence criterion
+(<code class="docutils literal notranslate"><span class="pre">ftol</span></code>, <code class="docutils literal notranslate"><span class="pre">atol</span></code>, <code class="docutils literal notranslate"><span class="pre">gtol</span></code>, <code class="docutils literal notranslate"><span class="pre">xtol</span></code> or <code class="docutils literal notranslate"><span class="pre">ptol</span></code>) was satisfied.
+The value is determined with the following priority:</p>
+<ol class="arabic simple">
+<li><p>Always False if the optimization was stopped by a NaN or Inf value (in the
+initial parameters, the term parameters, the update or, with
+<code class="docutils literal notranslate"><span class="pre">damping=&quot;lm&quot;</span></code>, the cost), by a singular linear system, by the callback
+function or by a failure of the Levenberg-Marquardt step, even if a
+convergence criterion was satisfied at the same iteration.</p></li>
+<li><p>Otherwise True if a convergence criterion was satisfied, even if
+<code class="docutils literal notranslate"><span class="pre">max_iteration</span></code> or <code class="docutils literal notranslate"><span class="pre">max_time</span></code> was reached at the same iteration.</p></li>
+<li><p>Otherwise False (stopped by <code class="docutils literal notranslate"><span class="pre">max_iteration</span></code> or <code class="docutils literal notranslate"><span class="pre">max_time</span></code>).</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysolvegn.SolveResult.stop_code">
+<span class="sig-name descname"><span class="pre">stop_code</span></span><a class="headerlink" href="#pysolvegn.SolveResult.stop_code" title="Link to this definition">#</a></dt>
+<dd><p>The reasons why the optimization stopped, encoded as a bit mask: one bit per
+stopping criterion triggered at the last iteration (several criteria can be
+triggered at the same iteration). Use <code class="xref py py-meth docutils literal notranslate"><span class="pre">stopped_by()</span></code> to test a criterion,
+and the properties <code class="docutils literal notranslate"><span class="pre">reasons</span></code> or <code class="docutils literal notranslate"><span class="pre">message</span></code> to get a text description.
+The bits are listed in the Notes section.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysolvegn.SolveResult.n_iterations">
+<span class="sig-name descname"><span class="pre">n_iterations</span></span><a class="headerlink" href="#pysolvegn.SolveResult.n_iterations" title="Link to this definition">#</a></dt>
+<dd><p>The number of iterations performed, i.e. the number of updates
+<span class="math notranslate nohighlight">\(\Delta\mathbf{p}_{in}^{*}\)</span> applied to the parameters (0 if the
+optimization stopped at the initial parameters).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysolvegn.SolveResult.cost">
+<span class="sig-name descname"><span class="pre">cost</span></span><a class="headerlink" href="#pysolvegn.SolveResult.cost" title="Link to this definition">#</a></dt>
+<dd><p>The cost function value <span class="math notranslate nohighlight">\(C\)</span> at the returned parameters.
+If the optimization succeeded (<code class="docutils literal notranslate"><span class="pre">success=True</span></code>), the cost is always available
+(computed at the end if no criterion, damping, callback, history or verbosity
+required it during the optimization). Otherwise, None if it was not computed
+or if the terms were not evaluated at the returned parameters (NaN or Inf value
+in the initial or term parameters).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysolvegn.SolveResult.optimality">
+<span class="sig-name descname"><span class="pre">optimality</span></span><a class="headerlink" href="#pysolvegn.SolveResult.optimality" title="Link to this definition">#</a></dt>
+<dd><p>The optimality <code class="docutils literal notranslate"><span class="pre">norm(g,</span> <span class="pre">ord=numpy.inf)</span></code> at the returned parameters, where
+<span class="math notranslate nohighlight">\(\mathbf{g}\)</span> is the scaled second term. None if the terms were not
+evaluated at the returned parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysolvegn.SolveResult.term_parameters">
+<span class="sig-name descname"><span class="pre">term_parameters</span></span><a class="headerlink" href="#pysolvegn.SolveResult.term_parameters" title="Link to this definition">#</a></dt>
+<dd><p>The parameters passed to the terms, <span class="math notranslate nohighlight">\(\mathbf{p}_{out} = P(\mathbf{p}_{in})\)</span>,
+at the returned parameters (equal to <code class="docutils literal notranslate"><span class="pre">parameters</span></code> if no parametrization is
+provided). None if the optimization did not start (NaN or Inf value in <code class="docutils literal notranslate"><span class="pre">p0</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Optional[numpy.ndarray]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysolvegn.SolveResult.elapsed_time">
+<span class="sig-name descname"><span class="pre">elapsed_time</span></span><a class="headerlink" href="#pysolvegn.SolveResult.elapsed_time" title="Link to this definition">#</a></dt>
+<dd><p>The total time of the optimization in seconds.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysolvegn.SolveResult.n_rejected">
+<span class="sig-name descname"><span class="pre">n_rejected</span></span><a class="headerlink" href="#pysolvegn.SolveResult.n_rejected" title="Link to this definition">#</a></dt>
+<dd><p>The total number of rejected Levenberg-Marquardt trial steps
+(0 if <code class="docutils literal notranslate"><span class="pre">damping</span></code> is None).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pysolvegn.SolveResult.config">
+<span class="sig-name descname"><span class="pre">config</span></span><a class="headerlink" href="#pysolvegn.SolveResult.config" title="Link to this definition">#</a></dt>
+<dd><p>The configuration requested to the solver: the stopping criteria
+(<code class="docutils literal notranslate"><span class="pre">&quot;max_iteration&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;max_time&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ftol&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;xtol&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;gtol&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;atol&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;ptol&quot;</span></code>, None if not used), <code class="docutils literal notranslate"><span class="pre">&quot;damping&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;lm_conf&quot;</span></code>
+(the complete Levenberg-Marquardt configuration, default values included).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Notes</p>
+<p>Bits of <code class="docutils literal notranslate"><span class="pre">stop_code</span></code> (<code class="docutils literal notranslate"><span class="pre">stop_code</span></code> is the sum of the bits of the criteria
+triggered at the last iteration):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Bit</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;ftol&quot;</span></code></p></td>
+<td><p>1</p></td>
+<td><p>Relative decrease of the cost &lt; <code class="docutils literal notranslate"><span class="pre">ftol</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;atol&quot;</span></code></p></td>
+<td><p>2</p></td>
+<td><p>Cost &lt; <code class="docutils literal notranslate"><span class="pre">atol</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;gtol&quot;</span></code></p></td>
+<td><p>4</p></td>
+<td><p>Optimality &lt; <code class="docutils literal notranslate"><span class="pre">gtol</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;xtol&quot;</span></code></p></td>
+<td><p>8</p></td>
+<td><p>Relative step &lt; <code class="docutils literal notranslate"><span class="pre">xtol</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;ptol&quot;</span></code></p></td>
+<td><p>16</p></td>
+<td><p>Maximal absolute step &lt; <code class="docutils literal notranslate"><span class="pre">ptol</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;max_iteration&quot;</span></code></p></td>
+<td><p>32</p></td>
+<td><p>Maximum number of iterations reached</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;max_time&quot;</span></code></p></td>
+<td><p>64</p></td>
+<td><p>Maximum computation time reached</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;callback&quot;</span></code></p></td>
+<td><p>128</p></td>
+<td><p>Stopped by the callback function</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;singular&quot;</span></code></p></td>
+<td><p>256</p></td>
+<td><p>Singular linear system</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;lm&quot;</span></code></p></td>
+<td><p>512</p></td>
+<td><p>No acceptable Levenberg-Marquardt step</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;naninf_p0&quot;</span></code></p></td>
+<td><p>1024</p></td>
+<td><p>NaN or Inf value in <code class="docutils literal notranslate"><span class="pre">p0</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;naninf_term_parameters&quot;</span></code></p></td>
+<td><p>2048</p></td>
+<td><p>NaN or Inf value in <span class="math notranslate nohighlight">\(P(\mathbf{p}_{in})\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;naninf_cost&quot;</span></code></p></td>
+<td><p>4096</p></td>
+<td><p>NaN or Inf value in the cost (Levenberg-Marquardt)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;naninf_trial_cost&quot;</span></code></p></td>
+<td><p>8192</p></td>
+<td><p>NaN or Inf value in the cost of a trial step</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;naninf_update&quot;</span></code></p></td>
+<td><p>16384</p></td>
+<td><p>NaN or Inf value in the update</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">stop_code</span> <span class="pre">=</span> <span class="pre">12</span> <span class="pre">=</span> <span class="pre">4</span> <span class="pre">+</span> <span class="pre">8</span></code> means that <code class="docutils literal notranslate"><span class="pre">gtol</span></code> and <code class="docutils literal notranslate"><span class="pre">xtol</span></code> were both
+satisfied at the last iteration: <code class="docutils literal notranslate"><span class="pre">result.stopped_by(&quot;gtol&quot;)</span></code> and
+<code class="docutils literal notranslate"><span class="pre">result.stopped_by(&quot;xtol&quot;)</span></code> are True.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pysolvegn.SolveResult.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">history</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">success</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop_code</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimality</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">term_parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">elapsed_time</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_rejected</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pysolvegn.SolveResult.__init__" title="Link to this definition">#</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>parameters</strong> (<em>ndarray</em>)</p></li>
+<li><p><strong>history</strong> (<em>List</em><em>[</em><em>Dict</em><em>]</em>)</p></li>
+<li><p><strong>success</strong> (<em>bool</em>)</p></li>
+<li><p><strong>stop_code</strong> (<em>int</em>)</p></li>
+<li><p><strong>n_iterations</strong> (<em>int</em>)</p></li>
+<li><p><strong>cost</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>optimality</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>term_parameters</strong> (<em>ndarray</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>elapsed_time</strong> (<em>float</em>)</p></li>
+<li><p><strong>n_rejected</strong> (<em>int</em>)</p></li>
+<li><p><strong>config</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pysolvegn.SolveResult.__init__" title="pysolvegn.SolveResult.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(parameters, history, success, ...)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">stopped_by</span></code>(name)</p></td>
+<td><p>Test whether a stopping criterion was triggered at the last iteration.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Attributes</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">message</span></code></p></td>
+<td><p>[Get] A description of the reasons why the optimization stopped (one per line).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reasons</span></code></p></td>
+<td><p>[Get] The reasons why the optimization stopped, one string per triggered criterion, each starting with its tag (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;[xtol]</span> <span class="pre">...&quot;</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pysolvegn.SolveResult.parameters" title="pysolvegn.SolveResult.parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parameters</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pysolvegn.SolveResult.history" title="pysolvegn.SolveResult.history"><code class="xref py py-obj docutils literal notranslate"><span class="pre">history</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pysolvegn.SolveResult.success" title="pysolvegn.SolveResult.success"><code class="xref py py-obj docutils literal notranslate"><span class="pre">success</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pysolvegn.SolveResult.stop_code" title="pysolvegn.SolveResult.stop_code"><code class="xref py py-obj docutils literal notranslate"><span class="pre">stop_code</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pysolvegn.SolveResult.n_iterations" title="pysolvegn.SolveResult.n_iterations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_iterations</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pysolvegn.SolveResult.cost" title="pysolvegn.SolveResult.cost"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cost</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pysolvegn.SolveResult.optimality" title="pysolvegn.SolveResult.optimality"><code class="xref py py-obj docutils literal notranslate"><span class="pre">optimality</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pysolvegn.SolveResult.term_parameters" title="pysolvegn.SolveResult.term_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">term_parameters</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pysolvegn.SolveResult.elapsed_time" title="pysolvegn.SolveResult.elapsed_time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">elapsed_time</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pysolvegn.SolveResult.n_rejected" title="pysolvegn.SolveResult.n_rejected"><code class="xref py py-obj docutils literal notranslate"><span class="pre">n_rejected</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pysolvegn.SolveResult.config" title="pysolvegn.SolveResult.config"><code class="xref py py-obj docutils literal notranslate"><span class="pre">config</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="pysolvegn.solve.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">pysolvegn.solve</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="pysolvegn.Term.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pysolvegn.Term</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.SolveResult"><code class="docutils literal notranslate"><span class="pre">SolveResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.SolveResult.parameters"><code class="docutils literal notranslate"><span class="pre">SolveResult.parameters</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.SolveResult.history"><code class="docutils literal notranslate"><span class="pre">SolveResult.history</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.SolveResult.success"><code class="docutils literal notranslate"><span class="pre">SolveResult.success</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.SolveResult.stop_code"><code class="docutils literal notranslate"><span class="pre">SolveResult.stop_code</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.SolveResult.n_iterations"><code class="docutils literal notranslate"><span class="pre">SolveResult.n_iterations</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.SolveResult.cost"><code class="docutils literal notranslate"><span class="pre">SolveResult.cost</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.SolveResult.optimality"><code class="docutils literal notranslate"><span class="pre">SolveResult.optimality</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.SolveResult.term_parameters"><code class="docutils literal notranslate"><span class="pre">SolveResult.term_parameters</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.SolveResult.elapsed_time"><code class="docutils literal notranslate"><span class="pre">SolveResult.elapsed_time</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.SolveResult.n_rejected"><code class="docutils literal notranslate"><span class="pre">SolveResult.n_rejected</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.SolveResult.config"><code class="docutils literal notranslate"><span class="pre">SolveResult.config</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pysolvegn.SolveResult.__init__"><code class="docutils literal notranslate"><span class="pre">SolveResult.__init__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="../_sources/_autosummary/pysolvegn.SolveResult.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026-2026, Artezaru.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pysolvegn.batch_term &#8212; pysolvegn 2.0.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../../_static/documentation_options.js?v=51b770b3"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pysolvegn/batch_term';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pysolvegn 2.0.0 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../math.html">
+    Mathematical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../usage.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../math.html">
+    Mathematical Background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../usage.html">
+    Usage
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pysolvegn.batch_term</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pysolvegn.batch_term</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""</span>
+<span class="sd">pysolve-gn - Robust Gauss-Newton Least Squares Solver.</span>
+<span class="sd">Copyright (C) 2026 Artezaru, artezaru.github@proton.me</span>
+
+<span class="sd">This program is free software: you can redistribute it and/or modify</span>
+<span class="sd">it under the terms of the GNU General Public License as published by</span>
+<span class="sd">the Free Software Foundation, either version 3 of the License, or</span>
+<span class="sd">(at your option) any later version.</span>
+
+<span class="sd">This program is distributed in the hope that it will be useful,</span>
+<span class="sd">but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="sd">MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="sd">GNU General Public License for more details.</span>
+
+<span class="sd">You should have received a copy of the GNU General Public License</span>
+<span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
+<span class="sd">"""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Real</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.derivation</span><span class="w"> </span><span class="kn">import</span> <span class="n">build_batch_numerical_jacobian</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.implemented_conf</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_IMPLEMENTED_LOSS_FUNCTIONS</span><span class="p">,</span>
+    <span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.loss_functions</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_rho_function_by_name</span><span class="p">,</span>
+    <span class="n">scale_rho_function</span><span class="p">,</span>
+    <span class="n">_validate_loss_scale</span><span class="p">,</span>
+    <span class="n">_build_batch_tilde_R_and_tilde_J</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<div class="viewcode-block" id="BatchTerm">
+<a class="viewcode-back" href="../../_autosummary/pysolvegn.BatchTerm.html#pysolvegn.BatchTerm">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BatchTerm</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    A class representing a term in a batch of independent least squares problems.</span>
+
+<span class="sd">    This is the batched counterpart of :class:`pysolvegn.Term`. Instead of a single</span>
+<span class="sd">    parameter vector with shape ``(n_parameters,)``, the solver optimizes ``k``</span>
+<span class="sd">    independent parameter vectors stored in an array with shape ``(k, n_parameters)``.</span>
+<span class="sd">    For each problem :math:`k` of the batch:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \min_{\mathbf{p}_k} \frac{1}{2} \sum_{i} w_{i,k} \sum_j \rho_i\left(\| \mathbf{r}_{i,j}(\mathbf{p}_k) \|^2\right)</span>
+
+<span class="sd">    where :math:`i` indexes the different terms (:class:`pysolvegn.BatchTerm`), :math:`j`</span>
+<span class="sd">    indexes the residuals within each term and :math:`w_{i,k}` is the weight of the term</span>
+<span class="sd">    :math:`i` for the problem :math:`k`: either the same scalar weight for all the</span>
+<span class="sd">    problems, or one weight per problem (vector weight with shape ``(k,)``).</span>
+
+<span class="sd">    As for :class:`pysolvegn.Term`, a term is defined either by its **residual** and</span>
+<span class="sd">    **Jacobian** functions (``"rJ"`` term) or by its **gradient** and **Hessian**</span>
+<span class="sd">    functions (``"gH"`` term), but not both.</span>
+
+<span class="sd">    .. important::</span>
+
+<span class="sd">        **The number of evaluated problems** ``m`` **is NOT fixed.**</span>
+
+<span class="sd">        All the callables take two arguments ``(parameters, indices)``:</span>
+
+<span class="sd">        - ``parameters``: the parameters of the problems currently evaluated, with</span>
+<span class="sd">          shape ``(m, n_parameters)`` where ``m`` is **any** integer ``1 &lt;= m &lt;= k``.</span>
+<span class="sd">        - ``indices``: the indices of these problems in the full batch, with shape</span>
+<span class="sd">          ``(m,)``. ``parameters[a]`` are the parameters of the problem ``indices[a]``.</span>
+
+<span class="sd">        The solver removes the stopped problems at each iteration, so ``m`` changes</span>
+<span class="sd">        from one call to the next (and the finite differences may also call the functions</span>
+<span class="sd">        with any subset). The callables must therefore never assume a fixed ``m`` nor</span>
+<span class="sd">        ``m == k``: all their outputs must have ``m`` as first dimension, and the data</span>
+<span class="sd">        attached to each problem must be selected with ``indices``</span>
+<span class="sd">        (e.g. ``observations[indices]``), never with a full-size array.</span>
+<span class="sd">        </span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    residual_func : Optional[Callable] (default=None)</span>
+<span class="sd">        The function computing the residuals. Returns an array with shape</span>
+<span class="sd">        ``(m, n_residuals)``.</span>
+
+<span class="sd">    jacobian_func : Optional[Callable] (default=None)</span>
+<span class="sd">        The function computing the Jacobian of the residuals with respect to the</span>
+<span class="sd">        parameters. Returns an array with shape ``(m, n_residuals, n_parameters)``.</span>
+<span class="sd">        Can be numerically computed using ``finite_difference`` argument.</span>
+
+<span class="sd">    gradient_func : Optional[Callable] (default=None)</span>
+<span class="sd">        The function computing the gradient :math:`\mathbf{g}_i = \mathbf{J}_i^T \mathbf{r}_i`.</span>
+<span class="sd">        Returns an array with shape ``(m, n_parameters)``.</span>
+
+<span class="sd">    hessian_func : Optional[Callable] (default=None)</span>
+<span class="sd">        The function computing the Hessian :math:`\mathbf{H}_i = \mathbf{J}_i^T \mathbf{J}_i`.</span>
+<span class="sd">        Returns an array with shape ``(m, n_parameters, n_parameters)``.</span>
+
+<span class="sd">    cost_func : Optional[Callable] (default=None)</span>
+<span class="sd">        The function computing the cost of the term for each problem, independent of</span>
+<span class="sd">        the ``weight``. Returns a non-negative array with shape ``(m,)``.</span>
+<span class="sd">        If not provided, the default cost is</span>
+<span class="sd">        :math:`\frac{1}{2} \sum_j \rho_i(\| \mathbf{r}_{i,j}(\mathbf{p}_k) \|^2)`</span>
+<span class="sd">        for ``"rJ"`` terms and ``0.0`` for ``"gH"`` terms.</span>
+
+<span class="sd">    weight : Union[Real, ArrayLike] (default=1.0)</span>
+<span class="sd">        The weight of the term, applied to both the gradient and the Hessian.</span>
+
+<span class="sd">        - A scalar: the same strictly positive weight is used for all the problems.</span>
+<span class="sd">        - A 1D array-like with shape ``(k,)``: ``weight[k]`` is the weight of the term</span>
+<span class="sd">          for the problem ``k`` of the batch. The values must be finite and strictly</span>
+<span class="sd">          positive.</span>
+
+<span class="sd">    loss : Optional[Union[str, Callable]] (default=None)</span>
+<span class="sd">        The loss function (only for ``"rJ"`` terms). Available loss functions are</span>
+<span class="sd">        ``"linear"`` [default for None], ``"cauchy"``, ``"arctan"``, ``"soft_l1"``,</span>
+<span class="sd">        ``"huber"`` and ``"tukey"`` (see :class:`pysolvegn.Term`).</span>
+<span class="sd">        If ``loss`` is a callable, it must take the squared residuals with shape</span>
+<span class="sd">        ``(m, n_residuals)`` and return three arrays with the same shape containing the</span>
+<span class="sd">        loss value, its first derivative and its second derivative.</span>
+<span class="sd">        The ``loss`` property is then ``"custom"``.</span>
+
+<span class="sd">    loss_scale : Real (default=1.0)</span>
+<span class="sd">        The soft threshold :math:`C` of the loss function (only for ``"rJ"`` terms),</span>
+<span class="sd">        in the unit of the residuals. The loss function (predefined **or custom**) is</span>
+<span class="sd">        replaced by :math:`\rho_C(x) = C^2 \rho(x / C^2)`, same as ``f_scale`` in</span>
+<span class="sd">        ``scipy.optimize.least_squares``. The same scale is used for all the problems.</span>
+<span class="sd">        No effect on the ``"linear"`` loss. Must be finite and strictly positive.</span>
+
+<span class="sd">    finite_difference : Optional[str] (default=None)</span>
+<span class="sd">        The finite difference method used to numerically compute the Jacobian when</span>
+<span class="sd">        ``jacobian_func`` is not provided (see :func:`pysolvegn.build_batch_numerical_jacobian`).</span>
+<span class="sd">        Available methods are ``"central"``, ``"forward"`` and ``"backward"``.</span>
+
+<span class="sd">    """</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="s2">"_residual_func"</span><span class="p">,</span>
+        <span class="s2">"_jacobian_func"</span><span class="p">,</span>
+        <span class="s2">"_gradient_func"</span><span class="p">,</span>
+        <span class="s2">"_hessian_func"</span><span class="p">,</span>
+        <span class="s2">"_cost_func"</span><span class="p">,</span>
+        <span class="s2">"_weight"</span><span class="p">,</span>
+        <span class="s2">"_loss"</span><span class="p">,</span>
+        <span class="s2">"_loss_func"</span><span class="p">,</span>
+        <span class="s2">"_loss_scale"</span><span class="p">,</span>
+    <span class="p">]</span>
+
+<div class="viewcode-block" id="BatchTerm.__init__">
+<a class="viewcode-back" href="../../_autosummary/pysolvegn.BatchTerm.html#pysolvegn.BatchTerm.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">residual_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">jacobian_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">gradient_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hessian_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">cost_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">weight</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Real</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">loss_scale</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">finite_difference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">residual_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">jacobian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="n">gradient_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">hessian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"A BatchTerm object can be defined by either the residual and Jacobian "</span>
+                <span class="s2">"functions, or the gradient and Hessian functions, but not both."</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">residual_func</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">jacobian_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="n">gradient_func</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">hessian_func</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"A BatchTerm object must be defined by either the residual and Jacobian "</span>
+                <span class="s2">"functions, or the gradient and Hessian functions."</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">gradient_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">!=</span> <span class="p">(</span><span class="n">hessian_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"Both gradient_func and hessian_func must be provided together."</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">residual_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="n">jacobian_func</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">finite_difference</span> <span class="ow">is</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"Both residual_func and jacobian_func must be provided together (or use finite_difference to numerically compute the jacobian)."</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">jacobian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">finite_difference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"finite_difference must be None if jacobian_func is provided."</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">residual_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">jacobian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"A term cannot have a Jacobian function without a residual function."</span>
+            <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="p">(</span><span class="s2">"residual_func"</span><span class="p">,</span> <span class="n">residual_func</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"jacobian_func"</span><span class="p">,</span> <span class="n">jacobian_func</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"gradient_func"</span><span class="p">,</span> <span class="n">gradient_func</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"hessian_func"</span><span class="p">,</span> <span class="n">hessian_func</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">"cost_func"</span><span class="p">,</span> <span class="n">cost_func</span><span class="p">),</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a callable function, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">func</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">gradient_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">hessian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="n">loss</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"loss must be None for 'gH' terms."</span><span class="p">)</span>
+
+        <span class="n">loss_scale</span> <span class="o">=</span> <span class="n">_validate_loss_scale</span><span class="p">(</span><span class="n">loss_scale</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">gradient_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">hessian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="n">loss_scale</span> <span class="o">!=</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"loss_scale must be 1.0 for 'gH' terms."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">gradient_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">hessian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">loss_name</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">loss_func</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">loss</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">loss</span> <span class="o">=</span> <span class="s2">"linear"</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loss</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="n">loss_name</span> <span class="o">=</span> <span class="n">loss</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">loss_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_IMPLEMENTED_LOSS_FUNCTIONS</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"loss must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_LOSS_FUNCTIONS</span><span class="si">}</span><span class="s2">, got '</span><span class="si">{</span><span class="n">loss</span><span class="si">}</span><span class="s2">'."</span>
+                    <span class="p">)</span>
+                <span class="n">loss_func</span> <span class="o">=</span> <span class="n">get_rho_function_by_name</span><span class="p">(</span><span class="n">loss_name</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">loss</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"loss must be a callable function, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">loss</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
+                    <span class="p">)</span>
+                <span class="n">loss_func</span> <span class="o">=</span> <span class="n">loss</span>
+                <span class="n">loss_name</span> <span class="o">=</span> <span class="s2">"custom"</span>
+
+            <span class="c1"># Generic scaling rho_C(x) = C^2 rho(x / C^2) (identity for "linear" or C = 1)</span>
+            <span class="k">if</span> <span class="n">loss_name</span> <span class="o">!=</span> <span class="s2">"linear"</span><span class="p">:</span>
+                <span class="n">loss_func</span> <span class="o">=</span> <span class="n">scale_rho_function</span><span class="p">(</span><span class="n">loss_func</span><span class="p">,</span> <span class="n">loss_scale</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">finite_difference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">finite_difference</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"finite_difference must be a string."</span><span class="p">)</span>
+            <span class="n">finite_difference</span> <span class="o">=</span> <span class="n">finite_difference</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">finite_difference</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"finite_difference must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="si">}</span><span class="s2">, got '</span><span class="si">{</span><span class="n">finite_difference</span><span class="si">}</span><span class="s2">'."</span>
+                <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_residual_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">residual_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">jacobian_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gradient_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">gradient_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_hessian_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">hessian_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_cost_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">cost_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_weight</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loss_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="n">loss_func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loss_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="n">loss_scale</span>
+
+        <span class="c1"># If residual but no Jacobian is provided, build the numerical Jacobian function</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_residual_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_func</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">finite_difference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_func</span> <span class="o">=</span> <span class="n">build_batch_numerical_jacobian</span><span class="p">(</span>
+                <span class="n">residual_func</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_residual_func</span><span class="p">,</span>
+                <span class="n">method</span><span class="o">=</span><span class="n">finite_difference</span><span class="p">,</span>
+                <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">,</span>
+            <span class="p">)</span></div>
+
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Weight</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_weight</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Real</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mf">1.0</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"weight must be finite."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"weight must be a positive number."</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>  <span class="c1"># copy</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">"weight must be a real number or a 1D array-like of real numbers."</span>
+            <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
+
+        <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">BatchTerm</span><span class="o">.</span><span class="n">_validate_weight</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">array</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"A vector weight must be a 1D array-like with shape (k,), got shape </span><span class="si">{</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">array</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"A vector weight must not be empty."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">array</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"A vector weight must contain only finite values."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">array</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"A vector weight must contain only strictly positive values."</span><span class="p">)</span>
+
+        <span class="n">array</span><span class="o">.</span><span class="n">setflags</span><span class="p">(</span><span class="n">write</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">array</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get/Set] the weight of the term.</span>
+
+<span class="sd">        Either a strictly positive float shared by all the problems, or a read-only</span>
+<span class="sd">        1D array with shape ``(k,)`` of strictly positive values (one weight per problem).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : Optional[Union[Real, ArrayLike]] (default=1.0)</span>
+<span class="sd">            The new weight. ``None`` resets it to ``1.0``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Union[float, numpy.ndarray]</span>
+<span class="sd">            The current weight of the term.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span>
+
+    <span class="nd">@weight</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Real</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_weight</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">is_vector_weight</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get] whether the weight is a vector (one value per problem).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            ``True`` if the weight is a 1D array with shape ``(k,)``, ``False`` if it is a scalar.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">n_problems</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get] the number of problems ``k`` imposed by a vector weight.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Optional[int]</span>
+<span class="sd">            The length of the vector weight, or ``None`` for a scalar weight</span>
+<span class="sd">            (compatible with any number of problems).</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_vector_weight</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">weight_at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        Get the weights of the term for the given problems.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        indices : ArrayLike</span>
+<span class="sd">            Indices of the problems in the full batch, with shape ``(m,)``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            The weights with shape ``(m,)``.</span>
+<span class="sd">        """</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">intp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_vector_weight</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">indices</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_weight</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Callables</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">residual_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get] the batched residual function ``(parameters (m, n_p), indices (m,)) -&gt; (m, n_r)``.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            The alias ``r_func`` is also available for ``residual_func`` for convenience.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Optional[Callable]</span>
+<span class="sd">            The residual function of the term, or None if the term is ``"gH"``-type.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_residual_func</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">r_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">residual_func</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get] the batched Jacobian function ``(parameters (m, n_p), indices (m,)) -&gt; (m, n_r, n_p)``.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            The alias ``J_func`` is also available for ``jacobian_func`` for convenience.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Optional[Callable]</span>
+<span class="sd">            The Jacobian function of the term, or None if the term is ``"gH"``-type.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_func</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">J_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">jacobian_func</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">gradient_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get] the batched gradient function ``(parameters (m, n_p), indices (m,)) -&gt; (m, n_p)``.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            The alias ``g_func`` is also available for ``gradient_func`` for convenience.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Optional[Callable]</span>
+<span class="sd">            The gradient function of the term, or None if the term is ``"rJ"``-type.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gradient_func</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">g_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gradient_func</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hessian_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get] the batched Hessian function ``(parameters (m, n_p), indices (m,)) -&gt; (m, n_p, n_p)``.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            The alias ``H_func`` is also available for ``hessian_func`` for convenience.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Optional[Callable]</span>
+<span class="sd">            The Hessian function of the term, or None if the term is ``"rJ"``-type.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hessian_func</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">H_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">hessian_func</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">cost_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get] the batched cost function ``(parameters (m, n_p), indices (m,)) -&gt; (m,)``.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            The alias ``c_func`` is also available for ``cost_func`` for convenience.</span>
+
+<span class="sd">        If None, the default cost is</span>
+<span class="sd">        :math:`\frac{1}{2} \sum_j \rho_i(\| \mathbf{r}_{i,j}(\mathbf{p}_k) \|^2)`</span>
+<span class="sd">        for ``"rJ"`` terms and ``0.0`` for ``"gH"`` terms.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Optional[Callable]</span>
+<span class="sd">            The cost function of the term, or None to use the default cost computation.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_func</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">c_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost_func</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get] the name of the loss function of the term (``'custom'`` for a callable,</span>
+<span class="sd">        None for ``"gH"`` terms).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Optional[str]</span>
+<span class="sd">            The name of the loss function.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loss</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loss_func</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get] the loss function of the term.</span>
+
+<span class="sd">        The loss function takes the squared residuals with shape ``(m, n_residuals)`` and</span>
+<span class="sd">        returns the loss value, its first derivative and its second derivative, each with</span>
+<span class="sd">        shape ``(m, n_residuals)``.</span>
+
+<span class="sd">        If ``loss_scale`` is not ``1.0``, this is the scaled loss function</span>
+<span class="sd">        :math:`\rho_C(x) = C^2 \rho(x / C^2)`.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Optional[Callable]</span>
+<span class="sd">            The loss function, or None for ``"gH"`` terms.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loss_func</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">loss_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get] the soft threshold :math:`C` of the loss function, in the unit of the</span>
+<span class="sd">        residuals (always ``1.0`` for ``"gH"`` terms).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The loss scale of the term.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loss_scale</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        [Get] the type of the term: ``"rJ"`` (residual and Jacobian functions) or</span>
+<span class="sd">        ``"gH"`` (gradient and Hessian functions).</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            The type of the term, either ``"rJ"`` or ``"gH"``.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_residual_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"rJ"</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_gradient_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_hessian_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"gH"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"Invalid BatchTerm: must be defined by either rJ or gH functions."</span>
+            <span class="p">)</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Evaluation</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_prepare_inputs</span><span class="p">(</span>
+        <span class="n">parameters</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">ArrayLike</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">indices</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">intp</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">parameters</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"parameters must be a 2D array with shape (m, n_parameters), got shape </span><span class="si">{</span><span class="n">parameters</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">indices</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"indices must have shape (</span><span class="si">{</span><span class="n">parameters</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">,), got </span><span class="si">{</span><span class="n">indices</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_evaluate_cost_func</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cost_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cost</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"cost_func must return an array with shape (</span><span class="si">{</span><span class="n">parameters</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">,), got </span><span class="si">{</span><span class="n">cost</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">cost</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_evaluate_residuals</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">residuals</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_residual_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">residuals</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">residuals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"residual_func must return an array with shape (</span><span class="si">{</span><span class="n">parameters</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">, n_residuals), got </span><span class="si">{</span><span class="n">residuals</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">residuals</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_rho</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">squared_residuals</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loss</span> <span class="o">==</span> <span class="s2">"linear"</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">squared_residuals</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loss_func</span><span class="p">(</span><span class="n">squared_residuals</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_cost</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        Compute the weighted cost of the term for each problem, without computing the</span>
+<span class="sd">        Jacobian (useful to test a trial step).</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parameters : ArrayLike</span>
+<span class="sd">            Parameters of the evaluated problems with shape ``(m, n_parameters)``.</span>
+
+<span class="sd">        indices : ArrayLike</span>
+<span class="sd">            Indices of the evaluated problems in the full batch with shape ``(m,)``.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            The weighted cost :math:`w_{i,k} C_i(\mathbf{p}_k)` with shape ``(m,)``.</span>
+<span class="sd">        """</span>
+        <span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_inputs</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_at</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_cost_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"rJ"</span><span class="p">:</span>
+            <span class="n">residuals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_residuals</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+            <span class="n">rho</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rho</span><span class="p">(</span><span class="n">residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cost</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">parameters</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">weights</span> <span class="o">*</span> <span class="n">cost</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">parameters</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+        <span class="n">indices</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">compute_cost</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        Compute the weighted cost, gradient and Gauss-Newton Hessian of the term for</span>
+<span class="sd">        each problem.</span>
+
+<span class="sd">        For an ``"rJ"`` term, the robust loss is taken into account through the modified</span>
+<span class="sd">        residuals and Jacobians :math:`\tilde{\mathbf{r}}` and :math:`\tilde{\mathbf{J}}`</span>
+<span class="sd">        (same formulas as :class:`pysolvegn.Term`), and:</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            \mathbf{g}_k = w_{i,k} \tilde{\mathbf{J}}_k^T \tilde{\mathbf{r}}_k</span>
+<span class="sd">            \qquad</span>
+<span class="sd">            \mathbf{H}_k = w_{i,k} \tilde{\mathbf{J}}_k^T \tilde{\mathbf{J}}_k</span>
+
+<span class="sd">        For a ``"gH"`` term, the provided gradient and Hessian are multiplied by the weights.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        parameters : ArrayLike</span>
+<span class="sd">            Parameters of the evaluated problems with shape ``(m, n_parameters)``.</span>
+
+<span class="sd">        indices : ArrayLike</span>
+<span class="sd">            Indices of the evaluated problems in the full batch with shape ``(m,)``.</span>
+
+<span class="sd">        compute_cost : bool, optional (default=True)</span>
+<span class="sd">            If False, the cost is not computed and None is returned instead.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        cost : Optional[numpy.ndarray]</span>
+<span class="sd">            The weighted cost with shape ``(m,)``, or None if ``compute_cost`` is False.</span>
+
+<span class="sd">        gradient : numpy.ndarray</span>
+<span class="sd">            The weighted gradient with shape ``(m, n_parameters)``.</span>
+
+<span class="sd">        hessian : numpy.ndarray</span>
+<span class="sd">            The weighted Gauss-Newton Hessian with shape ``(m, n_parameters, n_parameters)``.</span>
+<span class="sd">        """</span>
+        <span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prepare_inputs</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+        <span class="n">m</span><span class="p">,</span> <span class="n">n_parameters</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight_at</span><span class="p">(</span><span class="n">indices</span><span class="p">)</span>
+        <span class="n">cost</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"rJ"</span><span class="p">:</span>
+            <span class="n">residuals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_residuals</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+            <span class="n">jacobian</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_jacobian_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">residuals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_parameters</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"jacobian_func must return an array with shape "</span>
+                    <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">residuals</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">n_parameters</span><span class="si">}</span><span class="s2">), got </span><span class="si">{</span><span class="n">jacobian</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
+                <span class="p">)</span>
+
+            <span class="n">rho</span><span class="p">,</span> <span class="n">rho_prime</span><span class="p">,</span> <span class="n">rho_double_prime</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rho</span><span class="p">(</span><span class="n">residuals</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_loss</span> <span class="o">!=</span> <span class="s2">"linear"</span><span class="p">:</span>
+                <span class="n">residuals</span><span class="p">,</span> <span class="n">jacobian</span> <span class="o">=</span> <span class="n">_build_batch_tilde_R_and_tilde_J</span><span class="p">(</span>
+                    <span class="n">residuals</span><span class="p">,</span> <span class="n">jacobian</span><span class="p">,</span> <span class="n">rho_prime</span><span class="p">,</span> <span class="n">rho_double_prime</span>
+                <span class="p">)</span>
+
+            <span class="n">jacobian_t</span> <span class="o">=</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="p">(</span><span class="n">jacobian_t</span> <span class="o">@</span> <span class="n">residuals</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="kc">None</span><span class="p">])[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">hessian</span> <span class="o">=</span> <span class="n">jacobian_t</span> <span class="o">@</span> <span class="n">jacobian</span>
+
+            <span class="k">if</span> <span class="n">compute_cost</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">cost</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># gH</span>
+            <span class="n">gradient</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gradient_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            <span class="n">hessian</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_hessian_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">gradient</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n_parameters</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"gradient_func must return an array with shape (</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">n_parameters</span><span class="si">}</span><span class="s2">), got </span><span class="si">{</span><span class="n">gradient</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">hessian</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">n_parameters</span><span class="p">,</span> <span class="n">n_parameters</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"hessian_func must return an array with shape "</span>
+                    <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">n_parameters</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">n_parameters</span><span class="si">}</span><span class="s2">), got </span><span class="si">{</span><span class="n">hessian</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="n">compute_cost</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">cost</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">compute_cost</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cost_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_cost_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
+            <span class="n">cost</span> <span class="o">=</span> <span class="n">weights</span> <span class="o">*</span> <span class="n">cost</span>
+
+        <span class="k">return</span> <span class="n">cost</span><span class="p">,</span> <span class="n">weights</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">gradient</span><span class="p">,</span> <span class="n">weights</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="n">hessian</span>
+
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="c1"># Constructors</span>
+    <span class="c1"># ------------------------------------------------------------------</span>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_rJ</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">residual_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">jacobian_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">cost_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">weight</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Real</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">loss</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">loss_scale</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+        <span class="n">finite_difference</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BatchTerm</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        Create a :class:`pysolvegn.BatchTerm` object from the batched residual and</span>
+<span class="sd">        Jacobian functions.</span>
+
+<span class="sd">        See :class:`pysolvegn.BatchTerm` for the description of the parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        BatchTerm</span>
+<span class="sd">            A BatchTerm object defined by the given residual and Jacobian functions.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">residual_func</span><span class="o">=</span><span class="n">residual_func</span><span class="p">,</span>
+            <span class="n">jacobian_func</span><span class="o">=</span><span class="n">jacobian_func</span><span class="p">,</span>
+            <span class="n">gradient_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">hessian_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">cost_func</span><span class="o">=</span><span class="n">cost_func</span><span class="p">,</span>
+            <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
+            <span class="n">loss</span><span class="o">=</span><span class="n">loss</span><span class="p">,</span>
+            <span class="n">loss_scale</span><span class="o">=</span><span class="n">loss_scale</span><span class="p">,</span>
+            <span class="n">finite_difference</span><span class="o">=</span><span class="n">finite_difference</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_gH</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">gradient_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">hessian_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">cost_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">weight</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Real</span><span class="p">,</span> <span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BatchTerm</span><span class="p">:</span>
+<span class="w">        </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">        Create a :class:`pysolvegn.BatchTerm` object from the batched gradient and</span>
+<span class="sd">        Hessian functions.</span>
+
+<span class="sd">        See :class:`pysolvegn.BatchTerm` for the description of the parameters.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        BatchTerm</span>
+<span class="sd">            A BatchTerm object defined by the given gradient and Hessian functions.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">residual_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">jacobian_func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">gradient_func</span><span class="o">=</span><span class="n">gradient_func</span><span class="p">,</span>
+            <span class="n">hessian_func</span><span class="o">=</span><span class="n">hessian_func</span><span class="p">,</span>
+            <span class="n">cost_func</span><span class="o">=</span><span class="n">cost_func</span><span class="p">,</span>
+            <span class="n">weight</span><span class="o">=</span><span class="n">weight</span><span class="p">,</span>
+            <span class="n">loss</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">finite_difference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2026-2026, Artezaru.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

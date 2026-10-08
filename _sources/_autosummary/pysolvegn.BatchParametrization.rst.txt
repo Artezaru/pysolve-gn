@@ -1,0 +1,31 @@
+﻿pysolvegn.BatchParametrization
+==============================
+
+.. currentmodule:: pysolvegn
+
+.. autoclass:: BatchParametrization
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BatchParametrization.__init__
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BatchParametrization.J_func
+      ~BatchParametrization.jacobian_func
+      ~BatchParametrization.p_func
+      ~BatchParametrization.parametric_func
+   
+   

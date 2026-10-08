@@ -1,0 +1,49 @@
+﻿pysolvegn.BatchTerm
+===================
+
+.. currentmodule:: pysolvegn
+
+.. autoclass:: BatchTerm
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~BatchTerm.__init__
+      ~BatchTerm.evaluate
+      ~BatchTerm.evaluate_cost
+      ~BatchTerm.from_gH
+      ~BatchTerm.from_rJ
+      ~BatchTerm.weight_at
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~BatchTerm.H_func
+      ~BatchTerm.J_func
+      ~BatchTerm.c_func
+      ~BatchTerm.cost_func
+      ~BatchTerm.g_func
+      ~BatchTerm.gradient_func
+      ~BatchTerm.hessian_func
+      ~BatchTerm.is_vector_weight
+      ~BatchTerm.jacobian_func
+      ~BatchTerm.loss
+      ~BatchTerm.loss_func
+      ~BatchTerm.loss_scale
+      ~BatchTerm.n_problems
+      ~BatchTerm.r_func
+      ~BatchTerm.residual_func
+      ~BatchTerm.type
+      ~BatchTerm.weight
+   
+   

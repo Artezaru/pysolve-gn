@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -8,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Mathematical Background &#8212; pysolvegn 1.0.1 documentation</title>
+    <title>Mathematical Background &#8212; pysolvegn 2.0.0 documentation</title>
   
   
   
@@ -27,24 +26,24 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=292eb321"></script>
+    <script src="_static/documentation_options.js?v=51b770b3"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -59,6 +58,7 @@
     <link rel="next" title="API Reference" href="api.html" />
     <link rel="prev" title="Installation" href="installation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   
@@ -108,7 +108,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -128,7 +128,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 1.0.1 documentation</p>
+    <p class="title logo__title">pysolvegn 2.0.0 documentation</p>
   
 </a></div>
     
@@ -150,7 +150,7 @@
 
 
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+  <a class="nav-link nav-internal" href="#" aria-current="page">
     Mathematical Background
   </a>
 </li>
@@ -180,7 +180,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -191,15 +191,15 @@
         <div class="navbar-item">
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
     <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
     <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
     <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
   </ul>
 </div></div>
       
@@ -210,7 +210,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -219,7 +219,7 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -257,7 +257,7 @@
 
 
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+  <a class="nav-link nav-internal" href="#" aria-current="page">
     Mathematical Background
   </a>
 </li>
@@ -289,15 +289,15 @@
           <div class="navbar-item">
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
     <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
     <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
     <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
   </ul>
 </div></div>
         
@@ -306,7 +306,7 @@
   </div>
   
     <div class="sidebar-primary-items__start sidebar-primary__section">
-        <div class="sidebar-primary-item pst-sidebar-collapse"><button id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
   <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
     <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
   </svg>
@@ -387,10 +387,24 @@
 <li><p><a class="reference internal" href="#robust-least-squares-optimization-by-the-gauss-newton-method" id="id4">Robust least squares optimization by the Gauss-Newton Method</a></p>
 <ul>
 <li><p><a class="reference internal" href="#id1" id="id5">Demonstration</a></p></li>
+<li><p><a class="reference internal" href="#non-positive-curvature-weights-fallback-on-rho" id="id6">Non-positive curvature weights: fallback on <span class="math notranslate nohighlight">\(\rho'\)</span></a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#adding-regularization-to-the-gauss-newton-update" id="id6">Adding regularization to the Gauss-Newton update</a></p></li>
-<li><p><a class="reference internal" href="#changing-the-parametrization" id="id7">Changing the parametrization</a></p></li>
+<li><p><a class="reference internal" href="#scaling-a-problem" id="id7">Scaling a problem</a></p>
+<ul>
+<li><p><a class="reference internal" href="#derivatives" id="id8">Derivatives</a></p></li>
+<li><p><a class="reference internal" href="#properties" id="id9">Properties</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#adding-regularization-to-the-gauss-newton-update" id="id10">Adding regularization to the Gauss-Newton update</a></p></li>
+<li><p><a class="reference internal" href="#changing-the-parametrization" id="id11">Changing the parametrization</a></p></li>
+<li><p><a class="reference internal" href="#solving-a-batch-of-independent-problems" id="id12">Solving a batch of independent problems</a></p>
+<ul>
+<li><p><a class="reference internal" href="#block-diagonal-structure" id="id13">Block-diagonal structure</a></p></li>
+<li><p><a class="reference internal" href="#independent-convergence" id="id14">Independent convergence</a></p></li>
+<li><p><a class="reference internal" href="#evaluating-a-subset-of-problems" id="id15">Evaluating a subset of problems</a></p></li>
+</ul>
+</li>
 </ul>
 </nav>
 <section id="gauss-newton-optimization">
@@ -586,9 +600,206 @@ introducing a modified Jacobian and a modified residual:</p>
 <div class="math notranslate nohighlight">
 \[\tilde{\mathbf{J}}^T \tilde{\mathbf{J}} \Delta \mathbf{p} = -\tilde{\mathbf{J}}^T \tilde{\mathbf{r}}.\]</div>
 </section>
+<section id="non-positive-curvature-weights-fallback-on-rho">
+<h3><a class="toc-backref" href="#id6" role="doc-backlink">Non-positive curvature weights: fallback on <span class="math notranslate nohighlight">\(\rho'\)</span></a><a class="headerlink" href="#non-positive-curvature-weights-fallback-on-rho" title="Link to this heading">#</a></h3>
+<p>The construction above requires <span class="math notranslate nohighlight">\(\sqrt{W_J}\)</span>, so every diagonal element</p>
+<div class="math notranslate nohighlight">
+\[W_{J,j} = \rho'(Z_j) + 2 \rho''(Z_j) Z_j\]</div>
+<p>must be strictly positive. This always holds for a convex loss function, but
+not for the loss functions that are designed to reject outliers. For these
+loss functions, <span class="math notranslate nohighlight">\(\rho''\)</span> is negative and dominates <span class="math notranslate nohighlight">\(\rho'\)</span> for large
+residuals:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 15.0%" />
+<col style="width: 30.0%" />
+<col style="width: 35.0%" />
+<col style="width: 20.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Loss</p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(\rho'(Z)\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(W_J(Z) = \rho'(Z) + 2\rho''(Z) Z\)</span></p></th>
+<th class="head"><p><span class="math notranslate nohighlight">\(W_J \leq 0\)</span> when</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(1\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(1\)</span></p></td>
+<td><p>never</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;soft_l1&quot;</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\((1 + Z)^{-1/2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((1 + Z)^{-3/2}\)</span></p></td>
+<td><p>never</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;huber&quot;</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\(1\)</span> if <span class="math notranslate nohighlight">\(Z \leq 1\)</span>, <span class="math notranslate nohighlight">\(Z^{-1/2}\)</span> otherwise</p></td>
+<td><p><span class="math notranslate nohighlight">\(1\)</span> if <span class="math notranslate nohighlight">\(Z \leq 1\)</span>, <span class="math notranslate nohighlight">\(0\)</span> otherwise</p></td>
+<td><p><span class="math notranslate nohighlight">\(Z &gt; 1\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;cauchy&quot;</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\((1 + Z)^{-1}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((1 - Z)(1 + Z)^{-2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(Z \geq 1\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;arctan&quot;</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\((1 + Z^2)^{-1}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\((1 - 3Z^2)(1 + Z^2)^{-2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\(Z \geq 1/\sqrt{3}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;tukey&quot;</span></code></p></td>
+<td><p><span class="math notranslate nohighlight">\((1 - Z)^2\)</span> if <span class="math notranslate nohighlight">\(Z \leq 1\)</span>, <span class="math notranslate nohighlight">\(0\)</span> otherwise</p></td>
+<td><p><span class="math notranslate nohighlight">\((1 - Z)(1 - 5Z)\)</span> if <span class="math notranslate nohighlight">\(Z \leq 1\)</span>, <span class="math notranslate nohighlight">\(0\)</span> otherwise</p></td>
+<td><p><span class="math notranslate nohighlight">\(Z \geq 1/5\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>A negative <span class="math notranslate nohighlight">\(W_{J,j}\)</span> means that the cost of the <span class="math notranslate nohighlight">\(j\)</span>-th residual is
+locally concave: the corresponding contribution
+<span class="math notranslate nohighlight">\(W_{J,j} \mathbf{J}_j^T \mathbf{J}_j\)</span> to the Hessian is negative
+semi-definite, and the total Hessian may become indefinite (the step is then no
+longer guaranteed to be a descent direction).</p>
+<p>Simply clamping <span class="math notranslate nohighlight">\(W_{J,j}\)</span> to a small value <span class="math notranslate nohighlight">\(\varepsilon\)</span> is not a good
+solution. The gradient stays exact, but the contribution of the residual to the
+Hessian becomes <span class="math notranslate nohighlight">\(\varepsilon \mathbf{J}_j^T \mathbf{J}_j \approx 0\)</span>. When
+many residuals are in this regime (e.g. a poor initial guess, or residuals
+expressed in a unit much larger than the threshold of the loss), the Hessian
+becomes almost singular and the step explodes.</p>
+<p>Instead, the second-order correction of the loss is dropped for these residuals
+(as in Ceres Solver):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}W_{J,j} =
+\begin{cases}
+   \rho'(Z_j) + 2 \rho''(Z_j) Z_j &amp; \text{if } \rho'(Z_j) + 2 \rho''(Z_j) Z_j &gt; \varepsilon \\
+   \max\left(\rho'(Z_j), 0\right) &amp; \text{otherwise}
+\end{cases}\end{split}\]</div>
+<p>with <span class="math notranslate nohighlight">\(\varepsilon = 10^{-12}\)</span>. In the fallback case, the modified residual and
+Jacobian become:</p>
+<div class="math notranslate nohighlight">
+\[\tilde{\mathbf{r}}_j = \frac{\rho'(Z_j)}{\sqrt{\rho'(Z_j)}} \mathbf{r}_j = \sqrt{\rho'(Z_j)} \, \mathbf{r}_j
+\quad
+\tilde{\mathbf{J}}_j = \sqrt{\rho'(Z_j)} \, \mathbf{J}_j\]</div>
+<p>which is exactly the classical <em>Iteratively Reweighted Least Squares</em> (IRLS)
+weighting: the residual is treated as a standard least squares residual with the
+weight <span class="math notranslate nohighlight">\(\rho'(Z_j)\)</span>. This choice has three properties:</p>
+<ul class="simple">
+<li><p><strong>The gradient is unchanged</strong>: in both cases
+<span class="math notranslate nohighlight">\(\tilde{\mathbf{J}}_j^T \tilde{\mathbf{r}}_j = \rho'(Z_j) \mathbf{J}_j^T \mathbf{r}_j\)</span>,
+so the stationary points of the problem are the same.</p></li>
+<li><p><strong>The Hessian approximation stays positive semi-definite</strong>: each contribution
+<span class="math notranslate nohighlight">\(W_{J,j} \mathbf{J}_j^T \mathbf{J}_j\)</span> uses <span class="math notranslate nohighlight">\(W_{J,j} \geq 0\)</span>. When it is
+invertible, the step <span class="math notranslate nohighlight">\(\Delta \mathbf{p} = -\mathbf{H}^{-1} \mathbf{g}\)</span> is a
+descent direction (<span class="math notranslate nohighlight">\(\mathbf{g}^T \Delta \mathbf{p} &lt; 0\)</span>).</p></li>
+<li><p><strong>The residual keeps a curvature proportional to its influence</strong>: an outlier with
+a small <span class="math notranslate nohighlight">\(\rho'(Z_j)\)</span> contributes little to both the gradient and the Hessian,
+instead of contributing to the gradient only.</p></li>
+</ul>
+<p>If <span class="math notranslate nohighlight">\(\rho'(Z_j) \leq 0\)</span> too (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;tukey&quot;</span></code> beyond its threshold, where
+<span class="math notranslate nohighlight">\(\rho' = 0\)</span>), then <span class="math notranslate nohighlight">\(W_{J,j} = 0\)</span> and the residual is simply ignored:
+<span class="math notranslate nohighlight">\(\tilde{\mathbf{r}}_j = 0\)</span> and <span class="math notranslate nohighlight">\(\tilde{\mathbf{J}}_j = 0\)</span>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>With a redescending loss such as <code class="docutils literal notranslate"><span class="pre">&quot;tukey&quot;</span></code>, if all the residuals are beyond the
+threshold, the gradient and the Hessian are both zero and the system is singular.
+These loss functions require a good initial guess (e.g. the solution obtained
+with <code class="docutils literal notranslate"><span class="pre">&quot;cauchy&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;huber&quot;</span></code>).</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The fallback only modifies the Hessian approximation, never the gradient or the
+cost. The Levenberg-Marquardt damping (<code class="docutils literal notranslate"><span class="pre">damping=&quot;lm&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;lm-diag&quot;</span></code>) remains
+useful on top of it to control the step length far from the solution.</p>
+</div>
+</section>
+</section>
+<section id="scaling-a-problem">
+<h2><a class="toc-backref" href="#id7" role="doc-backlink">Scaling a problem</a><a class="headerlink" href="#scaling-a-problem" title="Link to this heading">#</a></h2>
+<p>All the predefined loss functions have their transition between the quadratic
+regime (<span class="math notranslate nohighlight">\(\rho(Z) \approx Z\)</span>, inliers) and the robust regime (outliers) around
+<span class="math notranslate nohighlight">\(Z = 1\)</span>, that is <span class="math notranslate nohighlight">\(|\mathbf{r}_j| \approx 1\)</span> <strong>in the unit of the residuals</strong>.</p>
+<p>The result of a robust optimization therefore depends on the unit of the residuals.
+For example, for residuals expressed in millimeters with a noise of a few
+millimeters, all the residuals are in the robust regime of the loss function: every
+residual is treated as an outlier and the optimization can fail or converge to a
+poor solution. The same problem expressed in meters works as expected.</p>
+<p>To control the threshold, a <strong>soft threshold</strong> <span class="math notranslate nohighlight">\(C &gt; 0\)</span> (<code class="docutils literal notranslate"><span class="pre">loss_scale</span></code>),
+expressed in the unit of the residuals, is introduced. The loss function
+<span class="math notranslate nohighlight">\(\rho\)</span> is replaced by its scaled version:</p>
+<div class="math notranslate nohighlight">
+\[\rho_C(Z) = C^2 \rho\left(\frac{Z}{C^2}\right)\]</div>
+<p>The transition is now located at <span class="math notranslate nohighlight">\(Z = C^2\)</span>, that is
+<span class="math notranslate nohighlight">\(|\mathbf{r}_j| \approx C\)</span>. This definition is the same as the
+<code class="docutils literal notranslate"><span class="pre">f_scale</span></code> argument of <code class="docutils literal notranslate"><span class="pre">scipy.optimize.least_squares</span></code>.</p>
+<section id="derivatives">
+<h3><a class="toc-backref" href="#id8" role="doc-backlink">Derivatives</a><a class="headerlink" href="#derivatives" title="Link to this heading">#</a></h3>
+<p>Denoting <span class="math notranslate nohighlight">\(u_j = Z_j / C^2\)</span> the dimensionless squared residual, the derivatives
+of the scaled loss function are:</p>
+<div class="math notranslate nohighlight">
+\[\rho_C'(Z_j) = \rho'(u_j)
+\quad
+\rho_C''(Z_j) = \frac{1}{C^2} \rho''(u_j)\]</div>
+<p>The weights of the robust Gauss-Newton system become:</p>
+<div class="math notranslate nohighlight">
+\[W_{R,j} = \rho'(u_j)
+\quad
+W_{J,j} = \rho'(u_j) + 2 \frac{\rho''(u_j)}{C^2} Z_j = \rho'(u_j) + 2 \rho''(u_j) u_j\]</div>
+<p>Both weights are dimensionless and only depend on the ratio
+<span class="math notranslate nohighlight">\(|\mathbf{r}_j| / C\)</span>. The fallback on <span class="math notranslate nohighlight">\(\rho'\)</span> described in the previous
+section is applied in the same way on <span class="math notranslate nohighlight">\(W_{J,j}\)</span>.</p>
+</section>
+<section id="properties">
+<h3><a class="toc-backref" href="#id9" role="doc-backlink">Properties</a><a class="headerlink" href="#properties" title="Link to this heading">#</a></h3>
+<ul>
+<li><p><strong>Small residuals are unchanged.</strong> Since all the predefined loss functions satisfy
+<span class="math notranslate nohighlight">\(\rho(0) = 0\)</span> and <span class="math notranslate nohighlight">\(\rho'(0) = 1\)</span>, for <span class="math notranslate nohighlight">\(|\mathbf{r}_j| \ll C\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\rho_C(Z_j) \approx C^2 \frac{Z_j}{C^2} = Z_j\]</div>
+<p>The inliers are treated as in a standard least squares problem, whatever <span class="math notranslate nohighlight">\(C\)</span>.</p>
+</li>
+<li><p><strong>The linear loss is invariant.</strong> For <span class="math notranslate nohighlight">\(\rho(Z) = Z\)</span>,
+<span class="math notranslate nohighlight">\(\rho_C(Z) = Z\)</span> for every <span class="math notranslate nohighlight">\(C\)</span>.</p></li>
+<li><p><strong>Unit invariance.</strong> If the residuals are multiplied by a factor <span class="math notranslate nohighlight">\(\alpha\)</span>
+(change of unit) and <span class="math notranslate nohighlight">\(C\)</span> is multiplied by the same factor, then
+<span class="math notranslate nohighlight">\(u_j\)</span> is unchanged and the cost is multiplied by <span class="math notranslate nohighlight">\(\alpha^2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\rho_{\alpha C}(\alpha^2 Z_j) = \alpha^2 \rho_C(Z_j)\]</div>
+<p>The minimizer is therefore the same: the solution does not depend on the unit of
+the residuals, as long as <span class="math notranslate nohighlight">\(C\)</span> is expressed in the same unit.</p>
+</li>
+<li><p><strong>Equivalence with a weighted problem.</strong> Since</p>
+<div class="math notranslate nohighlight">
+\[\rho_C\left(\|\mathbf{r}_j\|^2\right)
+= C^2 \rho\left(\left\|\frac{\mathbf{r}_j}{C}\right\|^2\right)\]</div>
+<p>a term with the loss <span class="math notranslate nohighlight">\(\rho_C\)</span> and the weight <span class="math notranslate nohighlight">\(w_i\)</span> is equivalent to a
+term with the loss <span class="math notranslate nohighlight">\(\rho\)</span>, the residuals <span class="math notranslate nohighlight">\(\mathbf{r}_i / C\)</span>, the Jacobian
+<span class="math notranslate nohighlight">\(\mathbf{J}_i / C\)</span> and the weight <span class="math notranslate nohighlight">\(w_i C^2\)</span>. <code class="docutils literal notranslate"><span class="pre">loss_scale</span></code> performs this
+normalization automatically, without modifying the residual functions or the weight.</p>
+</li>
+<li><p><strong>Any loss function can be scaled.</strong> The scaling only uses the values of
+<span class="math notranslate nohighlight">\(\rho\)</span>, <span class="math notranslate nohighlight">\(\rho'\)</span> and <span class="math notranslate nohighlight">\(\rho''\)</span>, so it applies in the same way to
+the predefined loss functions and to a custom loss function.</p></li>
+</ul>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>A good starting value for <span class="math notranslate nohighlight">\(C\)</span> is the expected magnitude of the inlier
+residuals, e.g. two or three times the standard deviation of the measurement noise.
+Residuals larger than a few <span class="math notranslate nohighlight">\(C\)</span> are then progressively considered as outliers.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">loss_scale</span></code> argument of <a class="reference internal" href="_autosummary/pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.Term</span></code></a> (and
+<a class="reference internal" href="_autosummary/pysolvegn.BatchTerm.html#pysolvegn.BatchTerm" title="pysolvegn.BatchTerm"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.BatchTerm</span></code></a>), which stores the soft threshold <span class="math notranslate nohighlight">\(C\)</span> and
+replaces the loss function <span class="math notranslate nohighlight">\(\rho\)</span> (predefined or custom) by <span class="math notranslate nohighlight">\(\rho_C\)</span>.
+The same <span class="math notranslate nohighlight">\(C\)</span> is used for all the residuals of a term, so terms with
+residuals in different units should use different values.</p>
+</div>
+</section>
 </section>
 <section id="adding-regularization-to-the-gauss-newton-update">
-<h2><a class="toc-backref" href="#id6" role="doc-backlink">Adding regularization to the Gauss-Newton update</a><a class="headerlink" href="#adding-regularization-to-the-gauss-newton-update" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id10" role="doc-backlink">Adding regularization to the Gauss-Newton update</a><a class="headerlink" href="#adding-regularization-to-the-gauss-newton-update" title="Link to this heading">#</a></h2>
 <p>In many optimization problems, the objective function is composed of several
 least squares terms. The first term usually corresponds to the data fitting
 problem, while the remaining terms can be used to regularize the solution.</p>
@@ -645,7 +856,7 @@ the weight associated to the term.</p>
 </div>
 </section>
 <section id="changing-the-parametrization">
-<h2><a class="toc-backref" href="#id7" role="doc-backlink">Changing the parametrization</a><a class="headerlink" href="#changing-the-parametrization" title="Link to this heading">#</a></h2>
+<h2><a class="toc-backref" href="#id11" role="doc-backlink">Changing the parametrization</a><a class="headerlink" href="#changing-the-parametrization" title="Link to this heading">#</a></h2>
 <p>Consider a least squares problem of the form:</p>
 <div class="math notranslate nohighlight">
 \[\min_{\mathbf{p}_{\mathrm{out}}}
@@ -780,6 +991,220 @@ parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{out}
 with shape <code class="docutils literal notranslate"><span class="pre">(n_p_outputs,</span> <span class="pre">n_parameters)</span></code></p>
 </div>
 </section>
+<section id="solving-a-batch-of-independent-problems">
+<h2><a class="toc-backref" href="#id12" role="doc-backlink">Solving a batch of independent problems</a><a class="headerlink" href="#solving-a-batch-of-independent-problems" title="Link to this heading">#</a></h2>
+<p>Many applications require solving the same least squares problem for a large
+number of independent datasets (e.g. one fit per pixel, per point or per image).
+Consider <span class="math notranslate nohighlight">\(K\)</span> independent problems sharing the same terms, indexed by
+<span class="math notranslate nohighlight">\(k \in (1, K)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\min_{\mathbf{p}_{\mathrm{in},k}}
+\frac{1}{2}
+\sum_i w_{i,k} \sum_j
+\rho_i
+\left(
+   \left\| \mathbf{r}_{i,j}\left(P(\mathbf{p}_{\mathrm{in},k}), k\right) \right\|^2
+\right)
+\quad \forall k \in (1, K)\]</div>
+<p>The residual functions, the robust cost functions <span class="math notranslate nohighlight">\(\rho_i\)</span> and the
+parametrization <span class="math notranslate nohighlight">\(P\)</span> have the same form for all the problems (<span class="math notranslate nohighlight">\(P\)</span> is
+strictly identical for all of them), but each problem
+has its own parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{in},k} \in \mathbb{R}^{n_p}\)</span>, its
+own data (the residuals depend on <span class="math notranslate nohighlight">\(k\)</span>) and possibly its own weights
+<span class="math notranslate nohighlight">\(w_{i,k}\)</span>.</p>
+<section id="block-diagonal-structure">
+<h3><a class="toc-backref" href="#id13" role="doc-backlink">Block-diagonal structure</a><a class="headerlink" href="#block-diagonal-structure" title="Link to this heading">#</a></h3>
+<p>These <span class="math notranslate nohighlight">\(K\)</span> problems could be stacked into a single problem with
+<span class="math notranslate nohighlight">\(K n_p\)</span> parameters. Since the residuals of the problem <span class="math notranslate nohighlight">\(k\)</span> only depend
+on <span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{in},k}\)</span>, the stacked Jacobian is block-diagonal, and so
+is the Gauss-Newton system:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+   \mathbf{H}_1 &amp; &amp; \\
+   &amp; \ddots &amp; \\
+   &amp; &amp; \mathbf{H}_K
+\end{bmatrix}
+\begin{bmatrix}
+   \Delta \mathbf{p}_{\mathrm{in},1} \\
+   \vdots \\
+   \Delta \mathbf{p}_{\mathrm{in},K}
+\end{bmatrix}
+=
+-
+\begin{bmatrix}
+   \mathbf{g}_1 \\
+   \vdots \\
+   \mathbf{g}_K
+\end{bmatrix}\end{split}\]</div>
+<p>where, for each problem <span class="math notranslate nohighlight">\(k\)</span>, the Hessian approximation and the gradient are
+built exactly as in the previous sections (robust weighting, fallback on
+<span class="math notranslate nohighlight">\(\rho'\)</span>, loss scaling and parametrization):</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{H}_k = \sum_i w_{i,k} \, \tilde{\mathbf{J}}_{i,k}^T \tilde{\mathbf{J}}_{i,k}
+\quad
+\mathbf{g}_k = \sum_i w_{i,k} \, \tilde{\mathbf{J}}_{i,k}^T \tilde{\mathbf{r}}_{i,k}
+\quad
+\tilde{\mathbf{J}}_{i,k} = \sqrt{W_{J,i,k}} \, \mathbf{J}_{i,k} \mathbf{J}_{P,k}\]</div>
+<p>The global system therefore decouples into <span class="math notranslate nohighlight">\(K\)</span> small independent systems of
+size <span class="math notranslate nohighlight">\(n_p \times n_p\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\mathbf{H}_k \Delta \mathbf{p}_{\mathrm{in},k} = -\mathbf{g}_k
+\quad \forall k \in (1, K)\]</div>
+<p>Instead of one system of size <span class="math notranslate nohighlight">\(K n_p\)</span>, the batch solver solves <span class="math notranslate nohighlight">\(K\)</span>
+systems of size <span class="math notranslate nohighlight">\(n_p\)</span> in a single vectorized operation. The cost of an
+iteration is linear in <span class="math notranslate nohighlight">\(K\)</span>, and all the quantities are stored as arrays with
+a leading batch dimension:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 40.0%" />
+<col style="width: 60.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Quantity</p></th>
+<th class="head"><p>Shape</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Parameters <span class="math notranslate nohighlight">\(\mathbf{p}_{\mathrm{in}}\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(K,</span> <span class="pre">n_parameters)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Residuals <span class="math notranslate nohighlight">\(\mathbf{r}_i\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(K,</span> <span class="pre">n_residuals_i)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Jacobians <span class="math notranslate nohighlight">\(\mathbf{J}_i\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(K,</span> <span class="pre">n_residuals_i,</span> <span class="pre">n_p_outputs)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Jacobian of the parametrization <span class="math notranslate nohighlight">\(\mathbf{J}_P\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(K,</span> <span class="pre">n_p_outputs,</span> <span class="pre">n_parameters)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Gradients <span class="math notranslate nohighlight">\(\mathbf{g}\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(K,</span> <span class="pre">n_parameters)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>Hessians <span class="math notranslate nohighlight">\(\mathbf{H}\)</span></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(K,</span> <span class="pre">n_parameters,</span> <span class="pre">n_parameters)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p>Weights <span class="math notranslate nohighlight">\(w_i\)</span></p></td>
+<td><p>scalar, or <code class="docutils literal notranslate"><span class="pre">(K,)</span></code> for one weight per problem</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="independent-convergence">
+<h3><a class="toc-backref" href="#id14" role="doc-backlink">Independent convergence</a><a class="headerlink" href="#independent-convergence" title="Link to this heading">#</a></h3>
+<p>Since the problems are independent, each one converges at its own pace: an easy
+problem may converge in a few iterations, while a difficult one requires many more.
+The stopping criteria (<code class="docutils literal notranslate"><span class="pre">ftol</span></code>, <code class="docutils literal notranslate"><span class="pre">atol</span></code>, <code class="docutils literal notranslate"><span class="pre">gtol</span></code>, <code class="docutils literal notranslate"><span class="pre">xtol</span></code>, <code class="docutils literal notranslate"><span class="pre">ptol</span></code>) are therefore
+evaluated <strong>for each problem separately</strong>, using its own cost <span class="math notranslate nohighlight">\(F_k\)</span>, gradient
+<span class="math notranslate nohighlight">\(\mathbf{g}_k\)</span> and update <span class="math notranslate nohighlight">\(\Delta \mathbf{p}_{\mathrm{in},k}\)</span>. For instance,
+the problem <span class="math notranslate nohighlight">\(k\)</span> satisfies <code class="docutils literal notranslate"><span class="pre">ftol</span></code> when:</p>
+<div class="math notranslate nohighlight">
+\[|F_k^{(n)} - F_k^{(n-1)}| &lt; \mathrm{ftol} \cdot F_k^{(n)}\]</div>
+<p>The solver maintains the set <span class="math notranslate nohighlight">\(\mathcal{A}^{(n)}\)</span> of the problems still in
+processing at iteration <span class="math notranslate nohighlight">\(n\)</span> (the <em>active set</em>), with
+<span class="math notranslate nohighlight">\(m = |\mathcal{A}^{(n)}| \leq K\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\mathcal{A}^{(0)} = (1, K)
+\quad
+\mathcal{A}^{(n+1)} = \mathcal{A}^{(n)} \setminus \left\{ k \text{ stopped at iteration } n \right\}\]</div>
+<p>At each iteration, only the <span class="math notranslate nohighlight">\(m\)</span> active problems are evaluated, and their
+parameters are updated:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\mathbf{p}_{\mathrm{in},k}^{(n+1)} =
+\begin{cases}
+   \mathbf{p}_{\mathrm{in},k}^{(n)} + \Delta \mathbf{p}_{\mathrm{in},k} &amp; \text{if } k \in \mathcal{A}^{(n+1)} \\
+   \mathbf{p}_{\mathrm{in},k}^{(n)} &amp; \text{otherwise (frozen)}
+\end{cases}\end{split}\]</div>
+<p>This has two consequences:</p>
+<ul class="simple">
+<li><p><strong>The converged problems are not modified anymore.</strong> Their parameters are frozen
+at the iteration at which they satisfied a criterion, exactly as if each problem
+had been solved alone with <a class="reference internal" href="_autosummary/pysolvegn.solve.html#pysolvegn.solve" title="pysolvegn.solve"><code class="xref py py-func docutils literal notranslate"><span class="pre">pysolvegn.solve()</span></code></a>.</p></li>
+<li><p><strong>The work decreases during the optimization.</strong> The cost of an iteration is
+proportional to the number <span class="math notranslate nohighlight">\(m\)</span> of active problems, not to <span class="math notranslate nohighlight">\(K\)</span>.</p></li>
+</ul>
+<p>A problem can also be stopped without being converged: when its system is singular,
+when NaN or Inf values appear in its parameters, or when a global limit is reached
+(<code class="docutils literal notranslate"><span class="pre">max_iteration</span></code>, <code class="docutils literal notranslate"><span class="pre">max_time</span></code> or the callback), which stops all the remaining
+active problems. The solver reports, for each problem, whether it has converged.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The global cost <span class="math notranslate nohighlight">\(\sum_k F_k\)</span> has no particular meaning for independent
+problems (a single badly fitted problem dominates it). The logged values are
+therefore averaged over the active problems.</p>
+</div>
+</section>
+<section id="evaluating-a-subset-of-problems">
+<h3><a class="toc-backref" href="#id15" role="doc-backlink">Evaluating a subset of problems</a><a class="headerlink" href="#evaluating-a-subset-of-problems" title="Link to this heading">#</a></h3>
+<p>Because of the active set, the callables of the terms are called with the parameters
+of the <span class="math notranslate nohighlight">\(m\)</span> active problems only, together with their indices in the batch:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\left(
+   \begin{bmatrix}
+      \mathbf{p}_{k_1} \\
+      \vdots \\
+      \mathbf{p}_{k_m}
+   \end{bmatrix},
+   \begin{bmatrix}
+      k_1 \\
+      \vdots \\
+      k_m
+   \end{bmatrix}
+\right)
+\longmapsto
+\begin{bmatrix}
+   \mathbf{r}(\mathbf{p}_{k_1}, k_1) \\
+   \vdots \\
+   \mathbf{r}(\mathbf{p}_{k_m}, k_m)
+\end{bmatrix}\end{split}\]</div>
+<p>The row <span class="math notranslate nohighlight">\(a\)</span> of every output must only depend on the row <span class="math notranslate nohighlight">\(a\)</span> of the
+parameters and on the data of the problem <span class="math notranslate nohighlight">\(k_a\)</span> (selected with the indices,
+e.g. <code class="docutils literal notranslate"><span class="pre">observations[indices]</span></code>). The number <span class="math notranslate nohighlight">\(m\)</span> changes from one call to the
+next, so the callables must never assume <span class="math notranslate nohighlight">\(m = K\)</span>.</p>
+<p>The parametrization <span class="math notranslate nohighlight">\(P\)</span> is the same for all the problems: it does not depend on
+<span class="math notranslate nohighlight">\(k\)</span>, so its callables only receive the parameters of the <span class="math notranslate nohighlight">\(m\)</span> active problems
+(without indices) and are applied row by row:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{bmatrix}
+   \mathbf{p}_{\mathrm{in},k_1} \\
+   \vdots \\
+   \mathbf{p}_{\mathrm{in},k_m}
+\end{bmatrix}
+\longmapsto
+\begin{bmatrix}
+   P(\mathbf{p}_{\mathrm{in},k_1}) \\
+   \vdots \\
+   P(\mathbf{p}_{\mathrm{in},k_m})
+\end{bmatrix}\end{split}\]</div>
+<p>The same convention is used for the vector weights: the weights of the active
+problems are <span class="math notranslate nohighlight">\((w_{i,k_1}, \ldots, w_{i,k_m})\)</span>. The weights must be strictly
+positive: a zero weight would cancel all the contributions of a problem and make
+its system <span class="math notranslate nohighlight">\(\mathbf{H}_k\)</span> singular.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The loss scale <span class="math notranslate nohighlight">\(C_i\)</span> (<code class="docutils literal notranslate"><span class="pre">loss_scale</span></code>) of a term is shared by all the
+problems of the batch. Problems whose residuals have very different magnitudes
+should be normalized in the residual functions (e.g. by dividing by a
+per-problem noise level selected with the indices).</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>The function <a class="reference internal" href="_autosummary/pysolvegn.solve_batch.html#pysolvegn.solve_batch" title="pysolvegn.solve_batch"><code class="xref py py-func docutils literal notranslate"><span class="pre">pysolvegn.solve_batch()</span></code></a> solves a batch of independent problems.</p>
+<p>The class <a class="reference internal" href="_autosummary/pysolvegn.BatchTerm.html#pysolvegn.BatchTerm" title="pysolvegn.BatchTerm"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.BatchTerm</span></code></a> represents a term of the batch. Its
+<code class="docutils literal notranslate"><span class="pre">Callable</span></code> take the parameters as a 2D-array with shape <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n_parameters)</span></code>
+and the indices as a 1D-array with shape <code class="docutils literal notranslate"><span class="pre">(m,)</span></code>, and return the residuals as
+a 2D-array with shape <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n_residuals)</span></code> and the Jacobians as a 3D-array with
+shape <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n_residuals,</span> <span class="pre">n_parameters)</span></code>. Its weight is either a scalar or a
+1D-array with shape <code class="docutils literal notranslate"><span class="pre">(K,)</span></code>.</p>
+<p>The class <a class="reference internal" href="_autosummary/pysolvegn.BatchParametrization.html#pysolvegn.BatchParametrization" title="pysolvegn.BatchParametrization"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.BatchParametrization</span></code></a> represents the parameter
+transformation <span class="math notranslate nohighlight">\(P\)</span> of the batch. The same transformation is applied to all
+the problems: its <code class="docutils literal notranslate"><span class="pre">Callable</span></code> only take the input parameters as a 2D-array with
+shape <code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n_parameters)</span></code> (no indices) and return the output parameters with shape
+<code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n_p_outputs)</span></code> and the Jacobians <span class="math notranslate nohighlight">\(\mathbf{J}_{P,k}\)</span> with shape
+<code class="docutils literal notranslate"><span class="pre">(m,</span> <span class="pre">n_p_outputs,</span> <span class="pre">n_parameters)</span></code>.</p>
+</div>
+</section>
+</section>
 </section>
 
 
@@ -835,10 +1260,22 @@ with shape <code class="docutils literal notranslate"><span class="pre">(n_p_out
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#robust-least-squares-optimization-by-the-gauss-newton-method">Robust least squares optimization by the Gauss-Newton Method</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Demonstration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-positive-curvature-weights-fallback-on-rho">Non-positive curvature weights: fallback on <span class="math notranslate nohighlight">\(\rho'\)</span></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling-a-problem">Scaling a problem</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#derivatives">Derivatives</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#properties">Properties</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adding-regularization-to-the-gauss-newton-update">Adding regularization to the Gauss-Newton update</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-the-parametrization">Changing the parametrization</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#solving-a-batch-of-independent-problems">Solving a batch of independent problems</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#block-diagonal-structure">Block-diagonal structure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#independent-convergence">Independent convergence</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#evaluating-a-subset-of-problems">Evaluating a subset of problems</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 
@@ -864,8 +1301,8 @@ with shape <code class="docutils literal notranslate"><span class="pre">(n_p_out
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -886,7 +1323,6 @@ with shape <code class="docutils literal notranslate"><span class="pre">(n_p_out
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
-    <br/>
   </p>
 </div>
       
@@ -899,7 +1335,7 @@ with shape <code class="docutils literal notranslate"><span class="pre">(n_p_out
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

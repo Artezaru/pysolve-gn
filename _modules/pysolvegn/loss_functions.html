@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 
@@ -7,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.loss_functions &#8212; pysolvegn 1.0.1 documentation</title>
+    <title>pysolvegn.loss_functions &#8212; pysolvegn 2.0.0 documentation</title>
   
   
   
@@ -26,24 +25,24 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=292eb321"></script>
+    <script src="../../_static/documentation_options.js?v=51b770b3"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -55,6 +54,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
   
@@ -104,7 +104,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -124,7 +124,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 1.0.1 documentation</p>
+    <p class="title logo__title">pysolvegn 2.0.0 documentation</p>
   
 </a></div>
     
@@ -176,7 +176,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -187,15 +187,15 @@
         <div class="navbar-item">
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
     <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
     <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
     <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
   </ul>
 </div></div>
       
@@ -206,7 +206,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -283,15 +283,15 @@
           <div class="navbar-item">
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
     <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
     <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
     <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
   </ul>
 </div></div>
         
@@ -374,10 +374,44 @@
 <span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Real</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">scipy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.sparse</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_tilde_factors</span><span class="p">(</span>
+    <span class="n">residual_array</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">rho_prime</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">rho_double_prime</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">_EPS</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Compute the factors :math:`\sqrt{W_J}` and :math:`W_R / \sqrt{W_J}` (element-wise) used</span>
+<span class="sd">    to build :math:`\tilde{\mathbf{J}}` and :math:`\tilde{\mathbf{R}}`, with the IRLS fallback:</span>
+
+<span class="sd">    - :math:`W_J = \rho' + 2 \rho'' r^2` if :math:`W_J &gt; \varepsilon`,</span>
+<span class="sd">    - else :math:`W_J = \max(\rho', 0)` (second-order correction dropped),</span>
+<span class="sd">    - and both factors are ``0`` where :math:`W_J = 0` (residual ignored).</span>
+
+<span class="sd">    Works for any shape (``(n_residuals,)`` or ``(m, n_residuals)``).</span>
+<span class="sd">    """</span>
+    <span class="n">residual_array</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">residual_array</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">rho_prime</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rho_prime</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span> <span class="n">residual_array</span><span class="o">.</span><span class="n">shape</span>
+    <span class="p">)</span>
+    <span class="n">rho_double_prime</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rho_double_prime</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">rho_prime</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rho_double_prime</span> <span class="o">*</span> <span class="n">residual_array</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">scale</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">scale</span> <span class="o">&gt;</span> <span class="n">_EPS</span><span class="p">,</span> <span class="n">scale</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">rho_prime</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">))</span>
+    <span class="n">sqrt_scale</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+
+    <span class="n">is_active</span> <span class="o">=</span> <span class="n">sqrt_scale</span> <span class="o">&gt;</span> <span class="mf">0.0</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">sqrt_scale</span><span class="p">)</span>
+    <span class="n">numpy</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">rho_prime</span><span class="p">,</span> <span class="n">sqrt_scale</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">ratio</span><span class="p">,</span> <span class="n">where</span><span class="o">=</span><span class="n">is_active</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sqrt_scale</span><span class="p">,</span> <span class="n">ratio</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_build_tilde_R_and_tilde_J</span><span class="p">(</span>
@@ -409,6 +443,20 @@
 
 <span class="sd">        W_R = \text{diag}\left(\rho'(|\mathbf{R}_j|^2)\right)</span>
 
+<span class="sd">    .. note::</span>
+
+<span class="sd">        **IRLS fallback.** For a non-convex loss (``"cauchy"``, ``"arctan"``,</span>
+<span class="sd">        ``"tukey"``, ...), the term :math:`\rho' + 2 \rho'' |\mathbf{R}_j|^2` becomes</span>
+<span class="sd">        negative or zero for the large residuals. For these residuals</span>
+<span class="sd">        (:math:`W_{J,j} \leq \varepsilon`), the second-order correction is dropped and</span>
+<span class="sd">        :math:`W_{J,j} = \rho'(|\mathbf{R}_j|^2)` is used instead (as in Ceres Solver),</span>
+<span class="sd">        which gives :math:`\tilde{\mathbf{R}}_j = \sqrt{\rho'} \mathbf{R}_j` and</span>
+<span class="sd">        :math:`\tilde{\mathbf{J}}_j = \sqrt{\rho'} \mathbf{J}_j` (standard IRLS weighting).</span>
+<span class="sd">        The gradient :math:`\tilde{\mathbf{J}}^T \tilde{\mathbf{R}} = \mathbf{J}^T \rho' \mathbf{R}`</span>
+<span class="sd">        is exact in both cases. If :math:`\rho' \leq 0` too (e.g. ``"tukey"`` beyond its</span>
+<span class="sd">        threshold), the residual is simply ignored (:math:`\tilde{\mathbf{R}}_j = 0` and</span>
+<span class="sd">        :math:`\tilde{\mathbf{J}}_j = 0`).</span>
+
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -438,9 +486,9 @@
 <span class="sd">        Shape ``(n_residuals, n_parameters)``.</span>
 
 <span class="sd">    """</span>
-    <span class="n">scale</span> <span class="o">=</span> <span class="n">rho_prime</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rho_double_prime</span> <span class="o">*</span> <span class="n">residual_array</span><span class="o">**</span><span class="mi">2</span>
-    <span class="n">scale</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">scale</span><span class="p">,</span> <span class="n">_EPS</span><span class="p">)</span>  <span class="c1"># Avoid division by zero or negative values</span>
-    <span class="n">sqrt_scale</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">scale</span><span class="p">)</span>
+    <span class="n">sqrt_scale</span><span class="p">,</span> <span class="n">ratio</span> <span class="o">=</span> <span class="n">_compute_tilde_factors</span><span class="p">(</span>
+        <span class="n">residual_array</span><span class="p">,</span> <span class="n">rho_prime</span><span class="p">,</span> <span class="n">rho_double_prime</span><span class="p">,</span> <span class="n">_EPS</span>
+    <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">jacobian_matrix</span><span class="p">):</span>
         <span class="n">W_J_sqrt</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span><span class="n">sqrt_scale</span><span class="p">)</span>
@@ -448,9 +496,83 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">tilde_J</span> <span class="o">=</span> <span class="n">sqrt_scale</span><span class="p">[:,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">jacobian_matrix</span>
 
-    <span class="n">tilde_R</span> <span class="o">=</span> <span class="p">(</span><span class="n">rho_prime</span> <span class="o">/</span> <span class="n">sqrt_scale</span><span class="p">)</span> <span class="o">*</span> <span class="n">residual_array</span>
+    <span class="n">tilde_R</span> <span class="o">=</span> <span class="n">ratio</span> <span class="o">*</span> <span class="n">residual_array</span>
 
     <span class="k">return</span> <span class="n">tilde_R</span><span class="p">,</span> <span class="n">tilde_J</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_build_batch_tilde_R_and_tilde_J</span><span class="p">(</span>
+    <span class="n">residual_array</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">jacobian_array</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">rho_prime</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">rho_double_prime</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">_EPS</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-12</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Build the modified residuals :math:`\tilde{\mathbf{R}}_k` and Jacobians :math:`\tilde{\mathbf{J}}_k`</span>
+<span class="sd">    for each problem :math:`k` of a batch of independent Gauss-Newton optimizations with robust</span>
+<span class="sd">    cost functions.</span>
+
+<span class="sd">    This is the batched counterpart of :func:`_build_tilde_R_and_tilde_J`. For each problem</span>
+<span class="sd">    :math:`k`, the modified Jacobian :math:`\tilde{\mathbf{J}}_k = \sqrt{W_{J,k}} \mathbf{J}_k` and</span>
+<span class="sd">    the modified residual :math:`\tilde{\mathbf{R}}_k = \frac{W_{R,k}}{\sqrt{W_{J,k}}} \mathbf{R}_k`</span>
+<span class="sd">    are constructed such that the Gauss-Newton update can be written as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \tilde{\mathbf{J}}_k^T \tilde{\mathbf{J}}_k \Delta p_k = -\tilde{\mathbf{J}}_k^T \tilde{\mathbf{R}}_k</span>
+
+<span class="sd">    where :</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        W_{J,k} = \text{diag}\left(\rho'(|\mathbf{R}_{k,j}|^2) + 2 \rho''(|\mathbf{R}_{k,j}|^2) |\mathbf{R}_{k,j}|^2\right)</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        W_{R,k} = \text{diag}\left(\rho'(|\mathbf{R}_{k,j}|^2)\right)</span>
+
+<span class="sd">    The same IRLS fallback as :func:`_build_tilde_R_and_tilde_J` is used when</span>
+<span class="sd">    :math:`W_{J,k,j} \leq \varepsilon`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    residual_array: numpy.ndarray</span>
+<span class="sd">        The residuals of each problem of the batch. Shape ``(m, n_residuals)``.</span>
+
+<span class="sd">    jacobian_array: numpy.ndarray</span>
+<span class="sd">        The Jacobian matrices of the residuals with respect to the parameters of each</span>
+<span class="sd">        problem of the batch. Shape ``(m, n_residuals, n_parameters)``.</span>
+
+<span class="sd">    rho_prime: numpy.ndarray</span>
+<span class="sd">        The first derivative of the cost function evaluated at the squared-residuals,</span>
+<span class="sd">        with shape ``(m, n_residuals)``.</span>
+
+<span class="sd">    rho_double_prime: numpy.ndarray</span>
+<span class="sd">        The second derivative of the cost function evaluated at the squared-residuals,</span>
+<span class="sd">        with shape ``(m, n_residuals)``.</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tilde_R : numpy.ndarray</span>
+<span class="sd">        The modified residuals for the batched Gauss-Newton optimization.</span>
+<span class="sd">        Shape ``(m, n_residuals)``.</span>
+
+<span class="sd">    tilde_J : numpy.ndarray</span>
+<span class="sd">        The modified Jacobian matrices for the batched Gauss-Newton optimization.</span>
+<span class="sd">        Shape ``(m, n_residuals, n_parameters)``.</span>
+
+<span class="sd">    """</span>
+    <span class="n">sqrt_scale</span><span class="p">,</span> <span class="n">ratio</span> <span class="o">=</span> <span class="n">_compute_tilde_factors</span><span class="p">(</span>
+        <span class="n">residual_array</span><span class="p">,</span> <span class="n">rho_prime</span><span class="p">,</span> <span class="n">rho_double_prime</span><span class="p">,</span> <span class="n">_EPS</span>
+    <span class="p">)</span>
+
+    <span class="n">tilde_J</span> <span class="o">=</span> <span class="n">sqrt_scale</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">jacobian_array</span>
+    <span class="n">tilde_R</span> <span class="o">=</span> <span class="n">ratio</span> <span class="o">*</span> <span class="n">residual_array</span>
+
+    <span class="k">return</span> <span class="n">tilde_R</span><span class="p">,</span> <span class="n">tilde_J</span>
+
 
 <div class="viewcode-block" id="linear_rho">
 <a class="viewcode-back" href="../../_autosummary/pysolvegn.linear_rho.html#pysolvegn.linear_rho">[docs]</a>
@@ -627,6 +749,195 @@
 
 
 
+<div class="viewcode-block" id="huber_rho">
+<a class="viewcode-back" href="../../_autosummary/pysolvegn.huber_rho.html#pysolvegn.huber_rho">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">huber_rho</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Compute the Huber robust cost function and its derivatives</span>
+<span class="sd">    (same definition as ``scipy.optimize.least_squares``).</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \rho(x) = \begin{cases} x &amp; \text{if } x \leq 1 \\ 2\sqrt{x} - 1 &amp; \text{otherwise} \end{cases}</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \rho'(x) = \begin{cases} 1 &amp; \text{if } x \leq 1 \\ x^{-1/2} &amp; \text{otherwise} \end{cases}</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \rho''(x) = \begin{cases} 0 &amp; \text{if } x \leq 1 \\ -\frac{1}{2} x^{-3/2} &amp; \text{otherwise} \end{cases}</span>
+
+<span class="sd">    Quadratic for the small residuals (:math:`|r| \leq 1`) and linear for the large ones.</span>
+<span class="sd">    The loss is convex: :math:`\rho' + 2 \rho'' x \geq 0` everywhere (equal to ``0``</span>
+<span class="sd">    beyond the threshold, where the IRLS fallback of :func:`_build_tilde_R_and_tilde_J` applies).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : ArrayLike</span>
+<span class="sd">        Squared residuals :math:`x = \|R\|^2`.</span>
+<span class="sd">        Shape ``(N,)``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rho : numpy.ndarray</span>
+<span class="sd">        The cost function values with shape ``(N,)``.</span>
+
+<span class="sd">    rho_prime : numpy.ndarray</span>
+<span class="sd">        The first derivatives with shape ``(N,)``.</span>
+
+<span class="sd">    rho_double_prime : numpy.ndarray</span>
+<span class="sd">        The second derivatives with shape ``(N,)``.</span>
+<span class="sd">    """</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">is_inlier</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mf">1.0</span>
+    <span class="n">sqrt_x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">is_inlier</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>  <span class="c1"># avoid 0 ** (-1/2) on the inliers</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">is_inlier</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">sqrt_x</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">is_inlier</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">sqrt_x</span><span class="p">),</span>
+        <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">is_inlier</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">/</span> <span class="n">sqrt_x</span><span class="o">**</span><span class="mi">3</span><span class="p">),</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="tukey_rho">
+<a class="viewcode-back" href="../../_autosummary/pysolvegn.tukey_rho.html#pysolvegn.tukey_rho">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tukey_rho</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Compute the Tukey biweight (bisquare) robust cost function and its derivatives.</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \rho(x) = \begin{cases} \frac{1 - (1 - x)^3}{3} &amp; \text{if } x \leq 1 \\ \frac{1}{3} &amp; \text{otherwise} \end{cases}</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \rho'(x) = \begin{cases} (1 - x)^2 &amp; \text{if } x \leq 1 \\ 0 &amp; \text{otherwise} \end{cases}</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \rho''(x) = \begin{cases} -2(1 - x) &amp; \text{if } x \leq 1 \\ 0 &amp; \text{otherwise} \end{cases}</span>
+
+<span class="sd">    The residuals beyond the threshold (:math:`|r| &gt; 1`) are completely ignored</span>
+<span class="sd">    (:math:`\rho' = 0`). The loss is strongly non-convex: a good initial guess is</span>
+<span class="sd">    required, since a point whose residuals are all beyond the threshold has a zero</span>
+<span class="sd">    gradient (and a singular Hessian).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : ArrayLike</span>
+<span class="sd">        Squared residuals :math:`x = \|R\|^2`.</span>
+<span class="sd">        Shape ``(N,)``.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    rho : numpy.ndarray</span>
+<span class="sd">        The cost function values with shape ``(N,)``.</span>
+
+<span class="sd">    rho_prime : numpy.ndarray</span>
+<span class="sd">        The first derivatives with shape ``(N,)``.</span>
+
+<span class="sd">    rho_double_prime : numpy.ndarray</span>
+<span class="sd">        The second derivatives with shape ``(N,)``.</span>
+<span class="sd">    """</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">one_minus_x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">x</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>  <span class="c1"># = 0 beyond the threshold</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">one_minus_x</span><span class="o">**</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="n">one_minus_x</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span>
+        <span class="o">-</span><span class="mi">2</span> <span class="o">*</span> <span class="n">one_minus_x</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="scale_rho_function">
+<a class="viewcode-back" href="../../_autosummary/pysolvegn.scale_rho_function.html#pysolvegn.scale_rho_function">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">scale_rho_function</span><span class="p">(</span><span class="n">rho_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">loss_scale</span><span class="p">:</span> <span class="n">Real</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Wrap any loss function :math:`\rho` (predefined or custom) into its scaled version</span>
+<span class="sd">    :math:`\rho_C` with the soft threshold :math:`C` (``loss_scale``):</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \rho_C(x) = C^2 \rho\left(\frac{x}{C^2}\right)</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        \rho_C'(x) = \rho'\left(\frac{x}{C^2}\right)</span>
+<span class="sd">        \qquad</span>
+<span class="sd">        \rho_C''(x) = \frac{1}{C^2} \rho''\left(\frac{x}{C^2}\right)</span>
+
+<span class="sd">    :math:`C` is the residual value separating the inliers from the outliers, expressed</span>
+<span class="sd">    in the unit of the residuals (same as ``f_scale`` in ``scipy.optimize.least_squares``).</span>
+<span class="sd">    For small residuals (:math:`|r| \ll C`), :math:`\rho_C(r^2) \approx r^2` whatever</span>
+<span class="sd">    :math:`C`. The linear loss is invariant: :math:`\rho_C(x) = x`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    rho_func : Callable</span>
+<span class="sd">        The loss function taking the squared residuals and returning</span>
+<span class="sd">        :math:`(\rho, \rho', \rho'')`.</span>
+
+<span class="sd">    loss_scale : Real</span>
+<span class="sd">        The soft threshold :math:`C`. Must be finite and strictly positive.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Callable</span>
+<span class="sd">        The scaled loss function with the same signature. If ``loss_scale == 1``,</span>
+<span class="sd">        ``rho_func`` is returned unchanged.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">rho_func</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"rho_func must be a callable function, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">rho_func</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+    <span class="n">loss_scale</span> <span class="o">=</span> <span class="n">_validate_loss_scale</span><span class="p">(</span><span class="n">loss_scale</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">loss_scale</span> <span class="o">==</span> <span class="mf">1.0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">rho_func</span>
+
+    <span class="n">C2</span> <span class="o">=</span> <span class="n">loss_scale</span><span class="o">**</span><span class="mi">2</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">scaled_rho</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">rho</span><span class="p">,</span> <span class="n">rho_prime</span><span class="p">,</span> <span class="n">rho_double_prime</span> <span class="o">=</span> <span class="n">rho_func</span><span class="p">(</span><span class="n">x</span> <span class="o">/</span> <span class="n">C2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="n">C2</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rho</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rho_prime</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">rho_double_prime</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span> <span class="o">/</span> <span class="n">C2</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="n">scaled_rho</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"scaled_</span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">rho_func</span><span class="p">,</span><span class="w"> </span><span class="s1">'__name__'</span><span class="p">,</span><span class="w"> </span><span class="s1">'rho'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">scaled_rho</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">getattr</span><span class="p">(</span><span class="n">rho_func</span><span class="p">,</span><span class="w"> </span><span class="s1">'__name__'</span><span class="p">,</span><span class="w"> </span><span class="s1">'rho'</span><span class="p">)</span><span class="si">}</span><span class="s2"> scaled with loss_scale=</span><span class="si">{</span><span class="n">loss_scale</span><span class="si">}</span><span class="s2">."</span>
+    <span class="k">return</span> <span class="n">scaled_rho</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_loss_scale</span><span class="p">(</span><span class="n">loss_scale</span><span class="p">:</span> <span class="n">Real</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Check that ``loss_scale`` is a finite and strictly positive real number and return it as a float.</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loss_scale</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">loss_scale</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"loss_scale must be a real number, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">loss_scale</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+    <span class="n">loss_scale</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">loss_scale</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">loss_scale</span><span class="p">)</span> <span class="ow">or</span> <span class="n">loss_scale</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"loss_scale must be a finite strictly positive number, got </span><span class="si">{</span><span class="n">loss_scale</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">loss_scale</span>
+
+
+<span class="n">_RHO_FUNCTIONS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"linear"</span><span class="p">:</span> <span class="n">linear_rho</span><span class="p">,</span>
+    <span class="s2">"soft_l1"</span><span class="p">:</span> <span class="n">soft_l1_rho</span><span class="p">,</span>
+    <span class="s2">"cauchy"</span><span class="p">:</span> <span class="n">cauchy_rho</span><span class="p">,</span>
+    <span class="s2">"arctan"</span><span class="p">:</span> <span class="n">arctan_rho</span><span class="p">,</span>
+    <span class="s2">"huber"</span><span class="p">:</span> <span class="n">huber_rho</span><span class="p">,</span>
+    <span class="s2">"tukey"</span><span class="p">:</span> <span class="n">tukey_rho</span><span class="p">,</span>
+<span class="p">}</span>
+
+
 <div class="viewcode-block" id="get_rho_function_by_name">
 <a class="viewcode-back" href="../../_autosummary/pysolvegn.get_rho_function_by_name.html#pysolvegn.get_rho_function_by_name">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_rho_function_by_name</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
@@ -637,7 +948,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    name : str</span>
 <span class="sd">        The name of the rho function. Must be one of ``"linear"``,</span>
-<span class="sd">        ``"soft_l1"``, ``"cauchy"``, or ``"arctan"``.</span>
+<span class="sd">        ``"soft_l1"``, ``"cauchy"``, ``"arctan"``, ``"huber"`` or ``"tukey"``.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -646,21 +957,12 @@
 <span class="sd">        :math:`x = \|R\|^2` and returns the cost function value,</span>
 <span class="sd">        its first derivative, and its second derivative.</span>
 <span class="sd">    """</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-
-    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"linear"</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">linear_rho</span>
-    <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"soft_l1"</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">soft_l1_rho</span>
-    <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"cauchy"</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">cauchy_rho</span>
-    <span class="k">elif</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"arctan"</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">arctan_rho</span>
-    <span class="k">else</span><span class="p">:</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_RHO_FUNCTIONS</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"Invalid rho function name '</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">'. "</span>
-            <span class="s2">"Must be one of 'linear', 'soft_l1', 'cauchy', or 'arctan'."</span>
-        <span class="p">)</span></div>
+            <span class="sa">f</span><span class="s2">"Invalid rho function name '</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">'. Must be one of </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">_RHO_FUNCTIONS</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">_RHO_FUNCTIONS</span><span class="p">[</span><span class="n">key</span><span class="p">]</span></div>
 
 </pre></div>
 
@@ -691,8 +993,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -713,7 +1015,6 @@
 
   <p class="sphinx-version">
     Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
-    <br/>
   </p>
 </div>
       
@@ -726,7 +1027,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

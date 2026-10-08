@@ -1,0 +1,6 @@
+﻿pysolvegn.build\_batch\_soft\_squared\_regularization
+=====================================================
+
+.. currentmodule:: pysolvegn
+
+.. autofunction:: build_batch_soft_squared_regularization

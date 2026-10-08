@@ -35,6 +35,7 @@
       ~Term.jacobian_func
       ~Term.loss
       ~Term.loss_func
+      ~Term.loss_scale
       ~Term.r_func
       ~Term.residual_func
       ~Term.type
