@@ -50,7 +50,7 @@ PYTHON  := $(venv)/bin/python
 BUMPVER_FILE = .bumpver.toml
 version = $(shell sed -n 's/^current_version *= *"\(.*\)"/\1/p' $(BUMPVER_FILE))
 
-.PHONY: help install main test bump clean html open commit push pushtag
+.PHONY: help install version main test bump clean html open commit push pushtag
 
 # -----------------------------------------------------------------------------
 #  Help
@@ -62,6 +62,7 @@ help:
 	echo "  install   [venv=venv]  Create the venv if needed, pip install -e . + docs/dev tools"
 	echo ""
 	echo "Development"
+	echo "  version                Show the current version of the package"
 	echo "  main      [venv=venv]  Run the application (python -m $(PACKAGE_DIR))"
 	echo "  test      [venv=venv]  Run the tests with pytest ($(TESTS_DIR)/)"
 	echo "  bump      level=major|minor|patch  Update the package version with bumpver"
