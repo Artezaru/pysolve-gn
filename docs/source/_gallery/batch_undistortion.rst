@@ -451,12 +451,12 @@ The initial parameters are stored in an array with shape ``(N, 2)``.
     All the values are averaged over the N problems in processing.
 
     Iteration   N processing   Total time (s)      Cost C            ΔC           ||Δp||_2         ||g||_∞    
-        0           3621          8.518e-04       2.885e+02                                       1.165e+04   
-        1           3620          2.795e-03       1.384e-01      -2.884e+02       2.678e-02       1.628e+02   
-        2           3620          4.667e-03       1.626e-07      -1.384e-01       4.472e-04       9.349e-02   
-        3           3434          6.662e-03       1.376e-18      -1.715e-07       3.073e-07       1.222e-07   
-        4           1315          7.833e-03       4.965e-27      -3.594e-18       1.114e-12       4.282e-11   
-        5            39           8.253e-03       2.693e-27      -2.404e-26       3.692e-16       2.215e-11   
+        0           3621          1.010e-03       2.885e+02                                       1.165e+04   
+        1           3620          3.268e-03       1.384e-01      -2.884e+02       2.678e-02       1.628e+02   
+        2           3620          5.318e-03       1.626e-07      -1.384e-01       4.472e-04       9.349e-02   
+        3           3434          7.782e-03       1.376e-18      -1.715e-07       3.073e-07       1.222e-07   
+        4           1315          9.162e-03       4.965e-27      -3.594e-18       1.114e-12       4.282e-11   
+        5            39           9.652e-03       2.693e-27      -2.404e-26       3.692e-16       2.215e-11   
     3621/3621 problems converged.
     [gtol] 3501 problem(s).
     [xtol] 1441 problem(s).
@@ -464,7 +464,7 @@ The initial parameters are stored in an array with shape ``(N, 2)``.
     Converged points: 3621 / 3621
     Iterations per point: min 0 - max 5
     Max error on the normalized coordinates: 5.551115123125783e-16
-    Batch solver time: 0.009 s
+    Batch solver time: 0.010 s
 
 
 
@@ -519,8 +519,8 @@ For the comparison, we only solve the first 200 points one by one.
  .. code-block:: none
 
     Same result as the single solver: True
-    Loop time for 200 points : 0.061 s
-    Estimated loop time for 3621 points : 1.097 s
+    Loop time for 200 points : 0.068 s
+    Estimated loop time for 3621 points : 1.231 s
 
 
 
@@ -619,7 +619,7 @@ Right: the error of the recovered normalized coordinates for each point.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.247 seconds)
+   **Total running time of the script:** (0 minutes 0.269 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_batch_undistortion.py:

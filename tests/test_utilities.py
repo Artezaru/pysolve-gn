@@ -80,3 +80,117 @@ def test_public_api():
     ]
     missing = [name for name in names if not hasattr(pysolvegn, name)]
     assert missing == []
+
+
+# ----------------------------------------------------------------------------
+# Finite differences: default steps, number of calls, custom epsilon
+# ----------------------------------------------------------------------------
+def _fd_problem():
+    func = lambda p: numpy.array([p[0] ** 2, numpy.sin(p[1]) * p[0], numpy.exp(p[1]), p[0] * p[1] ** 3])
+    p = numpy.array([1.3, -0.4])
+    expected = numpy.array(
+        [
+            [2 * p[0], 0.0],
+            [numpy.sin(p[1]), numpy.cos(p[1]) * p[0]],
+            [0.0, numpy.exp(p[1])],
+            [p[1] ** 3, 3 * p[0] * p[1] ** 2],
+        ]
+    )
+    return func, p, expected
+
+
+def test_numerical_jacobian_central_default_step_is_accurate():
+    # The default central step (eps^(1/3) ~ 6e-6) gives an error ~ 1e-10 (vs ~ 1e-8 with 1e-8)
+    func, p, expected = _fd_problem()
+    jacobian = pysolvegn.build_numerical_jacobian(func, method="central")
+    numpy.testing.assert_allclose(jacobian(p), expected, atol=1e-9)
+
+
+@pytest.mark.parametrize("method, expected_calls", [("central", 4), ("forward", 3), ("backward", 3)])
+def test_numerical_jacobian_number_of_calls(method, expected_calls):
+    # forward/backward: n + 1 calls (the residuals at p are computed once), central: 2 n calls
+    func, p, _ = _fd_problem()
+    calls = []
+    jacobian = pysolvegn.build_numerical_jacobian(lambda q: calls.append(1) or func(q), method=method)
+    jacobian(p)
+    assert len(calls) == expected_calls
+
+
+@pytest.mark.parametrize("method, expected_calls", [("central", 4), ("forward", 3), ("backward", 3)])
+def test_batch_numerical_jacobian_number_of_calls(method, expected_calls):
+    calls = []
+
+    def residual_func(P, indices):
+        calls.append(1)
+        return numpy.stack([P[:, 0] ** 2, P[:, 0] * P[:, 1]], axis=1)
+
+    jacobian = pysolvegn.build_batch_numerical_jacobian(residual_func, method=method)
+    P = numpy.array([[1.0, 2.0], [-3.0, 0.5], [0.1, 4.0]])
+    J = jacobian(P, numpy.arange(3))
+    assert len(calls) == expected_calls
+    expected = numpy.zeros((3, 2, 2))
+    expected[:, 0, 0] = 2 * P[:, 0]
+    expected[:, 1, 0] = P[:, 1]
+    expected[:, 1, 1] = P[:, 0]
+    numpy.testing.assert_allclose(J, expected, atol=1e-6)
+
+
+def test_numerical_jacobian_does_not_modify_parameters():
+    func, p, _ = _fd_problem()
+    p_copy = p.copy()
+    for method in ("central", "forward", "backward"):
+        pysolvegn.build_numerical_jacobian(func, method=method)(p)
+    numpy.testing.assert_array_equal(p, p_copy)
+
+
+def test_numerical_jacobian_custom_epsilon():
+    # A large step gives a large truncation error: the custom value is really used
+    func, p, expected = _fd_problem()
+    coarse = pysolvegn.build_numerical_jacobian(func, method="forward", epsilon=1e-1)(p)
+    assert numpy.abs(coarse - expected).max() > 1e-3
+    fine = pysolvegn.build_numerical_jacobian(func, method="forward", epsilon=1e-7)(p)
+    numpy.testing.assert_allclose(fine, expected, atol=1e-6)
+
+
+@pytest.mark.parametrize("epsilon", [0.0, -1e-6, numpy.inf, numpy.nan, True, "1e-6"])
+def test_numerical_jacobian_invalid_epsilon(epsilon):
+    with pytest.raises((TypeError, ValueError)):
+        pysolvegn.build_numerical_jacobian(lambda p: p, epsilon=epsilon)
+    with pytest.raises((TypeError, ValueError)):
+        pysolvegn.build_batch_numerical_jacobian(lambda p, i: p, epsilon=epsilon)
+
+
+def test_finite_difference_epsilon_is_forwarded():
+    # The finite_difference_epsilon of Term / BatchTerm / Parametrization / BatchParametrization
+    # is the step used by the numerical Jacobian (a coarse step gives a visible error)
+    func = lambda p: p ** 2
+    p = numpy.array([1.0, 2.0])
+    exact = numpy.diag(2 * p)
+
+    term = pysolvegn.Term.from_rJ(func, finite_difference="forward", finite_difference_epsilon=0.1)
+    numpy.testing.assert_allclose(term.J_func(p), exact + numpy.diag(0.1 * numpy.maximum(1, p)), atol=1e-12)
+
+    parametrization = pysolvegn.Parametrization(func, finite_difference="forward", finite_difference_epsilon=0.1)
+    numpy.testing.assert_allclose(parametrization.J_func(p), term.J_func(p), atol=1e-12)
+
+    batch_term = pysolvegn.BatchTerm.from_rJ(
+        lambda P, i: P ** 2, finite_difference="forward", finite_difference_epsilon=0.1
+    )
+    numpy.testing.assert_allclose(batch_term.J_func(p[None], numpy.arange(1))[0], term.J_func(p), atol=1e-12)
+
+    batch_parametrization = pysolvegn.BatchParametrization(
+        lambda P: P ** 2, finite_difference="forward", finite_difference_epsilon=0.1
+    )
+    numpy.testing.assert_allclose(batch_parametrization.J_func(p[None])[0], term.J_func(p), atol=1e-12)
+
+
+def test_finite_difference_epsilon_requires_finite_difference():
+    J = lambda p: numpy.eye(2)
+    with pytest.raises(ValueError):
+        pysolvegn.Term.from_rJ(lambda p: p, J, finite_difference_epsilon=1e-6)
+    with pytest.raises(ValueError):
+        pysolvegn.Parametrization(lambda p: p, J, finite_difference_epsilon=1e-6)
+    with pytest.raises(ValueError):
+        pysolvegn.BatchTerm.from_rJ(lambda P, i: P, lambda P, i: P, finite_difference_epsilon=1e-6)
+    with pytest.raises(ValueError):
+        pysolvegn.BatchParametrization(lambda P: P, lambda P: P, finite_difference_epsilon=1e-6)

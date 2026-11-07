@@ -265,12 +265,14 @@ def test_lm_conf():
     assert numpy.all(result.success)
     assert result.config["lm_conf"]["factor"] == 3.0
     assert result.config["lm_conf"]["max_rejections"] == 50
+    # A real failure: update_func amplifies every trial step (the cost increases whatever λ)
     restricted = pysolvegn.solve_batch(
-        term, P0, damping="lm", lm_conf={"initial_scale": 1e-12, "max_rejections": 1}, **criteria()
+        term, P0, damping="lm", lm_conf={"max_rejections": 1},
+        update_func=lambda p, dp, indices: 100.0 * dp, **criteria()
     )
-    assert numpy.any(restricted.stopped_by("lm"))
-    k = int(numpy.flatnonzero(restricted.stopped_by("lm"))[0])
-    assert "after 1 rejections" in restricted.reasons(k)[0]
+    assert numpy.all(restricted.stopped_by("lm"))
+    assert numpy.all(restricted.n_iterations == 0)
+    assert "after 1 rejections" in restricted.reasons(0)[0]
     with pytest.raises(ValueError):
         pysolvegn.solve_batch(term, P0, damping="lm", lm_conf={"unknown": 1.0}, max_iteration=5)
 
@@ -342,3 +344,99 @@ def test_no_stopping_criterion():
 def test_invalid_history_detail():
     with pytest.raises(ValueError):
         pysolvegn.solve_batch(batch_term(), P0, max_iteration=5, history=True, history_details=["unknown"])
+
+# ----------------------------------------------------------------------
+# 'gH' terms without cost_func: warning, and atol / ftol forbidden
+# ----------------------------------------------------------------------
+def test_batch_gH_without_cost_func_warns_and_forbids_cost_criteria():
+    target = numpy.arange(2.0 * K).reshape(K, 2)
+    gH = pysolvegn.BatchTerm.from_gH(
+        lambda p, i: p - target[i],
+        lambda p, i: numpy.broadcast_to(numpy.eye(2), (p.shape[0], 2, 2)).copy(),
+    )
+    with pytest.warns(UserWarning, match="no cost_func"):
+        result = pysolvegn.solve_batch(gH, numpy.zeros((K, 2)), gtol=1e-10, max_iteration=10)
+    assert numpy.all(result.success)
+    numpy.testing.assert_allclose(result.parameters, target)
+    for criteria in ({"atol": 1e-8}, {"ftol": 1e-8}):
+        with pytest.warns(UserWarning), pytest.raises(ValueError, match="cannot be used"):
+            pysolvegn.solve_batch(gH, numpy.zeros((K, 2)), **criteria)
+
+
+# ----------------------------------------------------------------------
+# Optional Armijo line search (line_search=True)
+# ----------------------------------------------------------------------
+@pytest.mark.parametrize("loss", ["linear", "soft_l1", "cauchy"])
+def test_batch_line_search_equals_single(loss):
+    P_far = P0 * numpy.linspace(-3.0, 4.0, K)[:, None]  # some problems far from the solution
+    batch = pysolvegn.solve_batch(
+        batch_term(loss=loss, loss_scale=0.3), P_far, line_search=True, history=True,
+        history_details=["step_length"], **criteria()
+    )
+    for k in range(K):
+        single = pysolvegn.solve(
+            line_single_term(Y, k, loss=loss, loss_scale=0.3), P_far[k], line_search=True, **criteria()
+        )
+        numpy.testing.assert_allclose(batch.parameters[k], single.parameters, rtol=1e-10, atol=1e-12)
+        assert batch.n_iterations[k] == single.n_iterations
+        assert batch.n_rejected[k] == single.n_rejected
+        assert batch.stop_code[k] == single.stop_code
+    assert batch.history[0]["step_length"] is None
+    assert batch.history[1]["step_length"].shape == (K,)
+
+
+def test_batch_line_search_not_descent_only_for_some_problems():
+    flip = numpy.arange(K) % 3 == 0
+
+    def update_func(p, dp, indices):
+        return numpy.where(flip[indices][:, None], -dp, dp)
+
+    result = pysolvegn.solve_batch(batch_term(), P0, line_search=True, update_func=update_func, **criteria())
+    numpy.testing.assert_array_equal(result.stopped_by("not_descent"), flip)
+    numpy.testing.assert_array_equal(result.success, ~flip)
+    numpy.testing.assert_array_equal(result.parameters[flip], P0[flip])
+
+
+def test_batch_line_search_invalid_options():
+    with pytest.raises(ValueError):
+        pysolvegn.solve_batch(batch_term(), P0, line_search=True, damping="lm-diag", **criteria())
+
+
+# ----------------------------------------------------------------------
+# Levenberg-Marquardt: max_time between trials, gain ratio
+# ----------------------------------------------------------------------
+@pytest.mark.parametrize(
+    "options, max_trials",
+    [
+        ({"damping": "lm", "update_func": lambda p, dp, i: numpy.ones_like(dp)}, 50),
+        ({"line_search": True, "update_func": lambda p, dp, i: 1e4 * dp}, 30),
+    ],
+)
+def test_batch_max_time_checked_between_trial_steps(options, max_trials):
+    import time
+
+    def residual(P, indices):
+        time.sleep(0.002)
+        return P ** 2 + 1.0
+
+    term = pysolvegn.BatchTerm.from_rJ(residual, lambda P, indices: (2.0 * P)[:, :, None])
+    result = pysolvegn.solve_batch(term, numpy.ones((4, 1)), max_time=0.01, max_iteration=100, **options)
+    assert numpy.all(result.stopped_by("max_time")) and not numpy.any(result.success)
+    assert numpy.all(result.n_iterations == 0)
+    numpy.testing.assert_array_equal(result.parameters, 1.0)
+    assert numpy.all((0 < result.n_rejected) & (result.n_rejected < max_trials))
+
+
+def test_batch_gain_ratio_equals_single():
+    batch = pysolvegn.solve_batch(
+        batch_term(loss="cauchy", loss_scale=0.3), P0, damping="lm-diag", history=True,
+        history_details=["gain_ratio"], **criteria()
+    )
+    assert batch.history[0]["gain_ratio"] is None
+    for k in range(K):
+        single = pysolvegn.solve(
+            line_single_term(Y, k, loss="cauchy", loss_scale=0.3), P0[k], damping="lm-diag", history=True,
+            history_details=["gain_ratio"], **criteria()
+        )
+        for it in range(1, min(len(single.history), 4)):
+            numpy.testing.assert_allclose(batch.history[it]["gain_ratio"][k], single.history[it]["gain_ratio"], rtol=1e-8)

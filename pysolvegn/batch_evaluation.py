@@ -25,6 +25,7 @@ import numpy
 from .loss_functions import _build_batch_tilde_R_and_tilde_J
 from .batch_term import BatchTerm
 from .batch_parametrization import BatchParametrization
+from .solver_common import _check_shape
 
 
 @dataclass
@@ -125,15 +126,6 @@ class BatchCostState:
             costs=[c[mask] for c in self.costs],
             residuals=[None if r is None else r[mask] for r in self.residuals],
         )
-
-
-def _check_shape(name: str, array, expected: tuple) -> None:
-    r"""
-    Raise a ValueError if ``array.shape`` is not ``expected``.
-    """
-    shape = getattr(array, "shape", None)
-    if shape != expected:
-        raise ValueError(f"{name} must have shape {expected}, got {shape}.")
 
 
 def _compute_batch_term_parameters(

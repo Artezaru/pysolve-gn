@@ -45,6 +45,8 @@ _IMPLEMENTED_HISTORY_DETAILS = (
     "second_term",
     "hessian",
     "damping",
+    "gain_ratio",
+    "step_length",
 )
 
 # Default history details of solve (history_details=None)
@@ -86,6 +88,8 @@ _IMPLEMENTED_BATCH_HISTORY_DETAILS = (
     "second_term",
     "hessian",
     "damping",
+    "gain_ratio",
+    "step_length",
 )
 
 _IMPLEMENTED_DAMPINGS = (
@@ -99,6 +103,21 @@ _LM_INITIAL_SCALE = 1e-3  # initial lambda: _LM_INITIAL_SCALE * max(diag(H)) ("l
 _LM_FACTOR = 10.0  # lambda is multiplied (rejected step) or divided (accepted step) by this factor
 _LM_MAX_REJECTIONS = 50  # maximum number of consecutive rejected steps in one iteration
 _LM_DIAG_FLOOR = 1e-12  # (damping="lm-diag") floor of diag(H) relative to max(diag(H))
+_LM_NOISE = 1e-13  # relative rounding noise η / |C| of the cost tolerated to accept a step
+
+# Armijo backtracking line search settings (line_search=True)
+_LS_C1 = 1e-4  # sufficient decrease: C(p + α Δp) <= C(p) + c1 α g^T Δp
+_LS_FACTOR = 0.5  # α is multiplied by this factor after a rejected trial step
+_LS_MAX_BACKTRACKS = 30  # maximum number of rejected trial steps in one iteration (α >= factor^30 ~ 1e-9)
+_LS_NOISE = 1e-13  # relative rounding noise η / |C| of the cost tolerated by the Armijo condition
+
+# Default line search configuration (line_search_conf argument: missing keys use these values)
+_DEFAULT_LINE_SEARCH_CONF = {
+    "c1": _LS_C1,
+    "factor": _LS_FACTOR,
+    "max_backtracks": _LS_MAX_BACKTRACKS,
+    "noise": _LS_NOISE,
+}
 
 # Default Levenberg-Marquardt configuration (lm_conf argument of solve: missing keys use these values)
 _DEFAULT_LM_CONF = {
@@ -106,6 +125,7 @@ _DEFAULT_LM_CONF = {
     "factor": _LM_FACTOR,
     "max_rejections": _LM_MAX_REJECTIONS,
     "diag_floor": _LM_DIAG_FLOOR,
+    "noise": _LM_NOISE,
 }
 
 # Stop codes: one bit per stopping reason (SolveResult.stop_code is the OR of the triggered bits).
@@ -126,6 +146,8 @@ _STOP_CODES = {
     "naninf_cost": 1 << 12,
     "naninf_trial_cost": 1 << 13,
     "naninf_update": 1 << 14,
+    "line_search": 1 << 15,
+    "not_descent": 1 << 16,
 }
 
 # Groups of stop codes
@@ -139,4 +161,11 @@ _STOP_NANINF = (
     | _STOP_CODES["naninf_trial_cost"]
     | _STOP_CODES["naninf_update"]
 )
-_STOP_FAILURE = _STOP_CODES["callback"] | _STOP_CODES["singular"] | _STOP_CODES["lm"] | _STOP_NANINF
+_STOP_FAILURE = (
+    _STOP_CODES["callback"]
+    | _STOP_CODES["singular"]
+    | _STOP_CODES["lm"]
+    | _STOP_CODES["line_search"]
+    | _STOP_CODES["not_descent"]
+    | _STOP_NANINF
+)

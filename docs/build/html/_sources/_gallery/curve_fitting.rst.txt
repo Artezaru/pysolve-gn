@@ -191,12 +191,12 @@ was satisfied, and ``result.message`` describes why the optimization stopped.
     Optimality: ||g|| 
 
     Iteration  Total time (s)      Cost C            ΔC           ||Δp||_2         ||g||_∞    
-        0         6.177e-05       4.287e+02                                       5.101e+03   
-        1         1.622e-04       9.622e+01      -3.325e+02       8.856e-01       9.936e+02   
-        2         2.320e-04       5.346e+01      -4.277e+01       6.382e-01       3.246e+02   
-        3         2.900e-04       5.072e+01      -2.738e+00       4.633e-02       4.134e+00   
-        4         3.500e-04       5.072e+01      -6.618e-04       2.843e-03       4.314e-02   
-        5         4.024e-04       5.072e+01      -3.914e-07       1.021e-04       2.567e-03   
+        0         7.804e-05       4.287e+02                                       5.101e+03   
+        1         2.049e-04       9.622e+01      -3.325e+02       8.856e-01       9.936e+02   
+        2         2.842e-04       5.346e+01      -4.277e+01       6.382e-01       3.246e+02   
+        3         3.518e-04       5.072e+01      -2.738e+00       4.633e-02       4.134e+00   
+        4         4.358e-04       5.072e+01      -6.618e-04       2.843e-03       4.314e-02   
+        5         5.045e-04       5.072e+01      -3.914e-07       1.021e-04       2.567e-03   
     [ftol] Convergence achieved: 0 <= F_previous - F < ftol * F with ftol = 1e-08.
 
 
@@ -290,7 +290,7 @@ Display the fitted parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.046 seconds)
+   **Total running time of the script:** (0 minutes 0.049 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_curve_fitting.py:

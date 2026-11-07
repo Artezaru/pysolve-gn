@@ -92,8 +92,9 @@ def _build_tilde_R_and_tilde_J(
         ``"tukey"``, ...), the term :math:`\rho' + 2 \rho'' |\mathbf{R}_j|^2` becomes
         negative or zero for the large residuals. For these residuals
         (:math:`W_{J,j} \leq \varepsilon`), the second-order correction is dropped and
-        :math:`W_{J,j} = \rho'(|\mathbf{R}_j|^2)` is used instead (as in Ceres Solver),
-        which gives :math:`\tilde{\mathbf{R}}_j = \sqrt{\rho'} \mathbf{R}_j` and
+        :math:`W_{J,j} = \rho'(|\mathbf{R}_j|^2)` is used instead (same fallback formula as
+        Ceres Solver, but Ceres triggers it as soon as :math:`\rho'' \leq 0`; scipy clamps
+        :math:`W_J` to the machine precision instead), which gives :math:`\tilde{\mathbf{R}}_j = \sqrt{\rho'} \mathbf{R}_j` and
         :math:`\tilde{\mathbf{J}}_j = \sqrt{\rho'} \mathbf{J}_j` (standard IRLS weighting).
         The gradient :math:`\tilde{\mathbf{J}}^T \tilde{\mathbf{R}} = \mathbf{J}^T \rho' \mathbf{R}`
         is exact in both cases. If :math:`\rho' \leq 0` too (e.g. ``"tukey"`` beyond its

@@ -18,11 +18,9 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from __future__ import annotations
 from typing import Callable, Optional
+from numbers import Real
 
-from .derivation import build_numerical_jacobian
-from .implemented_conf import (
-    _IMPLEMENTED_FINITE_DIFFERENCE_METHODS,
-)
+from .derivation import build_numerical_jacobian, _validate_finite_difference
 
 
 class Parametrization(object):
@@ -97,6 +95,12 @@ class Parametrization(object):
         ``jacobian_func`` must be provided.
         Available methods are ``"central"``, ``"forward"``, and ``"backward"``.
 
+    finite_difference_epsilon : Optional[Real] (default=None)
+        The relative step of the finite differences (only with ``finite_difference``).
+        If None, the default step of the method is used: about ``1.5e-8`` for
+        ``"forward"`` and ``"backward"``, about ``6.1e-6`` for ``"central"``
+        (see :func:`pysolvegn.build_numerical_jacobian`).
+
     """
 
     __slots__ = [
@@ -109,6 +113,7 @@ class Parametrization(object):
         parametric_func: Callable = None,
         jacobian_func: Optional[Callable] = None,
         finite_difference: Optional[str] = None,
+        finite_difference_epsilon: Optional[Real] = None,
     ):
         if parametric_func is None:
             raise ValueError(
@@ -137,14 +142,9 @@ class Parametrization(object):
                 "finite_difference must be None if jacobian_func is provided."
             )
 
-        if finite_difference is not None:
-            if not isinstance(finite_difference, str):
-                raise TypeError("finite_difference must be a string.")
-            finite_difference = finite_difference.lower()
-            if finite_difference not in _IMPLEMENTED_FINITE_DIFFERENCE_METHODS:
-                raise ValueError(
-                    f"finite_difference must be one of {_IMPLEMENTED_FINITE_DIFFERENCE_METHODS}, got '{finite_difference}'."
-                )
+        finite_difference, finite_difference_epsilon = _validate_finite_difference(
+            finite_difference, finite_difference_epsilon, allow_none=True
+        )
 
         self._parametric_func = parametric_func
         self._jacobian_func = jacobian_func
@@ -156,7 +156,7 @@ class Parametrization(object):
             self._jacobian_func = build_numerical_jacobian(
                 residual_func=self._parametric_func,
                 method=finite_difference,
-                epsilon=1e-8,
+                epsilon=finite_difference_epsilon,
             )
 
     @property

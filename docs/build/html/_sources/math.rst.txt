@@ -146,11 +146,13 @@ Consider a robust least squares problem of the form:
 
 .. math::
 
-   \min_{\mathbf{p}} \frac{1}{2} \sum_{j \in ( 1, n_r )}
-   \rho \left(\| \mathbf{r}_j(\mathbf{p}) \|^2\right)
+   \min_{\mathbf{p}} C(\mathbf{p}) = \frac{1}{2} \sum_{j=1}^{n_r}
+   \rho \left( r_j(\mathbf{p})^2 \right)
 
-where :math:`\mathbf{r}_j(\mathbf{p})` is the :math:`j`-th residual function (:math:`\mathbb{R}^{n_p} \rightarrow \mathbb{R}`)
-depending on the parameters :math:`\mathbf{p} \in \mathbb{R}^{n_p}`.
+where :math:`r_j(\mathbf{p})` is the :math:`j`-th **scalar** residual function (:math:`\mathbb{R}^{n_p} \rightarrow \mathbb{R}`)
+depending on the parameters :math:`\mathbf{p} \in \mathbb{R}^{n_p}`, and
+:math:`\mathbf{r} = (r_1, \ldots, r_{n_r})` is the vector of the residuals with the Jacobian
+:math:`\mathbf{J} = \partial \mathbf{r} / \partial \mathbf{p}` (shape ``(n_r, n_p)``).
 
 The update :math:`\Delta \mathbf{p}` to the current parameters :math:`\mathbf{p_k}`
 is searched to minimize the cost function and the solution is given by:
@@ -165,60 +167,61 @@ Where :
 
    \tilde{\mathbf{J}} = \sqrt{W_J} \mathbf{J} \quad \tilde{\mathbf{r}} = \frac{W_R}{\sqrt{W_J}} \mathbf{r}
 
-The :math:`W` factors are given by the following equations evaluated at :math:`\mathbf{p_k}`:
+The :math:`W` factors are diagonal matrices given by the following equations evaluated at :math:`\mathbf{p_k}`
+(with :math:`Z_j = r_j^2`):
 
 .. math::
 
-   W_J = \text{diag}\left(\rho'(|\mathbf{r}_j|^2) + 2 \rho''(|\mathbf{r}_j|^2) |\mathbf{r}_j|^2\right)
- 
+   W_J = \text{diag}\left(\rho'(Z_j) + 2 \rho''(Z_j) Z_j\right)
+
 .. math::
 
-   W_R = \text{diag}\left(\rho'(|\mathbf{r}_j|^2)\right)
+   W_R = \text{diag}\left(\rho'(Z_j)\right)
 
 .. seealso::
 
-   The class :class:`pysolvegn.Term` to represent a least square problem. 
+   The class :class:`pysolvegn.Term` to represent a least square problem.
 
    In addition to the ``Callable`` to compute the operators, this class stores
    the robust cost function to use for the optimization problem.
    This function returns the values of :math:`\rho`, :math:`\rho^{(1)}`
    and :math:`\rho^{(2)}` (as a three 1D-array with shape ``(n_residuals,)``)
-   from the squared of the residual vector :math:`\|\mathbf{r}\|^2` (as a 1D-array with shape ``(n_residuals,)``).
-   
+   from the squared residuals :math:`Z_j = r_j^2` (as a 1D-array with shape ``(n_residuals,)``).
+
 
 Demonstration
 ~~~~~~~~~~~~~~
 
-Consider a robust least squares problem of the form:
+Consider the robust least squares problem:
 
 .. math::
 
-   \min_{\mathbf{p}} \frac{1}{2} \sum_{j \in ( 1, n_r )}
-   \rho \left(\| \mathbf{r}_j(\mathbf{p}) \|^2\right)
+   \min_{\mathbf{p}} C(\mathbf{p}) = \frac{1}{2} \sum_{j=1}^{n_r}
+   \rho \left( r_j(\mathbf{p})^2 \right)
 
-where :math:`\mathbf{r}_j(\mathbf{p})` is the :math:`j`-th scalar residual and
+where :math:`r_j(\mathbf{p})` is the :math:`j`-th scalar residual and
 :math:`\rho` is the robust cost function.
 
-Developing the residuals :math:`\mathbf{r}_j(\mathbf{p})` around the current parameters
+Developing the residuals :math:`r_j(\mathbf{p})` around the current parameters
 :math:`\mathbf{p_k}` gives:
 
 .. math::
 
-   \mathbf{r}_j(\mathbf{p_k} + \Delta \mathbf{p})
+   r_j(\mathbf{p_k} + \Delta \mathbf{p})
    \approx
-   \mathbf{r}_j
+   r_j
    + \mathbf{J}_j \Delta \mathbf{p}
    + \frac{1}{2}
    \Delta \mathbf{p}^T \mathbf{H}_j \Delta \mathbf{p}
    + \ldots
 
-where :math:`\mathbf{J}_j(\mathbf{p_k}) = \nabla \mathbf{r}_j(\mathbf{p_k})` is the
-Jacobian of the :math:`j`-th residual with respect to the parameters, and
-:math:`\mathbf{H}_j(\mathbf{p_k})` is its Hessian. By convention, all
+where :math:`\mathbf{J}_j(\mathbf{p_k}) = \nabla r_j(\mathbf{p_k})^T` is the :math:`j`-th row of the
+Jacobian (shape ``(1, n_p)``), and :math:`\mathbf{H}_j(\mathbf{p_k}) = \nabla^2 r_j(\mathbf{p_k})` is the
+Hessian of the :math:`j`-th residual (shape ``(n_p, n_p)``). By convention, all
 quantities are considered evaluated at :math:`\mathbf{p_k}`, such that
-:math:`\mathbf{r}_j = \mathbf{r}_j(\mathbf{p_k})`.
+:math:`r_j = r_j(\mathbf{p_k})`.
 
-Let :math:`Z_j = \| \mathbf{r}_j \|^2` be the squared residual at the current parameters.
+Let :math:`Z_j = r_j^2` be the squared residual at the current parameters.
 The robust cost function can then be developed around :math:`Z_j`:
 
 .. math::
@@ -230,69 +233,69 @@ from the parameter update:
 
 .. math::
 
-   \delta Z_j = \| \mathbf{r}_j(\mathbf{p_k} + \Delta \mathbf{p}) \|^2 - \| \mathbf{r}_j(\mathbf{p_k}) \|^2
+   \delta Z_j = r_j(\mathbf{p_k} + \Delta \mathbf{p})^2 - r_j(\mathbf{p_k})^2
 
 Using the Taylor expansion of the residual and retaining terms up to
 second order in :math:`\Delta \mathbf{p}`:
 
 .. math::
 
-   \delta Z_j \approx 2 \mathbf{r}_j^T \mathbf{J}_j \Delta \mathbf{p} + \Delta \mathbf{p}^T \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{r}_j^T \mathbf{H}_j \right) \Delta \mathbf{p} + \ldots
+   \delta Z_j \approx 2 r_j \mathbf{J}_j \Delta \mathbf{p} + \Delta \mathbf{p}^T \left( \mathbf{J}_j^T \mathbf{J}_j + r_j \mathbf{H}_j \right) \Delta \mathbf{p} + \ldots
 
-In a similar way, the squared term :math:`\delta Z_j^2` can be approximated as:
+In a similar way, the squared term :math:`\delta Z_j^2` can be approximated as
+(:math:`r_j` is a scalar, so :math:`(r_j \mathbf{J}_j \Delta \mathbf{p})^2 = Z_j \, \Delta \mathbf{p}^T \mathbf{J}_j^T \mathbf{J}_j \Delta \mathbf{p}`):
 
 .. math::
 
-   \delta Z_j^2 \approx 4 \left( \mathbf{r}_j^T \mathbf{J}_j \Delta \mathbf{p} \right)^2 + \ldots
+   \delta Z_j^2 \approx 4 \left( r_j \mathbf{J}_j \Delta \mathbf{p} \right)^2 + \ldots
+   = 4 Z_j \, \Delta \mathbf{p}^T \mathbf{J}_j^T \mathbf{J}_j \Delta \mathbf{p} + \ldots
 
 Substituting these expressions into the Taylor expansion of the robust
-cost function gives:
+cost function (with the factor :math:`\frac{1}{2}` of the cost) gives:
 
 .. math::
 
-    \rho(Z_j + \delta Z_j) \approx
-    \rho(Z_j) + 
-    \rho'(Z_j) \Big[ \Delta \mathbf{p}^T \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{r}_j^T \mathbf{H}_j \right) \Delta \mathbf{p} + 2 \mathbf{r}_j^T \mathbf{J}_j \Delta \mathbf{p} \Big] + 
-    2 \rho''(Z_j) \left( \mathbf{r}_j^T \mathbf{J}_j \Delta \mathbf{p} \right)^2 + \ldots
+    \frac{1}{2} \rho(Z_j + \delta Z_j) \approx
+    \frac{1}{2} \rho(Z_j)
+    + \rho'(Z_j) \, r_j \mathbf{J}_j \Delta \mathbf{p}
+    + \frac{1}{2} \Delta \mathbf{p}^T \Big[ \rho'(Z_j) \left( \mathbf{J}_j^T \mathbf{J}_j + r_j \mathbf{H}_j \right) + 2 \rho''(Z_j) Z_j \, \mathbf{J}_j^T \mathbf{J}_j \Big] \Delta \mathbf{p}
+    + \ldots
 
-By summing over all residuals, the gradient and the Hessian of the robust cost with respect to the parameters is therefore:
-
-.. math::
-
-   \mathbf{g}  \approx \sum_j 2 \rho'(Z_j) \mathbf{J}_j^T \mathbf{r}_j
+By summing over all residuals, the gradient and the Hessian of the robust cost :math:`C` with respect
+to the parameters are therefore:
 
 .. math::
 
-   \mathbf{H} \approx \sum_j \Big[2 \rho'(Z_j) \left( \mathbf{J}_j^T \mathbf{J}_j + \mathbf{r}_j^T \mathbf{H}_j \right) + 4 \rho''(Z_j) \mathbf{J}_j^T \mathbf{r}_j \mathbf{r}_j^T \mathbf{J}_j \Big]
+   \mathbf{g} = \sum_j \rho'(Z_j) \, r_j \mathbf{J}_j^T
+
+.. math::
+
+   \mathbf{H} = \sum_j \Big[ \left( \rho'(Z_j) + 2 \rho''(Z_j) Z_j \right) \mathbf{J}_j^T \mathbf{J}_j + \rho'(Z_j) \, r_j \mathbf{H}_j \Big]
 
 The Gauss-Newton approximation consists in neglecting the second-order
-derivatives of the residuals. The term involving :math:`r_j \mathbf{H}_j`
+derivatives of the residuals: the term involving :math:`r_j \mathbf{H}_j`
 is neglected.
 
 .. math::
 
-   \mathbf{H} \approx \sum_j \Big[2 \rho'(Z_j) \mathbf{J}_j^T \mathbf{J}_j + 4 \rho''(Z_j) \mathbf{J}_j^T \mathbf{r}_j \mathbf{r}_j^T \mathbf{J}_j \Big]
+   \mathbf{H} \approx \sum_j \left( \rho'(Z_j) + 2 \rho''(Z_j) Z_j \right) \mathbf{J}_j^T \mathbf{J}_j
 
-.. math::
-
-   \mathbf{H} \approx \sum_j 2 \mathbf{J}_j^T \Big[ \rho'(Z_j) + 2 \rho''(Z_j) Z_j \Big] \mathbf{J}_j
-
-Finally, defining a diagonal matrix :math:`W_J` and a vector :math:`W_R`, the Hessian and gradient approximation
+Finally, with the diagonal matrices :math:`W_J` and :math:`W_R`, the Hessian and gradient approximation
 can be written as:
 
 .. math::
 
-   \mathbf{H} = \mathbf{J}^T \sqrt{W_J}^T \sqrt{W_J} \mathbf{J} \quad  \mathbf{g} = W_R \mathbf{J}^T \mathbf{r}
+   \mathbf{H} = \mathbf{J}^T W_J \mathbf{J} = \mathbf{J}^T \sqrt{W_J}^T \sqrt{W_J} \mathbf{J} \quad  \mathbf{g} = \mathbf{J}^T W_R \mathbf{r}
 
 where:
 
 .. math::
 
-   W_J = \text{diag}\left(\rho'(|\mathbf{r}_j|^2) + 2 \rho''(|\mathbf{r}_j|^2) |\mathbf{r}_j|^2\right)
- 
+   W_J = \text{diag}\left(\rho'(Z_j) + 2 \rho''(Z_j) Z_j\right)
+
 .. math::
 
-   W_R = \text{diag}\left(\rho'(|\mathbf{r}_j|^2)\right)
+   W_R = \text{diag}\left(\rho'(Z_j)\right)
 
 This system can be expressed as a standard least squares system by
 introducing a modified Jacobian and a modified residual:
@@ -301,11 +304,19 @@ introducing a modified Jacobian and a modified residual:
 
    \tilde{\mathbf{J}} = \sqrt{W_J}\mathbf{J} \quad \tilde{\mathbf{r}} = W_J^{-1/2} W_R \mathbf{r}.
 
-Such that:
+Such that :math:`\tilde{\mathbf{J}}^T \tilde{\mathbf{J}} = \mathbf{H}`, :math:`\tilde{\mathbf{J}}^T \tilde{\mathbf{r}} = \mathbf{g}` and:
 
 .. math::
 
    \tilde{\mathbf{J}}^T \tilde{\mathbf{J}} \Delta \mathbf{p} = -\tilde{\mathbf{J}}^T \tilde{\mathbf{r}}.
+
+.. note::
+
+   The scalar residuals are essential in this derivation: for a block of residuals
+   :math:`\mathbf{r}_j \in \mathbb{R}^m` (e.g. a 2D reprojection error) with a loss of
+   :math:`\|\mathbf{r}_j\|^2`, the term :math:`\mathbf{J}_j^T \mathbf{r}_j \mathbf{r}_j^T \mathbf{J}_j`
+   is a rank-1 correction and is not equal to :math:`\|\mathbf{r}_j\|^2 \mathbf{J}_j^T \mathbf{J}_j`.
+   In pysolve-gn, the loss is applied to each scalar residual independently.
 
 
 
@@ -318,10 +329,21 @@ The construction above requires :math:`\sqrt{W_J}`, so every diagonal element
 
    W_{J,j} = \rho'(Z_j) + 2 \rho''(Z_j) Z_j
 
-must be strictly positive. This always holds for a convex loss function, but
-not for the loss functions that are designed to reject outliers. For these
-loss functions, :math:`\rho''` is negative and dominates :math:`\rho'` for large
-residuals:
+must be strictly positive. This weight is the curvature of the loss as a function
+of the residual itself: with :math:`\phi(r) = \rho(r^2)`,
+
+.. math::
+
+   W_{J,j} = \frac{1}{2} \phi''(r_j)
+
+so :math:`W_{J,j} \geq 0` exactly where :math:`\phi` is convex in :math:`r`. This holds
+everywhere for ``"linear"``, ``"soft_l1"`` and ``"huber"`` (for ``"huber"``,
+:math:`\phi` is linear in :math:`|r|` beyond the threshold and :math:`W_J = 0`). It does not hold
+for the redescending losses designed to reject outliers (``"cauchy"``, ``"arctan"``,
+``"tukey"``): :math:`\phi` becomes concave beyond a threshold, where :math:`\rho''` is negative
+and dominates :math:`\rho'`. Note that the convexity of :math:`\rho` as a function of :math:`Z`
+is not the right criterion: all the robust losses are concave in :math:`Z`
+(:math:`\rho'' \leq 0`), and ``"soft_l1"`` still has :math:`W_J > 0` everywhere.
 
 .. list-table::
    :header-rows: 1
@@ -369,8 +391,7 @@ many residuals are in this regime (e.g. a poor initial guess, or residuals
 expressed in a unit much larger than the threshold of the loss), the Hessian
 becomes almost singular and the step explodes.
 
-Instead, the second-order correction of the loss is dropped for these residuals
-(as in Ceres Solver):
+Instead, the second-order correction of the loss is dropped for these residuals:
 
 .. math::
 
@@ -385,7 +406,7 @@ Jacobian become:
 
 .. math::
 
-   \tilde{\mathbf{r}}_j = \frac{\rho'(Z_j)}{\sqrt{\rho'(Z_j)}} \mathbf{r}_j = \sqrt{\rho'(Z_j)} \, \mathbf{r}_j
+   \tilde{r}_j = \frac{\rho'(Z_j)}{\sqrt{\rho'(Z_j)}} r_j = \sqrt{\rho'(Z_j)} \, r_j
    \quad
    \tilde{\mathbf{J}}_j = \sqrt{\rho'(Z_j)} \, \mathbf{J}_j
 
@@ -394,7 +415,7 @@ weighting: the residual is treated as a standard least squares residual with the
 weight :math:`\rho'(Z_j)`. This choice has three properties:
 
 - **The gradient is unchanged**: in both cases
-  :math:`\tilde{\mathbf{J}}_j^T \tilde{\mathbf{r}}_j = \rho'(Z_j) \mathbf{J}_j^T \mathbf{r}_j`,
+  :math:`\tilde{\mathbf{J}}_j^T \tilde{r}_j = \rho'(Z_j) \, r_j \mathbf{J}_j^T`,
   so the stationary points of the problem are the same.
 - **The Hessian approximation stays positive semi-definite**: each contribution
   :math:`W_{J,j} \mathbf{J}_j^T \mathbf{J}_j` uses :math:`W_{J,j} \geq 0`. When it is
@@ -404,9 +425,21 @@ weight :math:`\rho'(Z_j)`. This choice has three properties:
   a small :math:`\rho'(Z_j)` contributes little to both the gradient and the Hessian,
   instead of contributing to the gradient only.
 
+.. note::
+
+   **Comparison with other solvers.** The fallback formula is the one of
+   `Ceres Solver <http://ceres-solver.org/>`_ (residual and Jacobian scaled by
+   :math:`\sqrt{\rho'}`), but its trigger differs: pysolve-gn drops the second-order
+   correction only when :math:`W_{J,j} \leq \varepsilon`, whereas Ceres drops it as soon as
+   :math:`\rho''(Z_j) \leq 0`, that is everywhere for the robust losses implemented here
+   (Ceres then uses the pure IRLS weighting :math:`\rho'`). ``scipy.optimize.least_squares``
+   uses the same second-order correction as pysolve-gn, but clamps :math:`W_{J,j}` to the
+   machine precision ``EPS`` instead of falling back on :math:`\rho'` (the clamping
+   described above); its trust-region algorithm then controls the step length.
+
 If :math:`\rho'(Z_j) \leq 0` too (e.g. ``"tukey"`` beyond its threshold, where
 :math:`\rho' = 0`), then :math:`W_{J,j} = 0` and the residual is simply ignored:
-:math:`\tilde{\mathbf{r}}_j = 0` and :math:`\tilde{\mathbf{J}}_j = 0`.
+:math:`\tilde{r}_j = 0` and :math:`\tilde{\mathbf{J}}_j = 0`.
 
 .. warning::
 
@@ -418,8 +451,9 @@ If :math:`\rho'(Z_j) \leq 0` too (e.g. ``"tukey"`` beyond its threshold, where
 .. note::
 
    The fallback only modifies the Hessian approximation, never the gradient or the
-   cost. The Levenberg-Marquardt damping (``damping="lm"`` or ``"lm-diag"``) remains
-   useful on top of it to control the step length far from the solution.
+   cost. The Levenberg-Marquardt damping (``damping="lm"`` or ``"lm-diag"``) or the
+   Armijo line search (``line_search=True``) remain useful on top of it to control the
+   step length far from the solution.
 
 
 Scaling a problem

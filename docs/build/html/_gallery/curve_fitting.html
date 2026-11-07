@@ -293,6 +293,7 @@
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Curve fitting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="study_optimization.html">Study of camera calibration optimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="adding_regularization.html">Adding regularization (curve fitting)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="line_search_soft_l1.html">Robust fitting with and without line search</a></li>
 <li class="toctree-l1"><a class="reference internal" href="affine_parametrization.html">Camera calibration with affine parametrization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="batch_undistortion.html">Undistortion of image points with a batch solver</a></li>
 </ul>
@@ -465,12 +466,12 @@ Step norm: ||Δp||
 Optimality: ||g||
 
 Iteration  Total time (s)      Cost C            ΔC           ||Δp||_2         ||g||_∞
-    0         6.177e-05       4.287e+02                                       5.101e+03
-    1         1.622e-04       9.622e+01      -3.325e+02       8.856e-01       9.936e+02
-    2         2.320e-04       5.346e+01      -4.277e+01       6.382e-01       3.246e+02
-    3         2.900e-04       5.072e+01      -2.738e+00       4.633e-02       4.134e+00
-    4         3.500e-04       5.072e+01      -6.618e-04       2.843e-03       4.314e-02
-    5         4.024e-04       5.072e+01      -3.914e-07       1.021e-04       2.567e-03
+    0         7.804e-05       4.287e+02                                       5.101e+03
+    1         2.049e-04       9.622e+01      -3.325e+02       8.856e-01       9.936e+02
+    2         2.842e-04       5.346e+01      -4.277e+01       6.382e-01       3.246e+02
+    3         3.518e-04       5.072e+01      -2.738e+00       4.633e-02       4.134e+00
+    4         4.358e-04       5.072e+01      -6.618e-04       2.843e-03       4.314e-02
+    5         5.045e-04       5.072e+01      -3.914e-07       1.021e-04       2.567e-03
 [ftol] Convergence achieved: 0 &lt;= F_previous - F &lt; ftol * F with ftol = 1e-08.
 </pre></div>
 </div>
@@ -540,7 +541,7 @@ Estimated parameters:
 [2.45861374 0.51137177]
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.046 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.049 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-docs-source-gallery-curve-fitting-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/a7667dd6b9230ed1e12f3d3714ea68cf/curve_fitting.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">curve_fitting.ipynb</span></code></a></p>

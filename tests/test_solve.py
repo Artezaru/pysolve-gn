@@ -289,7 +289,7 @@ def test_config():
     assert result.config["xtol"] == 1e-9
     assert result.config["ftol"] is None
     assert result.config["damping"] == "lm"
-    assert result.config["lm_conf"] == {"initial_scale": 1e-3, "factor": 4.0, "max_rejections": 50, "diag_floor": 1e-12}
+    assert result.config["lm_conf"] == {"initial_scale": 1e-3, "factor": 4.0, "max_rejections": 50, "diag_floor": 1e-12, "noise": 1e-13}
 
 
 def test_cost_computed_at_convergence():
@@ -464,7 +464,7 @@ def test_invalid_terms_and_p0():
 
 def test_levenberg_marquardt_requires_gH_cost():
     gH = pysolvegn.Term.from_gH(lambda p: p, lambda p: numpy.eye(2))
-    with pytest.raises(ValueError):
+    with pytest.warns(UserWarning, match="no cost_func"), pytest.raises(ValueError):
         pysolvegn.solve(gH, P0, max_iteration=5, damping="lm")
 
 
@@ -472,3 +472,256 @@ def test_wrong_jacobian_shape():
     term = pysolvegn.Term.from_rJ(lambda p: p - 1.0, lambda p: numpy.eye(3))
     with pytest.raises(ValueError):
         pysolvegn.solve(term, numpy.zeros(2), max_iteration=5)
+
+# ----------------------------------------------------------------------
+# 'gH' terms without cost_func: warning, and atol / ftol forbidden
+# ----------------------------------------------------------------------
+def _gH_without_cost():
+    return pysolvegn.Term.from_gH(lambda p: p - 1.0, lambda p: numpy.eye(2))
+
+
+def test_gH_without_cost_func_warns():
+    with pytest.warns(UserWarning, match=r"'gH' term\(s\) \[0\] have no cost_func"):
+        result = pysolvegn.solve(_gH_without_cost(), numpy.zeros(2), gtol=1e-10, max_iteration=10)
+    assert result.success
+    numpy.testing.assert_allclose(result.parameters, 1.0)
+
+
+@pytest.mark.parametrize(
+    "criteria, names",
+    [
+        ({"atol": 1e-8}, "atol"),
+        ({"ftol": 1e-8}, "ftol"),
+        ({"atol": 1e-8, "ftol": 1e-8, "max_iteration": 10}, "atol and ftol"),
+        ({"ftol": 1e-8, "gtol": 1e-8}, "ftol"),
+    ],
+)
+def test_gH_without_cost_func_forbids_cost_criteria(criteria, names):
+    with pytest.warns(UserWarning), pytest.raises(ValueError, match=f"^{names} cannot be used"):
+        pysolvegn.solve(_gH_without_cost(), numpy.zeros(2), **criteria)
+
+
+def test_gH_without_cost_func_mixed_with_rJ_term():
+    # A 'gH' regularization without cost_func next to a 'rJ' term: same rules (term index 1)
+    rJ = pysolvegn.Term.from_rJ(lambda p: p - 2.0, lambda p: numpy.eye(2))
+    with pytest.warns(UserWarning, match=r"\[1\]"), pytest.raises(ValueError):
+        pysolvegn.solve([rJ, _gH_without_cost()], numpy.zeros(2), atol=1e-8)
+    with pytest.warns(UserWarning, match=r"\[1\]"):
+        result = pysolvegn.solve([rJ, _gH_without_cost()], numpy.zeros(2), xtol=1e-10, max_iteration=10)
+    numpy.testing.assert_allclose(result.parameters, 1.5)
+
+
+def test_gH_with_cost_func_does_not_warn():
+    import warnings
+
+    gH = pysolvegn.Term.from_gH(
+        lambda p: p - 1.0, lambda p: numpy.eye(2), cost_func=lambda p: 0.5 * numpy.sum((p - 1.0) ** 2)
+    )
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        result = pysolvegn.solve(gH, numpy.zeros(2), atol=1e-12, ftol=1e-10, max_iteration=10)
+    assert result.success
+
+
+# ----------------------------------------------------------------------
+# Optional Armijo line search (line_search=True)
+# ----------------------------------------------------------------------
+def _atan_term():
+    # Gauss-Newton on r(p) = arctan(p) diverges for |p0| > 1.39 (overshoot), converges to 0
+    # with the line search
+    return pysolvegn.Term.from_rJ(lambda p: numpy.arctan(p), lambda p: numpy.diag(1.0 / (1.0 + p**2)))
+
+
+def test_line_search_disabled_by_default():
+    result = pysolvegn.solve(_atan_term(), numpy.array([2.0]), max_iteration=6, history=True, history_details="all")
+    assert result.config["line_search"] is False
+    assert all(h["step_length"] is None for h in result.history)
+    assert numpy.abs(result.parameters[0]) > 100  # pure Gauss-Newton: the full step is always applied
+
+
+def test_line_search_fixes_overshoot():
+    result = pysolvegn.solve(
+        _atan_term(), numpy.array([2.0]), line_search=True, max_iteration=50, gtol=1e-12,
+        history=True, history_details=["cost", "step_length"],
+    )
+    assert result.success and result.stopped_by("gtol")
+    numpy.testing.assert_allclose(result.parameters, 0.0, atol=1e-10)
+    costs = [h["cost"] for h in result.history]
+    assert all(b <= a for a, b in zip(costs, costs[1:]))  # monotone decrease
+    lengths = [h["step_length"] for h in result.history[1:]]
+    assert lengths[0] < 1.0 and lengths[-1] == 1.0  # shortened far from the solution, full step near it
+    assert result.n_rejected > 0
+
+
+def test_line_search_full_steps_give_the_pure_gauss_newton_result():
+    # Close to the solution every full step satisfies the Armijo condition: same iterates
+    term = exp_term(exp_data())
+    p0 = numpy.array([2.4, 0.5])
+    gn = pysolvegn.solve(term, p0, **criteria())
+    ls = pysolvegn.solve(term, p0, line_search=True, **criteria())
+    numpy.testing.assert_array_equal(ls.parameters, gn.parameters)
+    assert ls.n_iterations == gn.n_iterations and ls.n_rejected == 0
+
+
+def test_line_search_at_machine_precision():
+    # After convergence (no convergence criterion): the steps at the rounding noise level
+    # are accepted at once (no vain backtracking) and no false "not_descent" stop
+    term = exp_term(exp_data())
+    result = pysolvegn.solve(term, numpy.array([2.4, 0.5]), line_search=True, max_iteration=40)
+    assert result.stopped_by("max_iteration") and result.n_rejected == 0
+    A = numpy.random.default_rng(0).normal(size=(50, 3))
+    b = A @ numpy.array([1.0, 2.0, 3.0])
+    linear = pysolvegn.Term.from_rJ(lambda p: A @ p - b, lambda p: A)
+    result = pysolvegn.solve(linear, numpy.zeros(3), line_search=True, max_iteration=10)
+    assert result.stopped_by("max_iteration") and not result.stopped_by("not_descent")
+
+
+def test_line_search_rejects_nan_trial_steps():
+    # r(p) = log(p): the full step from p = 3 gives p < 0 (NaN residual), the line search
+    # rejects it and converges to 1
+    term = pysolvegn.Term.from_rJ(lambda p: numpy.log(p), lambda p: numpy.diag(1.0 / p))
+    with numpy.errstate(invalid="ignore"):
+        gn = pysolvegn.solve(term, numpy.array([3.0]), max_iteration=10, gtol=1e-12)
+        ls = pysolvegn.solve(term, numpy.array([3.0]), line_search=True, max_iteration=50, gtol=1e-12)
+    assert not gn.success
+    assert ls.success
+    numpy.testing.assert_allclose(ls.parameters, 1.0, atol=1e-10)
+
+
+def test_line_search_not_descent():
+    # update_func reversing the step: g^T Δp* > 0
+    result = pysolvegn.solve(
+        exp_term(exp_data()), P0, line_search=True, update_func=lambda p, dp: -dp, **criteria()
+    )
+    assert not result.success
+    assert result.stopped_by("not_descent")
+    assert "[not_descent]" in result.message
+    numpy.testing.assert_array_equal(result.parameters, P0)  # the update is never applied
+
+
+def test_line_search_failure():
+    # Linear residuals: C(p + α Δp) = C + (α - α²/2) g^T Δp, the condition needs
+    # α <= 2 (1 - c1) = 0.002 -> impossible without backtracking
+    A = numpy.array([[1.0, 0.0], [0.0, 2.0], [1.0, 1.0]])
+    term = pysolvegn.Term.from_rJ(lambda p: A @ p - 1.0, lambda p: A)
+    failed = pysolvegn.solve(
+        term, numpy.zeros(2), line_search=True, line_search_conf={"c1": 0.999, "max_backtracks": 0}, max_iteration=5
+    )
+    assert failed.stopped_by("line_search") and not failed.success
+    assert "after 0 backtracks" in failed.message
+    passed = pysolvegn.solve(
+        term, numpy.zeros(2), line_search=True, line_search_conf={"c1": 0.999}, max_iteration=1
+    )
+    assert passed.n_iterations == 1 and passed.n_rejected == 9  # α = 0.5^9 ~ 0.00195
+    assert passed.config["line_search_conf"] == {"c1": 0.999, "factor": 0.5, "max_backtracks": 30, "noise": 1e-13}
+
+
+def test_line_search_with_gH_terms():
+    A = numpy.array([[1.0, 0.0], [0.0, 2.0], [1.0, 1.0]])
+    gH = pysolvegn.Term.from_gH(
+        lambda p: A.T @ (A @ p - 1.0), lambda p: A.T @ A, cost_func=lambda p: 0.5 * numpy.sum((A @ p - 1.0) ** 2)
+    )
+    result = pysolvegn.solve(gH, numpy.zeros(2), line_search=True, max_iteration=5, gtol=1e-12)
+    assert result.success
+    with pytest.warns(UserWarning), pytest.raises(ValueError, match="line_search=True requires"):
+        pysolvegn.solve(_gH_without_cost(), numpy.zeros(2), line_search=True, max_iteration=5)
+
+
+@pytest.mark.parametrize(
+    "kwargs, error",
+    [
+        ({"line_search": True, "damping": "lm"}, ValueError),
+        ({"line_search": 1}, TypeError),
+        ({"line_search": True, "line_search_conf": {"c1": 0.0}}, ValueError),
+        ({"line_search": True, "line_search_conf": {"factor": 1.0}}, ValueError),
+        ({"line_search": True, "line_search_conf": {"max_backtracks": -1}}, ValueError),
+        ({"line_search": True, "line_search_conf": {"max_backtracks": 2.5}}, TypeError),
+        ({"line_search": True, "line_search_conf": {"unknown": 1}}, ValueError),
+        ({"line_search": True, "line_search_conf": [1]}, TypeError),
+        ({"line_search": True, "line_search_conf": {"noise": -1e-13}}, ValueError),
+        ({"line_search": True, "line_search_conf": {"noise": numpy.inf}}, ValueError),
+    ],
+)
+def test_line_search_invalid_options(kwargs, error):
+    with pytest.raises(error):
+        pysolvegn.solve(exp_term(exp_data()), P0, max_iteration=5, **kwargs)
+
+
+def test_line_search_verbosity(capsys):
+    pysolvegn.solve(_atan_term(), numpy.array([2.0]), line_search=True, max_iteration=3, verbosity=3)
+    assert "α" in capsys.readouterr().out
+
+
+# ----------------------------------------------------------------------
+# Levenberg-Marquardt: max_time between trials, rounding noise, λ floor, gain ratio
+# ----------------------------------------------------------------------
+def _slow_term():
+    # Each residual evaluation takes 2 ms; the minimum is at p = 0
+    import time
+
+    def residual(p):
+        time.sleep(0.002)
+        return numpy.array([p[0] ** 2 + 1.0])
+
+    return pysolvegn.Term.from_rJ(residual, lambda p: numpy.array([[2.0 * p[0]]]))
+
+
+@pytest.mark.parametrize(
+    "options, max_trials",
+    [
+        ({"damping": "lm", "update_func": lambda p, dp: numpy.ones(1)}, 50),  # every trial increases the cost
+        ({"line_search": True, "update_func": lambda p, dp: 1e4 * dp}, 30),  # every trial overshoots
+    ],
+)
+def test_max_time_checked_between_trial_steps(options, max_trials):
+    result = pysolvegn.solve(_slow_term(), numpy.array([1.0]), max_time=0.01, max_iteration=100, **options)
+    assert result.stopped_by("max_time") and not result.success
+    assert result.n_iterations == 0
+    numpy.testing.assert_array_equal(result.parameters, [1.0])  # the trial step is not applied
+    assert 0 < result.n_rejected < max_trials  # stopped long before exhausting the trials
+
+
+def test_lm_rounding_noise():
+    # Without convergence criterion, after convergence: the steps at the rounding noise
+    # level are accepted (strict condition: rejections and λ drifting up)
+    term = exp_term(exp_data())
+    p0 = numpy.array([2.4, 0.5])
+    for damping in ("lm", "lm-diag"):
+        default = pysolvegn.solve(term, p0, damping=damping, max_iteration=60)
+        strict = pysolvegn.solve(term, p0, damping=damping, max_iteration=60, lm_conf={"noise": 0.0})
+        assert default.n_rejected == 0
+        assert strict.n_rejected > 0
+        numpy.testing.assert_allclose(default.parameters, strict.parameters, rtol=1e-8)
+
+
+def test_lm_lambda_floor():
+    # Accepted steps divide λ by 10: λ stays above its floor (never 0)
+    result = pysolvegn.solve(
+        exp_term(exp_data()), numpy.array([2.4, 0.5]), damping="lm", max_iteration=400,
+        history=True, history_details=["damping"],
+    )
+    lambdas = numpy.array([h["damping"] for h in result.history[1:]])
+    assert numpy.all(lambdas > 0)
+    assert lambdas[-1] == lambdas[-2]  # floor reached
+
+
+def test_lm_gain_ratio():
+    # Linear residuals and linear loss: the Gauss-Newton model is exact, the gain ratio of
+    # a step with a significant decrease is 1
+    A = numpy.random.default_rng(0).normal(size=(30, 3))
+    b = A @ numpy.array([1.0, 2.0, 3.0]) + 0.1 * numpy.random.default_rng(1).normal(size=30)
+    term = pysolvegn.Term.from_rJ(lambda p: A @ p - b, lambda p: A)
+    result = pysolvegn.solve(
+        term, numpy.zeros(3), damping="lm", max_iteration=3, history=True, history_details=["gain_ratio"]
+    )
+    assert result.history[0]["gain_ratio"] is None
+    numpy.testing.assert_allclose(result.history[1]["gain_ratio"], 1.0, rtol=1e-8)
+    # Without damping: no gain ratio
+    result = pysolvegn.solve(term, numpy.zeros(3), max_iteration=3, history=True, history_details="all")
+    assert all(h["gain_ratio"] is None for h in result.history)
+
+
+@pytest.mark.parametrize("noise, error", [(-1e-13, ValueError), (numpy.inf, ValueError), (True, TypeError), ("1", TypeError)])
+def test_lm_conf_invalid_noise(noise, error):
+    with pytest.raises(error):
+        pysolvegn.solve(exp_term(exp_data()), P0, max_iteration=5, damping="lm", lm_conf={"noise": noise})

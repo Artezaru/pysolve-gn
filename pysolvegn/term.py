@@ -20,10 +20,9 @@ from __future__ import annotations
 from typing import Callable, Optional, Union
 from numbers import Real
 
-from .derivation import build_numerical_jacobian
+from .derivation import build_numerical_jacobian, _validate_finite_difference
 from .implemented_conf import (
     _IMPLEMENTED_LOSS_FUNCTIONS,
-    _IMPLEMENTED_FINITE_DIFFERENCE_METHODS,
 )
 from .loss_functions import (
     get_rho_function_by_name,
@@ -183,6 +182,12 @@ class Term(object):
         ``jacobian_func`` must be provided.
         Available methods are ``"central"``, ``"forward"``, and ``"backward"``.
 
+    finite_difference_epsilon : Optional[Real] (default=None)
+        The relative step of the finite differences (only with ``finite_difference``).
+        If None, the default step of the method is used: about ``1.5e-8`` for
+        ``"forward"`` and ``"backward"``, about ``6.1e-6`` for ``"central"``
+        (see :func:`pysolvegn.build_numerical_jacobian`).
+
     """
 
     __slots__ = [
@@ -209,6 +214,7 @@ class Term(object):
         loss: Optional[Union[str, Callable]] = None,
         loss_scale: Real = 1.0,
         finite_difference: Optional[str] = None,
+        finite_difference_epsilon: Optional[Real] = None,
     ):
         if (residual_func is not None or jacobian_func is not None) and (
             gradient_func is not None or hessian_func is not None
@@ -308,14 +314,9 @@ class Term(object):
             if loss_name != "linear":
                 loss_func = scale_rho_function(loss_func, loss_scale)
 
-        if finite_difference is not None:
-            if not isinstance(finite_difference, str):
-                raise TypeError("finite_difference must be a string.")
-            finite_difference = finite_difference.lower()
-            if finite_difference not in _IMPLEMENTED_FINITE_DIFFERENCE_METHODS:
-                raise ValueError(
-                    f"finite_difference must be one of {_IMPLEMENTED_FINITE_DIFFERENCE_METHODS}, got '{finite_difference}'."
-                )
+        finite_difference, finite_difference_epsilon = _validate_finite_difference(
+            finite_difference, finite_difference_epsilon, allow_none=True
+        )
 
         self._residual_func: Optional[Callable] = residual_func
         self._jacobian_func: Optional[Callable] = jacobian_func
@@ -334,7 +335,7 @@ class Term(object):
             self._jacobian_func = build_numerical_jacobian(
                 residual_func=self._residual_func,
                 method=finite_difference,
-                epsilon=1e-8,
+                epsilon=finite_difference_epsilon,
             )
 
     @property
@@ -573,6 +574,7 @@ class Term(object):
         loss: Optional[Union[str, Callable]] = None,
         loss_scale: Real = 1.0,
         finite_difference: Optional[str] = None,
+        finite_difference_epsilon: Optional[Real] = None,
     ) -> Term:
         r"""
         Create a :class:`pysolvegn.Term` object from the residual and Jacobian functions.
@@ -647,6 +649,12 @@ class Term(object):
             ``jacobian_func`` must be provided.
             Available methods are ``"central"``, ``"forward"``, and ``"backward"``.
 
+        finite_difference_epsilon : Optional[Real] (default=None)
+            The relative step of the finite differences (only with ``finite_difference``).
+            If None, the default step of the method is used: about ``1.5e-8`` for
+            ``"forward"`` and ``"backward"``, about ``6.1e-6`` for ``"central"``
+            (see :func:`pysolvegn.build_numerical_jacobian`).
+
         Returns
         -------
         Term
@@ -663,6 +671,7 @@ class Term(object):
             loss=loss,
             loss_scale=loss_scale,
             finite_difference=finite_difference,
+            finite_difference_epsilon=finite_difference_epsilon,
         )
 
     @classmethod

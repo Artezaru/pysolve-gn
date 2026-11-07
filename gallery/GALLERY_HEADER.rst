@@ -13,5 +13,6 @@ Basic examples
     adding_regularization.py
     affine_parametrization.py
     batch_undistortion.py
+    line_search_soft_l1.py
     analyze_problem.py
     L_curve_analysis.py

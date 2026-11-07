@@ -16,12 +16,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from typing import Optional, Sequence, Union, Tuple, Callable, Dict, List, Any, Mapping
+from typing import Optional, Sequence, Union, Callable, Dict, List, Any, Mapping
 from numbers import Real, Integral
 from dataclasses import dataclass
 from numpy.typing import ArrayLike
 
-import collections
 import time
 import warnings
 
@@ -31,13 +30,19 @@ import scipy.sparse.linalg
 
 from .implemented_conf import (
     _IMPLEMENTED_HISTORY_DETAILS,
-    _IMPLEMENTED_DAMPINGS,
     _DEFAULT_SOLVE_HISTORY,
-    _DEFAULT_LM_CONF,
     _STOP_CODES,
     _STOP_CONVERGENCE,
     _STOP_NANINF,
     _STOP_FAILURE,
+)
+from .solver_common import (
+    _HistoryRecorder,
+    _IterationDisplay,
+    _copy_or_none,
+    _stop_reasons,
+    _validate_solver_options,
+    _validate_terms,
 )
 
 from .evaluation import (
@@ -52,40 +57,7 @@ from .evaluation import (
 from .term import Term
 from .parametrization import Parametrization
 
-
-# Text of each stopping reason (built from the stop code and the configuration of the
-# solver: the thresholds are given, not the values reached at the last iteration).
-_STOP_MESSAGES = {
-    "ftol": "[ftol] Convergence achieved: 0 <= F_previous - F < ftol * F with ftol = {ftol}.",
-    "atol": "[atol] Convergence achieved: F < atol with atol = {atol}.",
-    "gtol": "[gtol] Convergence achieved: ||g||_inf < gtol with gtol = {gtol}.",
-    "xtol": "[xtol] Convergence achieved: ||Δp|| < xtol * (xtol + ||p||) with xtol = {xtol}.",
-    "ptol": "[ptol] Convergence achieved: ||Δp||_inf < ptol with ptol = {ptol}.",
-    "max_iteration": "[max_iteration] Maximum number of iterations reached: {max_iteration}.",
-    "max_time": "[max_time] Maximum computation time reached: {max_time} seconds.",
-    "callback": "[callback] Optimization stopped by the callback function.",
-    "singular": "[singular] Optimization stopped: the linear system H Δp_in = -g is singular.",
-    "lm": "[lm] Optimization stopped: no step decreasing the cost found after {lm_max_rejections} rejections.",
-    "naninf_p0": "[naninf] Optimization not started: NaN or Inf value in the initial parameters p0.",
-    "naninf_term_parameters": "[naninf] Optimization stopped: NaN or Inf value in the term parameters p_out = P(p_in).",
-    "naninf_cost": "[naninf] Optimization stopped: NaN or Inf value in the cost (the Levenberg-Marquardt steps cannot be compared).",
-    "naninf_trial_cost": "[naninf] Optimization stopped: NaN or Inf value in the cost of a Levenberg-Marquardt trial step.",
-    "naninf_update": "[naninf] Optimization stopped: NaN or Inf value in the parameter update Δp_in*.",
-}
-
-
-def _stop_reasons(stop_code: int, config: Dict[str, Any]) -> List[str]:
-    r"""
-    Build the text of the stopping reasons encoded in ``stop_code`` (one string per
-    triggered bit, in the order of the checks of the solver).
-    """
-    values = dict(config)
-    values["lm_max_rejections"] = config["lm_conf"]["max_rejections"]
-    return [
-        _STOP_MESSAGES[name].format(**values)
-        for name, bit in _STOP_CODES.items()
-        if stop_code & bit
-    ]
+_MACHINE_EPSILON = float(numpy.finfo(numpy.float64).eps)
 
 
 @dataclass
@@ -117,8 +89,8 @@ class SolveResult:
         1. Always False if the optimization was stopped by a NaN or Inf value (in the
            initial parameters, the term parameters, the update or, with
            ``damping="lm"``, the cost), by a singular linear system, by the callback
-           function or by a failure of the Levenberg-Marquardt step, even if a
-           convergence criterion was satisfied at the same iteration.
+           function, by a failure of the Levenberg-Marquardt step or of the line search,
+           even if a convergence criterion was satisfied at the same iteration.
         2. Otherwise True if a convergence criterion was satisfied, even if
            ``max_iteration`` or ``max_time`` was reached at the same iteration.
         3. Otherwise False (stopped by ``max_iteration`` or ``max_time``).
@@ -157,14 +129,15 @@ class SolveResult:
         The total time of the optimization in seconds.
 
     n_rejected: int
-        The total number of rejected Levenberg-Marquardt trial steps
-        (0 if ``damping`` is None).
+        The total number of rejected trial steps of the Levenberg-Marquardt damping or
+        of the line search (0 if ``damping`` is None and ``line_search`` is False).
 
     config: Dict[str, Any]
         The configuration requested to the solver: the stopping criteria
         (``"max_iteration"``, ``"max_time"``, ``"ftol"``, ``"xtol"``, ``"gtol"``,
-        ``"atol"``, ``"ptol"``, None if not used), ``"damping"`` and ``"lm_conf"``
-        (the complete Levenberg-Marquardt configuration, default values included).
+        ``"atol"``, ``"ptol"``, None if not used), ``"damping"``, ``"lm_conf"``
+        (the complete Levenberg-Marquardt configuration, default values included),
+        ``"line_search"`` and ``"line_search_conf"`` (complete line search configuration).
 
     Notes
     -----
@@ -203,6 +176,10 @@ class SolveResult:
     | ``"naninf_trial_cost"``      | 8192  | NaN or Inf value in the cost of a trial step       |
     +------------------------------+-------+----------------------------------------------------+
     | ``"naninf_update"``          | 16384 | NaN or Inf value in the update                     |
+    +------------------------------+-------+----------------------------------------------------+
+    | ``"line_search"``            | 32768 | No step satisfying the Armijo condition            |
+    +------------------------------+-------+----------------------------------------------------+
+    | ``"not_descent"``            | 65536 | Update not a descent direction (line search)       |
     +------------------------------+-------+----------------------------------------------------+
 
     For example, ``stop_code = 12 = 4 + 8`` means that ``gtol`` and ``xtol`` were both
@@ -270,38 +247,6 @@ class SolveResult:
         return "\n".join(self.reasons)
 
 
-def _validate_lm_conf(lm_conf: Optional[Mapping[str, Real]]) -> Dict[str, Any]:
-    r"""
-    Complete the Levenberg-Marquardt configuration with the default values and check it.
-    """
-    if lm_conf is None:
-        lm_conf = {}
-    if not isinstance(lm_conf, Mapping):
-        raise TypeError("lm_conf must be None or a dictionary.")
-    unknown = set(lm_conf) - set(_DEFAULT_LM_CONF)
-    if unknown:
-        raise ValueError(f"Unknown lm_conf keys {sorted(unknown)}. Valid keys are {tuple(_DEFAULT_LM_CONF)}.")
-
-    conf = dict(_DEFAULT_LM_CONF)
-    conf.update(lm_conf)
-
-    for key in ("initial_scale", "factor", "diag_floor"):
-        if isinstance(conf[key], bool) or not isinstance(conf[key], Real):
-            raise TypeError(f"lm_conf['{key}'] must be a real number.")
-        conf[key] = float(conf[key])
-        if not numpy.isfinite(conf[key]) or conf[key] <= 0:
-            raise ValueError(f"lm_conf['{key}'] must be a finite strictly positive number.")
-    if conf["factor"] <= 1.0:
-        raise ValueError("lm_conf['factor'] must be strictly greater than 1.")
-    if isinstance(conf["max_rejections"], bool) or not isinstance(conf["max_rejections"], Integral):
-        raise TypeError("lm_conf['max_rejections'] must be an integer.")
-    conf["max_rejections"] = int(conf["max_rejections"])
-    if conf["max_rejections"] < 1:
-        raise ValueError("lm_conf['max_rejections'] must be a strictly positive integer.")
-
-    return conf
-
-
 def _solve_linear_system(
     hessian: Union[numpy.ndarray, scipy.sparse.spmatrix],
     second_term: numpy.ndarray,
@@ -340,6 +285,8 @@ def solve(
     update_func: Optional[Callable[[numpy.ndarray, numpy.ndarray], ArrayLike]] = None,
     damping: Optional[str] = None,
     lm_conf: Optional[Mapping[str, Real]] = None,
+    line_search: bool = False,
+    line_search_conf: Optional[Mapping[str, Real]] = None,
     verbosity: Integral = 0,
     history: bool = False,
     history_details: Optional[Union[str, Sequence[str]]] = None,
@@ -419,7 +366,9 @@ def solve(
         Stop criterion by the elapsed time of optimization.
         The optimization process is stopped when the time elapsed since the
         beginning of the optimization exceeds ``max_time`` seconds. If None, no limit
-        on the computation time is considered.
+        on the computation time is considered. The time is checked after the evaluation
+        of each iteration and between the trial steps of the Levenberg-Marquardt damping
+        and of the line search (the trial step being tested is then not applied).
 
     ftol: Optional[Real], optional (default=None)
         Stop criterion by the change of the cost function value.
@@ -427,6 +376,7 @@ def solve(
         cost function value and ``dF = F_previous - F`` is the decrease of the cost
         function value between two iterations (an increase of the cost never satisfies
         this criterion). If None, this criterion is not considered.
+        Not allowed if a ``gH`` term has no ``cost_func`` (ValueError).
 
     xtol: Optional[Real], optional (default=None)
         Stop criterion by the change of the optimized parameters.
@@ -447,6 +397,7 @@ def solve(
         The optimization process is stopped when ``F < atol`` where F is the cost
         function value.
         If None, this criterion is not considered.
+        Not allowed if a ``gH`` term has no ``cost_func`` (ValueError).
 
     ptol: Optional[Real], optional (default=None)
         Stop criterion by the change of the optimized parameters.
@@ -500,8 +451,11 @@ def solve(
           scale of each parameter.
 
         With ``"lm"`` and ``"lm-diag"``, a trial step is accepted only if it does not
-        increase the cost: otherwise :math:`\lambda` is multiplied by 10 and the system
-        is solved again. After an accepted step, :math:`\lambda` is divided by 10. If no
+        increase the cost beyond its rounding noise (:math:`C_{new} \leq C + \eta` with
+        :math:`\eta = \text{noise} \times |C|`, see ``lm_conf``): otherwise :math:`\lambda` is multiplied by 10 and the system
+        is solved again. After an accepted step, :math:`\lambda` is divided by 10 (down to
+        :math:`\varepsilon_m` times its initial scale, below which :math:`\lambda \mathbf{D}`
+        is lost in the rounding of :math:`\mathbf{H}`). If no
         acceptable step is found after 50 consecutive rejections, the optimization is
         stopped with ``success=False``. The value of :math:`\lambda` is available in the
         history (``"damping"``) and displayed with ``verbosity >= 2``. These default
@@ -525,8 +479,60 @@ def solve(
           steps before stopping with ``success=False``.
         - ``"diag_floor"`` (default ``1e-12``): (``"lm-diag"`` only) floor of
           :math:`\mathrm{diag}(\mathbf{H})` relative to its maximum.
+        - ``"noise"`` (default ``1e-13``, ``>= 0``): relative rounding noise of the cost
+          :math:`\eta / |C|` tolerated to accept a step (``0.0`` for the strict condition
+          :math:`C_{new} \leq C`). At the machine precision the cost cannot decrease anymore,
+          and this tolerance avoids rejecting steps (and increasing :math:`\lambda`) in vain.
 
         The complete configuration used is stored in ``result.config["lm_conf"]``.
+
+    line_search: bool, optional (default=False)
+        Used only if ``damping`` is None (Gauss-Newton). If False (default), the full
+        Gauss-Newton step is always applied: :math:`\mathbf{H} \Delta\mathbf{p}_{in} = -\mathbf{g}`
+        and :math:`\mathbf{p}_{in}^{k+1} = \mathbf{p}_{in}^{k} + \Delta\mathbf{p}_{in}^{*}`, nothing more.
+        If True, an Armijo backtracking line search is applied along the update
+        :math:`\Delta\mathbf{p}_{in}^{*}` (after ``update_func``): the step
+        :math:`\alpha \Delta\mathbf{p}_{in}^{*}` is applied with the first
+        :math:`\alpha = 1, \beta, \beta^2, ...` such that
+
+        .. math::
+
+            C(\mathbf{p}_{in} + \alpha \Delta\mathbf{p}_{in}^{*}) \leq C(\mathbf{p}_{in}) + c_1 \alpha \, \mathbf{g}^T \Delta\mathbf{p}_{in}^{*} + \eta
+
+        where :math:`\eta = \text{noise} \times |C(\mathbf{p}_{in})|` is the tolerated rounding
+        noise of the cost (``line_search_conf["noise"]``, default ``1e-13``): at the machine
+        precision the cost cannot decrease anymore, and the steps that do not increase it
+        beyond its rounding error are accepted at once instead of being shortened in vain.
+        A trial step with NaN or Inf output parameters or cost is rejected (smaller
+        :math:`\alpha`). Each trial step only evaluates the residuals (and the
+        ``cost_func``): no Jacobian, Hessian or linear system. The residuals of the accepted
+        step are reused at the next iteration, so a full step accepted at once
+        (:math:`\alpha = 1`) costs exactly the same as the pure Gauss-Newton iteration.
+        The optimization is stopped with ``success=False`` if the update is not a descent
+        direction (:math:`\mathbf{g}^T \Delta\mathbf{p}_{in}^{*} > \eta`, stop code
+        ``"not_descent"``, e.g. an indefinite Hessian of a ``gH`` term or an ``update_func``)
+        or if no step satisfies the condition (stop code ``"line_search"``).
+        The value of :math:`\alpha` is available in the history (``"step_length"``) and
+        displayed with ``verbosity >= 2``.
+
+        .. note::
+
+            The line search requires the cost of every term: all ``gH`` terms must define
+            a ``cost_func`` (ValueError otherwise). It cannot be combined with ``damping``
+            (ValueError).
+
+    line_search_conf: Optional[Mapping[str, Real]], optional (default=None)
+        Used only if ``line_search`` is True. Dictionary to change the default settings of
+        the line search. The missing keys keep their default value:
+
+        - ``"c1"`` (default ``1e-4``, in ``(0, 1)``): the sufficient decrease constant :math:`c_1`.
+        - ``"factor"`` (default ``0.5``, in ``(0, 1)``): the backtracking factor :math:`\beta`.
+        - ``"max_backtracks"`` (default ``30``): maximum number of rejected trial steps in one
+          iteration before stopping with ``success=False``.
+        - ``"noise"`` (default ``1e-13``, ``>= 0``): relative rounding noise of the cost
+          :math:`\eta / |C|` tolerated by the condition (``0.0`` for the strict condition).
+
+        The complete configuration used is stored in ``result.config["line_search_conf"]``.
 
     verbosity: Integral, optional (default=0)
         The level of verbosity for logging the optimization process.
@@ -579,8 +585,8 @@ def solve(
         - ``success`` (bool): True if a convergence criterion (``ftol``, ``atol``,
           ``gtol``, ``xtol`` or ``ptol``) was satisfied and the optimization was not
           stopped by a NaN or Inf value, a singular linear system, the callback function
-          or a failure of the Levenberg-Marquardt step (see :class:`SolveResult` for the
-          priority rules).
+          or a failure of the Levenberg-Marquardt step or of the line search (see
+          :class:`SolveResult` for the priority rules).
         - ``stop_code`` (int): the stopping criteria triggered at the last iteration
           (bit mask). The method ``result.stopped_by(name)`` and the properties
           ``result.reasons`` and ``result.message`` describe them.
@@ -592,7 +598,7 @@ def solve(
         - ``term_parameters`` (Optional[numpy.ndarray]): :math:`\mathbf{p}_{out} = P(\mathbf{p}_{in})`
           at the returned parameters.
         - ``elapsed_time`` (float): the total time of the optimization in seconds.
-        - ``n_rejected`` (int): the number of rejected Levenberg-Marquardt trial steps.
+        - ``n_rejected`` (int): the number of rejected trial steps (Levenberg-Marquardt or line search).
         - ``config`` (Dict): the stopping criteria, ``damping`` and ``lm_conf`` requested.
 
 
@@ -641,6 +647,10 @@ def solve(
                   rejections.
             9.  (Gauss-Newton only) Compute the applied update ``Δp_in* = update_func(p_in, Δp_in)``
                 (``Δp_in* = Δp_in`` if no ``update_func``).
+                With ``line_search=True``: stop with ``success=False`` if ``g^T Δp_in* >= 0``,
+                otherwise replace ``Δp_in*`` by ``α Δp_in*`` with the first
+                ``α = 1, β, β^2, ...`` such that ``C(p_in + α Δp_in*) <= C + c1 α g^T Δp_in*``
+                (only the cost is evaluated; stop with ``success=False`` if none is found).
             10. [STOP check] If ``Δp_in*`` contains NaN or Inf values, stop with
                 ``success=False`` WITHOUT applying the update (the last valid ``p_in`` is returned).
             11. Update the input parameters ``p_in = p_in + Δp_in*``.
@@ -681,6 +691,16 @@ def solve(
     - "damping": Float representing the Levenberg-Marquardt damping :math:`\lambda`
       used for the accepted step leading to the current iteration (None at the first
       iteration and if ``damping`` is None).
+    - "gain_ratio": Float representing the gain ratio of the accepted Levenberg-Marquardt
+      step leading to the current iteration: the actual decrease of the cost divided by the
+      decrease predicted by the Gauss-Newton model
+      :math:`-\mathbf{g}^T \Delta\mathbf{p}_{in}^{*} - \frac{1}{2} \Delta\mathbf{p}_{in}^{*T} \mathbf{H} \Delta\mathbf{p}_{in}^{*}`
+      (close to 1: the model is reliable; close to 0 or negative: the model is poor).
+      NaN if the predicted decrease is not positive, None at the first iteration and if
+      ``damping`` is None. Diagnostic only: it does not change the update of :math:`\lambda`.
+    - "step_length": Float representing the step length :math:`\alpha` of the line
+      search for the step leading to the current iteration (None at the first
+      iteration and if ``line_search`` is False).
     - "all": include all the keys.
 
     The cost of each term can be compute only for ``rJ`` terms and is
@@ -704,20 +724,15 @@ def solve(
         If the term contains a ``cost_func`` function, it will be used to compute the cost of
         the term.
 
+        A ``UserWarning`` is emitted for every call with a ``gH`` term without ``cost_func``
+        (the reported cost does not include it), and the cost criteria ``atol`` and ``ftol``
+        raise a ``ValueError`` in this case (with only such terms, ``atol`` would be satisfied
+        at once without updating the parameters, and ``ftol`` never).
+
     """
 
     # Check the validity of the input arguments and raise appropriate errors if necessary.
-    if isinstance(terms, Term):
-        terms = [terms]
-    if not isinstance(terms, Sequence):
-        raise TypeError("terms must be a sequence of Term objects.")
-    if len(terms) == 0:
-        raise ValueError("terms sequence cannot be empty.")
-    for term in terms:
-        if not isinstance(term, Term):
-            raise TypeError(
-                "All elements of terms must be instances of the Term class."
-            )
+    terms = _validate_terms(terms, Term)
 
     p0 = numpy.asarray(p0, dtype=numpy.float64)
     if p0.ndim != 1:
@@ -728,164 +743,40 @@ def solve(
             "parametrization must be an instance of the Parametrization class."
         )
 
-    if max_iteration is not None:
-        if not isinstance(max_iteration, Integral):
-            raise TypeError("max_iteration must be an integer.")
-        max_iteration = int(max_iteration)
-        if max_iteration < 0:
-            raise ValueError("max_iteration must be a non-negative integer.")
-
-    if max_time is not None:
-        if not isinstance(max_time, Real):
-            raise TypeError("max_time must be a real number.")
-        max_time = float(max_time)
-        if max_time < 0:
-            raise ValueError("max_time must be a non-negative real number.")
-
-    if ftol is not None:
-        if not isinstance(ftol, Real):
-            raise TypeError("ftol must be a real number.")
-        ftol = float(ftol)
-        if ftol <= 0:
-            raise ValueError("ftol must be a positive real number.")
-
-    if xtol is not None:
-        if not isinstance(xtol, Real):
-            raise TypeError("xtol must be a real number.")
-        xtol = float(xtol)
-        if xtol <= 0:
-            raise ValueError("xtol must be a positive real number.")
-
-    if gtol is not None:
-        if not isinstance(gtol, Real):
-            raise TypeError("gtol must be a real number.")
-        gtol = float(gtol)
-        if gtol <= 0:
-            raise ValueError("gtol must be a positive real number.")
-
-    if atol is not None:
-        if not isinstance(atol, Real):
-            raise TypeError("atol must be a real number.")
-        atol = float(atol)
-        if atol <= 0:
-            raise ValueError("atol must be a positive real number.")
-
-    if ptol is not None:
-        if not isinstance(ptol, Real):
-            raise TypeError("ptol must be a real number.")
-        ptol = float(ptol)
-        if ptol <= 0:
-            raise ValueError("ptol must be a positive real number.")
-
-    if all(
-        criterion is None
-        for criterion in [max_iteration, max_time, ftol, xtol, gtol, atol, ptol]
-    ):
-        raise ValueError(
-            "At least one stopping criterion must be provided "
-            "(max_iteration, max_time, ftol, xtol, gtol, atol, or ptol)."
-        )
-
-    if callback_func is not None and not callable(callback_func):
-        raise TypeError("callback_func must be a callable function.")
-
-    if update_func is not None and not callable(update_func):
-        raise TypeError("update_func must be a callable function.")
-
-    if not isinstance(verbosity, Integral):
-        raise TypeError("verbosity must be an integer.")
-    verbosity = int(verbosity)
-    if verbosity < 0 or verbosity > 3:
-        raise ValueError("verbosity must be an integer between 0 and 3 inclusive.")
-
-    if damping is not None and not isinstance(damping, str):
-        raise TypeError("damping must be None or a string.")
-    if isinstance(damping, str):
-        damping = damping.lower()
-    if damping not in _IMPLEMENTED_DAMPINGS:
-        raise ValueError(f"damping must be one of {_IMPLEMENTED_DAMPINGS}, got '{damping}'.")
-    lm_conf = _validate_lm_conf(lm_conf)
-    if damping in ("lm", "lm-diag"):
-        for index, term in enumerate(terms):
-            if term.type == "gH" and term.c_func is None:
-                raise ValueError(
-                    f"damping='{damping}' requires the cost of every term: the 'gH' term {index} "
-                    "must define a cost_func."
-                )
-
-    if not isinstance(history, bool):
-        raise TypeError("history must be a boolean value.")
-    history = bool(history)
-
-    if history_details is None:
-        history_details = list(_DEFAULT_SOLVE_HISTORY)
-    if isinstance(history_details, str):
-        history_details = [history_details]
-    if not isinstance(history_details, Sequence):
-        raise TypeError("history_details must be a string or a sequence of strings.")
-    for detail in history_details:
-        if detail not in _IMPLEMENTED_HISTORY_DETAILS and detail != "all":
-            raise ValueError(
-                f"Invalid history detail: {detail}. Valid details are: {_IMPLEMENTED_HISTORY_DETAILS} and 'all'."
-            )
-    if "all" in history_details:
-        history_details = list(_IMPLEMENTED_HISTORY_DETAILS)
-
-    if history_length is not None and not isinstance(history_length, Integral):
-        raise TypeError(
-            "history_length must be None or a positive or negative integer."
-        )
-    if history_length is not None:
-        history_length = int(history_length)
-
-    # -- Select Computation --
-    use_callback = callback_func is not None
-    use_update = update_func is not None
-    use_xtol = xtol is not None
-    use_ptol = ptol is not None
-    use_atol = atol is not None
-    use_ftol = ftol is not None
-    use_gtol = gtol is not None
-    use_maxiter = max_iteration is not None
-    use_maxtime = max_time is not None
-    use_lm = damping in ("lm", "lm-diag")
-
-    compute_history = history
-    compute_cost = (
-        use_ftol or use_atol or use_callback or use_lm
-        or verbosity >= 2
-        or (
-            compute_history
-            and any(detail in ["cost", "costs", "delta_cost"] for detail in history_details)
-        )
+    options = _validate_solver_options(
+        terms,
+        max_iteration=max_iteration,
+        max_time=max_time,
+        ftol=ftol,
+        xtol=xtol,
+        gtol=gtol,
+        atol=atol,
+        ptol=ptol,
+        callback_func=callback_func,
+        update_func=update_func,
+        damping=damping,
+        lm_conf=lm_conf,
+        line_search=line_search,
+        line_search_conf=line_search_conf,
+        verbosity=verbosity,
+        history=history,
+        history_details=history_details,
+        history_length=history_length,
+        implemented_history_details=_IMPLEMENTED_HISTORY_DETAILS,
+        default_history_details=_DEFAULT_SOLVE_HISTORY,
     )
-    compute_optimality = (
-        use_gtol
-        or verbosity >= 2
-        or (
-            compute_history
-            and any(detail in ["optimality"] for detail in history_details)
-        )
-    )
-    compute_delta_norm = use_xtol or use_ptol or verbosity >= 2
-    compute_params_norm = use_xtol
-    compute_conv_analysis = verbosity >= 3
+    max_iteration, max_time = options.max_iteration, options.max_time
+    ftol, xtol, gtol, atol, ptol = options.ftol, options.xtol, options.gtol, options.atol, options.ptol
+    damping, lm_conf, verbosity = options.damping, options.lm_conf, options.verbosity
 
     # ------ Solver Variables and functions
     # - constants
     n_terms = len(terms)
     n_parameters = p0.shape[0]
-    config = {
-        "max_iteration": max_iteration,
-        "max_time": max_time,
-        "ftol": ftol,
-        "xtol": xtol,
-        "gtol": gtol,
-        "atol": atol,
-        "ptol": ptol,
-        "damping": damping,
-        "lm_conf": lm_conf,
-    }
+    config = options.config
+    recorder = _HistoryRecorder(options)
+    ls_conf = options.line_search_conf
+    display = _IterationDisplay(verbosity, n_terms, options.use_lm, batch=False, use_line_search=options.use_line_search)
 
     # - recomputed each loop (reset to None at the start of each iteration)
     term_parameters: Optional[numpy.ndarray] = None
@@ -905,14 +796,12 @@ def solve(
     parameters = p0.copy()
     delta_parameters = None
     iteration = 0
-    history_list = (
-        collections.deque(maxlen=-history_length)  # keeps only the last |M| entries
-        if history_length is not None and history_length < 0
-        else []
-    )
     last_total_cost = None
     lm_lambda = None  # Levenberg-Marquardt damping (initialized at the first iteration)
+    lm_lambda_floor = None  # minimum value of λ (initialized with λ)
     last_damping = None  # λ used for the accepted step leading to the current iteration
+    last_gain_ratio = None  # gain ratio of the accepted LM step leading to the current iteration
+    last_step_length = None  # α of the line search for the step leading to the current iteration
     n_rejected = 0  # total number of rejected Levenberg-Marquardt trial steps
     next_term_parameters = None  # p_out of the accepted LM trial step (reused at the next iteration)
     next_cost_state: Optional[CostState] = None  # cost of the accepted LM trial step (reused)
@@ -935,7 +824,7 @@ def solve(
             print("\n".join(_stop_reasons(stop_code, config)))
         return SolveResult(
             parameters=parameters,
-            history=list(history_list),
+            history=recorder.to_list(),
             success=False,
             stop_code=stop_code,
             n_iterations=0,
@@ -948,30 +837,7 @@ def solve(
         )
 
     # Printing the header for the optimization process logging based on the verbosity level.
-    printed_detail = f""
-    printed_header = f""
-    if verbosity >= 2:
-        printed_detail += (
-            f"\nIndividual costs [rJ term]: C_i = 0.5 * ρ(||r_i||^2) "
-            f"\nCost: C = sum(w_i * C_i) "
-            f"\nStep norm: ||Δp|| "
-            f"\nOptimality: ||g|| "
-        )
-        printed_header += (
-            f"\n{'Iteration':^10} {'Total time (s)':^15} {'Cost C':^15} {'ΔC':^15}"
-            + f" {'||Δp||_2':^15} {'||g||_∞':^15}"
-            + (f" {'λ':^15}" if use_lm else "")
-        )
-    if verbosity >= 3:
-        printed_header += (
-            f" {'||Δp||_∞':^15} {'||g||_2':^15} {'Cond(H)':^15} {'Trace(H)':^15}"
-            + " ".join(
-                [f"{'Cost C_' + str(i):^15}" for i in range(n_terms)],
-            )
-        )
-    if verbosity >= 2:
-        print(printed_detail)
-        print(printed_header)
+    display.print_header()
 
     # --------- Solver Implementation
     starting_time = time.perf_counter()  # start of the computation (after validation and header)
@@ -1008,7 +874,7 @@ def solve(
             terms,
             term_parameters,
             jacobian_P,
-            compute_cost=compute_cost,
+            compute_cost=options.compute_cost,
             cost_state=next_cost_state,  # reuse r and costs of the accepted LM trial step
         )
         next_term_parameters = None
@@ -1018,10 +884,10 @@ def solve(
         elapsed_time = time.perf_counter() - starting_time
 
         # - precomputing
-        if compute_optimality:
+        if options.compute_optimality:
             optimality = float(numpy.linalg.norm(state.second_term, ord=numpy.inf))
 
-        if compute_conv_analysis:
+        if options.compute_conv_analysis:
             optimality_2 = float(numpy.linalg.norm(state.second_term, ord=2))
             if scipy.sparse.issparse(state.hessian):
                 trace_Hessian = float(state.hessian.diagonal().sum())
@@ -1039,127 +905,87 @@ def solve(
             except Exception:
                 cond_Hessian = numpy.nan
 
-        if compute_delta_norm and not is_first_iteration():
+        if options.compute_delta_norm and not is_first_iteration():
             delta_norm = numpy.linalg.norm(delta_parameters, ord=2)
             delta_norm_inf = numpy.linalg.norm(delta_parameters, ord=numpy.inf)
 
-        if compute_params_norm:
+        if options.compute_params_norm:
             parameters_norm = numpy.linalg.norm(parameters, ord=2)
 
-        # - Update history
-        if compute_history:
-
-            h = {}
-            if "iteration" in history_details:
-                h["iteration"] = iteration
-            if "parameters" in history_details:
-                h["parameters"] = parameters.copy()
-            if "delta_parameters" in history_details:
-                if delta_parameters is None:
-                    h["delta_parameters"] = None
-                else:
-                    h["delta_parameters"] = delta_parameters.copy()
-            if "delta_cost" in history_details:
-                if last_total_cost is None:
-                    h["delta_cost"] = None
-                else:
-                    h["delta_cost"] = state.cost - last_total_cost
-            if "elapsed_time" in history_details:
-                h["elapsed_time"] = elapsed_time
-            if "costs" in history_details:
-                h["costs"] = state.costs
-            if "cost" in history_details:
-                h["cost"] = state.cost
-            if "optimality" in history_details:
-                h["optimality"] = optimality
-            if "residuals" in history_details:
-                h["residuals"] = [
-                    r.copy() if r is not None else None for r in state.residuals
-                ]
-            if "jacobians" in history_details:
-                h["jacobians"] = [
-                    J.copy() if J is not None else None for J in state.jacobians
-                ]
-            if "second_term" in history_details:
-                h["second_term"] = state.second_term.copy()
-            if "hessian" in history_details:
-                h["hessian"] = state.hessian.copy()
-            if "damping" in history_details:
-                h["damping"] = last_damping
-
-            if history_length is None or history_length < 0:
-                history_list.append(h)  # (deque with maxlen if history_length < 0)
-            elif iteration < history_length:
-                # Case 0 -> never append
-                history_list.append(h)
+        # - Update history (only the requested details are computed)
+        recorder.record(iteration, {
+            "iteration": lambda: iteration,
+            "parameters": lambda: parameters.copy(),
+            "delta_parameters": lambda: _copy_or_none(delta_parameters),
+            "delta_cost": lambda: None if last_total_cost is None else state.cost - last_total_cost,
+            "elapsed_time": lambda: elapsed_time,
+            "costs": lambda: state.costs,
+            "cost": lambda: state.cost,
+            "optimality": lambda: optimality,
+            "residuals": lambda: [_copy_or_none(r) for r in state.residuals],
+            "jacobians": lambda: [_copy_or_none(J) for J in state.jacobians],
+            "second_term": lambda: state.second_term.copy(),
+            "hessian": lambda: state.hessian.copy(),
+            "damping": lambda: last_damping,
+            "gain_ratio": lambda: last_gain_ratio,
+            "step_length": lambda: last_step_length,
+        })
 
         # - Display the iteration
-        printed_row = f""
-        if verbosity >= 2:
-            if delta_parameters is None:
-                strdp2 = f"{'':^15}"
-                strdpinf = f"{'':^15}"
-            else:
-                strdp2 = f"{delta_norm:^15.3e}"
-                strdpinf = f"{delta_norm_inf:^15.3e}"
-            if last_total_cost is None:
-                dC_str = f"{'':^15}"
-            else:
-                dC = state.cost - last_total_cost
-                dC_str = f"{dC:^15.3e}"
-            printed_row += (
-                f"{iteration:^10} {elapsed_time:^15.3e} {state.cost:^15.3e} {dC_str}"
-                + f" {strdp2} {optimality:^15.3e}"
-            )
-            if use_lm:
-                printed_row += f" {'':^15}" if last_damping is None else f" {last_damping:^15.3e}"
-        if verbosity >= 3:
-            printed_row += (
-                f" {strdpinf} {optimality_2:^15.3e}"
-                + f" {cond_Hessian:^15.3e} {trace_Hessian:^15.3e}"
-                + " ".join([f"{c:^15.3e}" for c in state.costs])
-            )
-        if verbosity >= 2:
-            print(printed_row)
+        display.print_row(
+            iteration=iteration,
+            elapsed_time=elapsed_time,
+            cost=state.cost,
+            delta_cost=None if last_total_cost is None else state.cost - last_total_cost,
+            delta_norm=delta_norm,
+            optimality=optimality,
+            damping=last_damping,
+            step_length=last_step_length,
+            delta_norm_inf=delta_norm_inf,
+            optimality_2=optimality_2,
+            cond_hessian=cond_Hessian,
+            trace_hessian=trace_Hessian,
+            costs=state.costs,
+        )
 
         # - Convergence analysis and stopping criteria check
-        if use_ftol and not is_first_iteration():
+        if options.use_ftol and not is_first_iteration():
             dF = last_total_cost - state.cost
             if 0 <= dF < ftol * state.cost:
                 end_flag = True
                 stop_code |= _STOP_CODES["ftol"]
 
-        if use_atol:
+        if options.use_atol:
             if state.cost < atol:
                 end_flag = True
                 stop_code |= _STOP_CODES["atol"]
 
-        if use_gtol:
+        if options.use_gtol:
             if optimality < gtol:
                 end_flag = True
                 stop_code |= _STOP_CODES["gtol"]
 
-        if use_xtol and not is_first_iteration():
+        if options.use_xtol and not is_first_iteration():
             if delta_norm < xtol * (xtol + parameters_norm):
                 end_flag = True
                 stop_code |= _STOP_CODES["xtol"]
 
-        if use_ptol and not is_first_iteration():
+        if options.use_ptol and not is_first_iteration():
             if delta_norm_inf < ptol:
                 end_flag = True
                 stop_code |= _STOP_CODES["ptol"]
 
-        if use_maxiter:
+        if options.use_maxiter:
             if iteration >= max_iteration:
                 end_flag = True
                 stop_code |= _STOP_CODES["max_iteration"]
 
-        if use_maxtime:
+        if options.use_maxtime:
             if elapsed_time >= max_time:
                 end_flag = True
                 stop_code |= _STOP_CODES["max_time"]
 
-        if use_callback:
+        if options.use_callback:
             callback_state = {
                 "parameters": parameters.copy(),
                 "delta_parameters": None if is_first_iteration() else delta_parameters.copy(),
@@ -1179,7 +1005,7 @@ def solve(
             break
 
         # 8. ----- Compute the update Δp_in
-        if not use_lm:
+        if not options.use_lm:
             # - Gauss-Newton: solve H Δp_in = -g
             try:
                 delta_parameters = _solve_linear_system(state.hessian, state.second_term)
@@ -1189,8 +1015,62 @@ def solve(
                 break
 
             # 9. ----- Compute the update parameters (Gauss-Newton only, inside the LM loop otherwise)
-            if use_update:
+            if options.use_update:
                 delta_parameters = apply_update_func(delta_parameters)
+
+            # 9b. ----- Optional Armijo backtracking line search along Δp_in*
+            #           (only the residuals / cost_func are evaluated at the trial steps)
+            if options.use_line_search and not has_naninf(delta_parameters):
+                if has_naninf(state.cost):
+                    end_flag = True
+                    stop_code |= _STOP_CODES["naninf_cost"]
+                    break
+                slope = float(numpy.dot(state.second_term, delta_parameters))  # g^T Δp_in*
+                # Rounding noise of the cost: at the machine precision the cost cannot
+                # decrease and the sign of g^T Δp_in* is meaningless (g ~ 0)
+                noise = ls_conf["noise"] * abs(state.cost)
+                if slope > noise:
+                    end_flag = True
+                    stop_code |= _STOP_CODES["not_descent"]
+                    break
+
+                step_length = 1.0
+                accepted = False
+                time_out = False
+                for n_backtracks in range(ls_conf["max_backtracks"] + 1):
+                    if n_backtracks > 0:
+                        # max_time is also checked between the trial steps
+                        if options.use_maxtime and time.perf_counter() - starting_time >= max_time:
+                            time_out = True
+                            break
+                        step_length *= ls_conf["factor"]
+                    trial_step = step_length * delta_parameters
+                    trial_term_parameters = _compute_term_parameters(parametrization, parameters + trial_step)
+                    if has_naninf(trial_term_parameters):
+                        continue  # rejected: smaller α
+                    trial_cost_state = _evaluate_cost(terms, trial_term_parameters)
+                    if has_naninf(trial_cost_state.cost):
+                        continue  # rejected: smaller α
+                    if trial_cost_state.cost <= state.cost + ls_conf["c1"] * step_length * slope + noise:
+                        accepted = True
+                        break
+
+                if time_out:
+                    n_rejected += n_backtracks  # (trials 0 to n_backtracks - 1, all rejected)
+                    end_flag = True
+                    stop_code |= _STOP_CODES["max_time"]
+                    break
+                n_rejected += n_backtracks if accepted else n_backtracks + 1
+                if not accepted:
+                    end_flag = True
+                    stop_code |= _STOP_CODES["line_search"]
+                    break
+
+                # Accepted step: reuse p_out and the cost at the next iteration (same p_in)
+                delta_parameters = trial_step
+                last_step_length = step_length
+                next_term_parameters = trial_term_parameters
+                next_cost_state = trial_cost_state
 
         else:
             # - Levenberg-Marquardt: solve (H + λ D) Δp_in = -g until the cost does not increase
@@ -1219,14 +1099,24 @@ def solve(
                     lm_lambda = lm_lambda if lm_lambda > 0 else lm_conf["initial_scale"]
                 else:
                     lm_lambda = lm_conf["initial_scale"]
+                # Floor of λ: below machine precision × its scale, λ D is lost in the rounding of
+                # H (and λ = 0 could never grow again by multiplication)
+                lm_lambda_floor = _MACHINE_EPSILON * lm_lambda / lm_conf["initial_scale"]
 
             new_cost = numpy.inf
             nan_cost = False
+            time_out = False
             n_rejections = 0
             trial_term_parameters = None
             trial_cost_state = None
-            while new_cost > state.cost:
+            # A step is accepted if it does not increase the cost beyond its rounding noise
+            lm_threshold = state.cost + lm_conf["noise"] * abs(state.cost)
+            while new_cost > lm_threshold:
                 if n_rejections > 0:
+                    # max_time is also checked between the trial steps (not only between iterations)
+                    if options.use_maxtime and time.perf_counter() - starting_time >= max_time:
+                        time_out = True
+                        break
                     lm_lambda *= lm_conf["factor"]
                 if n_rejections >= lm_conf["max_rejections"]:
                     break
@@ -1238,7 +1128,7 @@ def solve(
                     continue  # rejected: larger λ
 
                 # 9. ----- Compute the update parameters (applied to each trial step)
-                if use_update:
+                if options.use_update:
                     delta_parameters = apply_update_func(delta_parameters)
 
                 trial_term_parameters = _compute_term_parameters(parametrization, parameters + delta_parameters)
@@ -1251,23 +1141,36 @@ def solve(
                     nan_cost = True
                     break  # the step cannot be compared
 
-            n_rejected += n_rejections - 1 if new_cost <= state.cost else n_rejections
+            n_rejected += n_rejections - 1 if new_cost <= lm_threshold else n_rejections
+
+            if time_out:
+                # the step is not applied: the returned parameters are the last evaluated ones
+                end_flag = True
+                stop_code |= _STOP_CODES["max_time"]
+                break
 
             if nan_cost:
                 end_flag = True
                 stop_code |= _STOP_CODES["naninf_trial_cost"]
                 break
 
-            if new_cost > state.cost:
+            if new_cost > lm_threshold:
                 end_flag = True
                 stop_code |= _STOP_CODES["lm"]
                 break
+
+            # Gain ratio: actual decrease / decrease predicted by the Gauss-Newton model
+            # m(Δp) = C + g^T Δp + ½ Δp^T H Δp (valid for any Δp, also after update_func)
+            predicted = -float(numpy.dot(state.second_term, delta_parameters)) - 0.5 * float(
+                numpy.dot(delta_parameters, numpy.asarray(state.hessian @ delta_parameters).ravel())
+            )
+            last_gain_ratio = (state.cost - new_cost) / predicted if predicted > 0 else numpy.nan
 
             # Accepted step: reuse p_out and the cost at the next iteration (same p_in)
             last_damping = lm_lambda
             next_term_parameters = trial_term_parameters
             next_cost_state = trial_cost_state
-            lm_lambda /= lm_conf["factor"]
+            lm_lambda = max(lm_lambda / lm_conf["factor"], lm_lambda_floor)
 
         # 10. ----- Check update parameters
         if has_naninf(delta_parameters):
@@ -1278,7 +1181,7 @@ def solve(
         # 11. ----- Update the parameters
         parameters = parameters + delta_parameters
 
-        if compute_cost:
+        if options.compute_cost:
             last_total_cost = state.cost
 
         iteration += 1
@@ -1301,7 +1204,7 @@ def solve(
 
     return SolveResult(
         parameters=parameters,
-        history=list(history_list),
+        history=recorder.to_list(),
         success=success,
         stop_code=stop_code,
         n_iterations=iteration,

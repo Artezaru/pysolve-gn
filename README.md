@@ -14,7 +14,7 @@ Main features:
 - **Multiple terms**: combine data terms and regularization terms, each with its own weight,
   defined either by residuals and Jacobian (`rJ`) or by gradient and Hessian (`gH`).
 - **Robust loss functions**: `"linear"`, `"soft_l1"`, `"huber"`, `"cauchy"`, `"arctan"`,
-  `"tukey"` or a custom loss, with a soft threshold `loss_scale` expressed in the unit of
+  `"tukey"`, `"barron"` or a custom loss, with a soft threshold `loss_scale` expressed in the unit of
   the residuals.
 - **Levenberg-Marquardt damping**: `damping="lm"` or `"lm-diag"` for difficult problems.
 - **Parametrization**: optimize the problem in another parameter space `p_out = P(p_in)`.

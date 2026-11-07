@@ -26,6 +26,7 @@ import scipy.sparse
 from .loss_functions import _build_tilde_R_and_tilde_J
 from .term import Term
 from .parametrization import Parametrization
+from .solver_common import _check_shape
 
 
 @dataclass
@@ -95,16 +96,6 @@ class CostState:
     cost: float
     costs: List[float]
     residuals: List[Optional[numpy.ndarray]]
-
-
-def _check_shape(name: str, array, expected: tuple) -> None:
-    r"""
-    Raise a ValueError if ``array.shape`` (numpy array or scipy sparse matrix)
-    is not ``expected``.
-    """
-    shape = getattr(array, "shape", None)
-    if shape != expected:
-        raise ValueError(f"{name} must have shape {expected}, got {shape}.")
 
 
 def _compute_term_parameters(

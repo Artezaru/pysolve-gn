@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.674** total execution time for 6 files **from _gallery**:
+**00:01.078** total execution time for 7 files **from _gallery**:
 
 .. container::
 
@@ -32,21 +32,24 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr__gallery_L_curve_analysis.py` (``L_curve_analysis.py``)
-     - 00:00.256
+   * - :ref:`sphx_glr__gallery_line_search_soft_l1.py` (``line_search_soft_l1.py``)
+     - 00:00.376
      - 0.0
    * - :ref:`sphx_glr__gallery_batch_undistortion.py` (``batch_undistortion.py``)
-     - 00:00.247
+     - 00:00.269
      - 0.0
-   * - :ref:`sphx_glr__gallery_affine_parametrization.py` (``affine_parametrization.py``)
-     - 00:00.068
+   * - :ref:`sphx_glr__gallery_L_curve_analysis.py` (``L_curve_analysis.py``)
+     - 00:00.263
      - 0.0
    * - :ref:`sphx_glr__gallery_adding_regularization.py` (``adding_regularization.py``)
-     - 00:00.049
+     - 00:00.058
+     - 0.0
+   * - :ref:`sphx_glr__gallery_affine_parametrization.py` (``affine_parametrization.py``)
+     - 00:00.056
      - 0.0
    * - :ref:`sphx_glr__gallery_curve_fitting.py` (``curve_fitting.py``)
-     - 00:00.046
+     - 00:00.049
      - 0.0
    * - :ref:`sphx_glr__gallery_study_optimization.py` (``study_optimization.py``)
-     - 00:00.007
+     - 00:00.008
      - 0.0

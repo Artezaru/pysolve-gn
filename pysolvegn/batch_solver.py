@@ -21,21 +21,26 @@ from numbers import Real, Integral
 from dataclasses import dataclass
 from numpy.typing import ArrayLike
 
-import collections
 import time
 
 import numpy
 
 from .implemented_conf import (
     _IMPLEMENTED_BATCH_HISTORY_DETAILS,
-    _IMPLEMENTED_DAMPINGS,
     _DEFAULT_BATCH_SOLVE_HISTORY,
     _STOP_CODES,
     _STOP_CONVERGENCE,
     _STOP_NANINF,
     _STOP_FAILURE,
 )
-from .solver import _stop_reasons, _validate_lm_conf
+from .solver_common import (
+    _HistoryRecorder,
+    _IterationDisplay,
+    _copy_or_none,
+    _stop_reasons,
+    _validate_solver_options,
+    _validate_terms,
+)
 
 from .batch_evaluation import (
     BatchCostState,
@@ -48,6 +53,8 @@ from .batch_evaluation import (
 
 from .batch_term import BatchTerm
 from .batch_parametrization import BatchParametrization
+
+_MACHINE_EPSILON = float(numpy.finfo(numpy.float64).eps)
 
 
 @dataclass
@@ -84,8 +91,8 @@ class BatchSolveResult:
         1. Always False if the problem was stopped by a NaN or Inf value (in its
            initial parameters, its term parameters, its update or, with
            ``damping="lm"``, its cost), by a singular linear system, by the callback
-           function or by a failure of the Levenberg-Marquardt step, even if a
-           convergence criterion was satisfied at the same iteration.
+           function, by a failure of the Levenberg-Marquardt step or of the line search,
+           even if a convergence criterion was satisfied at the same iteration.
         2. Otherwise True if a convergence criterion was satisfied, even if
            ``max_iteration`` or ``max_time`` was reached at the same iteration.
         3. Otherwise False (stopped by ``max_iteration`` or ``max_time``).
@@ -125,14 +132,16 @@ class BatchSolveResult:
         The total time of the optimization in seconds.
 
     n_rejected: numpy.ndarray
-        Array of integers with shape ``(k,)``: the total number of rejected
-        Levenberg-Marquardt trial steps of each problem (0 if ``damping`` is None).
+        Array of integers with shape ``(k,)``: the total number of rejected trial steps
+        (Levenberg-Marquardt or line search) of each problem (0 if ``damping`` is None
+        and ``line_search`` is False).
 
     config: Dict[str, Any]
         The configuration requested to the solver: the stopping criteria
         (``"max_iteration"``, ``"max_time"``, ``"ftol"``, ``"xtol"``, ``"gtol"``,
-        ``"atol"``, ``"ptol"``, None if not used), ``"damping"`` and ``"lm_conf"``
-        (the complete Levenberg-Marquardt configuration, default values included).
+        ``"atol"``, ``"ptol"``, None if not used), ``"damping"``, ``"lm_conf"``
+        (the complete Levenberg-Marquardt configuration, default values included),
+        ``"line_search"`` and ``"line_search_conf"`` (complete line search configuration).
     """
 
     parameters: numpy.ndarray
@@ -277,6 +286,8 @@ def solve_batch(
     update_func: Optional[Callable[[numpy.ndarray, numpy.ndarray, numpy.ndarray], ArrayLike]] = None,
     damping: Optional[str] = None,
     lm_conf: Optional[Mapping[str, Real]] = None,
+    line_search: bool = False,
+    line_search_conf: Optional[Mapping[str, Real]] = None,
     verbosity: Integral = 0,
     history: bool = False,
     history_details: Optional[Union[str, Sequence[str]]] = None,
@@ -369,7 +380,9 @@ def solve_batch(
         Stop criterion by the elapsed time of optimization.
         All the problems still in processing are stopped when the time elapsed since the
         beginning of the optimization exceeds ``max_time`` seconds. If None, no limit
-        on the computation time is considered.
+        on the computation time is considered. The time is also checked between the trial
+        steps of the Levenberg-Marquardt damping and of the line search (the trial steps
+        being tested are then not applied).
 
     ftol: Optional[Real], optional (default=None)
         Stop criterion by the change of the cost function value.
@@ -377,6 +390,7 @@ def solve_batch(
         cost function value and ``dF = F_previous - F`` is the decrease of its cost
         function value between two iterations (an increase of the cost never satisfies
         this criterion). If None, this criterion is not considered.
+        Not allowed if a ``gH`` term has no ``cost_func`` (ValueError).
 
     xtol: Optional[Real], optional (default=None)
         Stop criterion by the change of the optimized parameters.
@@ -397,6 +411,7 @@ def solve_batch(
         A problem is stopped when ``F < atol`` where F is its cost
         function value.
         If None, this criterion is not considered.
+        Not allowed if a ``gH`` term has no ``cost_func`` (ValueError).
 
     ptol: Optional[Real], optional (default=None)
         Stop criterion by the change of the optimized parameters.
@@ -470,9 +485,26 @@ def solve_batch(
     lm_conf: Optional[Mapping[str, Real]], optional (default=None)
         Used only if ``damping`` is ``"lm"`` or ``"lm-diag"``.
         Dictionary to change the default settings of the Levenberg-Marquardt damping
-        (``"initial_scale"``, ``"factor"``, ``"max_rejections"`` and ``"diag_floor"``,
-        see :func:`pysolvegn.solve`). The missing keys keep their default value. The
+        (``"initial_scale"``, ``"factor"``, ``"max_rejections"``, ``"diag_floor"`` and
+        ``"noise"``, see :func:`pysolvegn.solve`). The missing keys keep their default value. The
         same settings are used for all the problems.
+
+    line_search: bool, optional (default=False)
+        Used only if ``damping`` is None (Gauss-Newton). If False (default), the full
+        Gauss-Newton step of each problem is always applied, nothing more.
+        If True, an Armijo backtracking line search is applied to each problem
+        independently along its update :math:`\Delta\mathbf{p}_{in,k}^{*}` (each problem has
+        its own step length :math:`\alpha_k`, see :func:`pysolvegn.solve` for the details).
+        Only the problems still looking for an acceptable step are evaluated at each trial
+        (residuals and ``cost_func`` only). A problem is stopped with ``success=False`` if
+        its update is not a descent direction (stop code ``"not_descent"``) or if no step
+        satisfies the condition (stop code ``"line_search"``). Requires a ``cost_func`` for
+        every ``gH`` term and cannot be combined with ``damping`` (ValueError).
+
+    line_search_conf: Optional[Mapping[str, Real]], optional (default=None)
+        Used only if ``line_search`` is True. Dictionary to change the default settings of
+        the line search (``"c1"``, ``"factor"``, ``"max_backtracks"`` and ``"noise"``, see
+        :func:`pysolvegn.solve`). The same settings are used for all the problems.
 
     verbosity: Integral, optional (default=0)
         The level of verbosity for logging the optimization process.
@@ -591,6 +623,9 @@ def solve_batch(
                   after 50 rejections.
             9.  (Gauss-Newton only) Compute the applied update ``Δp_in* = update_func(p_in, Δp_in, indices)``
                 (``Δp_in* = Δp_in`` if no ``update_func``).
+                With ``line_search=True``, for each problem: stop it if ``g^T Δp_in* >= 0``,
+                otherwise replace ``Δp_in*`` by ``α Δp_in*`` with the first ``α = 1, β, β^2, ...``
+                such that ``C(p_in + α Δp_in*) <= C + c1 α g^T Δp_in*`` (stop it if none is found).
             10. [STOP check] Stop the problems for which ``Δp_in*`` contains NaN or Inf values
                 WITHOUT applying the update (their last valid ``p_in`` is returned).
             11. Update the input parameters ``p_in = p_in + Δp_in*`` of the remaining problems.
@@ -641,6 +676,13 @@ def solve_batch(
     - "damping": Numpy array with shape ``(k,)`` representing the Levenberg-Marquardt
       damping :math:`\lambda` used for the accepted step leading to the current iteration
       (None at the first iteration and if ``damping`` is None).
+    - "gain_ratio": Numpy array with shape ``(k,)`` representing the gain ratio of the
+      accepted Levenberg-Marquardt step of each problem leading to the current iteration
+      (see :func:`pysolvegn.solve`; NaN for the problems not updated, None at the first
+      iteration and if ``damping`` is None). Diagnostic only.
+    - "step_length": Numpy array with shape ``(k,)`` representing the step length
+      :math:`\alpha` of the line search for the step leading to the current iteration
+      (None at the first iteration and if ``line_search`` is False).
     - "all": include all the keys.
 
     The cost of each term can be compute only for ``rJ`` terms and is
@@ -664,20 +706,15 @@ def solve_batch(
         If the term contains a ``cost_func`` function, it will be used to compute the cost of
         the term.
 
+        A ``UserWarning`` is emitted for every call with a ``gH`` term without ``cost_func``
+        (the reported cost does not include it), and the cost criteria ``atol`` and ``ftol``
+        raise a ``ValueError`` in this case (with only such terms, ``atol`` would be satisfied
+        at once without updating the parameters, and ``ftol`` never).
+
     """
 
     # Check the validity of the input arguments and raise appropriate errors if necessary.
-    if isinstance(terms, BatchTerm):
-        terms = [terms]
-    if not isinstance(terms, Sequence):
-        raise TypeError("terms must be a sequence of BatchTerm objects.")
-    if len(terms) == 0:
-        raise ValueError("terms sequence cannot be empty.")
-    for term in terms:
-        if not isinstance(term, BatchTerm):
-            raise TypeError(
-                "All elements of terms must be instances of the BatchTerm class."
-            )
+    terms = _validate_terms(terms, BatchTerm)
 
     p0 = numpy.asarray(p0, dtype=numpy.float64)
     if p0.ndim != 2:
@@ -697,164 +734,40 @@ def solve_batch(
             "parametrization must be an instance of the BatchParametrization class."
         )
 
-    if max_iteration is not None:
-        if not isinstance(max_iteration, Integral):
-            raise TypeError("max_iteration must be an integer.")
-        max_iteration = int(max_iteration)
-        if max_iteration < 0:
-            raise ValueError("max_iteration must be a non-negative integer.")
-
-    if max_time is not None:
-        if not isinstance(max_time, Real):
-            raise TypeError("max_time must be a real number.")
-        max_time = float(max_time)
-        if max_time < 0:
-            raise ValueError("max_time must be a non-negative real number.")
-
-    if ftol is not None:
-        if not isinstance(ftol, Real):
-            raise TypeError("ftol must be a real number.")
-        ftol = float(ftol)
-        if ftol <= 0:
-            raise ValueError("ftol must be a positive real number.")
-
-    if xtol is not None:
-        if not isinstance(xtol, Real):
-            raise TypeError("xtol must be a real number.")
-        xtol = float(xtol)
-        if xtol <= 0:
-            raise ValueError("xtol must be a positive real number.")
-
-    if gtol is not None:
-        if not isinstance(gtol, Real):
-            raise TypeError("gtol must be a real number.")
-        gtol = float(gtol)
-        if gtol <= 0:
-            raise ValueError("gtol must be a positive real number.")
-
-    if atol is not None:
-        if not isinstance(atol, Real):
-            raise TypeError("atol must be a real number.")
-        atol = float(atol)
-        if atol <= 0:
-            raise ValueError("atol must be a positive real number.")
-
-    if ptol is not None:
-        if not isinstance(ptol, Real):
-            raise TypeError("ptol must be a real number.")
-        ptol = float(ptol)
-        if ptol <= 0:
-            raise ValueError("ptol must be a positive real number.")
-
-    if all(
-        criterion is None
-        for criterion in [max_iteration, max_time, ftol, xtol, gtol, atol, ptol]
-    ):
-        raise ValueError(
-            "At least one stopping criterion must be provided "
-            "(max_iteration, max_time, ftol, xtol, gtol, atol, or ptol)."
-        )
-
-    if callback_func is not None and not callable(callback_func):
-        raise TypeError("callback_func must be a callable function.")
-
-    if update_func is not None and not callable(update_func):
-        raise TypeError("update_func must be a callable function.")
-
-    if not isinstance(verbosity, Integral):
-        raise TypeError("verbosity must be an integer.")
-    verbosity = int(verbosity)
-    if verbosity < 0 or verbosity > 3:
-        raise ValueError("verbosity must be an integer between 0 and 3 inclusive.")
-
-    if damping is not None and not isinstance(damping, str):
-        raise TypeError("damping must be None or a string.")
-    if isinstance(damping, str):
-        damping = damping.lower()
-    if damping not in _IMPLEMENTED_DAMPINGS:
-        raise ValueError(f"damping must be one of {_IMPLEMENTED_DAMPINGS}, got '{damping}'.")
-    lm_conf = _validate_lm_conf(lm_conf)
-    if damping in ("lm", "lm-diag"):
-        for index, term in enumerate(terms):
-            if term.type == "gH" and term.c_func is None:
-                raise ValueError(
-                    f"damping='{damping}' requires the cost of every term: the 'gH' term {index} "
-                    "must define a cost_func."
-                )
-
-    if not isinstance(history, bool):
-        raise TypeError("history must be a boolean value.")
-    history = bool(history)
-
-    if history_details is None:
-        history_details = list(_DEFAULT_BATCH_SOLVE_HISTORY)
-    if isinstance(history_details, str):
-        history_details = [history_details]
-    if not isinstance(history_details, Sequence):
-        raise TypeError("history_details must be a string or a sequence of strings.")
-    for detail in history_details:
-        if detail not in _IMPLEMENTED_BATCH_HISTORY_DETAILS and detail != "all":
-            raise ValueError(
-                f"Invalid history detail: {detail}. Valid details are: {_IMPLEMENTED_BATCH_HISTORY_DETAILS} and 'all'."
-            )
-    if "all" in history_details:
-        history_details = list(_IMPLEMENTED_BATCH_HISTORY_DETAILS)
-
-    if history_length is not None and not isinstance(history_length, Integral):
-        raise TypeError(
-            "history_length must be None or a positive or negative integer."
-        )
-    if history_length is not None:
-        history_length = int(history_length)
-
-    # -- Select Computation --
-    use_callback = callback_func is not None
-    use_update = update_func is not None
-    use_xtol = xtol is not None
-    use_ptol = ptol is not None
-    use_atol = atol is not None
-    use_ftol = ftol is not None
-    use_gtol = gtol is not None
-    use_maxiter = max_iteration is not None
-    use_maxtime = max_time is not None
-    use_lm = damping in ("lm", "lm-diag")
-
-    compute_history = history
-    compute_cost = (
-        use_ftol or use_atol or use_callback or use_lm
-        or verbosity >= 2
-        or (
-            compute_history
-            and any(detail in ["cost", "costs", "delta_cost"] for detail in history_details)
-        )
+    options = _validate_solver_options(
+        terms,
+        max_iteration=max_iteration,
+        max_time=max_time,
+        ftol=ftol,
+        xtol=xtol,
+        gtol=gtol,
+        atol=atol,
+        ptol=ptol,
+        callback_func=callback_func,
+        update_func=update_func,
+        damping=damping,
+        lm_conf=lm_conf,
+        line_search=line_search,
+        line_search_conf=line_search_conf,
+        verbosity=verbosity,
+        history=history,
+        history_details=history_details,
+        history_length=history_length,
+        implemented_history_details=_IMPLEMENTED_BATCH_HISTORY_DETAILS,
+        default_history_details=_DEFAULT_BATCH_SOLVE_HISTORY,
     )
-    compute_optimality = (
-        use_gtol
-        or verbosity >= 2
-        or (
-            compute_history
-            and any(detail in ["optimality"] for detail in history_details)
-        )
-    )
-    compute_delta_norm = use_xtol or use_ptol or verbosity >= 2
-    compute_params_norm = use_xtol
-    compute_conv_analysis = verbosity >= 3
+    max_iteration, max_time = options.max_iteration, options.max_time
+    ftol, xtol, gtol, atol, ptol = options.ftol, options.xtol, options.gtol, options.atol, options.ptol
+    damping, lm_conf, verbosity = options.damping, options.lm_conf, options.verbosity
 
     # ------ Solver Variables and functions
     # - constants
     n_terms = len(terms)
     n_problems, n_parameters = p0.shape
-    config = {
-        "max_iteration": max_iteration,
-        "max_time": max_time,
-        "ftol": ftol,
-        "xtol": xtol,
-        "gtol": gtol,
-        "atol": atol,
-        "ptol": ptol,
-        "damping": damping,
-        "lm_conf": lm_conf,
-    }
+    config = options.config
+    recorder = _HistoryRecorder(options)
+    ls_conf = options.line_search_conf
+    display = _IterationDisplay(verbosity, n_terms, options.use_lm, batch=True, use_line_search=options.use_line_search)
 
     # - recomputed each loop (reset to None at the start of each iteration)
     #   (all these arrays are relative to the m problems in processing: first dimension m)
@@ -878,14 +791,12 @@ def solve_batch(
     delta_parameters = None  # (k, n_parameters), NaN for the problems not updated
     iteration = 0
     n_iterations = numpy.zeros(n_problems, dtype=numpy.int64)
-    history_list = (
-        collections.deque(maxlen=-history_length)  # keeps only the last |M| entries
-        if history_length is not None and history_length < 0
-        else []
-    )
     last_total_cost = None  # (k,) costs of the previous iteration
     lm_lambda = numpy.full(n_problems, numpy.nan)  # Levenberg-Marquardt damping (initialized at the first iteration)
+    lm_lambda_floor = numpy.full(n_problems, numpy.nan)  # minimum value of λ of each problem
     last_damping = None  # (k,) λ used for the accepted step leading to the current iteration
+    last_gain_ratio = None  # (k,) gain ratio of the accepted LM steps leading to the current iteration
+    last_step_length = None  # (k,) α of the line search for the step leading to the current iteration
     n_rejected = numpy.zeros(n_problems, dtype=numpy.int64)  # total number of rejected LM trial steps
     next_term_parameters = None  # p_out of the accepted LM trial steps (reused at the next iteration)
     next_cost_state: Optional[BatchCostState] = None  # costs of the accepted LM trial steps (reused)
@@ -893,7 +804,7 @@ def solve_batch(
     # - frozen values of the k problems (last iteration during which each problem was processed)
     frozen = {
         "term_parameters": None,
-        "cost": numpy.full(n_problems, numpy.nan) if compute_cost else None,
+        "cost": numpy.full(n_problems, numpy.nan) if options.compute_cost else None,
         "costs": None,
         "optimality": numpy.full(n_problems, numpy.nan),
         "residuals": None,
@@ -937,7 +848,7 @@ def solve_batch(
     if active.size == 0:
         result = BatchSolveResult(
             parameters=parameters,
-            history=list(history_list),
+            history=recorder.to_list(),
             success=numpy.zeros(n_problems, dtype=bool),
             stop_code=stop_code,
             n_iterations=n_iterations,
@@ -953,31 +864,7 @@ def solve_batch(
         return result
 
     # Printing the header for the optimization process logging based on the verbosity level.
-    printed_detail = f""
-    printed_header = f""
-    if verbosity >= 2:
-        printed_detail += (
-            f"\nIndividual costs [rJ term]: C_i = 0.5 * ρ(||r_i||^2) "
-            f"\nCost: C = sum(w_i * C_i) "
-            f"\nStep norm: ||Δp|| "
-            f"\nOptimality: ||g|| "
-            f"\nAll the values are averaged over the N problems in processing."
-        )
-        printed_header += (
-            f"\n{'Iteration':^10} {'N processing':^15} {'Total time (s)':^15} {'Cost C':^15} {'ΔC':^15}"
-            + f" {'||Δp||_2':^15} {'||g||_∞':^15}"
-            + (f" {'λ':^15}" if use_lm else "")
-        )
-    if verbosity >= 3:
-        printed_header += (
-            f" {'||Δp||_∞':^15} {'||g||_2':^15} {'Cond(H)':^15} {'Trace(H)':^15}"
-            + " ".join(
-                [f"{'Cost C_' + str(i):^15}" for i in range(n_terms)],
-            )
-        )
-    if verbosity >= 2:
-        print(printed_detail)
-        print(printed_header)
+    display.print_header()
 
     # --------- Solver Implementation
     starting_time = time.perf_counter()  # start of the computation (after validation and header)
@@ -1009,7 +896,7 @@ def solve_batch(
             stop_problems(is_naninf, "naninf_term_parameters")
             scatter_frozen("term_parameters", term_parameters)
             frozen["optimality"][active[is_naninf]] = numpy.nan
-            if compute_cost:
+            if options.compute_cost:
                 frozen["cost"][active[is_naninf]] = numpy.nan
             active = active[~is_naninf]
             term_parameters = term_parameters[~is_naninf]
@@ -1026,7 +913,7 @@ def solve_batch(
             term_parameters,
             active,
             jacobian_P,
-            compute_cost=compute_cost,
+            compute_cost=options.compute_cost,
             cost_state=next_cost_state,  # reuse r and costs of the accepted LM trial steps
         )
         next_term_parameters = None
@@ -1036,168 +923,136 @@ def solve_batch(
         elapsed_time = time.perf_counter() - starting_time
 
         # - precomputing
-        if compute_optimality:
+        if options.compute_optimality:
             optimality = numpy.linalg.norm(state.second_term, ord=numpy.inf, axis=1)
 
-        if compute_conv_analysis:
+        if options.compute_conv_analysis:
             optimality_2 = numpy.linalg.norm(state.second_term, ord=2, axis=1)
             trace_Hessian = numpy.trace(state.hessian, axis1=1, axis2=2)
             with numpy.errstate(all="ignore"):
                 cond_Hessian = numpy.linalg.cond(state.hessian)
 
-        if compute_delta_norm and not is_first_iteration():
+        if options.compute_delta_norm and not is_first_iteration():
             delta_norm = numpy.linalg.norm(delta_parameters[active], ord=2, axis=1)
             delta_norm_inf = numpy.linalg.norm(delta_parameters[active], ord=numpy.inf, axis=1)
 
-        if compute_params_norm:
+        if options.compute_params_norm:
             parameters_norm = numpy.linalg.norm(parameters[active], ord=2, axis=1)
 
         # - Update the frozen values of the problems in processing
         scatter_frozen("term_parameters", term_parameters)
         frozen["optimality"][active] = numpy.linalg.norm(state.second_term, ord=numpy.inf, axis=1)
-        if compute_cost:
+        if options.compute_cost:
             frozen["cost"][active] = state.cost
 
-        # - Update history
-        if compute_history:
-
-            if "costs" in history_details:
-                if frozen["costs"] is None:
-                    frozen["costs"] = [numpy.full(n_problems, numpy.nan) for _ in range(n_terms)]
-                for index in range(n_terms):
-                    frozen["costs"][index][active] = state.costs[index]
-            if "residuals" in history_details:
-                if frozen["residuals"] is None:
-                    frozen["residuals"] = [
-                        None if r is None else numpy.full((n_problems,) + r.shape[1:], numpy.nan)
-                        for r in state.residuals
-                    ]
-                for index, r in enumerate(state.residuals):
-                    if r is not None:
-                        frozen["residuals"][index][active] = r
-            if "jacobians" in history_details:
-                if frozen["jacobians"] is None:
-                    frozen["jacobians"] = [
-                        None if J is None else numpy.full((n_problems,) + J.shape[1:], numpy.nan)
-                        for J in state.jacobians
-                    ]
-                for index, J in enumerate(state.jacobians):
-                    if J is not None:
-                        frozen["jacobians"][index][active] = J
-            if "second_term" in history_details:
-                scatter_frozen("second_term", state.second_term)
-            if "hessian" in history_details:
-                scatter_frozen("hessian", state.hessian)
-
-            h = {}
-            if "iteration" in history_details:
-                h["iteration"] = iteration
-            if "n_processing" in history_details:
-                h["n_processing"] = int(active.shape[0])
-            if "is_processing" in history_details:
-                h["is_processing"] = numpy.isin(numpy.arange(n_problems), active)
-            if "parameters" in history_details:
-                h["parameters"] = parameters.copy()
-            if "delta_parameters" in history_details:
-                if delta_parameters is None:
-                    h["delta_parameters"] = None
-                else:
-                    h["delta_parameters"] = delta_parameters.copy()
-            if "delta_cost" in history_details:
-                if last_total_cost is None:
-                    h["delta_cost"] = None
-                else:
-                    h["delta_cost"] = numpy.full(n_problems, numpy.nan)
-                    h["delta_cost"][active] = state.cost - last_total_cost[active]
-            if "elapsed_time" in history_details:
-                h["elapsed_time"] = elapsed_time
-            if "costs" in history_details:
-                h["costs"] = [c.copy() for c in frozen["costs"]]
-            if "cost" in history_details:
-                h["cost"] = frozen["cost"].copy()
-            if "optimality" in history_details:
-                h["optimality"] = frozen["optimality"].copy()
-            if "residuals" in history_details:
-                h["residuals"] = [
-                    r.copy() if r is not None else None for r in frozen["residuals"]
+        # - Update the frozen values required by the history (every iteration: the
+        #   frozen values must be up to date even if the entry is not stored)
+        if recorder.requires("costs"):
+            if frozen["costs"] is None:
+                frozen["costs"] = [numpy.full(n_problems, numpy.nan) for _ in range(n_terms)]
+            for index in range(n_terms):
+                frozen["costs"][index][active] = state.costs[index]
+        if recorder.requires("residuals"):
+            if frozen["residuals"] is None:
+                frozen["residuals"] = [
+                    None if r is None else numpy.full((n_problems,) + r.shape[1:], numpy.nan)
+                    for r in state.residuals
                 ]
-            if "jacobians" in history_details:
-                h["jacobians"] = [
-                    J.copy() if J is not None else None for J in frozen["jacobians"]
+            for index, r in enumerate(state.residuals):
+                if r is not None:
+                    frozen["residuals"][index][active] = r
+        if recorder.requires("jacobians"):
+            if frozen["jacobians"] is None:
+                frozen["jacobians"] = [
+                    None if J is None else numpy.full((n_problems,) + J.shape[1:], numpy.nan)
+                    for J in state.jacobians
                 ]
-            if "second_term" in history_details:
-                h["second_term"] = frozen["second_term"].copy()
-            if "hessian" in history_details:
-                h["hessian"] = frozen["hessian"].copy()
-            if "damping" in history_details:
-                h["damping"] = None if last_damping is None else last_damping.copy()
+            for index, J in enumerate(state.jacobians):
+                if J is not None:
+                    frozen["jacobians"][index][active] = J
+        if recorder.requires("second_term"):
+            scatter_frozen("second_term", state.second_term)
+        if recorder.requires("hessian"):
+            scatter_frozen("hessian", state.hessian)
 
-            if history_length is None or history_length < 0:
-                history_list.append(h)  # (deque with maxlen if history_length < 0)
-            elif iteration < history_length:
-                # Case 0 -> never append
-                history_list.append(h)
+        # - Update history (only the requested details are computed)
+        def history_delta_cost() -> Optional[numpy.ndarray]:
+            if last_total_cost is None:
+                return None
+            delta_cost = numpy.full(n_problems, numpy.nan)
+            delta_cost[active] = state.cost - last_total_cost[active]
+            return delta_cost
+
+        recorder.record(iteration, {
+            "iteration": lambda: iteration,
+            "n_processing": lambda: int(active.shape[0]),
+            "is_processing": lambda: numpy.isin(numpy.arange(n_problems), active),
+            "parameters": lambda: parameters.copy(),
+            "delta_parameters": lambda: _copy_or_none(delta_parameters),
+            "delta_cost": history_delta_cost,
+            "elapsed_time": lambda: elapsed_time,
+            "costs": lambda: [c.copy() for c in frozen["costs"]],
+            "cost": lambda: frozen["cost"].copy(),
+            "optimality": lambda: frozen["optimality"].copy(),
+            "residuals": lambda: [_copy_or_none(r) for r in frozen["residuals"]],
+            "jacobians": lambda: [_copy_or_none(J) for J in frozen["jacobians"]],
+            "second_term": lambda: frozen["second_term"].copy(),
+            "hessian": lambda: frozen["hessian"].copy(),
+            "damping": lambda: _copy_or_none(last_damping),
+            "gain_ratio": lambda: _copy_or_none(last_gain_ratio),
+            "step_length": lambda: _copy_or_none(last_step_length),
+        })
 
         # - Display the iteration (mean over the problems in processing)
-        printed_row = f""
         if verbosity >= 2:
-            if delta_parameters is None:
-                strdp2 = f"{'':^15}"
-                strdpinf = f"{'':^15}"
-            else:
-                strdp2 = f"{_finite_mean(delta_norm):^15.3e}"
-                strdpinf = f"{_finite_mean(delta_norm_inf):^15.3e}"
-            if last_total_cost is None:
-                dC_str = f"{'':^15}"
-            else:
-                dC = state.cost - last_total_cost[active]
-                dC_str = f"{_finite_mean(dC):^15.3e}"
-            printed_row += (
-                f"{iteration:^10} {active.shape[0]:^15} {elapsed_time:^15.3e} {_finite_mean(state.cost):^15.3e} {dC_str}"
-                + f" {strdp2} {_finite_mean(optimality):^15.3e}"
+            display.print_row(
+                iteration=iteration,
+                n_processing=int(active.shape[0]),
+                elapsed_time=elapsed_time,
+                cost=_finite_mean(state.cost),
+                delta_cost=None if last_total_cost is None else _finite_mean(state.cost - last_total_cost[active]),
+                delta_norm=None if delta_parameters is None else _finite_mean(delta_norm),
+                optimality=_finite_mean(optimality),
+                damping=None if last_damping is None else _finite_mean(last_damping[active]),
+                step_length=None if last_step_length is None else _finite_mean(last_step_length[active]),
+                delta_norm_inf=None if delta_parameters is None else _finite_mean(delta_norm_inf),
+                optimality_2=_finite_mean(optimality_2),
+                cond_hessian=_finite_mean(cond_Hessian),
+                trace_hessian=_finite_mean(trace_Hessian),
+                costs=None if state.costs is None else [_finite_mean(c) for c in state.costs],
             )
-            if use_lm:
-                printed_row += f" {'':^15}" if last_damping is None else f" {_finite_mean(last_damping[active]):^15.3e}"
-        if verbosity >= 3:
-            printed_row += (
-                f" {strdpinf} {_finite_mean(optimality_2):^15.3e}"
-                + f" {_finite_mean(cond_Hessian):^15.3e} {_finite_mean(trace_Hessian):^15.3e}"
-                + " ".join([f"{_finite_mean(c):^15.3e}" for c in state.costs])
-            )
-        if verbosity >= 2:
-            print(printed_row)
 
         # - Convergence analysis and stopping criteria check (each problem independently)
-        if use_ftol and not is_first_iteration():
+        if options.use_ftol and not is_first_iteration():
             dF = last_total_cost[active] - state.cost
             is_converged = (0 <= dF) & (dF < ftol * state.cost)
             stop_problems(is_converged, "ftol")
 
-        if use_atol:
+        if options.use_atol:
             is_converged = state.cost < atol
             stop_problems(is_converged, "atol")
 
-        if use_gtol:
+        if options.use_gtol:
             is_converged = optimality < gtol
             stop_problems(is_converged, "gtol")
 
-        if use_xtol and not is_first_iteration():
+        if options.use_xtol and not is_first_iteration():
             is_converged = delta_norm < xtol * (xtol + parameters_norm)
             stop_problems(is_converged, "xtol")
 
-        if use_ptol and not is_first_iteration():
+        if options.use_ptol and not is_first_iteration():
             is_converged = delta_norm_inf < ptol
             stop_problems(is_converged, "ptol")
 
-        if use_maxiter:
+        if options.use_maxiter:
             if iteration >= max_iteration:
                 stop_problems(numpy.ones(active.shape[0], dtype=bool), "max_iteration")
 
-        if use_maxtime:
+        if options.use_maxtime:
             if elapsed_time >= max_time:
                 stop_problems(numpy.ones(active.shape[0], dtype=bool), "max_time")
 
-        if use_callback:
+        if options.use_callback:
             callback_state = {
                 "indices": active.copy(),
                 "parameters": parameters[active].copy(),
@@ -1235,15 +1090,93 @@ def solve_batch(
             break
 
         # 8. ----- Compute the update Δp_in
-        if not use_lm:
+        if not options.use_lm:
             # - Gauss-Newton: solve H Δp_in = -g
             active_delta, is_singular = _solve_batch_linear_systems(state.hessian, state.second_term)
             stop_problems(is_singular, "singular")
 
             # 9. ----- Compute the update parameters (Gauss-Newton only, inside the LM loop otherwise)
-            if use_update and numpy.any(~end_flags):
+            if options.use_update and numpy.any(~end_flags):
                 positions = numpy.flatnonzero(~end_flags)
                 active_delta[positions] = apply_update_func(active_delta[positions], positions)
+
+            # 9b. ----- Optional Armijo backtracking line search along Δp_in* (each problem
+            #           independently, only the residuals / cost_func are evaluated)
+            if options.use_line_search:
+                m = active.shape[0]
+                is_pending = ~end_flags & ~has_naninf(active_delta)  # (NaN updates: stopped at step 10)
+                stop_problems(is_pending & has_naninf(state.cost), "naninf_cost")
+                is_pending &= ~end_flags
+                slope = numpy.einsum("ij,ij->i", state.second_term, numpy.where(is_pending[:, None], active_delta, 0.0))
+                # Rounding noise of the costs (see solve)
+                noise = ls_conf["noise"] * numpy.abs(numpy.where(is_pending, state.cost, 0.0))
+                stop_problems(is_pending & (slope > noise), "not_descent")
+                is_pending &= ~end_flags
+
+                step_length = numpy.ones(m)
+                n_backtracks = numpy.zeros(m, dtype=numpy.int64)
+                is_accepted = numpy.zeros(m, dtype=bool)
+                trial_term_parameters = numpy.full((m, term_parameters.shape[1]), numpy.nan)
+                trial_costs = [numpy.full(m, numpy.nan) for _ in range(n_terms)]
+                trial_residuals: List[Optional[numpy.ndarray]] = [None] * n_terms
+                trial_total_cost = numpy.full(m, numpy.nan)
+                time_out = False
+                for trial in range(ls_conf["max_backtracks"] + 1):
+                    positions = numpy.flatnonzero(is_pending & ~is_accepted)
+                    if positions.size == 0:
+                        break
+                    # max_time is also checked between the trial steps
+                    if trial > 0 and options.use_maxtime and time.perf_counter() - starting_time >= max_time:
+                        time_out = True
+                        break
+                    if trial > 0:
+                        step_length[positions] *= ls_conf["factor"]
+                        n_backtracks[positions] += 1
+                    trial_step = step_length[positions, None] * active_delta[positions]
+                    trial_term = _compute_batch_term_parameters(parametrization, parameters[active[positions]] + trial_step)
+                    is_valid = ~has_naninf(trial_term)  # rejected otherwise: smaller α
+                    positions = positions[is_valid]
+                    trial_term = trial_term[is_valid]
+                    if positions.size == 0:
+                        continue
+                    trial_cost_state = _evaluate_batch_cost(terms, trial_term, active[positions])
+                    ok = numpy.isfinite(trial_cost_state.cost) & (
+                        trial_cost_state.cost
+                        <= state.cost[positions] + ls_conf["c1"] * step_length[positions] * slope[positions] + noise[positions]
+                    )
+                    accepted_positions = positions[ok]
+                    is_accepted[accepted_positions] = True
+                    trial_term_parameters[accepted_positions] = trial_term[ok]
+                    trial_total_cost[accepted_positions] = trial_cost_state.cost[ok]
+                    for index in range(n_terms):
+                        trial_costs[index][accepted_positions] = trial_cost_state.costs[index][ok]
+                        r = trial_cost_state.residuals[index]
+                        if r is not None:
+                            if trial_residuals[index] is None:
+                                trial_residuals[index] = numpy.full((m,) + r.shape[1:], numpy.nan)
+                            trial_residuals[index][accepted_positions] = r[ok]
+
+                n_rejected[active[is_pending]] += numpy.where(
+                    is_accepted[is_pending], n_backtracks[is_pending], n_backtracks[is_pending] + 1
+                )
+                if time_out:
+                    # all the problems in processing are stopped, no step is applied
+                    stop_problems(~end_flags, "max_time")
+                    is_accepted &= ~end_flags
+                stop_problems(is_pending & ~is_accepted & ~end_flags, "line_search")
+
+                # Accepted steps: α Δp_in*, reuse p_out and the costs at the next iteration (same p_in)
+                active_delta[is_accepted] = step_length[is_accepted, None] * active_delta[is_accepted]
+                if last_step_length is None:
+                    last_step_length = numpy.full(n_problems, numpy.nan)
+                last_step_length[:] = numpy.nan
+                last_step_length[active[is_accepted]] = step_length[is_accepted]
+                next_term_parameters = trial_term_parameters
+                next_cost_state = BatchCostState(
+                    cost=trial_total_cost,
+                    costs=trial_costs,
+                    residuals=trial_residuals,
+                )
 
         else:
             # - Levenberg-Marquardt: solve (H + λ D) Δp_in = -g until the cost does not increase
@@ -1269,6 +1202,8 @@ def solve_batch(
                 else:
                     initial_lambda = numpy.full(m, lm_conf["initial_scale"])
                 lm_lambda[active[is_new]] = initial_lambda[is_new]
+                # Floor of λ (see solve): machine precision × its scale
+                lm_lambda_floor[active[is_new]] = _MACHINE_EPSILON * initial_lambda[is_new] / lm_conf["initial_scale"]
 
             active_lambda = lm_lambda[active]  # (m,) modified in the trial loop
             active_delta = numpy.full((m, n_parameters), numpy.nan)
@@ -1279,8 +1214,16 @@ def solve_batch(
             trial_costs = [numpy.full(m, numpy.nan) for _ in range(n_terms)]
             trial_residuals: List[Optional[numpy.ndarray]] = [None] * n_terms
             is_pending = ~end_flags  # problems still looking for an acceptable step
+            is_tried = is_pending.copy()
             is_exhausted = numpy.zeros(m, dtype=bool)
+            time_out = False
+            # A step is accepted if it does not increase the cost beyond its rounding noise
+            lm_threshold = state.cost + lm_conf["noise"] * numpy.abs(state.cost)
             while numpy.any(is_pending):
+                # max_time is also checked between the trial steps (not only between iterations)
+                if options.use_maxtime and numpy.any(n_rejections > 0) and time.perf_counter() - starting_time >= max_time:
+                    time_out = True
+                    break
                 is_rejected = is_pending & (n_rejections > 0)
                 active_lambda[is_rejected] *= lm_conf["factor"]
                 is_exhausted |= is_pending & (n_rejections >= lm_conf["max_rejections"])
@@ -1298,7 +1241,7 @@ def solve_batch(
                 trial_delta = trial_delta[~is_singular]
 
                 # 9. ----- Compute the update parameters (applied to each trial step)
-                if use_update and positions.size > 0:
+                if options.use_update and positions.size > 0:
                     trial_delta = apply_update_func(trial_delta, positions)
 
                 trial_term = _compute_batch_term_parameters(parametrization, parameters[active[positions]] + trial_delta)
@@ -1321,24 +1264,45 @@ def solve_batch(
                             trial_residuals[index][positions] = r
                     nan_cost[positions] = has_naninf(trial_cost_state.cost)  # the step cannot be compared
 
-                is_pending &= (new_cost > state.cost) & ~nan_cost
+                is_pending &= (new_cost > lm_threshold) & ~nan_cost
 
-            is_accepted = ~end_flags & ~is_exhausted & ~nan_cost & (new_cost <= state.cost)
-            is_tried = ~end_flags
+            is_accepted = is_tried & ~is_exhausted & ~nan_cost & (new_cost <= lm_threshold)
             n_rejected[active[is_tried]] += numpy.where(
                 is_accepted[is_tried], n_rejections[is_tried] - 1, n_rejections[is_tried]
             )
 
+            if time_out:
+                # all the problems in processing are stopped, no step is applied (the
+                # returned parameters are the last evaluated ones)
+                stop_problems(~end_flags, "max_time")
+                is_accepted &= ~end_flags
+
             stop_problems(nan_cost & ~end_flags, "naninf_trial_cost")
 
             stop_problems(is_tried & ~is_accepted & ~end_flags, "lm")
+
+            # Gain ratios: actual decrease / decrease predicted by the Gauss-Newton model
+            # m(Δp) = C + g^T Δp + ½ Δp^T H Δp (valid for any Δp, also after update_func)
+            if last_gain_ratio is None:
+                last_gain_ratio = numpy.full(n_problems, numpy.nan)
+            last_gain_ratio[:] = numpy.nan
+            if numpy.any(is_accepted):
+                delta = active_delta[is_accepted]
+                predicted = -numpy.einsum("ij,ij->i", state.second_term[is_accepted], delta) - 0.5 * numpy.einsum(
+                    "ij,ijk,ik->i", delta, state.hessian[is_accepted], delta
+                )
+                with numpy.errstate(divide="ignore", invalid="ignore"):
+                    ratio = numpy.where(predicted > 0, (state.cost[is_accepted] - new_cost[is_accepted]) / predicted, numpy.nan)
+                last_gain_ratio[active[is_accepted]] = ratio
 
             # Accepted steps: reuse p_out and the costs at the next iteration (same p_in)
             if last_damping is None:
                 last_damping = numpy.full(n_problems, numpy.nan)
             last_damping[:] = numpy.nan
             last_damping[active[is_accepted]] = active_lambda[is_accepted]
-            lm_lambda[active[is_accepted]] = active_lambda[is_accepted] / lm_conf["factor"]
+            lm_lambda[active[is_accepted]] = numpy.maximum(
+                active_lambda[is_accepted] / lm_conf["factor"], lm_lambda_floor[active[is_accepted]]
+            )
             next_term_parameters = trial_term_parameters
             next_cost_state = BatchCostState(
                 cost=new_cost,
@@ -1358,7 +1322,7 @@ def solve_batch(
         delta_parameters[active[keep]] = active_delta[keep]
         parameters[active[keep]] = parameters[active[keep]] + active_delta[keep]
 
-        if compute_cost:
+        if options.compute_cost:
             if last_total_cost is None:
                 last_total_cost = numpy.full(n_problems, numpy.nan)
             last_total_cost[active] = state.cost
@@ -1382,7 +1346,7 @@ def solve_batch(
     # The returned parameters are always the last evaluated ones (the update is never
     # applied to a stopped problem), so the frozen values describe them.
     cost = frozen["cost"]
-    if not compute_cost and numpy.any(success):
+    if not options.compute_cost and numpy.any(success):
         # The cost was not required during the optimization: computed once for the
         # successful problems at their solution
         indices = numpy.flatnonzero(success)
@@ -1391,7 +1355,7 @@ def solve_batch(
 
     result = BatchSolveResult(
         parameters=parameters,
-        history=list(history_list),
+        history=recorder.to_list(),
         success=success,
         stop_code=stop_code,
         n_iterations=n_iterations,
