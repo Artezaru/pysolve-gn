@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.solver &#8212; pysolvegn 2.0.0 documentation</title>
+    <title>pysolvegn.solver &#8212; pysolvegn 2.1.0 documentation</title>
   
   
   
@@ -25,8 +25,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -37,12 +37,12 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=51b770b3"></script>
+    <script src="../../_static/documentation_options.js?v=20623aea"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -104,7 +104,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -124,7 +124,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 2.0.0 documentation</p>
+    <p class="title logo__title">pysolvegn 2.1.0 documentation</p>
   
 </a></div>
     
@@ -188,14 +188,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
       
@@ -227,7 +227,7 @@
       
         
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
@@ -284,14 +284,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
         
@@ -331,7 +331,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -373,12 +373,11 @@
 <span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">"""</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Real</span><span class="p">,</span> <span class="n">Integral</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">collections</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 
@@ -388,13 +387,19 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.implemented_conf</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">_IMPLEMENTED_HISTORY_DETAILS</span><span class="p">,</span>
-    <span class="n">_IMPLEMENTED_DAMPINGS</span><span class="p">,</span>
     <span class="n">_DEFAULT_SOLVE_HISTORY</span><span class="p">,</span>
-    <span class="n">_DEFAULT_LM_CONF</span><span class="p">,</span>
     <span class="n">_STOP_CODES</span><span class="p">,</span>
     <span class="n">_STOP_CONVERGENCE</span><span class="p">,</span>
     <span class="n">_STOP_NANINF</span><span class="p">,</span>
     <span class="n">_STOP_FAILURE</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.solver_common</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_HistoryRecorder</span><span class="p">,</span>
+    <span class="n">_IterationDisplay</span><span class="p">,</span>
+    <span class="n">_copy_or_none</span><span class="p">,</span>
+    <span class="n">_stop_reasons</span><span class="p">,</span>
+    <span class="n">_validate_solver_options</span><span class="p">,</span>
+    <span class="n">_validate_terms</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.evaluation</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -409,40 +414,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">.term</span><span class="w"> </span><span class="kn">import</span> <span class="n">Term</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.parametrization</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parametrization</span>
 
-
-<span class="c1"># Text of each stopping reason (built from the stop code and the configuration of the</span>
-<span class="c1"># solver: the thresholds are given, not the values reached at the last iteration).</span>
-<span class="n">_STOP_MESSAGES</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"ftol"</span><span class="p">:</span> <span class="s2">"[ftol] Convergence achieved: 0 &lt;= F_previous - F &lt; ftol * F with ftol = </span><span class="si">{ftol}</span><span class="s2">."</span><span class="p">,</span>
-    <span class="s2">"atol"</span><span class="p">:</span> <span class="s2">"[atol] Convergence achieved: F &lt; atol with atol = </span><span class="si">{atol}</span><span class="s2">."</span><span class="p">,</span>
-    <span class="s2">"gtol"</span><span class="p">:</span> <span class="s2">"[gtol] Convergence achieved: ||g||_inf &lt; gtol with gtol = </span><span class="si">{gtol}</span><span class="s2">."</span><span class="p">,</span>
-    <span class="s2">"xtol"</span><span class="p">:</span> <span class="s2">"[xtol] Convergence achieved: ||Δp|| &lt; xtol * (xtol + ||p||) with xtol = </span><span class="si">{xtol}</span><span class="s2">."</span><span class="p">,</span>
-    <span class="s2">"ptol"</span><span class="p">:</span> <span class="s2">"[ptol] Convergence achieved: ||Δp||_inf &lt; ptol with ptol = </span><span class="si">{ptol}</span><span class="s2">."</span><span class="p">,</span>
-    <span class="s2">"max_iteration"</span><span class="p">:</span> <span class="s2">"[max_iteration] Maximum number of iterations reached: </span><span class="si">{max_iteration}</span><span class="s2">."</span><span class="p">,</span>
-    <span class="s2">"max_time"</span><span class="p">:</span> <span class="s2">"[max_time] Maximum computation time reached: </span><span class="si">{max_time}</span><span class="s2"> seconds."</span><span class="p">,</span>
-    <span class="s2">"callback"</span><span class="p">:</span> <span class="s2">"[callback] Optimization stopped by the callback function."</span><span class="p">,</span>
-    <span class="s2">"singular"</span><span class="p">:</span> <span class="s2">"[singular] Optimization stopped: the linear system H Δp_in = -g is singular."</span><span class="p">,</span>
-    <span class="s2">"lm"</span><span class="p">:</span> <span class="s2">"[lm] Optimization stopped: no step decreasing the cost found after </span><span class="si">{lm_max_rejections}</span><span class="s2"> rejections."</span><span class="p">,</span>
-    <span class="s2">"naninf_p0"</span><span class="p">:</span> <span class="s2">"[naninf] Optimization not started: NaN or Inf value in the initial parameters p0."</span><span class="p">,</span>
-    <span class="s2">"naninf_term_parameters"</span><span class="p">:</span> <span class="s2">"[naninf] Optimization stopped: NaN or Inf value in the term parameters p_out = P(p_in)."</span><span class="p">,</span>
-    <span class="s2">"naninf_cost"</span><span class="p">:</span> <span class="s2">"[naninf] Optimization stopped: NaN or Inf value in the cost (the Levenberg-Marquardt steps cannot be compared)."</span><span class="p">,</span>
-    <span class="s2">"naninf_trial_cost"</span><span class="p">:</span> <span class="s2">"[naninf] Optimization stopped: NaN or Inf value in the cost of a Levenberg-Marquardt trial step."</span><span class="p">,</span>
-    <span class="s2">"naninf_update"</span><span class="p">:</span> <span class="s2">"[naninf] Optimization stopped: NaN or Inf value in the parameter update Δp_in*."</span><span class="p">,</span>
-<span class="p">}</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_stop_reasons</span><span class="p">(</span><span class="n">stop_code</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
-<span class="sd">    Build the text of the stopping reasons encoded in ``stop_code`` (one string per</span>
-<span class="sd">    triggered bit, in the order of the checks of the solver).</span>
-<span class="sd">    """</span>
-    <span class="n">values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-    <span class="n">values</span><span class="p">[</span><span class="s2">"lm_max_rejections"</span><span class="p">]</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s2">"lm_conf"</span><span class="p">][</span><span class="s2">"max_rejections"</span><span class="p">]</span>
-    <span class="k">return</span> <span class="p">[</span>
-        <span class="n">_STOP_MESSAGES</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="n">values</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">bit</span> <span class="ow">in</span> <span class="n">_STOP_CODES</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">stop_code</span> <span class="o">&amp;</span> <span class="n">bit</span>
-    <span class="p">]</span>
+<span class="n">_MACHINE_EPSILON</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="SolveResult">
@@ -476,8 +448,8 @@
 <span class="sd">        1. Always False if the optimization was stopped by a NaN or Inf value (in the</span>
 <span class="sd">           initial parameters, the term parameters, the update or, with</span>
 <span class="sd">           ``damping="lm"``, the cost), by a singular linear system, by the callback</span>
-<span class="sd">           function or by a failure of the Levenberg-Marquardt step, even if a</span>
-<span class="sd">           convergence criterion was satisfied at the same iteration.</span>
+<span class="sd">           function, by a failure of the Levenberg-Marquardt step or of the line search,</span>
+<span class="sd">           even if a convergence criterion was satisfied at the same iteration.</span>
 <span class="sd">        2. Otherwise True if a convergence criterion was satisfied, even if</span>
 <span class="sd">           ``max_iteration`` or ``max_time`` was reached at the same iteration.</span>
 <span class="sd">        3. Otherwise False (stopped by ``max_iteration`` or ``max_time``).</span>
@@ -516,14 +488,15 @@
 <span class="sd">        The total time of the optimization in seconds.</span>
 
 <span class="sd">    n_rejected: int</span>
-<span class="sd">        The total number of rejected Levenberg-Marquardt trial steps</span>
-<span class="sd">        (0 if ``damping`` is None).</span>
+<span class="sd">        The total number of rejected trial steps of the Levenberg-Marquardt damping or</span>
+<span class="sd">        of the line search (0 if ``damping`` is None and ``line_search`` is False).</span>
 
 <span class="sd">    config: Dict[str, Any]</span>
 <span class="sd">        The configuration requested to the solver: the stopping criteria</span>
 <span class="sd">        (``"max_iteration"``, ``"max_time"``, ``"ftol"``, ``"xtol"``, ``"gtol"``,</span>
-<span class="sd">        ``"atol"``, ``"ptol"``, None if not used), ``"damping"`` and ``"lm_conf"``</span>
-<span class="sd">        (the complete Levenberg-Marquardt configuration, default values included).</span>
+<span class="sd">        ``"atol"``, ``"ptol"``, None if not used), ``"damping"``, ``"lm_conf"``</span>
+<span class="sd">        (the complete Levenberg-Marquardt configuration, default values included),</span>
+<span class="sd">        ``"line_search"`` and ``"line_search_conf"`` (complete line search configuration).</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -562,6 +535,10 @@
 <span class="sd">    | ``"naninf_trial_cost"``      | 8192  | NaN or Inf value in the cost of a trial step       |</span>
 <span class="sd">    +------------------------------+-------+----------------------------------------------------+</span>
 <span class="sd">    | ``"naninf_update"``          | 16384 | NaN or Inf value in the update                     |</span>
+<span class="sd">    +------------------------------+-------+----------------------------------------------------+</span>
+<span class="sd">    | ``"line_search"``            | 32768 | No step satisfying the Armijo condition            |</span>
+<span class="sd">    +------------------------------+-------+----------------------------------------------------+</span>
+<span class="sd">    | ``"not_descent"``            | 65536 | Update not a descent direction (line search)       |</span>
 <span class="sd">    +------------------------------+-------+----------------------------------------------------+</span>
 
 <span class="sd">    For example, ``stop_code = 12 = 4 + 8`` means that ``gtol`` and ``xtol`` were both</span>
@@ -630,38 +607,6 @@
 
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_validate_lm_conf</span><span class="p">(</span><span class="n">lm_conf</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Real</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
-<span class="sd">    Complete the Levenberg-Marquardt configuration with the default values and check it.</span>
-<span class="sd">    """</span>
-    <span class="k">if</span> <span class="n">lm_conf</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">lm_conf</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">lm_conf</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"lm_conf must be None or a dictionary."</span><span class="p">)</span>
-    <span class="n">unknown</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">lm_conf</span><span class="p">)</span> <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">_DEFAULT_LM_CONF</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">unknown</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown lm_conf keys </span><span class="si">{</span><span class="nb">sorted</span><span class="p">(</span><span class="n">unknown</span><span class="p">)</span><span class="si">}</span><span class="s2">. Valid keys are </span><span class="si">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">_DEFAULT_LM_CONF</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
-
-    <span class="n">conf</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">_DEFAULT_LM_CONF</span><span class="p">)</span>
-    <span class="n">conf</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">lm_conf</span><span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"initial_scale"</span><span class="p">,</span> <span class="s2">"factor"</span><span class="p">,</span> <span class="s2">"diag_floor"</span><span class="p">):</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"lm_conf['</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">'] must be a real number."</span><span class="p">)</span>
-        <span class="n">conf</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="ow">or</span> <span class="n">conf</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"lm_conf['</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">'] must be a finite strictly positive number."</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">conf</span><span class="p">[</span><span class="s2">"factor"</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"lm_conf['factor'] must be strictly greater than 1."</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s2">"max_rejections"</span><span class="p">],</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s2">"max_rejections"</span><span class="p">],</span> <span class="n">Integral</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"lm_conf['max_rejections'] must be an integer."</span><span class="p">)</span>
-    <span class="n">conf</span><span class="p">[</span><span class="s2">"max_rejections"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">conf</span><span class="p">[</span><span class="s2">"max_rejections"</span><span class="p">])</span>
-    <span class="k">if</span> <span class="n">conf</span><span class="p">[</span><span class="s2">"max_rejections"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"lm_conf['max_rejections'] must be a strictly positive integer."</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">conf</span>
-
-
 <span class="k">def</span><span class="w"> </span><span class="nf">_solve_linear_system</span><span class="p">(</span>
     <span class="n">hessian</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span>
     <span class="n">second_term</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -702,6 +647,8 @@
     <span class="n">update_func</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">],</span> <span class="n">ArrayLike</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">damping</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">lm_conf</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">line_search</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">line_search_conf</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Real</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">verbosity</span><span class="p">:</span> <span class="n">Integral</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">history</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">history_details</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -781,7 +728,9 @@
 <span class="sd">        Stop criterion by the elapsed time of optimization.</span>
 <span class="sd">        The optimization process is stopped when the time elapsed since the</span>
 <span class="sd">        beginning of the optimization exceeds ``max_time`` seconds. If None, no limit</span>
-<span class="sd">        on the computation time is considered.</span>
+<span class="sd">        on the computation time is considered. The time is checked after the evaluation</span>
+<span class="sd">        of each iteration and between the trial steps of the Levenberg-Marquardt damping</span>
+<span class="sd">        and of the line search (the trial step being tested is then not applied).</span>
 
 <span class="sd">    ftol: Optional[Real], optional (default=None)</span>
 <span class="sd">        Stop criterion by the change of the cost function value.</span>
@@ -789,6 +738,7 @@
 <span class="sd">        cost function value and ``dF = F_previous - F`` is the decrease of the cost</span>
 <span class="sd">        function value between two iterations (an increase of the cost never satisfies</span>
 <span class="sd">        this criterion). If None, this criterion is not considered.</span>
+<span class="sd">        Not allowed if a ``gH`` term has no ``cost_func`` (ValueError).</span>
 
 <span class="sd">    xtol: Optional[Real], optional (default=None)</span>
 <span class="sd">        Stop criterion by the change of the optimized parameters.</span>
@@ -809,6 +759,7 @@
 <span class="sd">        The optimization process is stopped when ``F &lt; atol`` where F is the cost</span>
 <span class="sd">        function value.</span>
 <span class="sd">        If None, this criterion is not considered.</span>
+<span class="sd">        Not allowed if a ``gH`` term has no ``cost_func`` (ValueError).</span>
 
 <span class="sd">    ptol: Optional[Real], optional (default=None)</span>
 <span class="sd">        Stop criterion by the change of the optimized parameters.</span>
@@ -862,8 +813,11 @@
 <span class="sd">          scale of each parameter.</span>
 
 <span class="sd">        With ``"lm"`` and ``"lm-diag"``, a trial step is accepted only if it does not</span>
-<span class="sd">        increase the cost: otherwise :math:`\lambda` is multiplied by 10 and the system</span>
-<span class="sd">        is solved again. After an accepted step, :math:`\lambda` is divided by 10. If no</span>
+<span class="sd">        increase the cost beyond its rounding noise (:math:`C_{new} \leq C + \eta` with</span>
+<span class="sd">        :math:`\eta = \text{noise} \times |C|`, see ``lm_conf``): otherwise :math:`\lambda` is multiplied by 10 and the system</span>
+<span class="sd">        is solved again. After an accepted step, :math:`\lambda` is divided by 10 (down to</span>
+<span class="sd">        :math:`\varepsilon_m` times its initial scale, below which :math:`\lambda \mathbf{D}`</span>
+<span class="sd">        is lost in the rounding of :math:`\mathbf{H}`). If no</span>
 <span class="sd">        acceptable step is found after 50 consecutive rejections, the optimization is</span>
 <span class="sd">        stopped with ``success=False``. The value of :math:`\lambda` is available in the</span>
 <span class="sd">        history (``"damping"``) and displayed with ``verbosity &gt;= 2``. These default</span>
@@ -887,8 +841,60 @@
 <span class="sd">          steps before stopping with ``success=False``.</span>
 <span class="sd">        - ``"diag_floor"`` (default ``1e-12``): (``"lm-diag"`` only) floor of</span>
 <span class="sd">          :math:`\mathrm{diag}(\mathbf{H})` relative to its maximum.</span>
+<span class="sd">        - ``"noise"`` (default ``1e-13``, ``&gt;= 0``): relative rounding noise of the cost</span>
+<span class="sd">          :math:`\eta / |C|` tolerated to accept a step (``0.0`` for the strict condition</span>
+<span class="sd">          :math:`C_{new} \leq C`). At the machine precision the cost cannot decrease anymore,</span>
+<span class="sd">          and this tolerance avoids rejecting steps (and increasing :math:`\lambda`) in vain.</span>
 
 <span class="sd">        The complete configuration used is stored in ``result.config["lm_conf"]``.</span>
+
+<span class="sd">    line_search: bool, optional (default=False)</span>
+<span class="sd">        Used only if ``damping`` is None (Gauss-Newton). If False (default), the full</span>
+<span class="sd">        Gauss-Newton step is always applied: :math:`\mathbf{H} \Delta\mathbf{p}_{in} = -\mathbf{g}`</span>
+<span class="sd">        and :math:`\mathbf{p}_{in}^{k+1} = \mathbf{p}_{in}^{k} + \Delta\mathbf{p}_{in}^{*}`, nothing more.</span>
+<span class="sd">        If True, an Armijo backtracking line search is applied along the update</span>
+<span class="sd">        :math:`\Delta\mathbf{p}_{in}^{*}` (after ``update_func``): the step</span>
+<span class="sd">        :math:`\alpha \Delta\mathbf{p}_{in}^{*}` is applied with the first</span>
+<span class="sd">        :math:`\alpha = 1, \beta, \beta^2, ...` such that</span>
+
+<span class="sd">        .. math::</span>
+
+<span class="sd">            C(\mathbf{p}_{in} + \alpha \Delta\mathbf{p}_{in}^{*}) \leq C(\mathbf{p}_{in}) + c_1 \alpha \, \mathbf{g}^T \Delta\mathbf{p}_{in}^{*} + \eta</span>
+
+<span class="sd">        where :math:`\eta = \text{noise} \times |C(\mathbf{p}_{in})|` is the tolerated rounding</span>
+<span class="sd">        noise of the cost (``line_search_conf["noise"]``, default ``1e-13``): at the machine</span>
+<span class="sd">        precision the cost cannot decrease anymore, and the steps that do not increase it</span>
+<span class="sd">        beyond its rounding error are accepted at once instead of being shortened in vain.</span>
+<span class="sd">        A trial step with NaN or Inf output parameters or cost is rejected (smaller</span>
+<span class="sd">        :math:`\alpha`). Each trial step only evaluates the residuals (and the</span>
+<span class="sd">        ``cost_func``): no Jacobian, Hessian or linear system. The residuals of the accepted</span>
+<span class="sd">        step are reused at the next iteration, so a full step accepted at once</span>
+<span class="sd">        (:math:`\alpha = 1`) costs exactly the same as the pure Gauss-Newton iteration.</span>
+<span class="sd">        The optimization is stopped with ``success=False`` if the update is not a descent</span>
+<span class="sd">        direction (:math:`\mathbf{g}^T \Delta\mathbf{p}_{in}^{*} &gt; \eta`, stop code</span>
+<span class="sd">        ``"not_descent"``, e.g. an indefinite Hessian of a ``gH`` term or an ``update_func``)</span>
+<span class="sd">        or if no step satisfies the condition (stop code ``"line_search"``).</span>
+<span class="sd">        The value of :math:`\alpha` is available in the history (``"step_length"``) and</span>
+<span class="sd">        displayed with ``verbosity &gt;= 2``.</span>
+
+<span class="sd">        .. note::</span>
+
+<span class="sd">            The line search requires the cost of every term: all ``gH`` terms must define</span>
+<span class="sd">            a ``cost_func`` (ValueError otherwise). It cannot be combined with ``damping``</span>
+<span class="sd">            (ValueError).</span>
+
+<span class="sd">    line_search_conf: Optional[Mapping[str, Real]], optional (default=None)</span>
+<span class="sd">        Used only if ``line_search`` is True. Dictionary to change the default settings of</span>
+<span class="sd">        the line search. The missing keys keep their default value:</span>
+
+<span class="sd">        - ``"c1"`` (default ``1e-4``, in ``(0, 1)``): the sufficient decrease constant :math:`c_1`.</span>
+<span class="sd">        - ``"factor"`` (default ``0.5``, in ``(0, 1)``): the backtracking factor :math:`\beta`.</span>
+<span class="sd">        - ``"max_backtracks"`` (default ``30``): maximum number of rejected trial steps in one</span>
+<span class="sd">          iteration before stopping with ``success=False``.</span>
+<span class="sd">        - ``"noise"`` (default ``1e-13``, ``&gt;= 0``): relative rounding noise of the cost</span>
+<span class="sd">          :math:`\eta / |C|` tolerated by the condition (``0.0`` for the strict condition).</span>
+
+<span class="sd">        The complete configuration used is stored in ``result.config["line_search_conf"]``.</span>
 
 <span class="sd">    verbosity: Integral, optional (default=0)</span>
 <span class="sd">        The level of verbosity for logging the optimization process.</span>
@@ -941,8 +947,8 @@
 <span class="sd">        - ``success`` (bool): True if a convergence criterion (``ftol``, ``atol``,</span>
 <span class="sd">          ``gtol``, ``xtol`` or ``ptol``) was satisfied and the optimization was not</span>
 <span class="sd">          stopped by a NaN or Inf value, a singular linear system, the callback function</span>
-<span class="sd">          or a failure of the Levenberg-Marquardt step (see :class:`SolveResult` for the</span>
-<span class="sd">          priority rules).</span>
+<span class="sd">          or a failure of the Levenberg-Marquardt step or of the line search (see</span>
+<span class="sd">          :class:`SolveResult` for the priority rules).</span>
 <span class="sd">        - ``stop_code`` (int): the stopping criteria triggered at the last iteration</span>
 <span class="sd">          (bit mask). The method ``result.stopped_by(name)`` and the properties</span>
 <span class="sd">          ``result.reasons`` and ``result.message`` describe them.</span>
@@ -954,7 +960,7 @@
 <span class="sd">        - ``term_parameters`` (Optional[numpy.ndarray]): :math:`\mathbf{p}_{out} = P(\mathbf{p}_{in})`</span>
 <span class="sd">          at the returned parameters.</span>
 <span class="sd">        - ``elapsed_time`` (float): the total time of the optimization in seconds.</span>
-<span class="sd">        - ``n_rejected`` (int): the number of rejected Levenberg-Marquardt trial steps.</span>
+<span class="sd">        - ``n_rejected`` (int): the number of rejected trial steps (Levenberg-Marquardt or line search).</span>
 <span class="sd">        - ``config`` (Dict): the stopping criteria, ``damping`` and ``lm_conf`` requested.</span>
 
 
@@ -1003,6 +1009,10 @@
 <span class="sd">                  rejections.</span>
 <span class="sd">            9.  (Gauss-Newton only) Compute the applied update ``Δp_in* = update_func(p_in, Δp_in)``</span>
 <span class="sd">                (``Δp_in* = Δp_in`` if no ``update_func``).</span>
+<span class="sd">                With ``line_search=True``: stop with ``success=False`` if ``g^T Δp_in* &gt;= 0``,</span>
+<span class="sd">                otherwise replace ``Δp_in*`` by ``α Δp_in*`` with the first</span>
+<span class="sd">                ``α = 1, β, β^2, ...`` such that ``C(p_in + α Δp_in*) &lt;= C + c1 α g^T Δp_in*``</span>
+<span class="sd">                (only the cost is evaluated; stop with ``success=False`` if none is found).</span>
 <span class="sd">            10. [STOP check] If ``Δp_in*`` contains NaN or Inf values, stop with</span>
 <span class="sd">                ``success=False`` WITHOUT applying the update (the last valid ``p_in`` is returned).</span>
 <span class="sd">            11. Update the input parameters ``p_in = p_in + Δp_in*``.</span>
@@ -1043,6 +1053,16 @@
 <span class="sd">    - "damping": Float representing the Levenberg-Marquardt damping :math:`\lambda`</span>
 <span class="sd">      used for the accepted step leading to the current iteration (None at the first</span>
 <span class="sd">      iteration and if ``damping`` is None).</span>
+<span class="sd">    - "gain_ratio": Float representing the gain ratio of the accepted Levenberg-Marquardt</span>
+<span class="sd">      step leading to the current iteration: the actual decrease of the cost divided by the</span>
+<span class="sd">      decrease predicted by the Gauss-Newton model</span>
+<span class="sd">      :math:`-\mathbf{g}^T \Delta\mathbf{p}_{in}^{*} - \frac{1}{2} \Delta\mathbf{p}_{in}^{*T} \mathbf{H} \Delta\mathbf{p}_{in}^{*}`</span>
+<span class="sd">      (close to 1: the model is reliable; close to 0 or negative: the model is poor).</span>
+<span class="sd">      NaN if the predicted decrease is not positive, None at the first iteration and if</span>
+<span class="sd">      ``damping`` is None. Diagnostic only: it does not change the update of :math:`\lambda`.</span>
+<span class="sd">    - "step_length": Float representing the step length :math:`\alpha` of the line</span>
+<span class="sd">      search for the step leading to the current iteration (None at the first</span>
+<span class="sd">      iteration and if ``line_search`` is False).</span>
 <span class="sd">    - "all": include all the keys.</span>
 
 <span class="sd">    The cost of each term can be compute only for ``rJ`` terms and is</span>
@@ -1066,20 +1086,15 @@
 <span class="sd">        If the term contains a ``cost_func`` function, it will be used to compute the cost of</span>
 <span class="sd">        the term.</span>
 
+<span class="sd">        A ``UserWarning`` is emitted for every call with a ``gH`` term without ``cost_func``</span>
+<span class="sd">        (the reported cost does not include it), and the cost criteria ``atol`` and ``ftol``</span>
+<span class="sd">        raise a ``ValueError`` in this case (with only such terms, ``atol`` would be satisfied</span>
+<span class="sd">        at once without updating the parameters, and ``ftol`` never).</span>
+
 <span class="sd">    """</span>
 
     <span class="c1"># Check the validity of the input arguments and raise appropriate errors if necessary.</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">Term</span><span class="p">):</span>
-        <span class="n">terms</span> <span class="o">=</span> <span class="p">[</span><span class="n">terms</span><span class="p">]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"terms must be a sequence of Term objects."</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"terms sequence cannot be empty."</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">terms</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">term</span><span class="p">,</span> <span class="n">Term</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-                <span class="s2">"All elements of terms must be instances of the Term class."</span>
-            <span class="p">)</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="n">_validate_terms</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">Term</span><span class="p">)</span>
 
     <span class="n">p0</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">p0</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
@@ -1090,164 +1105,40 @@
             <span class="s2">"parametrization must be an instance of the Parametrization class."</span>
         <span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">max_iteration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">max_iteration</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"max_iteration must be an integer."</span><span class="p">)</span>
-        <span class="n">max_iteration</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">max_iteration</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">max_iteration</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"max_iteration must be a non-negative integer."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">max_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">max_time</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"max_time must be a real number."</span><span class="p">)</span>
-        <span class="n">max_time</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">max_time</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">max_time</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"max_time must be a non-negative real number."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">ftol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ftol</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"ftol must be a real number."</span><span class="p">)</span>
-        <span class="n">ftol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ftol</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">ftol</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"ftol must be a positive real number."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">xtol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xtol</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"xtol must be a real number."</span><span class="p">)</span>
-        <span class="n">xtol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">xtol</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">xtol</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"xtol must be a positive real number."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">gtol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">gtol</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"gtol must be a real number."</span><span class="p">)</span>
-        <span class="n">gtol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">gtol</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">gtol</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"gtol must be a positive real number."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">atol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">atol</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"atol must be a real number."</span><span class="p">)</span>
-        <span class="n">atol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">atol</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">atol</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"atol must be a positive real number."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">ptol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ptol</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"ptol must be a real number."</span><span class="p">)</span>
-        <span class="n">ptol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">ptol</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">ptol</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"ptol must be a positive real number."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="nb">all</span><span class="p">(</span>
-        <span class="n">criterion</span> <span class="ow">is</span> <span class="kc">None</span>
-        <span class="k">for</span> <span class="n">criterion</span> <span class="ow">in</span> <span class="p">[</span><span class="n">max_iteration</span><span class="p">,</span> <span class="n">max_time</span><span class="p">,</span> <span class="n">ftol</span><span class="p">,</span> <span class="n">xtol</span><span class="p">,</span> <span class="n">gtol</span><span class="p">,</span> <span class="n">atol</span><span class="p">,</span> <span class="n">ptol</span><span class="p">]</span>
-    <span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">"At least one stopping criterion must be provided "</span>
-            <span class="s2">"(max_iteration, max_time, ftol, xtol, gtol, atol, or ptol)."</span>
-        <span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">callback_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">callback_func</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"callback_func must be a callable function."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">update_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">update_func</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"update_func must be a callable function."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">verbosity</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"verbosity must be an integer."</span><span class="p">)</span>
-    <span class="n">verbosity</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">verbosity</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">verbosity</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"verbosity must be an integer between 0 and 3 inclusive."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">damping</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">damping</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"damping must be None or a string."</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">damping</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">damping</span> <span class="o">=</span> <span class="n">damping</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">damping</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_IMPLEMENTED_DAMPINGS</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"damping must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_DAMPINGS</span><span class="si">}</span><span class="s2">, got '</span><span class="si">{</span><span class="n">damping</span><span class="si">}</span><span class="s2">'."</span><span class="p">)</span>
-    <span class="n">lm_conf</span> <span class="o">=</span> <span class="n">_validate_lm_conf</span><span class="p">(</span><span class="n">lm_conf</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">damping</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"lm"</span><span class="p">,</span> <span class="s2">"lm-diag"</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">term</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">terms</span><span class="p">):</span>
-            <span class="k">if</span> <span class="n">term</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"gH"</span> <span class="ow">and</span> <span class="n">term</span><span class="o">.</span><span class="n">c_func</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">"damping='</span><span class="si">{</span><span class="n">damping</span><span class="si">}</span><span class="s2">' requires the cost of every term: the 'gH' term </span><span class="si">{</span><span class="n">index</span><span class="si">}</span><span class="s2"> "</span>
-                    <span class="s2">"must define a cost_func."</span>
-                <span class="p">)</span>
-
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">history</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"history must be a boolean value."</span><span class="p">)</span>
-    <span class="n">history</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">history_details</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">history_details</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_DEFAULT_SOLVE_HISTORY</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">history_details</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="n">history_details</span> <span class="o">=</span> <span class="p">[</span><span class="n">history_details</span><span class="p">]</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">history_details</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"history_details must be a string or a sequence of strings."</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">detail</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">detail</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_IMPLEMENTED_HISTORY_DETAILS</span> <span class="ow">and</span> <span class="n">detail</span> <span class="o">!=</span> <span class="s2">"all"</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"Invalid history detail: </span><span class="si">{</span><span class="n">detail</span><span class="si">}</span><span class="s2">. Valid details are: </span><span class="si">{</span><span class="n">_IMPLEMENTED_HISTORY_DETAILS</span><span class="si">}</span><span class="s2"> and 'all'."</span>
-            <span class="p">)</span>
-    <span class="k">if</span> <span class="s2">"all"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-        <span class="n">history_details</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_IMPLEMENTED_HISTORY_DETAILS</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">history_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">history_length</span><span class="p">,</span> <span class="n">Integral</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-            <span class="s2">"history_length must be None or a positive or negative integer."</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="n">history_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">history_length</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">history_length</span><span class="p">)</span>
-
-    <span class="c1"># -- Select Computation --</span>
-    <span class="n">use_callback</span> <span class="o">=</span> <span class="n">callback_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">use_update</span> <span class="o">=</span> <span class="n">update_func</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">use_xtol</span> <span class="o">=</span> <span class="n">xtol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">use_ptol</span> <span class="o">=</span> <span class="n">ptol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">use_atol</span> <span class="o">=</span> <span class="n">atol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">use_ftol</span> <span class="o">=</span> <span class="n">ftol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">use_gtol</span> <span class="o">=</span> <span class="n">gtol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">use_maxiter</span> <span class="o">=</span> <span class="n">max_iteration</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">use_maxtime</span> <span class="o">=</span> <span class="n">max_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-    <span class="n">use_lm</span> <span class="o">=</span> <span class="n">damping</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"lm"</span><span class="p">,</span> <span class="s2">"lm-diag"</span><span class="p">)</span>
-
-    <span class="n">compute_history</span> <span class="o">=</span> <span class="n">history</span>
-    <span class="n">compute_cost</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">use_ftol</span> <span class="ow">or</span> <span class="n">use_atol</span> <span class="ow">or</span> <span class="n">use_callback</span> <span class="ow">or</span> <span class="n">use_lm</span>
-        <span class="ow">or</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span>
-        <span class="ow">or</span> <span class="p">(</span>
-            <span class="n">compute_history</span>
-            <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">detail</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"cost"</span><span class="p">,</span> <span class="s2">"costs"</span><span class="p">,</span> <span class="s2">"delta_cost"</span><span class="p">]</span> <span class="k">for</span> <span class="n">detail</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">)</span>
-        <span class="p">)</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">_validate_solver_options</span><span class="p">(</span>
+        <span class="n">terms</span><span class="p">,</span>
+        <span class="n">max_iteration</span><span class="o">=</span><span class="n">max_iteration</span><span class="p">,</span>
+        <span class="n">max_time</span><span class="o">=</span><span class="n">max_time</span><span class="p">,</span>
+        <span class="n">ftol</span><span class="o">=</span><span class="n">ftol</span><span class="p">,</span>
+        <span class="n">xtol</span><span class="o">=</span><span class="n">xtol</span><span class="p">,</span>
+        <span class="n">gtol</span><span class="o">=</span><span class="n">gtol</span><span class="p">,</span>
+        <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">,</span>
+        <span class="n">ptol</span><span class="o">=</span><span class="n">ptol</span><span class="p">,</span>
+        <span class="n">callback_func</span><span class="o">=</span><span class="n">callback_func</span><span class="p">,</span>
+        <span class="n">update_func</span><span class="o">=</span><span class="n">update_func</span><span class="p">,</span>
+        <span class="n">damping</span><span class="o">=</span><span class="n">damping</span><span class="p">,</span>
+        <span class="n">lm_conf</span><span class="o">=</span><span class="n">lm_conf</span><span class="p">,</span>
+        <span class="n">line_search</span><span class="o">=</span><span class="n">line_search</span><span class="p">,</span>
+        <span class="n">line_search_conf</span><span class="o">=</span><span class="n">line_search_conf</span><span class="p">,</span>
+        <span class="n">verbosity</span><span class="o">=</span><span class="n">verbosity</span><span class="p">,</span>
+        <span class="n">history</span><span class="o">=</span><span class="n">history</span><span class="p">,</span>
+        <span class="n">history_details</span><span class="o">=</span><span class="n">history_details</span><span class="p">,</span>
+        <span class="n">history_length</span><span class="o">=</span><span class="n">history_length</span><span class="p">,</span>
+        <span class="n">implemented_history_details</span><span class="o">=</span><span class="n">_IMPLEMENTED_HISTORY_DETAILS</span><span class="p">,</span>
+        <span class="n">default_history_details</span><span class="o">=</span><span class="n">_DEFAULT_SOLVE_HISTORY</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">compute_optimality</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">use_gtol</span>
-        <span class="ow">or</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span>
-        <span class="ow">or</span> <span class="p">(</span>
-            <span class="n">compute_history</span>
-            <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">detail</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"optimality"</span><span class="p">]</span> <span class="k">for</span> <span class="n">detail</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">)</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
-    <span class="n">compute_delta_norm</span> <span class="o">=</span> <span class="n">use_xtol</span> <span class="ow">or</span> <span class="n">use_ptol</span> <span class="ow">or</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span>
-    <span class="n">compute_params_norm</span> <span class="o">=</span> <span class="n">use_xtol</span>
-    <span class="n">compute_conv_analysis</span> <span class="o">=</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">3</span>
+    <span class="n">max_iteration</span><span class="p">,</span> <span class="n">max_time</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">max_iteration</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">max_time</span>
+    <span class="n">ftol</span><span class="p">,</span> <span class="n">xtol</span><span class="p">,</span> <span class="n">gtol</span><span class="p">,</span> <span class="n">atol</span><span class="p">,</span> <span class="n">ptol</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">ftol</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">xtol</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">gtol</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">atol</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">ptol</span>
+    <span class="n">damping</span><span class="p">,</span> <span class="n">lm_conf</span><span class="p">,</span> <span class="n">verbosity</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">damping</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">lm_conf</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">verbosity</span>
 
     <span class="c1"># ------ Solver Variables and functions</span>
     <span class="c1"># - constants</span>
     <span class="n">n_terms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">terms</span><span class="p">)</span>
     <span class="n">n_parameters</span> <span class="o">=</span> <span class="n">p0</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">"max_iteration"</span><span class="p">:</span> <span class="n">max_iteration</span><span class="p">,</span>
-        <span class="s2">"max_time"</span><span class="p">:</span> <span class="n">max_time</span><span class="p">,</span>
-        <span class="s2">"ftol"</span><span class="p">:</span> <span class="n">ftol</span><span class="p">,</span>
-        <span class="s2">"xtol"</span><span class="p">:</span> <span class="n">xtol</span><span class="p">,</span>
-        <span class="s2">"gtol"</span><span class="p">:</span> <span class="n">gtol</span><span class="p">,</span>
-        <span class="s2">"atol"</span><span class="p">:</span> <span class="n">atol</span><span class="p">,</span>
-        <span class="s2">"ptol"</span><span class="p">:</span> <span class="n">ptol</span><span class="p">,</span>
-        <span class="s2">"damping"</span><span class="p">:</span> <span class="n">damping</span><span class="p">,</span>
-        <span class="s2">"lm_conf"</span><span class="p">:</span> <span class="n">lm_conf</span><span class="p">,</span>
-    <span class="p">}</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">config</span>
+    <span class="n">recorder</span> <span class="o">=</span> <span class="n">_HistoryRecorder</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+    <span class="n">ls_conf</span> <span class="o">=</span> <span class="n">options</span><span class="o">.</span><span class="n">line_search_conf</span>
+    <span class="n">display</span> <span class="o">=</span> <span class="n">_IterationDisplay</span><span class="p">(</span><span class="n">verbosity</span><span class="p">,</span> <span class="n">n_terms</span><span class="p">,</span> <span class="n">options</span><span class="o">.</span><span class="n">use_lm</span><span class="p">,</span> <span class="n">batch</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_line_search</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">use_line_search</span><span class="p">)</span>
 
     <span class="c1"># - recomputed each loop (reset to None at the start of each iteration)</span>
     <span class="n">term_parameters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1267,14 +1158,12 @@
     <span class="n">parameters</span> <span class="o">=</span> <span class="n">p0</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
     <span class="n">delta_parameters</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">iteration</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="n">history_list</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="n">collections</span><span class="o">.</span><span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=-</span><span class="n">history_length</span><span class="p">)</span>  <span class="c1"># keeps only the last |M| entries</span>
-        <span class="k">if</span> <span class="n">history_length</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">history_length</span> <span class="o">&lt;</span> <span class="mi">0</span>
-        <span class="k">else</span> <span class="p">[]</span>
-    <span class="p">)</span>
     <span class="n">last_total_cost</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">lm_lambda</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># Levenberg-Marquardt damping (initialized at the first iteration)</span>
+    <span class="n">lm_lambda_floor</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># minimum value of λ (initialized with λ)</span>
     <span class="n">last_damping</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># λ used for the accepted step leading to the current iteration</span>
+    <span class="n">last_gain_ratio</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># gain ratio of the accepted LM step leading to the current iteration</span>
+    <span class="n">last_step_length</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># α of the line search for the step leading to the current iteration</span>
     <span class="n">n_rejected</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># total number of rejected Levenberg-Marquardt trial steps</span>
     <span class="n">next_term_parameters</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># p_out of the accepted LM trial step (reused at the next iteration)</span>
     <span class="n">next_cost_state</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">CostState</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># cost of the accepted LM trial step (reused)</span>
@@ -1297,7 +1186,7 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_stop_reasons</span><span class="p">(</span><span class="n">stop_code</span><span class="p">,</span> <span class="n">config</span><span class="p">)))</span>
         <span class="k">return</span> <span class="n">SolveResult</span><span class="p">(</span>
             <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>
-            <span class="n">history</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">history_list</span><span class="p">),</span>
+            <span class="n">history</span><span class="o">=</span><span class="n">recorder</span><span class="o">.</span><span class="n">to_list</span><span class="p">(),</span>
             <span class="n">success</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
             <span class="n">stop_code</span><span class="o">=</span><span class="n">stop_code</span><span class="p">,</span>
             <span class="n">n_iterations</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -1310,30 +1199,7 @@
         <span class="p">)</span>
 
     <span class="c1"># Printing the header for the optimization process logging based on the verbosity level.</span>
-    <span class="n">printed_detail</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">""</span>
-    <span class="n">printed_header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">""</span>
-    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="n">printed_detail</span> <span class="o">+=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Individual costs [rJ term]: C_i = 0.5 * ρ(||r_i||^2) "</span>
-            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Cost: C = sum(w_i * C_i) "</span>
-            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Step norm: ||Δp|| "</span>
-            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="s2">Optimality: ||g|| "</span>
-        <span class="p">)</span>
-        <span class="n">printed_header</span> <span class="o">+=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">"</span><span class="se">\n</span><span class="si">{</span><span class="s1">'Iteration'</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'Total time (s)'</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'Cost C'</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'ΔC'</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">"</span>
-            <span class="o">+</span> <span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="s1">'||Δp||_2'</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'||g||_∞'</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">"</span>
-            <span class="o">+</span> <span class="p">(</span><span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="s1">'λ'</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">use_lm</span> <span class="k">else</span> <span class="s2">""</span><span class="p">)</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="n">printed_header</span> <span class="o">+=</span> <span class="p">(</span>
-            <span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="s1">'||Δp||_∞'</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'||g||_2'</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'Cond(H)'</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="s1">'Trace(H)'</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">"</span>
-            <span class="o">+</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
-                <span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'Cost C_'</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_terms</span><span class="p">)],</span>
-            <span class="p">)</span>
-        <span class="p">)</span>
-    <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">printed_detail</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">printed_header</span><span class="p">)</span>
+    <span class="n">display</span><span class="o">.</span><span class="n">print_header</span><span class="p">()</span>
 
     <span class="c1"># --------- Solver Implementation</span>
     <span class="n">starting_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>  <span class="c1"># start of the computation (after validation and header)</span>
@@ -1370,7 +1236,7 @@
             <span class="n">terms</span><span class="p">,</span>
             <span class="n">term_parameters</span><span class="p">,</span>
             <span class="n">jacobian_P</span><span class="p">,</span>
-            <span class="n">compute_cost</span><span class="o">=</span><span class="n">compute_cost</span><span class="p">,</span>
+            <span class="n">compute_cost</span><span class="o">=</span><span class="n">options</span><span class="o">.</span><span class="n">compute_cost</span><span class="p">,</span>
             <span class="n">cost_state</span><span class="o">=</span><span class="n">next_cost_state</span><span class="p">,</span>  <span class="c1"># reuse r and costs of the accepted LM trial step</span>
         <span class="p">)</span>
         <span class="n">next_term_parameters</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1380,10 +1246,10 @@
         <span class="n">elapsed_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">starting_time</span>
 
         <span class="c1"># - precomputing</span>
-        <span class="k">if</span> <span class="n">compute_optimality</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">compute_optimality</span><span class="p">:</span>
             <span class="n">optimality</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">second_term</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="n">compute_conv_analysis</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">compute_conv_analysis</span><span class="p">:</span>
             <span class="n">optimality_2</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">second_term</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
             <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">hessian</span><span class="p">):</span>
                 <span class="n">trace_Hessian</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">hessian</span><span class="o">.</span><span class="n">diagonal</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
@@ -1401,127 +1267,87 @@
             <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
                 <span class="n">cond_Hessian</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span>
 
-        <span class="k">if</span> <span class="n">compute_delta_norm</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_first_iteration</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">compute_delta_norm</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_first_iteration</span><span class="p">():</span>
             <span class="n">delta_norm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">delta_parameters</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
             <span class="n">delta_norm_inf</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">delta_parameters</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">compute_params_norm</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">compute_params_norm</span><span class="p">:</span>
             <span class="n">parameters_norm</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
-        <span class="c1"># - Update history</span>
-        <span class="k">if</span> <span class="n">compute_history</span><span class="p">:</span>
-
-            <span class="n">h</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="k">if</span> <span class="s2">"iteration"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s2">"iteration"</span><span class="p">]</span> <span class="o">=</span> <span class="n">iteration</span>
-            <span class="k">if</span> <span class="s2">"parameters"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s2">"parameters"</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="k">if</span> <span class="s2">"delta_parameters"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">delta_parameters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">h</span><span class="p">[</span><span class="s2">"delta_parameters"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">h</span><span class="p">[</span><span class="s2">"delta_parameters"</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta_parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="k">if</span> <span class="s2">"delta_cost"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">last_total_cost</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">h</span><span class="p">[</span><span class="s2">"delta_cost"</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">h</span><span class="p">[</span><span class="s2">"delta_cost"</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span> <span class="o">-</span> <span class="n">last_total_cost</span>
-            <span class="k">if</span> <span class="s2">"elapsed_time"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s2">"elapsed_time"</span><span class="p">]</span> <span class="o">=</span> <span class="n">elapsed_time</span>
-            <span class="k">if</span> <span class="s2">"costs"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s2">"costs"</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">costs</span>
-            <span class="k">if</span> <span class="s2">"cost"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s2">"cost"</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span>
-            <span class="k">if</span> <span class="s2">"optimality"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s2">"optimality"</span><span class="p">]</span> <span class="o">=</span> <span class="n">optimality</span>
-            <span class="k">if</span> <span class="s2">"residuals"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s2">"residuals"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">r</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">r</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">residuals</span>
-                <span class="p">]</span>
-            <span class="k">if</span> <span class="s2">"jacobians"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s2">"jacobians"</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-                    <span class="n">J</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">J</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">J</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">jacobians</span>
-                <span class="p">]</span>
-            <span class="k">if</span> <span class="s2">"second_term"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s2">"second_term"</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">second_term</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="k">if</span> <span class="s2">"hessian"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s2">"hessian"</span><span class="p">]</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">hessian</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="k">if</span> <span class="s2">"damping"</span> <span class="ow">in</span> <span class="n">history_details</span><span class="p">:</span>
-                <span class="n">h</span><span class="p">[</span><span class="s2">"damping"</span><span class="p">]</span> <span class="o">=</span> <span class="n">last_damping</span>
-
-            <span class="k">if</span> <span class="n">history_length</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">history_length</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="n">history_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>  <span class="c1"># (deque with maxlen if history_length &lt; 0)</span>
-            <span class="k">elif</span> <span class="n">iteration</span> <span class="o">&lt;</span> <span class="n">history_length</span><span class="p">:</span>
-                <span class="c1"># Case 0 -&gt; never append</span>
-                <span class="n">history_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="c1"># - Update history (only the requested details are computed)</span>
+        <span class="n">recorder</span><span class="o">.</span><span class="n">record</span><span class="p">(</span><span class="n">iteration</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s2">"iteration"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">iteration</span><span class="p">,</span>
+            <span class="s2">"parameters"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="s2">"delta_parameters"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">_copy_or_none</span><span class="p">(</span><span class="n">delta_parameters</span><span class="p">),</span>
+            <span class="s2">"delta_cost"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">last_total_cost</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span> <span class="o">-</span> <span class="n">last_total_cost</span><span class="p">,</span>
+            <span class="s2">"elapsed_time"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">elapsed_time</span><span class="p">,</span>
+            <span class="s2">"costs"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">costs</span><span class="p">,</span>
+            <span class="s2">"cost"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span>
+            <span class="s2">"optimality"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">optimality</span><span class="p">,</span>
+            <span class="s2">"residuals"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="n">_copy_or_none</span><span class="p">(</span><span class="n">r</span><span class="p">)</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">residuals</span><span class="p">],</span>
+            <span class="s2">"jacobians"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="p">[</span><span class="n">_copy_or_none</span><span class="p">(</span><span class="n">J</span><span class="p">)</span> <span class="k">for</span> <span class="n">J</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">jacobians</span><span class="p">],</span>
+            <span class="s2">"second_term"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">second_term</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="s2">"hessian"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">hessian</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+            <span class="s2">"damping"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">last_damping</span><span class="p">,</span>
+            <span class="s2">"gain_ratio"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">last_gain_ratio</span><span class="p">,</span>
+            <span class="s2">"step_length"</span><span class="p">:</span> <span class="k">lambda</span><span class="p">:</span> <span class="n">last_step_length</span><span class="p">,</span>
+        <span class="p">})</span>
 
         <span class="c1"># - Display the iteration</span>
-        <span class="n">printed_row</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">""</span>
-        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">delta_parameters</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">strdp2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">''</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">"</span>
-                <span class="n">strdpinf</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">''</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">"</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">strdp2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">delta_norm</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">"</span>
-                <span class="n">strdpinf</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">delta_norm_inf</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">"</span>
-            <span class="k">if</span> <span class="n">last_total_cost</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="n">dC_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">''</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">"</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">dC</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span> <span class="o">-</span> <span class="n">last_total_cost</span>
-                <span class="n">dC_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">dC</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">"</span>
-            <span class="n">printed_row</span> <span class="o">+=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">iteration</span><span class="si">:</span><span class="s2">^10</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">elapsed_time</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">state</span><span class="o">.</span><span class="n">cost</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">dC_str</span><span class="si">}</span><span class="s2">"</span>
-                <span class="o">+</span> <span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="n">strdp2</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">optimality</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">"</span>
-            <span class="p">)</span>
-            <span class="k">if</span> <span class="n">use_lm</span><span class="p">:</span>
-                <span class="n">printed_row</span> <span class="o">+=</span> <span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="s1">''</span><span class="si">:</span><span class="s2">^15</span><span class="si">}</span><span class="s2">"</span> <span class="k">if</span> <span class="n">last_damping</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="n">last_damping</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">"</span>
-        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">3</span><span class="p">:</span>
-            <span class="n">printed_row</span> <span class="o">+=</span> <span class="p">(</span>
-                <span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="n">strdpinf</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">optimality_2</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">"</span>
-                <span class="o">+</span> <span class="sa">f</span><span class="s2">" </span><span class="si">{</span><span class="n">cond_Hessian</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">trace_Hessian</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">"</span>
-                <span class="o">+</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">c</span><span class="si">:</span><span class="s2">^15.3e</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">state</span><span class="o">.</span><span class="n">costs</span><span class="p">])</span>
-            <span class="p">)</span>
-        <span class="k">if</span> <span class="n">verbosity</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">printed_row</span><span class="p">)</span>
+        <span class="n">display</span><span class="o">.</span><span class="n">print_row</span><span class="p">(</span>
+            <span class="n">iteration</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span>
+            <span class="n">elapsed_time</span><span class="o">=</span><span class="n">elapsed_time</span><span class="p">,</span>
+            <span class="n">cost</span><span class="o">=</span><span class="n">state</span><span class="o">.</span><span class="n">cost</span><span class="p">,</span>
+            <span class="n">delta_cost</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">last_total_cost</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span> <span class="o">-</span> <span class="n">last_total_cost</span><span class="p">,</span>
+            <span class="n">delta_norm</span><span class="o">=</span><span class="n">delta_norm</span><span class="p">,</span>
+            <span class="n">optimality</span><span class="o">=</span><span class="n">optimality</span><span class="p">,</span>
+            <span class="n">damping</span><span class="o">=</span><span class="n">last_damping</span><span class="p">,</span>
+            <span class="n">step_length</span><span class="o">=</span><span class="n">last_step_length</span><span class="p">,</span>
+            <span class="n">delta_norm_inf</span><span class="o">=</span><span class="n">delta_norm_inf</span><span class="p">,</span>
+            <span class="n">optimality_2</span><span class="o">=</span><span class="n">optimality_2</span><span class="p">,</span>
+            <span class="n">cond_hessian</span><span class="o">=</span><span class="n">cond_Hessian</span><span class="p">,</span>
+            <span class="n">trace_hessian</span><span class="o">=</span><span class="n">trace_Hessian</span><span class="p">,</span>
+            <span class="n">costs</span><span class="o">=</span><span class="n">state</span><span class="o">.</span><span class="n">costs</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="c1"># - Convergence analysis and stopping criteria check</span>
-        <span class="k">if</span> <span class="n">use_ftol</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_first_iteration</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_ftol</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_first_iteration</span><span class="p">():</span>
             <span class="n">dF</span> <span class="o">=</span> <span class="n">last_total_cost</span> <span class="o">-</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span>
             <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">dF</span> <span class="o">&lt;</span> <span class="n">ftol</span> <span class="o">*</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span><span class="p">:</span>
                 <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"ftol"</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">use_atol</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_atol</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span> <span class="o">&lt;</span> <span class="n">atol</span><span class="p">:</span>
                 <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"atol"</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">use_gtol</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_gtol</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">optimality</span> <span class="o">&lt;</span> <span class="n">gtol</span><span class="p">:</span>
                 <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"gtol"</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">use_xtol</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_first_iteration</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_xtol</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_first_iteration</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">delta_norm</span> <span class="o">&lt;</span> <span class="n">xtol</span> <span class="o">*</span> <span class="p">(</span><span class="n">xtol</span> <span class="o">+</span> <span class="n">parameters_norm</span><span class="p">):</span>
                 <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"xtol"</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">use_ptol</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_first_iteration</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_ptol</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_first_iteration</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">delta_norm_inf</span> <span class="o">&lt;</span> <span class="n">ptol</span><span class="p">:</span>
                 <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"ptol"</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">use_maxiter</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_maxiter</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">iteration</span> <span class="o">&gt;=</span> <span class="n">max_iteration</span><span class="p">:</span>
                 <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"max_iteration"</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">use_maxtime</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_maxtime</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">elapsed_time</span> <span class="o">&gt;=</span> <span class="n">max_time</span><span class="p">:</span>
                 <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"max_time"</span><span class="p">]</span>
 
-        <span class="k">if</span> <span class="n">use_callback</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_callback</span><span class="p">:</span>
             <span class="n">callback_state</span> <span class="o">=</span> <span class="p">{</span>
                 <span class="s2">"parameters"</span><span class="p">:</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
                 <span class="s2">"delta_parameters"</span><span class="p">:</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">is_first_iteration</span><span class="p">()</span> <span class="k">else</span> <span class="n">delta_parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
@@ -1541,7 +1367,7 @@
             <span class="k">break</span>
 
         <span class="c1"># 8. ----- Compute the update Δp_in</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">use_lm</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">options</span><span class="o">.</span><span class="n">use_lm</span><span class="p">:</span>
             <span class="c1"># - Gauss-Newton: solve H Δp_in = -g</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">delta_parameters</span> <span class="o">=</span> <span class="n">_solve_linear_system</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">hessian</span><span class="p">,</span> <span class="n">state</span><span class="o">.</span><span class="n">second_term</span><span class="p">)</span>
@@ -1551,8 +1377,62 @@
                 <span class="k">break</span>
 
             <span class="c1"># 9. ----- Compute the update parameters (Gauss-Newton only, inside the LM loop otherwise)</span>
-            <span class="k">if</span> <span class="n">use_update</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_update</span><span class="p">:</span>
                 <span class="n">delta_parameters</span> <span class="o">=</span> <span class="n">apply_update_func</span><span class="p">(</span><span class="n">delta_parameters</span><span class="p">)</span>
+
+            <span class="c1"># 9b. ----- Optional Armijo backtracking line search along Δp_in*</span>
+            <span class="c1">#           (only the residuals / cost_func are evaluated at the trial steps)</span>
+            <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_line_search</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">has_naninf</span><span class="p">(</span><span class="n">delta_parameters</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">has_naninf</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">cost</span><span class="p">):</span>
+                    <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"naninf_cost"</span><span class="p">]</span>
+                    <span class="k">break</span>
+                <span class="n">slope</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">second_term</span><span class="p">,</span> <span class="n">delta_parameters</span><span class="p">))</span>  <span class="c1"># g^T Δp_in*</span>
+                <span class="c1"># Rounding noise of the cost: at the machine precision the cost cannot</span>
+                <span class="c1"># decrease and the sign of g^T Δp_in* is meaningless (g ~ 0)</span>
+                <span class="n">noise</span> <span class="o">=</span> <span class="n">ls_conf</span><span class="p">[</span><span class="s2">"noise"</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">slope</span> <span class="o">&gt;</span> <span class="n">noise</span><span class="p">:</span>
+                    <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"not_descent"</span><span class="p">]</span>
+                    <span class="k">break</span>
+
+                <span class="n">step_length</span> <span class="o">=</span> <span class="mf">1.0</span>
+                <span class="n">accepted</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">time_out</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">for</span> <span class="n">n_backtracks</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ls_conf</span><span class="p">[</span><span class="s2">"max_backtracks"</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">n_backtracks</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="c1"># max_time is also checked between the trial steps</span>
+                        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_maxtime</span> <span class="ow">and</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">starting_time</span> <span class="o">&gt;=</span> <span class="n">max_time</span><span class="p">:</span>
+                            <span class="n">time_out</span> <span class="o">=</span> <span class="kc">True</span>
+                            <span class="k">break</span>
+                        <span class="n">step_length</span> <span class="o">*=</span> <span class="n">ls_conf</span><span class="p">[</span><span class="s2">"factor"</span><span class="p">]</span>
+                    <span class="n">trial_step</span> <span class="o">=</span> <span class="n">step_length</span> <span class="o">*</span> <span class="n">delta_parameters</span>
+                    <span class="n">trial_term_parameters</span> <span class="o">=</span> <span class="n">_compute_term_parameters</span><span class="p">(</span><span class="n">parametrization</span><span class="p">,</span> <span class="n">parameters</span> <span class="o">+</span> <span class="n">trial_step</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">has_naninf</span><span class="p">(</span><span class="n">trial_term_parameters</span><span class="p">):</span>
+                        <span class="k">continue</span>  <span class="c1"># rejected: smaller α</span>
+                    <span class="n">trial_cost_state</span> <span class="o">=</span> <span class="n">_evaluate_cost</span><span class="p">(</span><span class="n">terms</span><span class="p">,</span> <span class="n">trial_term_parameters</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">has_naninf</span><span class="p">(</span><span class="n">trial_cost_state</span><span class="o">.</span><span class="n">cost</span><span class="p">):</span>
+                        <span class="k">continue</span>  <span class="c1"># rejected: smaller α</span>
+                    <span class="k">if</span> <span class="n">trial_cost_state</span><span class="o">.</span><span class="n">cost</span> <span class="o">&lt;=</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span> <span class="o">+</span> <span class="n">ls_conf</span><span class="p">[</span><span class="s2">"c1"</span><span class="p">]</span> <span class="o">*</span> <span class="n">step_length</span> <span class="o">*</span> <span class="n">slope</span> <span class="o">+</span> <span class="n">noise</span><span class="p">:</span>
+                        <span class="n">accepted</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">break</span>
+
+                <span class="k">if</span> <span class="n">time_out</span><span class="p">:</span>
+                    <span class="n">n_rejected</span> <span class="o">+=</span> <span class="n">n_backtracks</span>  <span class="c1"># (trials 0 to n_backtracks - 1, all rejected)</span>
+                    <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"max_time"</span><span class="p">]</span>
+                    <span class="k">break</span>
+                <span class="n">n_rejected</span> <span class="o">+=</span> <span class="n">n_backtracks</span> <span class="k">if</span> <span class="n">accepted</span> <span class="k">else</span> <span class="n">n_backtracks</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">accepted</span><span class="p">:</span>
+                    <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"line_search"</span><span class="p">]</span>
+                    <span class="k">break</span>
+
+                <span class="c1"># Accepted step: reuse p_out and the cost at the next iteration (same p_in)</span>
+                <span class="n">delta_parameters</span> <span class="o">=</span> <span class="n">trial_step</span>
+                <span class="n">last_step_length</span> <span class="o">=</span> <span class="n">step_length</span>
+                <span class="n">next_term_parameters</span> <span class="o">=</span> <span class="n">trial_term_parameters</span>
+                <span class="n">next_cost_state</span> <span class="o">=</span> <span class="n">trial_cost_state</span>
 
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># - Levenberg-Marquardt: solve (H + λ D) Δp_in = -g until the cost does not increase</span>
@@ -1581,14 +1461,24 @@
                     <span class="n">lm_lambda</span> <span class="o">=</span> <span class="n">lm_lambda</span> <span class="k">if</span> <span class="n">lm_lambda</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">lm_conf</span><span class="p">[</span><span class="s2">"initial_scale"</span><span class="p">]</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">lm_lambda</span> <span class="o">=</span> <span class="n">lm_conf</span><span class="p">[</span><span class="s2">"initial_scale"</span><span class="p">]</span>
+                <span class="c1"># Floor of λ: below machine precision × its scale, λ D is lost in the rounding of</span>
+                <span class="c1"># H (and λ = 0 could never grow again by multiplication)</span>
+                <span class="n">lm_lambda_floor</span> <span class="o">=</span> <span class="n">_MACHINE_EPSILON</span> <span class="o">*</span> <span class="n">lm_lambda</span> <span class="o">/</span> <span class="n">lm_conf</span><span class="p">[</span><span class="s2">"initial_scale"</span><span class="p">]</span>
 
             <span class="n">new_cost</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">inf</span>
             <span class="n">nan_cost</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="n">time_out</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">n_rejections</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">trial_term_parameters</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="n">trial_cost_state</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="k">while</span> <span class="n">new_cost</span> <span class="o">&gt;</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span><span class="p">:</span>
+            <span class="c1"># A step is accepted if it does not increase the cost beyond its rounding noise</span>
+            <span class="n">lm_threshold</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span> <span class="o">+</span> <span class="n">lm_conf</span><span class="p">[</span><span class="s2">"noise"</span><span class="p">]</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">cost</span><span class="p">)</span>
+            <span class="k">while</span> <span class="n">new_cost</span> <span class="o">&gt;</span> <span class="n">lm_threshold</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">n_rejections</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="c1"># max_time is also checked between the trial steps (not only between iterations)</span>
+                    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_maxtime</span> <span class="ow">and</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">starting_time</span> <span class="o">&gt;=</span> <span class="n">max_time</span><span class="p">:</span>
+                        <span class="n">time_out</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">break</span>
                     <span class="n">lm_lambda</span> <span class="o">*=</span> <span class="n">lm_conf</span><span class="p">[</span><span class="s2">"factor"</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">n_rejections</span> <span class="o">&gt;=</span> <span class="n">lm_conf</span><span class="p">[</span><span class="s2">"max_rejections"</span><span class="p">]:</span>
                     <span class="k">break</span>
@@ -1600,7 +1490,7 @@
                     <span class="k">continue</span>  <span class="c1"># rejected: larger λ</span>
 
                 <span class="c1"># 9. ----- Compute the update parameters (applied to each trial step)</span>
-                <span class="k">if</span> <span class="n">use_update</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">use_update</span><span class="p">:</span>
                     <span class="n">delta_parameters</span> <span class="o">=</span> <span class="n">apply_update_func</span><span class="p">(</span><span class="n">delta_parameters</span><span class="p">)</span>
 
                 <span class="n">trial_term_parameters</span> <span class="o">=</span> <span class="n">_compute_term_parameters</span><span class="p">(</span><span class="n">parametrization</span><span class="p">,</span> <span class="n">parameters</span> <span class="o">+</span> <span class="n">delta_parameters</span><span class="p">)</span>
@@ -1613,23 +1503,36 @@
                     <span class="n">nan_cost</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="k">break</span>  <span class="c1"># the step cannot be compared</span>
 
-            <span class="n">n_rejected</span> <span class="o">+=</span> <span class="n">n_rejections</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">new_cost</span> <span class="o">&lt;=</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span> <span class="k">else</span> <span class="n">n_rejections</span>
+            <span class="n">n_rejected</span> <span class="o">+=</span> <span class="n">n_rejections</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">new_cost</span> <span class="o">&lt;=</span> <span class="n">lm_threshold</span> <span class="k">else</span> <span class="n">n_rejections</span>
+
+            <span class="k">if</span> <span class="n">time_out</span><span class="p">:</span>
+                <span class="c1"># the step is not applied: the returned parameters are the last evaluated ones</span>
+                <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"max_time"</span><span class="p">]</span>
+                <span class="k">break</span>
 
             <span class="k">if</span> <span class="n">nan_cost</span><span class="p">:</span>
                 <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"naninf_trial_cost"</span><span class="p">]</span>
                 <span class="k">break</span>
 
-            <span class="k">if</span> <span class="n">new_cost</span> <span class="o">&gt;</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">new_cost</span> <span class="o">&gt;</span> <span class="n">lm_threshold</span><span class="p">:</span>
                 <span class="n">end_flag</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">stop_code</span> <span class="o">|=</span> <span class="n">_STOP_CODES</span><span class="p">[</span><span class="s2">"lm"</span><span class="p">]</span>
                 <span class="k">break</span>
+
+            <span class="c1"># Gain ratio: actual decrease / decrease predicted by the Gauss-Newton model</span>
+            <span class="c1"># m(Δp) = C + g^T Δp + ½ Δp^T H Δp (valid for any Δp, also after update_func)</span>
+            <span class="n">predicted</span> <span class="o">=</span> <span class="o">-</span><span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">second_term</span><span class="p">,</span> <span class="n">delta_parameters</span><span class="p">))</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span>
+                <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">delta_parameters</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">hessian</span> <span class="o">@</span> <span class="n">delta_parameters</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">())</span>
+            <span class="p">)</span>
+            <span class="n">last_gain_ratio</span> <span class="o">=</span> <span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">cost</span> <span class="o">-</span> <span class="n">new_cost</span><span class="p">)</span> <span class="o">/</span> <span class="n">predicted</span> <span class="k">if</span> <span class="n">predicted</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">numpy</span><span class="o">.</span><span class="n">nan</span>
 
             <span class="c1"># Accepted step: reuse p_out and the cost at the next iteration (same p_in)</span>
             <span class="n">last_damping</span> <span class="o">=</span> <span class="n">lm_lambda</span>
             <span class="n">next_term_parameters</span> <span class="o">=</span> <span class="n">trial_term_parameters</span>
             <span class="n">next_cost_state</span> <span class="o">=</span> <span class="n">trial_cost_state</span>
-            <span class="n">lm_lambda</span> <span class="o">/=</span> <span class="n">lm_conf</span><span class="p">[</span><span class="s2">"factor"</span><span class="p">]</span>
+            <span class="n">lm_lambda</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">lm_lambda</span> <span class="o">/</span> <span class="n">lm_conf</span><span class="p">[</span><span class="s2">"factor"</span><span class="p">],</span> <span class="n">lm_lambda_floor</span><span class="p">)</span>
 
         <span class="c1"># 10. ----- Check update parameters</span>
         <span class="k">if</span> <span class="n">has_naninf</span><span class="p">(</span><span class="n">delta_parameters</span><span class="p">):</span>
@@ -1640,7 +1543,7 @@
         <span class="c1"># 11. ----- Update the parameters</span>
         <span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters</span> <span class="o">+</span> <span class="n">delta_parameters</span>
 
-        <span class="k">if</span> <span class="n">compute_cost</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">compute_cost</span><span class="p">:</span>
             <span class="n">last_total_cost</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">cost</span>
 
         <span class="n">iteration</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -1663,7 +1566,7 @@
 
     <span class="k">return</span> <span class="n">SolveResult</span><span class="p">(</span>
         <span class="n">parameters</span><span class="o">=</span><span class="n">parameters</span><span class="p">,</span>
-        <span class="n">history</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">history_list</span><span class="p">),</span>
+        <span class="n">history</span><span class="o">=</span><span class="n">recorder</span><span class="o">.</span><span class="n">to_list</span><span class="p">(),</span>
         <span class="n">success</span><span class="o">=</span><span class="n">success</span><span class="p">,</span>
         <span class="n">stop_code</span><span class="o">=</span><span class="n">stop_code</span><span class="p">,</span>
         <span class="n">n_iterations</span><span class="o">=</span><span class="n">iteration</span><span class="p">,</span>
@@ -1704,8 +1607,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1738,7 +1641,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
 </p></div>
       
     </div>

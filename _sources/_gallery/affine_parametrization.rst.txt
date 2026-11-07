@@ -474,20 +474,19 @@ The fixed values ``cx`` and ``cy`` are not included in ``p0``.
     Optimality: ||g|| 
 
     Iteration  Total time (s)      Cost C            ΔC           ||Δp||_2         ||g||_∞    
-        0         4.833e-04       1.820e+04                                       3.531e+05   
-        1         9.809e-04       4.645e+02      -1.773e+04       5.036e+01       7.587e+04   
-        2         1.450e-03       4.029e+01      -4.242e+02       1.331e-02       6.102e-04   
-        3         1.898e-03       4.029e+01      -5.009e-12       2.359e-06       5.756e-05   
-    [ftol] Convergence achieved: 0 <= F_previous - F < ftol * F with ftol = 1e-08.
+        0         4.760e-04       1.820e+04                                       3.531e+05   
+        1         9.834e-04       4.645e+02      -1.773e+04       5.036e+01       7.587e+04   
+        2         1.455e-03       4.029e+01      -4.242e+02       1.331e-02       3.132e-07   
+        3         1.905e-03       4.029e+01       1.918e-13       1.039e-09       8.109e-08   
     [xtol] Convergence achieved: ||Δp|| < xtol * (xtol + ||p||) with xtol = 1e-08.
     Success: True
     Optimized parameters:
-    f  = 850.3566317119768
-    k1 = -0.20312554814556025
-    k2 = 0.05673454287201439
-    p1 = 0.0010392543493466374
-    p2 = -0.001978258098571854
-    k3 = -0.014498246644596839
+    f  = 850.3566322835295
+    k1 = -0.20312555484697203
+    k2 = 0.056734561422857745
+    p1 = 0.001039254348121092
+    p2 = -0.0019782580972987343
+    k3 = -0.014498261306148832
 
 
 
@@ -539,15 +538,15 @@ They are also directly available in ``result.term_parameters``.
 
 
     Complete camera parameters:
-    fx = 850.3566317119768
-    fy = 850.3566317119768
+    fx = 850.3566322835295
+    fy = 850.3566322835295
     cx = 640.0
     cy = 480.0
-    k1 = -0.20312554814556025
-    k2 = 0.05673454287201439
-    p1 = 0.0010392543493466374
-    p2 = -0.001978258098571854
-    k3 = -0.014498246644596839
+    k1 = -0.20312555484697203
+    k2 = 0.056734561422857745
+    p1 = 0.001039254348121092
+    p2 = -0.0019782580972987343
+    k3 = -0.014498261306148832
 
 
 
@@ -701,7 +700,7 @@ Visualize the calibration result
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.068 seconds)
+   **Total running time of the script:** (0 minutes 0.056 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_affine_parametrization.py:

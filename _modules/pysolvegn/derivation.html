@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.derivation &#8212; pysolvegn 2.0.0 documentation</title>
+    <title>pysolvegn.derivation &#8212; pysolvegn 2.1.0 documentation</title>
   
   
   
@@ -25,8 +25,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -37,12 +37,12 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=51b770b3"></script>
+    <script src="../../_static/documentation_options.js?v=20623aea"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -104,7 +104,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -124,7 +124,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 2.0.0 documentation</p>
+    <p class="title logo__title">pysolvegn 2.1.0 documentation</p>
   
 </a></div>
     
@@ -188,14 +188,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
       
@@ -227,7 +227,7 @@
       
         
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
@@ -284,14 +284,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
         
@@ -331,7 +331,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -373,10 +373,78 @@
 <span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">"""</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numbers</span><span class="w"> </span><span class="kn">import</span> <span class="n">Real</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">.implemented_conf</span><span class="w"> </span><span class="kn">import</span> <span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span>
+
+
+<span class="c1"># Default relative steps of the finite differences (optimal order of magnitude for</span>
+<span class="c1"># float64 when the residuals are computed to machine precision):</span>
+<span class="c1"># - one-sided differences: truncation error O(h), rounding error O(eps / h) -&gt; h ~ sqrt(eps)</span>
+<span class="c1"># - central differences:   truncation error O(h^2), rounding error O(eps / h) -&gt; h ~ eps^(1/3)</span>
+<span class="n">_MACHINE_EPSILON</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">finfo</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span><span class="o">.</span><span class="n">eps</span><span class="p">)</span>
+<span class="n">_DEFAULT_FINITE_DIFFERENCE_EPSILON</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"forward"</span><span class="p">:</span> <span class="n">_MACHINE_EPSILON</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>  <span class="c1"># ~1.49e-8</span>
+    <span class="s2">"backward"</span><span class="p">:</span> <span class="n">_MACHINE_EPSILON</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>  <span class="c1"># ~1.49e-8</span>
+    <span class="s2">"central"</span><span class="p">:</span> <span class="n">_MACHINE_EPSILON</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">/</span> <span class="mf">3.0</span><span class="p">),</span>  <span class="c1"># ~6.06e-6</span>
+<span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_finite_difference</span><span class="p">(</span>
+    <span class="n">method</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
+    <span class="n">epsilon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Real</span><span class="p">],</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">allow_none</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
+<span class="sd">    Validate a finite difference method and its relative step.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    method : Optional[str]</span>
+<span class="sd">        ``"central"``, ``"forward"`` or ``"backward"`` (case insensitive). None is</span>
+<span class="sd">        accepted only if ``allow_none`` is True (no finite differences: ``epsilon`` must</span>
+<span class="sd">        then be None too).</span>
+
+<span class="sd">    epsilon : Optional[Real]</span>
+<span class="sd">        The relative step, finite and strictly positive, or None for the default step of</span>
+<span class="sd">        the method (see ``_DEFAULT_FINITE_DIFFERENCE_EPSILON``).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Tuple[Optional[str], Optional[float]]</span>
+<span class="sd">        The lower-case method and the step actually used (None, None if ``method`` is None).</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_none</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"The finite difference method must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+        <span class="k">if</span> <span class="n">epsilon</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"finite_difference_epsilon can only be given with finite_difference."</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"The finite difference method must be a string."</span><span class="p">)</span>
+    <span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"The finite difference method must be one of </span><span class="si">{</span><span class="n">_IMPLEMENTED_FINITE_DIFFERENCE_METHODS</span><span class="si">}</span><span class="s2">, got '</span><span class="si">{</span><span class="n">method</span><span class="si">}</span><span class="s2">'."</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">epsilon</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">method</span><span class="p">,</span> <span class="n">_DEFAULT_FINITE_DIFFERENCE_EPSILON</span><span class="p">[</span><span class="n">method</span><span class="p">]</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"The finite difference epsilon must be a real number."</span><span class="p">)</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span> <span class="ow">or</span> <span class="n">epsilon</span> <span class="o">&lt;=</span> <span class="mf">0.0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The finite difference epsilon must be a finite strictly positive number."</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">method</span><span class="p">,</span> <span class="n">epsilon</span>
 
 
 <div class="viewcode-block" id="build_numerical_jacobian">
@@ -384,30 +452,34 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">build_numerical_jacobian</span><span class="p">(</span>
     <span class="n">residual_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"central"</span><span class="p">,</span>
-    <span class="n">epsilon</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span>
+    <span class="n">epsilon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Real</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Build a Jacobian function for the Gauss-Newton optimization by computing the numerical</span>
 <span class="sd">    derivatives of the residual function with respect to the parameters using finite differences.</span>
 
-<span class="sd">    With the ``"central"`` method, the Jacobian is computed as:</span>
+<span class="sd">    The step of the parameter :math:`j` is relative to its magnitude:</span>
+<span class="sd">    :math:`h_j = \epsilon \max(1, |p_j|)`. The step actually used is the representable</span>
+<span class="sd">    one, :math:`h_j = (p_j + h_j) - p_j`, which removes the rounding error on the step.</span>
+
+<span class="sd">    With the ``"central"`` method (``2 n_parameters`` calls of ``residual_func``),</span>
+<span class="sd">    the Jacobian is computed as:</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        J_{i,j} = \frac{R_i(p + \epsilon e_j) - R_i(p - \epsilon e_j)}{2\epsilon}</span>
+<span class="sd">        J_{i,j} = \frac{R_i(p + h_j e_j) - R_i(p - h_j e_j)}{2 h_j}</span>
 
-<span class="sd">    With the ``"forward"`` method, the Jacobian is computed as:</span>
-
-<span class="sd">    .. math::</span>
-
-<span class="sd">        J_{i,j} = \frac{R_i(p + \epsilon e_j) - R_i(p)}{\epsilon}</span>
-
-<span class="sd">    With the ``"backward"`` method, the Jacobian is computed as:</span>
+<span class="sd">    With the ``"forward"`` method (``n_parameters + 1`` calls), the Jacobian is computed as:</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        J_{i,j} = \frac{R_i(p) - R_i(p - \epsilon e_j)}{\epsilon}</span>
+<span class="sd">        J_{i,j} = \frac{R_i(p + h_j e_j) - R_i(p)}{h_j}</span>
 
+<span class="sd">    With the ``"backward"`` method (``n_parameters + 1`` calls), the Jacobian is computed as:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        J_{i,j} = \frac{R_i(p) - R_i(p - h_j e_j)}{h_j}</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -420,9 +492,14 @@
 <span class="sd">        The finite difference method to use for computing the numerical Jacobian.</span>
 <span class="sd">        Must be one of "central", "forward", or "backward".</span>
 
-<span class="sd">    epsilon : Real, optional (default=1e-8)</span>
-<span class="sd">        A small perturbation value used for finite difference approximation of the Jacobian.</span>
-
+<span class="sd">    epsilon : Optional[Real], optional (default=None)</span>
+<span class="sd">        The relative step :math:`\epsilon` of the finite differences (finite and strictly</span>
+<span class="sd">        positive). If None, the optimal order of magnitude for residuals computed to the</span>
+<span class="sd">        machine precision :math:`\varepsilon_m \approx 2.2 \times 10^{-16}` is used:</span>
+<span class="sd">        :math:`\sqrt{\varepsilon_m} \approx 1.5 \times 10^{-8}` for ``"forward"`` and</span>
+<span class="sd">        ``"backward"``, :math:`\varepsilon_m^{1/3} \approx 6.1 \times 10^{-6}` for</span>
+<span class="sd">        ``"central"``. Use a larger value if the residuals are noisy or computed with</span>
+<span class="sd">        a lower precision.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -433,61 +510,69 @@
 
 <span class="sd">    Version</span>
 <span class="sd">    -------</span>
-
 <span class="sd">    - 0.0.1: Initial version.</span>
 <span class="sd">    - 0.0.2: Renamed from build_jacobian to build_numerical_jacobian for clarity.</span>
 <span class="sd">    - 1.0.0: Added support for forward, backward, and central finite difference methods for numerical Jacobian computation.</span>
-
+<span class="sd">    - 1.1.0: Default step depending on the method (``epsilon=None``), representable steps,</span>
+<span class="sd">      the residuals at ``p`` are computed only once (``"forward"`` / ``"backward"``) and</span>
+<span class="sd">      not at all (``"central"``).</span>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">residual_func</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The residual function must be callable."</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Epsilon must be a real number."</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">epsilon</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Epsilon must be a positive number."</span><span class="p">)</span>
-    <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Method must be a string."</span><span class="p">)</span>
-    <span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"central"</span><span class="p">,</span> <span class="s2">"forward"</span><span class="p">,</span> <span class="s2">"backward"</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Method must be one of 'central', 'forward', or 'backward'."</span><span class="p">)</span>
+    <span class="n">method</span><span class="p">,</span> <span class="n">epsilon</span> <span class="o">=</span> <span class="n">_validate_finite_difference</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="n">parameters</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+        <span class="n">residual</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">residual_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">residual</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"The residual function must return a 1D array, got shape </span><span class="si">{</span><span class="n">residual</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">residual</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="n">parameters</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-        <span class="n">n_parameters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
-        <span class="n">residual</span> <span class="o">=</span> <span class="n">residual_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>  <span class="c1"># (copy)</span>
+        <span class="k">if</span> <span class="n">parameters</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"The parameters must be a 1D array, got shape </span><span class="si">{</span><span class="n">parameters</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
+            <span class="p">)</span>
+        <span class="n">n_parameters</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">steps</span> <span class="o">=</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">parameters</span><span class="p">))</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">residual</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The residual function must return a numpy array."</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">residual</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The residual function must return a 1D array."</span><span class="p">)</span>
-
-        <span class="n">n_residual</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">residual</span><span class="p">)</span>
-        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_residual</span><span class="p">,</span> <span class="n">n_parameters</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-        <span class="n">perturbation</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_parameters</span><span class="p">,),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="c1"># Residuals at p: only needed by the one-sided differences (or to get the size)</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">!=</span> <span class="s2">"central"</span> <span class="ow">or</span> <span class="n">n_parameters</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="n">jacobian</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">base</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n_parameters</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_parameters</span><span class="p">):</span>
-            <span class="n">perturbation</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="n">parameters</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
-
             <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"central"</span><span class="p">:</span>
-                <span class="n">jacobian</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">residual_func</span><span class="p">(</span><span class="n">parameters</span> <span class="o">+</span> <span class="n">perturbation</span><span class="p">)</span>
-                    <span class="o">-</span> <span class="n">residual_func</span><span class="p">(</span><span class="n">parameters</span> <span class="o">-</span> <span class="n">perturbation</span><span class="p">)</span>
-                <span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">perturbation</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+                <span class="n">plus</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">plus</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="n">minus</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">minus</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">-=</span> <span class="n">steps</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="n">difference</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">plus</span><span class="p">)</span> <span class="o">-</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">minus</span><span class="p">)</span>
+                <span class="n">step</span> <span class="o">=</span> <span class="n">plus</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">-</span> <span class="n">minus</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>  <span class="c1"># representable 2h</span>
             <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"forward"</span><span class="p">:</span>
-                <span class="n">jacobian</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">residual_func</span><span class="p">(</span><span class="n">parameters</span> <span class="o">+</span> <span class="n">perturbation</span><span class="p">)</span> <span class="o">-</span> <span class="n">residual_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
-                <span class="p">)</span> <span class="o">/</span> <span class="n">perturbation</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"backward"</span><span class="p">:</span>
-                <span class="n">jacobian</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">residual_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span> <span class="o">-</span> <span class="n">residual_func</span><span class="p">(</span><span class="n">parameters</span> <span class="o">-</span> <span class="n">perturbation</span><span class="p">)</span>
-                <span class="p">)</span> <span class="o">/</span> <span class="n">perturbation</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="n">plus</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">plus</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="n">difference</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">plus</span><span class="p">)</span> <span class="o">-</span> <span class="n">base</span>
+                <span class="n">step</span> <span class="o">=</span> <span class="n">plus</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">-</span> <span class="n">parameters</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># backward</span>
+                <span class="n">minus</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">minus</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">-=</span> <span class="n">steps</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="n">difference</span> <span class="o">=</span> <span class="n">base</span> <span class="o">-</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">minus</span><span class="p">)</span>
+                <span class="n">step</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">-</span> <span class="n">minus</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
 
-            <span class="n">perturbation</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+            <span class="k">if</span> <span class="n">jacobian</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">jacobian</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">difference</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">n_parameters</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">difference</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The residual function must always return the same number of residuals."</span><span class="p">)</span>
+            <span class="n">jacobian</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">difference</span> <span class="o">/</span> <span class="n">step</span>
 
         <span class="k">return</span> <span class="n">jacobian</span>
 
     <span class="k">return</span> <span class="n">jacobian_func</span></div>
+
 
 
 <div class="viewcode-block" id="build_batch_numerical_jacobian">
@@ -495,7 +580,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">build_batch_numerical_jacobian</span><span class="p">(</span>
     <span class="n">residual_func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">,</span>
     <span class="n">method</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"central"</span><span class="p">,</span>
-    <span class="n">epsilon</span><span class="p">:</span> <span class="n">Real</span> <span class="o">=</span> <span class="mf">1e-8</span><span class="p">,</span>
+    <span class="n">epsilon</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Real</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Build a batched Jacobian function for the batched Gauss-Newton optimization by computing</span>
@@ -504,27 +589,28 @@
 
 <span class="sd">    This is the batched counterpart of :func:`pysolvegn.build_numerical_jacobian`: the ``m``</span>
 <span class="sd">    problems of the batch are perturbed simultaneously, so the residual function is called</span>
-<span class="sd">    ``n_parameters + 1`` times (``2 * n_parameters + 1`` times for the ``"central"`` method)</span>
+<span class="sd">    ``n_parameters + 1`` times (``2 * n_parameters`` times for the ``"central"`` method)</span>
 <span class="sd">    whatever the number of problems.</span>
 
-<span class="sd">    For the problem :math:`k`, with :math:`\epsilon_{k,j} = \epsilon \max(1, |p_{k,j}|)`,</span>
+<span class="sd">    For the problem :math:`k`, with the relative step :math:`h_{k,j} = \epsilon \max(1, |p_{k,j}|)`</span>
+<span class="sd">    (the representable step :math:`(p_{k,j} + h_{k,j}) - p_{k,j}` is used),</span>
 <span class="sd">    the ``"central"`` method computes:</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        J_{k,i,j} = \frac{R_{k,i}(p_k + \epsilon_{k,j} e_j) - R_{k,i}(p_k - \epsilon_{k,j} e_j)}{2\epsilon_{k,j}}</span>
+<span class="sd">        J_{k,i,j} = \frac{R_{k,i}(p_k + h_{k,j} e_j) - R_{k,i}(p_k - h_{k,j} e_j)}{2 h_{k,j}}</span>
 
 <span class="sd">    With the ``"forward"`` method:</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        J_{k,i,j} = \frac{R_{k,i}(p_k + \epsilon_{k,j} e_j) - R_{k,i}(p_k)}{\epsilon_{k,j}}</span>
+<span class="sd">        J_{k,i,j} = \frac{R_{k,i}(p_k + h_{k,j} e_j) - R_{k,i}(p_k)}{h_{k,j}}</span>
 
 <span class="sd">    With the ``"backward"`` method:</span>
 
 <span class="sd">    .. math::</span>
 
-<span class="sd">        J_{k,i,j} = \frac{R_{k,i}(p_k) - R_{k,i}(p_k - \epsilon_{k,j} e_j)}{\epsilon_{k,j}}</span>
+<span class="sd">        J_{k,i,j} = \frac{R_{k,i}(p_k) - R_{k,i}(p_k - h_{k,j} e_j)}{h_{k,j}}</span>
 
 
 <span class="sd">    Parameters</span>
@@ -541,8 +627,9 @@
 <span class="sd">        The finite difference method to use for computing the numerical Jacobian.</span>
 <span class="sd">        Must be one of "central", "forward", or "backward".</span>
 
-<span class="sd">    epsilon : Real, optional (default=1e-8)</span>
-<span class="sd">        A small perturbation value used for finite difference approximation of the Jacobian.</span>
+<span class="sd">    epsilon : Optional[Real], optional (default=None)</span>
+<span class="sd">        The relative step :math:`\epsilon` of the finite differences. If None, the default</span>
+<span class="sd">        step of the method is used (see :func:`pysolvegn.build_numerical_jacobian`).</span>
 
 
 <span class="sd">    Returns</span>
@@ -555,58 +642,54 @@
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">callable</span><span class="p">(</span><span class="n">residual_func</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The residual function must be callable."</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">Real</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Epsilon must be a real number."</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">epsilon</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Epsilon must be a positive number."</span><span class="p">)</span>
-    <span class="n">epsilon</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">epsilon</span><span class="p">)</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Method must be a string."</span><span class="p">)</span>
-    <span class="n">method</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"central"</span><span class="p">,</span> <span class="s2">"forward"</span><span class="p">,</span> <span class="s2">"backward"</span><span class="p">]:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Method must be one of 'central', 'forward', or 'backward'."</span><span class="p">)</span>
+    <span class="n">method</span><span class="p">,</span> <span class="n">epsilon</span> <span class="o">=</span> <span class="n">_validate_finite_difference</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-        <span class="n">parameters</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>  <span class="c1"># (copy)</span>
         <span class="k">if</span> <span class="n">parameters</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The parameters must be a 2D array with shape (m, n_parameters)."</span><span class="p">)</span>
         <span class="n">n_problems</span><span class="p">,</span> <span class="n">n_parameters</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">shape</span>
-        <span class="n">residual</span> <span class="o">=</span> <span class="n">residual_func</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">residual</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The residual function must return a numpy array."</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">residual</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">residual</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">n_problems</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">"The residual function must return a 2D array with shape (m, n_residuals)."</span>
-            <span class="p">)</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="n">p</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+            <span class="n">residual</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">residual_func</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">indices</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">residual</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">residual</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">n_problems</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"The residual function must return a 2D array with shape (m, n_residuals), "</span>
+                    <span class="sa">f</span><span class="s2">"got shape </span><span class="si">{</span><span class="n">residual</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">residual</span>
 
-        <span class="n">n_residual</span> <span class="o">=</span> <span class="n">residual</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">jacobian</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_problems</span><span class="p">,</span> <span class="n">n_residual</span><span class="p">,</span> <span class="n">n_parameters</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-        <span class="n">perturbed</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">steps</span> <span class="o">=</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">parameters</span><span class="p">))</span>  <span class="c1"># (m, n_parameters)</span>
+
+        <span class="n">base</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">!=</span> <span class="s2">"central"</span> <span class="ow">or</span> <span class="n">n_parameters</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">base</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="n">jacobian</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">base</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_problems</span><span class="p">,</span> <span class="n">base</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_parameters</span><span class="p">))</span>
 
         <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_parameters</span><span class="p">):</span>
-            <span class="n">perturbation</span> <span class="o">=</span> <span class="n">epsilon</span> <span class="o">*</span> <span class="n">numpy</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]))</span>  <span class="c1"># (m,)</span>
-
             <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"central"</span><span class="p">:</span>
-                <span class="n">perturbed</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">perturbation</span>
-                <span class="n">residual_plus</span> <span class="o">=</span> <span class="n">residual_func</span><span class="p">(</span><span class="n">perturbed</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
-                <span class="n">perturbed</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">-</span> <span class="n">perturbation</span>
-                <span class="n">residual_minus</span> <span class="o">=</span> <span class="n">residual_func</span><span class="p">(</span><span class="n">perturbed</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
-                <span class="n">jacobian</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">residual_plus</span> <span class="o">-</span> <span class="n">residual_minus</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span>
-                    <span class="mi">2</span> <span class="o">*</span> <span class="n">perturbation</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
-                <span class="p">)</span>
+                <span class="n">plus</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">plus</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span>
+                <span class="n">minus</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">minus</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">-=</span> <span class="n">steps</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span>
+                <span class="n">difference</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">plus</span><span class="p">)</span> <span class="o">-</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">minus</span><span class="p">)</span>
+                <span class="n">step</span> <span class="o">=</span> <span class="n">plus</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">-</span> <span class="n">minus</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span>  <span class="c1"># representable 2h, (m,)</span>
             <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"forward"</span><span class="p">:</span>
-                <span class="n">perturbed</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">+</span> <span class="n">perturbation</span>
-                <span class="n">jacobian</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">residual_func</span><span class="p">(</span><span class="n">perturbed</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span> <span class="o">-</span> <span class="n">residual</span>
-                <span class="p">)</span> <span class="o">/</span> <span class="n">perturbation</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
-            <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s2">"backward"</span><span class="p">:</span>
-                <span class="n">perturbed</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">-</span> <span class="n">perturbation</span>
-                <span class="n">jacobian</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
-                    <span class="n">residual</span> <span class="o">-</span> <span class="n">residual_func</span><span class="p">(</span><span class="n">perturbed</span><span class="p">,</span> <span class="n">indices</span><span class="p">)</span>
-                <span class="p">)</span> <span class="o">/</span> <span class="n">perturbation</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
+                <span class="n">plus</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">plus</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">+=</span> <span class="n">steps</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span>
+                <span class="n">difference</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">plus</span><span class="p">)</span> <span class="o">-</span> <span class="n">base</span>
+                <span class="n">step</span> <span class="o">=</span> <span class="n">plus</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">-</span> <span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># backward</span>
+                <span class="n">minus</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">minus</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">-=</span> <span class="n">steps</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span>
+                <span class="n">difference</span> <span class="o">=</span> <span class="n">base</span> <span class="o">-</span> <span class="n">evaluate</span><span class="p">(</span><span class="n">minus</span><span class="p">)</span>
+                <span class="n">step</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">-</span> <span class="n">minus</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span>
 
-            <span class="n">perturbed</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">parameters</span><span class="p">[:,</span> <span class="n">index</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">jacobian</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">jacobian</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">n_problems</span><span class="p">,</span> <span class="n">difference</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">n_parameters</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">difference</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="n">jacobian</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The residual function must always return the same number of residuals."</span><span class="p">)</span>
+            <span class="n">jacobian</span><span class="p">[:,</span> <span class="p">:,</span> <span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">difference</span> <span class="o">/</span> <span class="n">step</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">jacobian</span>
 
@@ -641,8 +724,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -675,7 +758,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.24.0.
 </p></div>
       
     </div>
