@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pysolvegn.build_squared_regularization &#8212; pysolvegn 2.1.0 documentation</title>
+    <title>pysolvegn.build_squared_regularization &#8212; pysolvegn 2.2.0 documentation</title>
   
   
   
@@ -35,7 +35,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=6a604523" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
@@ -43,13 +43,13 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../_static/documentation_options.js?v=20623aea"></script>
+    <script src="../_static/documentation_options.js?v=b21de401"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
-    <script src="../_static/design-tabs.js?v=f930bc37"></script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../_static/design-tabs.js?v=fcb327ea"></script>
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_autosummary/pysolvegn.build_squared_regularization';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
@@ -128,7 +128,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 2.1.0 documentation</p>
+    <p class="title logo__title">pysolvegn 2.2.0 documentation</p>
   
 </a></div>
     
@@ -433,7 +433,7 @@
 <h1>pysolvegn.build_squared_regularization<a class="headerlink" href="#pysolvegn-build-squared-regularization" title="Link to this heading">#</a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="pysolvegn.build_squared_regularization">
-<span class="sig-name descname"><span class="pre">build_squared_regularization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stds</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/implemented_regularizations.html#build_squared_regularization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.build_squared_regularization" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">build_squared_regularization</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">means</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stds</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sparse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pysolvegn/implemented_regularizations.html#build_squared_regularization"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pysolvegn.build_squared_regularization" title="Link to this definition">#</a></dt>
 <dd><p>Build a squared regularization term based on a Gaussian prior.</p>
 <p>The regularization residuals are defined as:</p>
 <div class="math notranslate nohighlight">
@@ -464,6 +464,9 @@ All values must be strictly positive.</p></li>
 <li><p><strong>loss</strong> (<em>Optional</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>Callable</em><em>]</em><em>] </em><em>(</em><em>default=None</em><em>)</em>) – Loss function applied to the regularization residuals.</p></li>
 <li><p><strong>loss_scale</strong> (<em>Real</em><em> (</em><em>default=1.0</em><em>)</em>) – Soft threshold of the loss function, in the unit of the residuals
 (number of standard deviations), see <a class="reference internal" href="pysolvegn.Term.html#pysolvegn.Term" title="pysolvegn.Term"><code class="xref py py-class docutils literal notranslate"><span class="pre">pysolvegn.Term</span></code></a>.</p></li>
+<li><p><strong>sparse</strong> (<em>bool</em><em> (</em><em>default=False</em><em>)</em>) – If True, the diagonal Jacobian is a <code class="docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code> (<code class="docutils literal notranslate"><span class="pre">n</span></code> entries),
+otherwise a dense <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(n,</span> <span class="pre">n)</span></code>. Use <code class="docutils literal notranslate"><span class="pre">sparse=True</span></code> for
+a large number of parameters.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

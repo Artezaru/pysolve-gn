@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pysolvegn.implemented_parametrizations &#8212; pysolvegn 2.1.0 documentation</title>
+    <title>pysolvegn.implemented_parametrizations &#8212; pysolvegn 2.2.0 documentation</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=6a604523" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
@@ -42,13 +42,13 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=20623aea"></script>
+    <script src="../../_static/documentation_options.js?v=b21de401"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
-    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../_static/design-tabs.js?v=fcb327ea"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pysolvegn/implemented_parametrizations';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="../../genindex.html" />
@@ -124,7 +124,7 @@
   
   
   
-    <p class="title logo__title">pysolvegn 2.1.0 documentation</p>
+    <p class="title logo__title">pysolvegn 2.2.0 documentation</p>
   
 </a></div>
     
@@ -373,10 +373,11 @@
 <span class="sd">along with this program.  If not, see &lt;https://www.gnu.org/licenses/&gt;.</span>
 <span class="sd">"""</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.sparse</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">.parametrization</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parametrization</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">.batch_parametrization</span><span class="w"> </span><span class="kn">import</span> <span class="n">BatchParametrization</span>
@@ -410,6 +411,22 @@
     <span class="k">return</span> <span class="n">p_in</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_validate_sparse</span><span class="p">(</span><span class="n">sparse</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">allow_none</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+    <span class="c1"># The sparse option of the parametrizations</span>
+    <span class="k">if</span> <span class="n">sparse</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">allow_none</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">sparse</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"sparse must be a boolean"</span> <span class="o">+</span> <span class="p">(</span><span class="s2">" or None."</span> <span class="k">if</span> <span class="n">allow_none</span> <span class="k">else</span> <span class="s2">"."</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">sparse</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_diagonal_jacobian</span><span class="p">(</span><span class="n">diagonal</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">sparse</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">]:</span>
+    <span class="c1"># Diagonal Jacobian (n, n): dense array or sparse csr matrix (n entries)</span>
+    <span class="k">if</span> <span class="n">sparse</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">diags</span><span class="p">(</span><span class="n">diagonal</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">"csr"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">diagonal</span><span class="p">)</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_batch_diagonal</span><span class="p">(</span><span class="n">diagonal</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="c1"># Stack of diagonal matrices (m, n, n) from the diagonals (m, n)</span>
     <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">diagonal</span><span class="o">.</span><span class="n">shape</span>
@@ -422,8 +439,10 @@
 <div class="viewcode-block" id="build_affine_parametrization">
 <a class="viewcode-back" href="../../_autosummary/pysolvegn.build_affine_parametrization.html#pysolvegn.build_affine_parametrization">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">build_affine_parametrization</span><span class="p">(</span>
-    <span class="n">modes</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="n">modes</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">spmatrix</span><span class="p">],</span>
     <span class="n">offset</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">sparse</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parametrization</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Build a :class:`Parametrization` based on an affine transformation.</span>
@@ -456,14 +475,19 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    modes : ArrayLike</span>
+<span class="sd">    modes : Union[ArrayLike, scipy.sparse.spmatrix]</span>
 <span class="sd">        The matrix of the affine transformation with shape</span>
-<span class="sd">        ``(n_p_outputs, n_parameters)``.</span>
+<span class="sd">        ``(n_p_outputs, n_parameters)``, a dense array or a ``scipy.sparse`` matrix.</span>
 
 <span class="sd">    offset : Optional[ArrayLike], optional</span>
 <span class="sd">        The offset of the affine transformation with shape</span>
 <span class="sd">        ``(n_p_outputs,)``.</span>
 <span class="sd">        If ``None``, a zero offset is used.</span>
+
+<span class="sd">    sparse : Optional[bool], optional (default: ``None``)</span>
+<span class="sd">        If True, the Jacobian is a ``scipy.sparse.csr_matrix``; if False, a dense</span>
+<span class="sd">        ``numpy.ndarray``. If None, the Jacobian has the format of ``modes`` (sparse for a</span>
+<span class="sd">        ``scipy.sparse`` matrix, dense otherwise).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -501,7 +525,15 @@
 
 <span class="sd">    """</span>
 
-    <span class="n">modes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">modes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">sparse</span> <span class="o">=</span> <span class="n">_validate_sparse</span><span class="p">(</span><span class="n">sparse</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sparse</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">sparse</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">modes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">sparse</span><span class="p">:</span>
+        <span class="n">modes</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="n">modes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">modes</span><span class="p">):</span>
+        <span class="n">modes</span> <span class="o">=</span> <span class="n">modes</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">modes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">modes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">modes</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"modes must be a 2D array."</span><span class="p">)</span>
@@ -567,6 +599,8 @@
     <span class="n">n_p_outputs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
     <span class="n">optimized_indices</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span>
     <span class="n">fixed_parameters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">ArrayLike</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">sparse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parametrization</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Build a parametrization that fixes some output parameters while optimizing</span>
@@ -581,6 +615,16 @@
 <span class="sd">    where the values at ``optimized_indices`` are taken from</span>
 <span class="sd">    :math:`\mathbf{p}_{in}` and all other values are fixed.</span>
 
+<span class="sd">    The Jacobian is the constant selection matrix :math:`S` of shape</span>
+<span class="sd">    ``(n_p_outputs, len(optimized_indices))``, with :math:`S_{i, j} = 1` if</span>
+<span class="sd">    ``optimized_indices[j] == i``.</span>
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        The dense selection matrix has ``n_p_outputs * len(optimized_indices)``</span>
+<span class="sd">        entries. For large problems (e.g. displacements of the vertices of a mesh),</span>
+<span class="sd">        use ``sparse=True``: the matrix has then one entry per optimized parameter.</span>
+
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    n_p_outputs : int</span>
@@ -594,6 +638,10 @@
 <span class="sd">        Initial/fixed values of all output parameters, with shape</span>
 <span class="sd">        ``(n_p_outputs,)``.</span>
 <span class="sd">        If ``None``, all fixed parameters are initialized to zero.</span>
+
+<span class="sd">    sparse : bool, optional (default: ``False``)</span>
+<span class="sd">        If True, the Jacobian is a ``scipy.sparse.csr_matrix``, otherwise a dense</span>
+<span class="sd">        ``numpy.ndarray``.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -627,7 +675,7 @@
 <span class="sd">    and the Jacobian has shape ``(3, 2)``.</span>
 <span class="sd">    """</span>
 
-    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_p_outputs</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">integer</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_p_outputs</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">integer</span><span class="p">))</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">n_p_outputs</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"n_p_outputs must be an integer."</span><span class="p">)</span>
 
     <span class="n">n_p_outputs</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_p_outputs</span><span class="p">)</span>
@@ -635,20 +683,25 @@
     <span class="k">if</span> <span class="n">n_p_outputs</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"n_p_outputs must be strictly positive."</span><span class="p">)</span>
 
-    <span class="n">optimized_indices</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">optimized_indices</span><span class="p">)</span>
+    <span class="n">sparse</span> <span class="o">=</span> <span class="n">_validate_sparse</span><span class="p">(</span><span class="n">sparse</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">optimized_indices</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="n">optimized_indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">optimized_indices</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">optimized_indices</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"optimized_indices must be a 1D sequence of integers."</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">optimized_indices</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"optimized_indices cannot be empty."</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">optimized_indices</span><span class="p">))</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">optimized_indices</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"optimized_indices must contain unique indices."</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">integer</span><span class="p">))</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">optimized_indices</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">numpy</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">optimized_indices</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">integer</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"optimized_indices must contain integers."</span><span class="p">)</span>
 
-    <span class="n">optimized_indices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">optimized_indices</span><span class="p">]</span>
+    <span class="n">optimized_indices</span> <span class="o">=</span> <span class="n">optimized_indices</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">index</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">index</span> <span class="o">&gt;=</span> <span class="n">n_p_outputs</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">optimized_indices</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">optimized_indices</span><span class="p">)</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">optimized_indices</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"optimized_indices must contain unique indices."</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">((</span><span class="n">optimized_indices</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">optimized_indices</span> <span class="o">&gt;=</span> <span class="n">n_p_outputs</span><span class="p">)):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
             <span class="s2">"All optimized_indices must be in the range "</span> <span class="sa">f</span><span class="s2">"[0, </span><span class="si">{</span><span class="n">n_p_outputs</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">]."</span>
         <span class="p">)</span>
@@ -670,15 +723,17 @@
                 <span class="sa">f</span><span class="s2">"(</span><span class="si">{</span><span class="n">n_p_outputs</span><span class="si">}</span><span class="s2">,), got </span><span class="si">{</span><span class="n">fixed_parameters</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
 
-    <span class="n">n_parameters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">optimized_indices</span><span class="p">)</span>
+    <span class="n">n_parameters</span> <span class="o">=</span> <span class="n">optimized_indices</span><span class="o">.</span><span class="n">size</span>
 
-    <span class="n">selection_matrix</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">n_p_outputs</span><span class="p">,</span> <span class="n">n_parameters</span><span class="p">),</span>
-        <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span>
+    <span class="n">selection_matrix</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span>
+        <span class="p">(</span>
+            <span class="n">numpy</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_parameters</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">optimized_indices</span><span class="p">,</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_parameters</span><span class="p">)),</span>
+        <span class="p">),</span>
+        <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">n_p_outputs</span><span class="p">,</span> <span class="n">n_parameters</span><span class="p">),</span>
     <span class="p">)</span>
-
-    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">optimized_indices</span><span class="p">):</span>
-        <span class="n">selection_matrix</span><span class="p">[</span><span class="n">index</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sparse</span><span class="p">:</span>
+        <span class="n">selection_matrix</span> <span class="o">=</span> <span class="n">selection_matrix</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">parametric_func</span><span class="p">(</span><span class="n">p_in</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">p_in</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p_in</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
@@ -696,7 +751,7 @@
 
         <span class="k">return</span> <span class="n">p_out</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="n">p_in</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="n">p_in</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">]:</span>
         <span class="n">p_in</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p_in</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">p_in</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
@@ -721,6 +776,8 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">build_sigmoid_parametrization</span><span class="p">(</span>
     <span class="n">lower</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
     <span class="n">upper</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">sparse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parametrization</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Build a parametrization that constrains parameters to a finite interval</span>
@@ -764,6 +821,11 @@
 <span class="sd">    upper : ArrayLike</span>
 <span class="sd">        Upper bounds with shape ``(n_parameters,)``.</span>
 
+<span class="sd">    sparse : bool, optional (default: ``False``)</span>
+<span class="sd">        If True, the diagonal Jacobian is a ``scipy.sparse.csr_matrix`` (``n`` entries),</span>
+<span class="sd">        otherwise a dense ``numpy.ndarray`` of shape ``(n, n)``. Use ``sparse=True`` for</span>
+<span class="sd">        a large number of parameters.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Parametrization</span>
@@ -788,6 +850,7 @@
     <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">lower</span> <span class="o">&gt;=</span> <span class="n">upper</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Each lower bound must be strictly smaller than upper."</span><span class="p">)</span>
 
+    <span class="n">sparse</span> <span class="o">=</span> <span class="n">_validate_sparse</span><span class="p">(</span><span class="n">sparse</span><span class="p">)</span>
     <span class="n">n_parameters</span> <span class="o">=</span> <span class="n">lower</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">sigmoid</span> <span class="o">=</span> <span class="n">_sigmoid</span>
 
@@ -806,7 +869,7 @@
 
         <span class="k">return</span> <span class="n">lower</span> <span class="o">+</span> <span class="p">(</span><span class="n">upper</span> <span class="o">-</span> <span class="n">lower</span><span class="p">)</span> <span class="o">*</span> <span class="n">s</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="n">p_in</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="n">p_in</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">]:</span>
         <span class="n">p_in</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p_in</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">p_in</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
@@ -819,7 +882,7 @@
 
         <span class="n">s</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">p_in</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">((</span><span class="n">upper</span> <span class="o">-</span> <span class="n">lower</span><span class="p">)</span> <span class="o">*</span> <span class="n">s</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">s</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_diagonal_jacobian</span><span class="p">((</span><span class="n">upper</span> <span class="o">-</span> <span class="n">lower</span><span class="p">)</span> <span class="o">*</span> <span class="n">s</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">s</span><span class="p">),</span> <span class="n">sparse</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">Parametrization</span><span class="p">(</span>
         <span class="n">parametric_func</span><span class="o">=</span><span class="n">parametric_func</span><span class="p">,</span>
@@ -832,6 +895,8 @@
 <a class="viewcode-back" href="../../_autosummary/pysolvegn.build_positive_parametrization.html#pysolvegn.build_positive_parametrization">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">build_positive_parametrization</span><span class="p">(</span>
     <span class="n">n_parameters</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">sparse</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Parametrization</span><span class="p">:</span>
 <span class="w">    </span><span class="sa">r</span><span class="sd">"""</span>
 <span class="sd">    Build a parametrization that constrains parameters to be strictly positive.</span>
@@ -862,6 +927,11 @@
 <span class="sd">    n_parameters : int</span>
 <span class="sd">        Number of positive output parameters and input parameters.</span>
 
+<span class="sd">    sparse : bool, optional (default: ``False``)</span>
+<span class="sd">        If True, the diagonal Jacobian is a ``scipy.sparse.csr_matrix`` (``n`` entries),</span>
+<span class="sd">        otherwise a dense ``numpy.ndarray`` of shape ``(n, n)``. Use ``sparse=True`` for</span>
+<span class="sd">        a large number of parameters.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    Parametrization</span>
@@ -876,6 +946,8 @@
     <span class="k">if</span> <span class="n">n_parameters</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"n_parameters must be strictly positive."</span><span class="p">)</span>
 
+    <span class="n">sparse</span> <span class="o">=</span> <span class="n">_validate_sparse</span><span class="p">(</span><span class="n">sparse</span><span class="p">)</span>
+
     <span class="k">def</span><span class="w"> </span><span class="nf">parametric_func</span><span class="p">(</span><span class="n">p_in</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
         <span class="n">p_in</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p_in</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
@@ -889,7 +961,7 @@
 
         <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">p_in</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="n">p_in</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">jacobian_func</span><span class="p">(</span><span class="n">p_in</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">]:</span>
         <span class="n">p_in</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">p_in</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">p_in</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
@@ -900,7 +972,7 @@
                 <span class="sa">f</span><span class="s2">"p_in must have shape (</span><span class="si">{</span><span class="n">n_parameters</span><span class="si">}</span><span class="s2">,), "</span> <span class="sa">f</span><span class="s2">"got </span><span class="si">{</span><span class="n">p_in</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">diag</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">p_in</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">_diagonal_jacobian</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">p_in</span><span class="p">),</span> <span class="n">sparse</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">Parametrization</span><span class="p">(</span>
         <span class="n">parametric_func</span><span class="o">=</span><span class="n">parametric_func</span><span class="p">,</span>
@@ -938,9 +1010,10 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    modes : ArrayLike</span>
+<span class="sd">    modes : Union[ArrayLike, scipy.sparse.spmatrix]</span>
 <span class="sd">        The matrix of the affine transformation with shape</span>
-<span class="sd">        ``(n_p_outputs, n_parameters)``.</span>
+<span class="sd">        ``(n_p_outputs, n_parameters)`` (a sparse matrix is converted to a dense</span>
+<span class="sd">        array: the batched Jacobians are dense).</span>
 
 <span class="sd">    offset : Optional[ArrayLike], optional</span>
 <span class="sd">        The offset of the affine transformation with shape</span>
@@ -954,6 +1027,8 @@
 <span class="sd">        ``(m, n_parameters) -&gt; (m, n_p_outputs)``.</span>
 <span class="sd">    """</span>
     <span class="n">single</span> <span class="o">=</span> <span class="n">build_affine_parametrization</span><span class="p">(</span><span class="n">modes</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>  <span class="c1"># validation</span>
+    <span class="k">if</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">issparse</span><span class="p">(</span><span class="n">modes</span><span class="p">):</span>
+        <span class="n">modes</span> <span class="o">=</span> <span class="n">modes</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span>  <span class="c1"># The batched Jacobians (m, n_p_outputs, n_parameters) are dense</span>
     <span class="n">modes</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">modes</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="n">offset</span> <span class="o">=</span> <span class="n">single</span><span class="o">.</span><span class="n">p_func</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">modes</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>  <span class="c1"># M @ 0 + offset</span>
     <span class="n">n_p_outputs</span><span class="p">,</span> <span class="n">n_parameters</span> <span class="o">=</span> <span class="n">modes</span><span class="o">.</span><span class="n">shape</span>
@@ -1007,8 +1082,8 @@
 <span class="sd">    BatchParametrization</span>
 <span class="sd">        The resulting parametrization: ``(m, len(optimized_indices)) -&gt; (m, n_p_outputs)``.</span>
 <span class="sd">    """</span>
-    <span class="n">single</span> <span class="o">=</span> <span class="n">build_fixed_parametrization</span><span class="p">(</span><span class="n">n_p_outputs</span><span class="p">,</span> <span class="n">optimized_indices</span><span class="p">,</span> <span class="n">fixed_parameters</span><span class="p">)</span>  <span class="c1"># validation</span>
-    <span class="n">optimized_indices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">optimized_indices</span><span class="p">]</span>
+    <span class="n">single</span> <span class="o">=</span> <span class="n">build_fixed_parametrization</span><span class="p">(</span><span class="n">n_p_outputs</span><span class="p">,</span> <span class="n">optimized_indices</span><span class="p">,</span> <span class="n">fixed_parameters</span><span class="p">)</span>  <span class="c1"># validation (dense)</span>
+    <span class="n">optimized_indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">optimized_indices</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
     <span class="n">n_parameters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">optimized_indices</span><span class="p">)</span>
     <span class="n">selection_matrix</span> <span class="o">=</span> <span class="n">single</span><span class="o">.</span><span class="n">J_func</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_parameters</span><span class="p">))</span>
     <span class="n">fixed_parameters</span> <span class="o">=</span> <span class="p">(</span>
