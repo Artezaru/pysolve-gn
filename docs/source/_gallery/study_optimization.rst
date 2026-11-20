@@ -715,7 +715,7 @@ measurement noise.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.008 seconds)
+   **Total running time of the script:** (0 minutes 0.019 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_study_optimization.py:

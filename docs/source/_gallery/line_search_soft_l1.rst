@@ -365,7 +365,7 @@ Levenberg-Marquardt (``damping="lm-diag"``) as a reference.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.376 seconds)
+   **Total running time of the script:** (0 minutes 0.405 seconds)
 
 
 .. _sphx_glr_download_.._.._docs_source__gallery_line_search_soft_l1.py:

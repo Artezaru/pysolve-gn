@@ -20,6 +20,7 @@ from typing import Callable, Dict, Optional, Union
 from numbers import Real
 
 import numpy
+import scipy.sparse
 from numpy.typing import ArrayLike
 
 from .term import Term
@@ -73,6 +74,19 @@ def _validate_arrays(
         )
 
     return converted
+
+
+def _validate_sparse(sparse: bool) -> bool:
+    if not isinstance(sparse, bool):
+        raise TypeError("sparse must be a boolean.")
+    return sparse
+
+
+def _diagonal_jacobian(diagonal: numpy.ndarray, sparse: bool) -> Union[numpy.ndarray, scipy.sparse.csr_matrix]:
+    # Diagonal Jacobian (n, n): dense array or sparse csr matrix (n entries)
+    if sparse:
+        return scipy.sparse.diags(diagonal, format="csr")
+    return numpy.diag(diagonal)
 
 
 def _validate_positive_real(name: str, value: Real) -> float:
@@ -130,6 +144,7 @@ def build_squared_regularization(
     weight: Real = 1.0,
     loss: Optional[Union[str, Callable]] = None,
     loss_scale: Real = 1.0,
+    sparse: bool = False,
 ) -> Term:
     r"""
     Build a squared regularization term based on a Gaussian prior.
@@ -179,6 +194,11 @@ def build_squared_regularization(
         Soft threshold of the loss function, in the unit of the residuals
         (number of standard deviations), see :class:`pysolvegn.Term`.
 
+    sparse : bool (default=False)
+        If True, the diagonal Jacobian is a ``scipy.sparse.csr_matrix`` (``n`` entries),
+        otherwise a dense ``numpy.ndarray`` of shape ``(n, n)``. Use ``sparse=True`` for
+        a large number of parameters.
+
     Returns
     -------
     Term
@@ -186,6 +206,7 @@ def build_squared_regularization(
     """
     arrays = _validate_arrays({"means": means, "stds": stds}, batch=False)
     means, stds = arrays["means"], arrays["stds"]
+    sparse = _validate_sparse(sparse)
 
     if numpy.any(stds <= 0):
         raise ValueError("stds must contain only strictly positive values.")
@@ -196,9 +217,9 @@ def build_squared_regularization(
         params = _check_params(params, n)
         return (params - means) / stds
 
-    def jacobian_func(params: numpy.ndarray) -> numpy.ndarray:
+    def jacobian_func(params: numpy.ndarray) -> Union[numpy.ndarray, scipy.sparse.csr_matrix]:
         _check_params(params, n)
-        return numpy.diag(1.0 / stds)
+        return _diagonal_jacobian(1.0 / stds, sparse)
 
     return Term(
         residual_func=residual_func,
@@ -297,6 +318,7 @@ def build_soft_squared_regularization(
     weight: Real = 1.0,
     loss: Optional[Union[str, Callable]] = None,
     loss_scale: Real = 1.0,
+    sparse: bool = False,
 ) -> Term:
     r"""
     Build a soft squared regularization term based on a Gaussian prior.
@@ -361,6 +383,11 @@ def build_soft_squared_regularization(
         Soft threshold of the loss function, in the unit of the residuals
         (number of standard deviations), see :class:`pysolvegn.Term`.
 
+    sparse : bool (default=False)
+        If True, the diagonal Jacobian is a ``scipy.sparse.csr_matrix`` (``n`` entries),
+        otherwise a dense ``numpy.ndarray`` of shape ``(n, n)``. Use ``sparse=True`` for
+        a large number of parameters.
+
     Returns
     -------
     Term
@@ -370,6 +397,7 @@ def build_soft_squared_regularization(
         {"means": means, "thresholds": thresholds, "stds": stds}, batch=False
     )
     means, thresholds, stds = arrays["means"], arrays["thresholds"], arrays["stds"]
+    sparse = _validate_sparse(sparse)
 
     if numpy.any(thresholds < 0):
         raise ValueError("thresholds must contain only non-negative values.")
@@ -387,10 +415,10 @@ def build_soft_squared_regularization(
         above = numpy.maximum(params - upper_bounds, 0.0)  # > 0 if p > mu + tau
         return (below + above) / stds
 
-    def jacobian_func(params: numpy.ndarray) -> numpy.ndarray:
+    def jacobian_func(params: numpy.ndarray) -> Union[numpy.ndarray, scipy.sparse.csr_matrix]:
         params = _check_params(params, n)
         active = (params < lower_bounds) | (params > upper_bounds)
-        return numpy.diag(numpy.where(active, 1.0 / stds, 0.0))
+        return _diagonal_jacobian(numpy.where(active, 1.0 / stds, 0.0), sparse)
 
     return Term(
         residual_func=residual_func,
@@ -498,6 +526,7 @@ def build_absolute_regularization(
     *,
     weight: Real = 1.0,
     epsilon: Real = 1e-3,
+    sparse: bool = False,
 ) -> Term:
     r"""
     Build an absolute value (L1) regularization term, approximated by a smooth
@@ -574,6 +603,11 @@ def build_absolute_regularization(
         Width :math:`\varepsilon` of the smooth quadratic zone, in the unit of
         :math:`z_i` (number of ``stds``). Must be strictly positive.
 
+    sparse : bool (default=False)
+        If True, the diagonal Jacobian is a ``scipy.sparse.csr_matrix`` (``n`` entries),
+        otherwise a dense ``numpy.ndarray`` of shape ``(n, n)``. Use ``sparse=True`` for
+        a large number of parameters.
+
     Returns
     -------
     Term
@@ -589,7 +623,7 @@ def build_absolute_regularization(
     weight = _validate_positive_real("weight", weight)
     epsilon = _validate_positive_real("epsilon", epsilon)
 
-    term = build_squared_regularization(means, stds, weight=1.0)
+    term = build_squared_regularization(means, stds, weight=1.0, sparse=sparse)
     return Term(
         residual_func=term.residual_func,
         jacobian_func=term.jacobian_func,

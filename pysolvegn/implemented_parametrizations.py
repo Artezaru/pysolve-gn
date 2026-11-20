@@ -16,10 +16,11 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from typing import Optional, Sequence
+from typing import Optional, Sequence, Union
 from numpy.typing import ArrayLike
 
 import numpy
+import scipy.sparse
 
 from .parametrization import Parametrization
 from .batch_parametrization import BatchParametrization
@@ -53,6 +54,22 @@ def _check_batch_p_in(p_in: ArrayLike, n_parameters: int) -> numpy.ndarray:
     return p_in
 
 
+def _validate_sparse(sparse: bool, allow_none: bool = False) -> Optional[bool]:
+    # The sparse option of the parametrizations
+    if sparse is None and allow_none:
+        return None
+    if not isinstance(sparse, bool):
+        raise ValueError("sparse must be a boolean" + (" or None." if allow_none else "."))
+    return sparse
+
+
+def _diagonal_jacobian(diagonal: numpy.ndarray, sparse: bool) -> Union[numpy.ndarray, scipy.sparse.csr_matrix]:
+    # Diagonal Jacobian (n, n): dense array or sparse csr matrix (n entries)
+    if sparse:
+        return scipy.sparse.diags(diagonal, format="csr")
+    return numpy.diag(diagonal)
+
+
 def _batch_diagonal(diagonal: numpy.ndarray) -> numpy.ndarray:
     # Stack of diagonal matrices (m, n, n) from the diagonals (m, n)
     m, n = diagonal.shape
@@ -63,8 +80,10 @@ def _batch_diagonal(diagonal: numpy.ndarray) -> numpy.ndarray:
 
 
 def build_affine_parametrization(
-    modes: ArrayLike,
+    modes: Union[ArrayLike, scipy.sparse.spmatrix],
     offset: Optional[ArrayLike] = None,
+    *,
+    sparse: Optional[bool] = None,
 ) -> Parametrization:
     r"""
     Build a :class:`Parametrization` based on an affine transformation.
@@ -97,14 +116,19 @@ def build_affine_parametrization(
 
     Parameters
     ----------
-    modes : ArrayLike
+    modes : Union[ArrayLike, scipy.sparse.spmatrix]
         The matrix of the affine transformation with shape
-        ``(n_p_outputs, n_parameters)``.
+        ``(n_p_outputs, n_parameters)``, a dense array or a ``scipy.sparse`` matrix.
 
     offset : Optional[ArrayLike], optional
         The offset of the affine transformation with shape
         ``(n_p_outputs,)``.
         If ``None``, a zero offset is used.
+
+    sparse : Optional[bool], optional (default: ``None``)
+        If True, the Jacobian is a ``scipy.sparse.csr_matrix``; if False, a dense
+        ``numpy.ndarray``. If None, the Jacobian has the format of ``modes`` (sparse for a
+        ``scipy.sparse`` matrix, dense otherwise).
 
     Returns
     -------
@@ -142,7 +166,15 @@ def build_affine_parametrization(
 
     """
 
-    modes = numpy.asarray(modes, dtype=numpy.float64)
+    sparse = _validate_sparse(sparse, allow_none=True)
+    if sparse is None:
+        sparse = scipy.sparse.issparse(modes)
+    if sparse:
+        modes = scipy.sparse.csr_matrix(modes, dtype=numpy.float64)
+    elif scipy.sparse.issparse(modes):
+        modes = modes.toarray().astype(numpy.float64)
+    else:
+        modes = numpy.asarray(modes, dtype=numpy.float64)
 
     if modes.ndim != 2:
         raise ValueError("modes must be a 2D array.")
@@ -205,6 +237,8 @@ def build_fixed_parametrization(
     n_p_outputs: int,
     optimized_indices: Sequence[int],
     fixed_parameters: Optional[ArrayLike] = None,
+    *,
+    sparse: bool = False,
 ) -> Parametrization:
     r"""
     Build a parametrization that fixes some output parameters while optimizing
@@ -219,6 +253,16 @@ def build_fixed_parametrization(
     where the values at ``optimized_indices`` are taken from
     :math:`\mathbf{p}_{in}` and all other values are fixed.
 
+    The Jacobian is the constant selection matrix :math:`S` of shape
+    ``(n_p_outputs, len(optimized_indices))``, with :math:`S_{i, j} = 1` if
+    ``optimized_indices[j] == i``.
+
+    .. warning::
+
+        The dense selection matrix has ``n_p_outputs * len(optimized_indices)``
+        entries. For large problems (e.g. displacements of the vertices of a mesh),
+        use ``sparse=True``: the matrix has then one entry per optimized parameter.
+
     Parameters
     ----------
     n_p_outputs : int
@@ -232,6 +276,10 @@ def build_fixed_parametrization(
         Initial/fixed values of all output parameters, with shape
         ``(n_p_outputs,)``.
         If ``None``, all fixed parameters are initialized to zero.
+
+    sparse : bool, optional (default: ``False``)
+        If True, the Jacobian is a ``scipy.sparse.csr_matrix``, otherwise a dense
+        ``numpy.ndarray``.
 
     Returns
     -------
@@ -265,7 +313,7 @@ def build_fixed_parametrization(
     and the Jacobian has shape ``(3, 2)``.
     """
 
-    if not isinstance(n_p_outputs, (int, numpy.integer)):
+    if not isinstance(n_p_outputs, (int, numpy.integer)) or isinstance(n_p_outputs, bool):
         raise ValueError("n_p_outputs must be an integer.")
 
     n_p_outputs = int(n_p_outputs)
@@ -273,20 +321,25 @@ def build_fixed_parametrization(
     if n_p_outputs <= 0:
         raise ValueError("n_p_outputs must be strictly positive.")
 
-    optimized_indices = list(optimized_indices)
+    sparse = _validate_sparse(sparse)
 
-    if len(optimized_indices) == 0:
+    optimized_indices = numpy.asarray(optimized_indices)
+
+    if optimized_indices.ndim != 1:
+        raise ValueError("optimized_indices must be a 1D sequence of integers.")
+
+    if optimized_indices.size == 0:
         raise ValueError("optimized_indices cannot be empty.")
 
-    if len(set(optimized_indices)) != len(optimized_indices):
-        raise ValueError("optimized_indices must contain unique indices.")
-
-    if any(not isinstance(index, (int, numpy.integer)) for index in optimized_indices):
+    if not numpy.issubdtype(optimized_indices.dtype, numpy.integer):
         raise ValueError("optimized_indices must contain integers.")
 
-    optimized_indices = [int(index) for index in optimized_indices]
+    optimized_indices = optimized_indices.astype(numpy.int64)
 
-    if any(index < 0 or index >= n_p_outputs for index in optimized_indices):
+    if numpy.unique(optimized_indices).size != optimized_indices.size:
+        raise ValueError("optimized_indices must contain unique indices.")
+
+    if numpy.any((optimized_indices < 0) | (optimized_indices >= n_p_outputs)):
         raise ValueError(
             "All optimized_indices must be in the range " f"[0, {n_p_outputs - 1}]."
         )
@@ -308,15 +361,17 @@ def build_fixed_parametrization(
                 f"({n_p_outputs},), got {fixed_parameters.shape}."
             )
 
-    n_parameters = len(optimized_indices)
+    n_parameters = optimized_indices.size
 
-    selection_matrix = numpy.zeros(
-        (n_p_outputs, n_parameters),
-        dtype=numpy.float64,
+    selection_matrix = scipy.sparse.csr_matrix(
+        (
+            numpy.ones(n_parameters, dtype=numpy.float64),
+            (optimized_indices, numpy.arange(n_parameters)),
+        ),
+        shape=(n_p_outputs, n_parameters),
     )
-
-    for j, index in enumerate(optimized_indices):
-        selection_matrix[index, j] = 1.0
+    if not sparse:
+        selection_matrix = selection_matrix.toarray()
 
     def parametric_func(p_in: numpy.ndarray) -> numpy.ndarray:
         p_in = numpy.asarray(p_in, dtype=numpy.float64)
@@ -334,7 +389,7 @@ def build_fixed_parametrization(
 
         return p_out
 
-    def jacobian_func(p_in: numpy.ndarray) -> numpy.ndarray:
+    def jacobian_func(p_in: numpy.ndarray) -> Union[numpy.ndarray, scipy.sparse.csr_matrix]:
         p_in = numpy.asarray(p_in, dtype=numpy.float64)
 
         if p_in.ndim != 1:
@@ -356,6 +411,8 @@ def build_fixed_parametrization(
 def build_sigmoid_parametrization(
     lower: ArrayLike,
     upper: ArrayLike,
+    *,
+    sparse: bool = False,
 ) -> Parametrization:
     r"""
     Build a parametrization that constrains parameters to a finite interval
@@ -399,6 +456,11 @@ def build_sigmoid_parametrization(
     upper : ArrayLike
         Upper bounds with shape ``(n_parameters,)``.
 
+    sparse : bool, optional (default: ``False``)
+        If True, the diagonal Jacobian is a ``scipy.sparse.csr_matrix`` (``n`` entries),
+        otherwise a dense ``numpy.ndarray`` of shape ``(n, n)``. Use ``sparse=True`` for
+        a large number of parameters.
+
     Returns
     -------
     Parametrization
@@ -423,6 +485,7 @@ def build_sigmoid_parametrization(
     if numpy.any(lower >= upper):
         raise ValueError("Each lower bound must be strictly smaller than upper.")
 
+    sparse = _validate_sparse(sparse)
     n_parameters = lower.shape[0]
     sigmoid = _sigmoid
 
@@ -441,7 +504,7 @@ def build_sigmoid_parametrization(
 
         return lower + (upper - lower) * s
 
-    def jacobian_func(p_in: numpy.ndarray) -> numpy.ndarray:
+    def jacobian_func(p_in: numpy.ndarray) -> Union[numpy.ndarray, scipy.sparse.csr_matrix]:
         p_in = numpy.asarray(p_in, dtype=numpy.float64)
 
         if p_in.ndim != 1:
@@ -454,7 +517,7 @@ def build_sigmoid_parametrization(
 
         s = sigmoid(p_in)
 
-        return numpy.diag((upper - lower) * s * (1.0 - s))
+        return _diagonal_jacobian((upper - lower) * s * (1.0 - s), sparse)
 
     return Parametrization(
         parametric_func=parametric_func,
@@ -464,6 +527,8 @@ def build_sigmoid_parametrization(
 
 def build_positive_parametrization(
     n_parameters: int,
+    *,
+    sparse: bool = False,
 ) -> Parametrization:
     r"""
     Build a parametrization that constrains parameters to be strictly positive.
@@ -494,6 +559,11 @@ def build_positive_parametrization(
     n_parameters : int
         Number of positive output parameters and input parameters.
 
+    sparse : bool, optional (default: ``False``)
+        If True, the diagonal Jacobian is a ``scipy.sparse.csr_matrix`` (``n`` entries),
+        otherwise a dense ``numpy.ndarray`` of shape ``(n, n)``. Use ``sparse=True`` for
+        a large number of parameters.
+
     Returns
     -------
     Parametrization
@@ -508,6 +578,8 @@ def build_positive_parametrization(
     if n_parameters <= 0:
         raise ValueError("n_parameters must be strictly positive.")
 
+    sparse = _validate_sparse(sparse)
+
     def parametric_func(p_in: numpy.ndarray) -> numpy.ndarray:
         p_in = numpy.asarray(p_in, dtype=numpy.float64)
 
@@ -521,7 +593,7 @@ def build_positive_parametrization(
 
         return numpy.exp(p_in)
 
-    def jacobian_func(p_in: numpy.ndarray) -> numpy.ndarray:
+    def jacobian_func(p_in: numpy.ndarray) -> Union[numpy.ndarray, scipy.sparse.csr_matrix]:
         p_in = numpy.asarray(p_in, dtype=numpy.float64)
 
         if p_in.ndim != 1:
@@ -532,7 +604,7 @@ def build_positive_parametrization(
                 f"p_in must have shape ({n_parameters},), " f"got {p_in.shape}."
             )
 
-        return numpy.diag(numpy.exp(p_in))
+        return _diagonal_jacobian(numpy.exp(p_in), sparse)
 
     return Parametrization(
         parametric_func=parametric_func,
@@ -567,9 +639,10 @@ def build_batch_affine_parametrization(
 
     Parameters
     ----------
-    modes : ArrayLike
+    modes : Union[ArrayLike, scipy.sparse.spmatrix]
         The matrix of the affine transformation with shape
-        ``(n_p_outputs, n_parameters)``.
+        ``(n_p_outputs, n_parameters)`` (a sparse matrix is converted to a dense
+        array: the batched Jacobians are dense).
 
     offset : Optional[ArrayLike], optional
         The offset of the affine transformation with shape
@@ -583,6 +656,8 @@ def build_batch_affine_parametrization(
         ``(m, n_parameters) -> (m, n_p_outputs)``.
     """
     single = build_affine_parametrization(modes, offset)  # validation
+    if scipy.sparse.issparse(modes):
+        modes = modes.toarray()  # The batched Jacobians (m, n_p_outputs, n_parameters) are dense
     modes = numpy.asarray(modes, dtype=numpy.float64)
     offset = single.p_func(numpy.zeros(modes.shape[1]))  # M @ 0 + offset
     n_p_outputs, n_parameters = modes.shape
@@ -633,8 +708,8 @@ def build_batch_fixed_parametrization(
     BatchParametrization
         The resulting parametrization: ``(m, len(optimized_indices)) -> (m, n_p_outputs)``.
     """
-    single = build_fixed_parametrization(n_p_outputs, optimized_indices, fixed_parameters)  # validation
-    optimized_indices = [int(index) for index in optimized_indices]
+    single = build_fixed_parametrization(n_p_outputs, optimized_indices, fixed_parameters)  # validation (dense)
+    optimized_indices = numpy.asarray(optimized_indices, dtype=numpy.int64)
     n_parameters = len(optimized_indices)
     selection_matrix = single.J_func(numpy.zeros(n_parameters))
     fixed_parameters = (
